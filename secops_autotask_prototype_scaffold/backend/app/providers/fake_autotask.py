@@ -2,6 +2,11 @@ import json
 from pathlib import Path
 from ..models import Ticket
 
+# reads tickets from backend/data/tickets.json
+# converts each ticket to model obkects 
+# returns model objects to api
+# for future conversion to autotask just replace where tickets getting pulled from
+
 DATA_PATH = Path(__file__).resolve().parents[2] / "data" / "tickets.json"
 
 class FakeAutotaskProvider:
