@@ -1,3 +1,6 @@
+// Utility functions for DOM manipulation
+// DO NOT modify this file unless you are adding new DOM helper functions
+
 export function el<K extends keyof HTMLElementTagNameMap>(
   tag: K,
   opts: {
