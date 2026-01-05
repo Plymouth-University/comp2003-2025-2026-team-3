@@ -3,6 +3,10 @@ import spacy
 import json
 import os
 from datetime import datetime
+import logging
+
+# Setup logging
+logger = logging.getLogger(__name__)
 
 nlp = spacy.load("en_core_web_sm")
 model = SentenceTransformer('all-MiniLM-L6-v2')
@@ -190,6 +194,10 @@ def save_ticket_to_json(ticket_data, category, priority_label, companies):
         category_path = os.path.join(TICKETS_BASE_PATH, "Categories", category)
         priority_path = os.path.join(TICKETS_BASE_PATH, "Priority", priority_label.lower())
         
+        logger.debug(f"Attempting to save ticket to category_path: {category_path}")
+        logger.debug(f"TICKETS_BASE_PATH: {TICKETS_BASE_PATH}")
+        logger.debug(f"Path exists: {os.path.exists(TICKETS_BASE_PATH)}")
+        
         os.makedirs(category_path, exist_ok=True)
         os.makedirs(priority_path, exist_ok=True)
         
@@ -219,11 +227,16 @@ def save_ticket_to_json(ticket_data, category, priority_label, companies):
             with open(company_file, 'w') as f:
                 json.dump(ticket_data, f, indent=2)
         
+        logger.info(f"[SAVED] Categories/{category}/{filename}")
+        logger.info(f"[SAVED] Priority/{priority_label.lower()}/{filename}")
+        for company in companies:
+            logger.info(f"[SAVED] Company/{company}/{filename}")
         print(f"[SAVED] Categories/{category}/{filename}")
         print(f"[SAVED] Priority/{priority_label.lower()}/{filename}")
         for company in companies:
             print(f"[SAVED] Company/{company}/{filename}")
     except Exception as e:
+        logger.error(f"Error saving ticket: {e}", exc_info=True)
         print(f"Error saving ticket: {e}")
 
 
@@ -506,5 +519,17 @@ if __name__ == "__main__":
 [7]
 
 def categorise_ticket(ticket_data: dict) -> dict:
-    #Alias for process_ticket for backwards compatibility.
-    return process_ticket(ticket_data)
+    """Alias for process_ticket for backwards compatibility."""
+    try:
+        logger.debug(f"categorise_ticket called with data: {ticket_data}")
+        result = process_ticket(ticket_data)
+        logger.debug(f"categorise_ticket returning: {result}")
+        return result
+    except Exception as e:
+        logger.error(f"Error in categorise_ticket: {str(e)}", exc_info=True)
+        # Return safe default on error
+        return {
+            "category": "unknown",
+            "confidence": 0,
+            "error": str(e)
+        }

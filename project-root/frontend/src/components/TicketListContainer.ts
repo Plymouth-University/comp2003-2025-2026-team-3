@@ -1,9 +1,14 @@
 type BackendTicket = {
   autotask_ticket_id: number;
+  ticket_number: string;
+  company: string;
+  contact: string;
+  status: string;
+  priority: string;
+  created: string;
   title: string;
   description: string;
-  created_at: string;
-  priority: number;
+  due_date: string;
   ai: {
     category: string;
     confidence: number;
@@ -15,12 +20,30 @@ async function fetchTickets(): Promise<BackendTicket[]> {
     console.log("Fetching tickets from API...");
     const res = await fetch("http://127.0.0.1:8000/api/tickets");
     console.log("Response status:", res.status);
+    console.log("Response headers:", res.headers);
+    
     if (!res.ok) {
       console.error("API returned status:", res.status);
       return [];
     }
-    const json = await res.json();
-    console.log("Fetched tickets:", json);
+    
+    const text = await res.text();
+    console.log("Raw response text:", text);
+    
+    const json = JSON.parse(text);
+    console.log("Parsed JSON:", json);
+    console.log("Items count:", json.items ? json.items.length : 0);
+    
+    if (!json.items || json.items.length === 0) {
+      console.warn("No items returned from API");
+      return [];
+    }
+    
+    // Log first ticket to verify structure
+    if (json.items.length > 0) {
+      console.log("First ticket structure:", json.items[0]);
+    }
+    
     return json.items || [];
   } catch (error) {
     console.error("Failed to fetch tickets:", error);
