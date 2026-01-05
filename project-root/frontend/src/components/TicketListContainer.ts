@@ -39,7 +39,7 @@ async function fetchTickets(): Promise<BackendTicket[]> {
       return [];
     }
     
-    // Log first ticket to verify structure
+    //log first ticket to verify structure
     if (json.items.length > 0) {
       console.log("First ticket structure:", json.items[0]);
     }
@@ -58,24 +58,24 @@ export function TicketListContainer(onOpenTicket: (id: string) => void): HTMLEle
   let ticketsState: BackendTicket[] = [];
   let collapsedCategories: Set<string> = new Set();
   
-  // Track sort state per category
+  //track sort state for each category
   const categorySortState = new Map<string, {
     sortMode: "priority" | "due_date";
     sortByPriority: "asc" | "desc";
     sortByDate: "asc" | "desc";
   }>();
 
-  const mainContainer = el("div", { className: "w-full space-y-6" });
+  const mainContainer = el("div", { className: "w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 items-start" });
 
   const loadingMsg = el("div", { 
-    className: "text-center py-8 text-slate-500",
+    className: "text-center py-8 text-slate-500 col-span-full",
     text: "Loading tickets..." 
   });
   mainContainer.append(loadingMsg);
 
-  // Sort tickets within a specific category
+  //sort tickets within a specific category
   const sortTickets = (tickets: BackendTicket[], category: string): BackendTicket[] => {
-    // Get or initialize sort state for this category
+    //get or initialize sort state for this category
     if (!categorySortState.has(category)) {
       categorySortState.set(category, {
         sortMode: "due_date",
@@ -102,6 +102,7 @@ export function TicketListContainer(onOpenTicket: (id: string) => void): HTMLEle
     });
   };
 
+  //make ticket category UI section
   const renderCategorySection = (category: string, tickets: BackendTicket[]) => {
     const isCollapsed = collapsedCategories.has(category);
     
@@ -115,10 +116,10 @@ export function TicketListContainer(onOpenTicket: (id: string) => void): HTMLEle
     }
     
     const section = el("div", {
-      className: "bg-white rounded-lg shadow border border-slate-200",
+      className: "bg-white rounded-lg shadow border border-blue-100",
     });
 
-    const header = el("div", { className: "flex items-center justify-between p-4 border-b border-slate-100 hover:bg-slate-50" });
+    const header = el("div", { className: "flex items-center justify-between p-4 border-b border-slate-100 hover:bg-blue-50" });
     
     const titleWrap = el("div", { className: "flex items-center gap-2 flex-1" });
     titleWrap.append(
@@ -126,10 +127,10 @@ export function TicketListContainer(onOpenTicket: (id: string) => void): HTMLEle
       el("span", { className: "text-sm text-slate-500", text: `(${tickets.length})` })
     );
 
-    // Create button row for sort buttons
+    //create button row for sort buttons
     const btnRow = el("div", { className: "flex gap-2" });
 
-    // Create sort by date button
+    //create sort by date button
     const dateBtn = el("button", { 
       className: "p-1 hover:bg-slate-200 rounded transition",
       attrs: { type: "button" } 
@@ -141,7 +142,7 @@ export function TicketListContainer(onOpenTicket: (id: string) => void): HTMLEle
       })
     );
 
-    // Create sort by priority button
+    //create sort by priority button
     const priorityBtn = el("button", { 
       className: "p-1 hover:bg-slate-200 rounded transition",
       attrs: { type: "button" } 
@@ -160,17 +161,18 @@ export function TicketListContainer(onOpenTicket: (id: string) => void): HTMLEle
       text: "▼"
     });
 
-    header.append(titleWrap, btnRow, icon);
+    header.append(titleWrap, btnRow, icon); //add title, icon and buttons to category container header
 
+    //tickets container element
     const ticketsWrap = el("div", { className: "divide-y divide-slate-100" });
 
     if (!isCollapsed) {
-      // Sort tickets for this category
+      //sort tickets for this category
       const sortedTickets = sortTickets(tickets, category);
       
       for (const ticket of sortedTickets) {
         const ticketCard = el("div", {
-          className: "p-4 hover:bg-slate-70 cursor-pointer transition relative",
+          className: "p-4 hover:bg-blue-300 cursor-pointer transition relative",
           attrs: { role: "button" }
         });
 
@@ -178,11 +180,13 @@ export function TicketListContainer(onOpenTicket: (id: string) => void): HTMLEle
         const menu = EllipsisMenu();
         menu.addEventListener("view", () => onOpenTicket(String(ticket.autotask_ticket_id))); // on view, open ticket
 
+        //ticket title row
         const topRow = el("div", { className: "flex justify-between items-start gap-3 mb-3" }, [
           el("div", { className: "font-semibold text-slate-900 truncate flex-1", text: ticket.title }), //add title
           menu
         ]);
 
+        //ticket info row
         const infoRow = el("div", { className: "flex justify-between items-start gap-3" }, [
           el("div", { className: "min-w-0 flex-1" }, [
             el("div", { className: "text-xs text-slate-500", text: `ID: ${ticket.autotask_ticket_id}` }), //show id
@@ -227,9 +231,9 @@ export function TicketListContainer(onOpenTicket: (id: string) => void): HTMLEle
       render();
     });
 
-    // Toggle collapse - only on title/icon click, not buttons
+    //toggle collapse of category container
     header.addEventListener("click", (e) => {
-      // Don't collapse if clicking on buttons
+      //don't collapse if clicking on buttons
       if ((e.target as HTMLElement).closest('button')) {
         e.stopPropagation();
         return;
@@ -249,17 +253,17 @@ export function TicketListContainer(onOpenTicket: (id: string) => void): HTMLEle
   const render = () => {
     mainContainer.innerHTML = "";
     
-    if (ticketsState.length === 0) {
+    if (ticketsState.length === 0) { //if there are no tickets, display message
       mainContainer.append(
         el("div", { 
-          className: "text-center py-8 text-slate-500",
+          className: "text-center py-8 text-slate-500 col-span-full", 
           text: "No tickets found" 
         })
       );
       return;
     }
 
-    // Group tickets by category
+    //group tickets by the category
     const categorized = new Map<string, BackendTicket[]>();
     for (const ticket of ticketsState) {
       const cat = ticket.ai?.category || "uncategorized";
@@ -269,7 +273,7 @@ export function TicketListContainer(onOpenTicket: (id: string) => void): HTMLEle
       categorized.get(cat)!.push(ticket);
     }
 
-    // Sort categories and render sections
+    //sort the categories and render UI sections
     const sortedCategories = Array.from(categorized.keys()).sort();
     for (const category of sortedCategories) {
       const tickets = categorized.get(category) || [];
@@ -277,7 +281,7 @@ export function TicketListContainer(onOpenTicket: (id: string) => void): HTMLEle
     }
   };
 
-  // Fetch tickets and render
+  //fetch tickets and render UI
   fetchTickets().then(t => {
     ticketsState = t;
     render();
