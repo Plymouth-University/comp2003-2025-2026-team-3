@@ -73,8 +73,44 @@ export function TicketDetail(ticket: BackendTicket, onBack: () => void): HTMLEle
   contentWrap.append(leftColumn, rightColumn);
   wrap.append(contentWrap);
 
+  //divider line for progress updates section
+  wrap.append(el("div", { className: "border-t border-slate-200 my-6" }));
+
+  //progress Updates section
+  const progressSection = el("div", { className: "space-y-4" }); //div element
+  
+  const progressHeader = el("div", { className: "flex items-center justify-between" }, [
+    el("h3", { className: "text-lg font-bold text-slate-900", text: "Progress Updates" }),
+    el("button", {
+      className: "text-xl font-bold text-slate-900 hover:text-slate-600 transition",
+      attrs: { type: "button" },
+      text: "+", //add button for adding new updates
+    }),
+  ]);
+  progressSection.append(progressHeader);
+
+  //progress update box with staff member -- currently hardcoded dummy example, will be replaced in sem 2
+  const updateBox = el("div", { className: "border border-slate-200 rounded-lg p-4 space-y-3 bg-orange-50" }, [
+    el("div", { className: "flex items-start gap-3" }, [
+      el("div", { className: "w-10 h-10 rounded-full bg-slate-300 flex items-center justify-center flex-shrink-0", text: "👤" }),
+      el("div", { className: "flex-1 min-w-0" }, [
+        el("div", { className: "font-semibold text-slate-900", text: "John Smith" }), //staff member name
+        el("div", { className: "text-xs text-slate-500 mt-1", text: "Support Technician" }), //staff member role
+      ]),
+    ]),
+    //text content of the update
+    el("div", { className: "text-sm text-slate-700", text: "Investigated the issue and identified the root cause. Applied a temporary workaround while we develop a permanent fix. Customer confirmed the workaround is functioning correctly." }), 
+    el("div", { className: "text-xs text-slate-500", text: "Updated 2 hours ago" }), //timestamp
+  ]);
+  progressSection.append(updateBox);
+
+  wrap.append(progressSection);
+
   //add click event to back button
-  (wrap.querySelector("button") as HTMLButtonElement).addEventListener("click", onBack);
+  const backButton = wrap.querySelector("button") as HTMLButtonElement;
+  if (backButton) {
+    backButton.addEventListener("click", onBack);
+  }
 
   return wrap;
 }

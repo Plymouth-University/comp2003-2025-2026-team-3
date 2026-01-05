@@ -55,34 +55,34 @@ function setHash(route: Route) {
 //Sidebar component: returns a sidebar navigation element
 function Sidebar(setRoute: (route: Route) => void): HTMLElement {
   //aside element with tailwind classes 
-  const nav = el("aside", { className: "w-64 hidden md:block bg-white border-r border-slate-200" });
+  const nav = el("aside", { className: "w-64 hidden md:block bg-gradient-to-t from-[#104069] to-[#1a6a9f] border-r border-slate-200" });
   // Inner container for sidebar content
   const inner = el("div", { className: "p-4" });
   //add title and buttons for all page options
   inner.append(
-    el("div", { className: "font-bold text-lg mb-4", text: "Global4 - Ticket Interface" }),
+    el("div", { className: "font-bold text-lg mb-4 text-white", text: "Global 4 - Ticket Interface" }),
     el("button", {
-      className: "w-full text-left px-3 py-2 rounded hover:bg-slate-50",
+      className: "w-full text-left px-3 py-2 rounded hover:bg-white hover:bg-opacity-20 text-white transition",
       attrs: { type: "button" },
       text: "Dashboard",
     }),
     el("button", {
-      className: "w-full text-left px-3 py-2 rounded hover:bg-slate-50",
+      className: "w-full text-left px-3 py-2 rounded hover:bg-white hover:bg-opacity-20 text-white transition",
       attrs: { type: "button" },
       text: "Active Tickets",
     }),
     el("button", {
-      className: "w-full text-left px-3 py-2 rounded hover:bg-slate-50",
+      className: "w-full text-left px-3 py-2 rounded hover:bg-white hover:bg-opacity-20 text-white transition",
       attrs: { type: "button" },
       text: "Closed Tickets",
     }),
     el("button", {
-      className: "w-full text-left px-3 py-2 rounded hover:bg-slate-50",
+      className: "w-full text-left px-3 py-2 rounded hover:bg-white hover:bg-opacity-20 text-white transition",
       attrs: { type: "button" },
       text: "Settings",
     }),
     el("button", {
-      className: "w-full text-left px-3 py-2 rounded hover:bg-slate-50",
+      className: "w-full text-left px-3 py-2 rounded hover:bg-white hover:bg-opacity-20 text-white transition",
       attrs: { type: "button" },
       text: "Account",
     }),
@@ -103,12 +103,12 @@ function Sidebar(setRoute: (route: Route) => void): HTMLElement {
 //TopHeader component: returns a header bar for the app
 function TopHeader(): HTMLElement {
   //create a header element
-  const hdr = el("header", { className: "bg-white border-b border-slate-200" });
+  const hdr = el("header", { className: "bg-gradient-to-r from-[#104069] to-[#1a6a9f] border-b border-slate-300 m-0" });
   //add a flex container with a title and a subtitle
   hdr.append(
-    el("div", { className: "px-4 py-3 flex items-center justify-between" }, [
-      el("div", { className: "font-semibold text-lg", text: "Tickets" }),
-      el("div", { className: "font-mono font-semibold text-lg text-slate-700", text: "GLOBAL 4" }),
+    el("div", { className: "px-5 py-3 flex items-center justify-between" }, [
+      el("div", { className: "font-semibold text-lg text-white", text: "Tickets" }),
+      el("div", { className: "font-mono font-semibold text-lg text-white", text: "GLOBAL 4" }),
     ])
   );
   return hdr;
