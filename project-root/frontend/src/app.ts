@@ -30,14 +30,34 @@ function Sidebar(): HTMLElement {
   const nav = el("aside", { className: "w-64 hidden md:block bg-white border-r border-slate-200" });
   // Inner container for sidebar content
   const inner = el("div", { className: "p-4" });
-  // Add a title and a dashboard button
+  // Add a title and a buttons for all pages
   inner.append(
-    el("div", { className: "font-bold text-lg mb-4", text: "My UI" }),
+    el("div", { className: "font-bold text-lg mb-4", text: "Global4 - Ticket Interface" }),
     el("button", {
       className: "w-full text-left px-3 py-2 rounded hover:bg-slate-50",
       attrs: { type: "button" },
       text: "Dashboard",
-    })
+    }),
+    el("button", {
+      className: "w-full text-left px-3 py-2 rounded hover:bg-slate-50",
+      attrs: { type: "button" },
+      text: "Active Tickets",
+    }),
+    el("button", {
+      className: "w-full text-left px-3 py-2 rounded hover:bg-slate-50",
+      attrs: { type: "button" },
+      text: "Closed Tickets",
+    }),
+    el("button", {
+      className: "w-full text-left px-3 py-2 rounded hover:bg-slate-50",
+      attrs: { type: "button" },
+      text: "Settings",
+    }),
+    el("button", {
+      className: "w-full text-left px-3 py-2 rounded hover:bg-slate-50",
+      attrs: { type: "button" },
+      text: "Account",
+    }),
   );
   // Add a click event to the dashboard button to change the route
   inner.querySelector("button")!.addEventListener("click", () => setHash({ name: "dashboard" }));
