@@ -89,8 +89,8 @@ function TopHeader(): HTMLElement {
   // Add a flex container with a title and a subtitle
   hdr.append(
     el("div", { className: "px-4 py-3 flex items-center justify-between" }, [
-      el("div", { className: "font-semibold", text: "Tickets" }),
-      el("div", { className: "font-semibold text-lg text-slate-700", text: "GLOBAL 4" }),
+      el("div", { className: "font-semibold text-lg", text: "Tickets" }),
+      el("div", { className: "font-mono font-semibold text-lg text-slate-700", text: "GLOBAL 4" }),
     ])
   );
   return hdr;
