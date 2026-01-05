@@ -54,7 +54,7 @@ async function fetchTickets(): Promise<BackendTicket[]> {
 import { el } from "../lib/dom.js";
 import { EllipsisMenu } from "./EllipsisMenu.js";
 
-export function TicketListContainer(onOpenTicket: (id: string) => void): HTMLElement {
+export function TicketListContainer(onOpenTicket: (ticket: BackendTicket) => void): HTMLElement {
   let ticketsState: BackendTicket[] = [];
   let collapsedCategories: Set<string> = new Set();
   
@@ -75,6 +75,7 @@ export function TicketListContainer(onOpenTicket: (id: string) => void): HTMLEle
 
   //sort tickets within a specific category
   const sortTickets = (tickets: BackendTicket[], category: string): BackendTicket[] => {
+    
     //get or initialize sort state for this category
     if (!categorySortState.has(category)) {
       categorySortState.set(category, {
@@ -106,7 +107,7 @@ export function TicketListContainer(onOpenTicket: (id: string) => void): HTMLEle
   const renderCategorySection = (category: string, tickets: BackendTicket[]) => {
     const isCollapsed = collapsedCategories.has(category);
     
-    // Initialize sort state for this category if it doesn't exist
+    //initialize sort state for this category if it doesn't exist
     if (!categorySortState.has(category)) {
       categorySortState.set(category, {
         sortMode: "due_date",
@@ -178,7 +179,7 @@ export function TicketListContainer(onOpenTicket: (id: string) => void): HTMLEle
 
         //create an ellipsis menu for each ticket
         const menu = EllipsisMenu();
-        menu.addEventListener("view", () => onOpenTicket(String(ticket.autotask_ticket_id))); // on view, open ticket
+        menu.addEventListener("view", () => onOpenTicket(ticket)); // on view, open ticket
 
         //ticket title row
         const topRow = el("div", { className: "flex justify-between items-start gap-3 mb-3" }, [
@@ -205,7 +206,7 @@ export function TicketListContainer(onOpenTicket: (id: string) => void): HTMLEle
           if ((e.target as HTMLElement).closest('.relative')) {
             return;
           }
-          onOpenTicket(String(ticket.autotask_ticket_id));
+          onOpenTicket(ticket);
         });
 
         ticketsWrap.append(ticketCard);
