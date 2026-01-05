@@ -85,13 +85,13 @@ export function TicketListContainer(onOpenTicket: (id: string) => void): HTMLEle
     }
     
     const state = categorySortState.get(category)!;
-    const priorityOrder = { Critical: 4, High: 3, Medium: 2, Low: 1 } as const;
+    const priorityOrder = { Critical: 4, High: 3, Medium: 2, Low: 1 } as const; //priority hierarchy
     
-    const priorityCmp = (a: BackendTicket, b: BackendTicket) =>
+    const priorityCmp = (a: BackendTicket, b: BackendTicket) => //compare priorities
       (state.sortByPriority === "asc" ? 1 : -1) *
       ((priorityOrder[a.priority as keyof typeof priorityOrder] || 0) - (priorityOrder[b.priority as keyof typeof priorityOrder] || 0));
     
-    const dateCmp = (a: BackendTicket, b: BackendTicket) =>
+    const dateCmp = (a: BackendTicket, b: BackendTicket) => //compare due dates
       (state.sortByDate === "asc" ? 1 : -1) *
       (new Date(a.due_date).getTime() - new Date(b.due_date).getTime());
 
@@ -122,7 +122,7 @@ export function TicketListContainer(onOpenTicket: (id: string) => void): HTMLEle
     
     const titleWrap = el("div", { className: "flex items-center gap-2 flex-1" });
     titleWrap.append(
-      el("span", { className: "font-semibold capitalize text-slate-900", text: category }),
+      el("span", { className: "font-bold text-lg capitalize text-slate-900", text: category }),
       el("span", { className: "text-sm text-slate-500", text: `(${tickets.length})` })
     );
 
@@ -185,8 +185,7 @@ export function TicketListContainer(onOpenTicket: (id: string) => void): HTMLEle
 
         const infoRow = el("div", { className: "flex justify-between items-start gap-3" }, [
           el("div", { className: "min-w-0 flex-1" }, [
-            el("div", { className: "text-xs text-slate-500", text: `ID: ${ticket.autotask_ticket_id}` }), // show id
-            el("div", { className: "text-sm text-slate-600 mt-1 line-clamp-2", text: ticket.description }), // show description
+            el("div", { className: "text-xs text-slate-500", text: `ID: ${ticket.autotask_ticket_id}` }), //show id
             el("div", { className: "text-xs text-slate-500 mt-2 flex gap-2" }, [
               el("span", { text: `Priority: ${ticket.priority}` }), //show priority
               el("span", { text: `Confidence: ${(ticket.ai.confidence * 100).toFixed(0)}%` }) //show ai confidence
