@@ -56,6 +56,13 @@ import { el } from "../lib/dom.js";
 export function TicketListContainer(onOpenTicket: (id: string) => void): HTMLElement {
   let ticketsState: BackendTicket[] = [];
   let collapsedCategories: Set<string> = new Set();
+  
+  // Track sort state per category
+  const categorySortState = new Map<string, {
+    sortMode: "priority" | "due_date";
+    sortByPriority: "asc" | "desc";
+    sortByDate: "asc" | "desc";
+  }>();
 
   const mainContainer = el("div", { className: "w-full space-y-6" });
 
@@ -65,32 +72,102 @@ export function TicketListContainer(onOpenTicket: (id: string) => void): HTMLEle
   });
   mainContainer.append(loadingMsg);
 
+  // Sort tickets within a specific category
+  const sortTickets = (tickets: BackendTicket[], category: string): BackendTicket[] => {
+    // Get or initialize sort state for this category
+    if (!categorySortState.has(category)) {
+      categorySortState.set(category, {
+        sortMode: "due_date",
+        sortByPriority: "desc",
+        sortByDate: "asc"
+      });
+    }
+    
+    const state = categorySortState.get(category)!;
+    const priorityOrder = { Critical: 4, High: 3, Medium: 2, Low: 1 } as const;
+    
+    const priorityCmp = (a: BackendTicket, b: BackendTicket) =>
+      (state.sortByPriority === "asc" ? 1 : -1) *
+      ((priorityOrder[a.priority as keyof typeof priorityOrder] || 0) - (priorityOrder[b.priority as keyof typeof priorityOrder] || 0));
+    
+    const dateCmp = (a: BackendTicket, b: BackendTicket) =>
+      (state.sortByDate === "asc" ? 1 : -1) *
+      (new Date(a.due_date).getTime() - new Date(b.due_date).getTime());
+
+    return [...tickets].sort((a, b) => {
+      const primary = state.sortMode === "priority" ? priorityCmp(a, b) : dateCmp(a, b);
+      if (primary !== 0) return primary;
+      return state.sortMode === "priority" ? dateCmp(a, b) : priorityCmp(a, b);
+    });
+  };
+
   const renderCategorySection = (category: string, tickets: BackendTicket[]) => {
     const isCollapsed = collapsedCategories.has(category);
+    
+    // Initialize sort state for this category if it doesn't exist
+    if (!categorySortState.has(category)) {
+      categorySortState.set(category, {
+        sortMode: "due_date",
+        sortByPriority: "desc",
+        sortByDate: "asc"
+      });
+    }
     
     const section = el("div", {
       className: "bg-white rounded-lg shadow border border-slate-200",
     });
 
-    const header = el("div", { className: "flex items-center justify-between p-4 border-b border-slate-100 cursor-pointer hover:bg-slate-50" });
+    const header = el("div", { className: "flex items-center justify-between p-4 border-b border-slate-100 hover:bg-slate-50" });
     
-    const titleWrap = el("div", { className: "flex items-center gap-2" });
+    const titleWrap = el("div", { className: "flex items-center gap-2 flex-1" });
     titleWrap.append(
       el("span", { className: "font-semibold capitalize text-slate-900", text: category }),
       el("span", { className: "text-sm text-slate-500", text: `(${tickets.length})` })
     );
+
+    // Create button row for sort buttons
+    const btnRow = el("div", { className: "flex gap-2" });
+
+    // Create sort by date button
+    const dateBtn = el("button", { 
+      className: "p-1 hover:bg-slate-200 rounded transition",
+      attrs: { type: "button" } 
+    });
+    dateBtn.append(
+      el("img", {
+        className: "w-5 h-5",
+        attrs: { src: "./assets/sort-by-icon/sortIcon.png", alt: "Sort by Date" },
+      })
+    );
+
+    // Create sort by priority button
+    const priorityBtn = el("button", { 
+      className: "p-1 hover:bg-slate-200 rounded transition",
+      attrs: { type: "button" } 
+    });
+    priorityBtn.append(
+      el("img", {
+        className: "w-5 h-5",
+        attrs: { src: "./assets/priority-icon/danger.png", alt: "Sort by Priority" },
+      })
+    );
+
+    btnRow.append(dateBtn, priorityBtn);
 
     const icon = el("span", { 
       className: `text-slate-400 text-lg transition-transform ${isCollapsed ? "" : "rotate-180"}`,
       text: "▼"
     });
 
-    header.append(titleWrap, icon);
+    header.append(titleWrap, btnRow, icon);
 
     const ticketsWrap = el("div", { className: "divide-y divide-slate-100" });
 
     if (!isCollapsed) {
-      for (const ticket of tickets) {
+      // Sort tickets for this category
+      const sortedTickets = sortTickets(tickets, category);
+      
+      for (const ticket of sortedTickets) {
         const ticketCard = el("div", {
           className: "p-4 hover:bg-slate-50 cursor-pointer transition",
           attrs: { role: "button" }
@@ -101,6 +178,7 @@ export function TicketListContainer(onOpenTicket: (id: string) => void): HTMLEle
             el("div", { className: "min-w-0 flex-1" }, [
               el("div", { className: "text-xs text-slate-500", text: `ID: ${ticket.autotask_ticket_id}` }),
               el("div", { className: "font-semibold text-slate-900 truncate", text: ticket.title }),
+              el("div", { className: "font-semibold text-slate-900 truncate", text: ticket.due_date }),
               el("div", { className: "text-sm text-slate-600 mt-1 line-clamp-2", text: ticket.description }),
               el("div", { className: "text-xs text-slate-500 mt-2 flex gap-2" }, [
                 el("span", { text: `Priority: ${ticket.priority}` }),
@@ -118,11 +196,36 @@ export function TicketListContainer(onOpenTicket: (id: string) => void): HTMLEle
       }
     }
 
-    header.addEventListener("click", () => {
-      if (collapsedCategories.has(category)) {
-        collapsedCategories.delete(category);
+    // Event listeners for sort buttons - use stored category reference
+    const sortCategory = category;
+    
+    dateBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const state = categorySortState.get(sortCategory)!;
+      state.sortMode = "due_date";
+      state.sortByDate = state.sortByDate === "asc" ? "desc" : "asc";
+      render();
+    });
+
+    priorityBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const state = categorySortState.get(sortCategory)!;
+      state.sortMode = "priority";
+      state.sortByPriority = state.sortByPriority === "asc" ? "desc" : "asc";
+      render();
+    });
+
+    // Toggle collapse - only on title/icon click, not buttons
+    header.addEventListener("click", (e) => {
+      // Don't collapse if clicking on buttons
+      if ((e.target as HTMLElement).closest('button')) {
+        e.stopPropagation();
+        return;
+      }
+      if (collapsedCategories.has(sortCategory)) {
+        collapsedCategories.delete(sortCategory);
       } else {
-        collapsedCategories.add(category);
+        collapsedCategories.add(sortCategory);
       }
       render();
     });
