@@ -1,4 +1,4 @@
-import type { StatusKey } from "../data/dummyTickets.js";
+export type StatusKey = "onHold" | "callbackRequired" | "immediateReviewRQD" | "customerEsc";
 
 export const StatusLabels: Record<StatusKey, string> = {
   onHold: "On hold",

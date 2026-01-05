@@ -1,4 +1,12 @@
-import type { UITicketCard } from "../data/dummyTickets.js";
+type UITicketCard = {
+  ticketID: string;
+  title: string;
+  description: string;
+  dueDate: string;
+  priority: "Low" | "Medium" | "Critical";
+  status: keyof typeof StatusLabels;
+};
+
 import { el, formatDueDate } from "../lib/dom.js";
 import { EllipsisMenu } from "./EllipsisMenu.js";
 import { StatusIconPaths, StatusLabels } from "../lib/ticketStatus.js";
@@ -20,7 +28,7 @@ export function TicketCard(ticket: UITicketCard, onOpen: (id: string) => void): 
 
   const left = el("div", { className: "min-w-0" }, [
     el("div", { className: "text-xs text-slate-500", text: ticket.ticketID }),
-    el("div", { className: "font-semibold truncate", text: ticket.ticketTitle }),
+    el("div", { className: "font-semibold truncate", text: ticket.title }),
     el("div", { className: "text-sm text-slate-600 mt-1", text: `Due: ${formatDueDate(ticket.dueDate)}` }),
   ]);
 
