@@ -52,6 +52,7 @@ async function fetchTickets(): Promise<BackendTicket[]> {
 }
 
 import { el } from "../lib/dom.js";
+import { EllipsisMenu } from "./EllipsisMenu.js";
 
 export function TicketListContainer(onOpenTicket: (id: string) => void): HTMLElement {
   let ticketsState: BackendTicket[] = [];
@@ -169,26 +170,38 @@ export function TicketListContainer(onOpenTicket: (id: string) => void): HTMLEle
       
       for (const ticket of sortedTickets) {
         const ticketCard = el("div", {
-          className: "p-4 hover:bg-slate-50 cursor-pointer transition",
+          className: "p-4 hover:bg-slate-70 cursor-pointer transition relative",
           attrs: { role: "button" }
         });
 
-        ticketCard.append(
-          el("div", { className: "flex justify-between items-start gap-3" }, [
-            el("div", { className: "min-w-0 flex-1" }, [
-              el("div", { className: "text-xs text-slate-500", text: `ID: ${ticket.autotask_ticket_id}` }),
-              el("div", { className: "font-semibold text-slate-900 truncate", text: ticket.title }),
-              el("div", { className: "font-semibold text-slate-900 truncate", text: ticket.due_date }),
-              el("div", { className: "text-sm text-slate-600 mt-1 line-clamp-2", text: ticket.description }),
-              el("div", { className: "text-xs text-slate-500 mt-2 flex gap-2" }, [
-                el("span", { text: `Priority: ${ticket.priority}` }),
-                el("span", { text: `Confidence: ${(ticket.ai.confidence * 100).toFixed(0)}%` })
-              ])
-            ])
-          ])
-        );
+        //create an ellipsis menu for each ticket
+        const menu = EllipsisMenu();
+        menu.addEventListener("view", () => onOpenTicket(String(ticket.autotask_ticket_id))); // on view, open ticket
 
-        ticketCard.addEventListener("click", () => {
+        const topRow = el("div", { className: "flex justify-between items-start gap-3 mb-3" }, [
+          el("div", { className: "font-semibold text-slate-900 truncate flex-1", text: ticket.title }), //add title
+          menu
+        ]);
+
+        const infoRow = el("div", { className: "flex justify-between items-start gap-3" }, [
+          el("div", { className: "min-w-0 flex-1" }, [
+            el("div", { className: "text-xs text-slate-500", text: `ID: ${ticket.autotask_ticket_id}` }), // show id
+            el("div", { className: "text-sm text-slate-600 mt-1 line-clamp-2", text: ticket.description }), // show description
+            el("div", { className: "text-xs text-slate-500 mt-2 flex gap-2" }, [
+              el("span", { text: `Priority: ${ticket.priority}` }), //show priority
+              el("span", { text: `Confidence: ${(ticket.ai.confidence * 100).toFixed(0)}%` }) //show ai confidence
+            ]),
+            el("div", { className: "text-xs text-slate-500 mt-2", text: `Due: ${ticket.due_date}` }) // show the due date
+          ])
+        ]);
+
+        ticketCard.append(topRow, infoRow);
+
+        ticketCard.addEventListener("click", (e) => {
+          //dont complete navigation if clicking on menu
+          if ((e.target as HTMLElement).closest('.relative')) {
+            return;
+          }
           onOpenTicket(String(ticket.autotask_ticket_id));
         });
 
@@ -196,7 +209,7 @@ export function TicketListContainer(onOpenTicket: (id: string) => void): HTMLEle
       }
     }
 
-    // Event listeners for sort buttons - use stored category reference
+    //button event listeners - using stored category reference
     const sortCategory = category;
     
     dateBtn.addEventListener("click", (e) => {

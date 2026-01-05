@@ -30,15 +30,17 @@ export function EllipsisMenu(): HTMLElement {
 
   menu.append(
     mkItem("View", () => wrapper.dispatchEvent(new CustomEvent("view", { bubbles: true }))),
-    mkItem("Duplicate", () => alert("Duplicate (demo)")),
-    mkItem("Delete", () => alert("Delete (demo)"))
+    mkItem("Edit", () => alert("Edit")),
+    mkItem("Reassign Category", () => alert("Reassign Category")),
+    mkItem("Delete", () => alert("Delete"))
   );
 
   const closeOnOutsideClick = (e: MouseEvent) => {
     if (!wrapper.contains(e.target as Node)) menu.classList.add("hidden");
   };
 
-  btn.addEventListener("click", () => {
+  btn.addEventListener("click", (e) => {
+    e.stopPropagation();
     menu.classList.toggle("hidden");
   });
 
