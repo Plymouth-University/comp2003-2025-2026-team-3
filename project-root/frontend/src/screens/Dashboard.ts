@@ -123,7 +123,7 @@ export function Dashboard(onOpenTicket?: (ticket: BackendTicket) => void): HTMLE
     //populate the section with the filtered tickets
     for (const ticket of criticalTickets) {
       const ticketCard = el("div", {
-        className: "p-4 hover:bg-red-50 cursor-pointer transition relative",
+        className: "p-4 hover:bg-red-400 cursor-pointer transition relative",
         attrs: { role: "button" }
       });
 

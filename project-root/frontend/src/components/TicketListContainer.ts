@@ -104,7 +104,6 @@ export function TicketListContainer(onOpenTicket: (ticket: BackendTicket) => voi
 
   const ticketsContainer = el("div", { className: "w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 items-start" });
   mainContainer.append(ticketsContainer);
-  mainContainer.append(ticketsContainer);
 
   const loadingMsg = el("div", { 
     className: "text-center py-8 text-slate-500 col-span-full",
@@ -156,7 +155,7 @@ export function TicketListContainer(onOpenTicket: (ticket: BackendTicket) => voi
     }
     
     const section = el("div", {
-      className: "bg-white rounded-lg shadow border border-blue-100",
+      className: "bg-white rounded-lg shadow border border-blue-100 max-h-96 overflow-y-auto",
     });
 
     const header = el("div", { className: "flex items-center justify-between p-4 border-b border-slate-100 hover:bg-blue-50" });
@@ -212,7 +211,7 @@ export function TicketListContainer(onOpenTicket: (ticket: BackendTicket) => voi
       
       for (const ticket of sortedTickets) {
         const ticketCard = el("div", {
-          className: "p-4 hover:bg-blue-300 cursor-pointer transition relative",
+          className: "p-4 hover:bg-emerald-200 cursor-pointer transition relative",
           attrs: { role: "button" }
         });
 
