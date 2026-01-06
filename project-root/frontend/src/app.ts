@@ -5,6 +5,8 @@ import { Dashboard } from "./screens/Dashboard.js";
 import { ActiveTickets } from "./screens/ActiveTickets.js";
 import { TicketDetail } from "./screens/TicketDetail.js";
 import { AccountPage } from "./screens/AccountPage.js";
+import { Settings } from "./screens/Settings.js";
+import { ClosedTicketsPage } from "./screens/ClosedTickets.js";
 //import shared types
 import type { BackendTicket } from "./types.js";
 
@@ -147,12 +149,18 @@ export function App(root: HTMLElement) {
       content.append(TicketDetail(r.ticket, () => setRoute(previousRoute)));
     } else if (r.name === "account") {
       content.append(AccountPage());
-    } else {
+    } else if (r.name === "settings") {
+      content.append(Settings());
+    } else if (r.name === "closed-tickets"){
+      content.append(ClosedTicketsPage());
+    }
+      else {
       //default for other routes like closed-tickets, settings, account
       content.append(
-        el("div", { className: "text-center py-8 text-slate-500", text: `${r.name} page coming soon` })
+        el("div", { className: "text-center py-8 text-slate-500", text: `page coming soon` })
       );
     }
+    
   };
 
   //listen for hash changes (URL changes) to update the view
