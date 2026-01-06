@@ -114,10 +114,12 @@ export function App(root: HTMLElement) {
 
   //track current route state
   let currentRoute: Route = parseHash();
+  let lastSetRoute: Route | null = null;
 
   //function to update route and re-render
   const setRoute = (route: Route) => {
     currentRoute = route;
+    lastSetRoute = route;
     setHash(route);
     renderRoute();
   };
@@ -143,6 +145,13 @@ export function App(root: HTMLElement) {
 
   //listen for hash changes (URL changes) to update the view
   window.addEventListener("hashchange", () => {
+    // If we just set a ticket route and the hash still has that ticket, preserve the ticket data
+    if (location.hash.includes("/ticket/") && lastSetRoute?.name === "ticket") {
+      currentRoute = lastSetRoute;
+      renderRoute();
+      return;
+    }
+    
     currentRoute = parseHash();
     renderRoute();
   });

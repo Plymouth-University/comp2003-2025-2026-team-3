@@ -21,7 +21,8 @@ export function EllipsisMenu(): HTMLElement {
       attrs: { type: "button" },
       text: label,
     });
-    item.addEventListener("click", () => {
+    item.addEventListener("click", (e) => {
+      e.stopPropagation();
       onClick();
       menu.classList.add("hidden");
     });
