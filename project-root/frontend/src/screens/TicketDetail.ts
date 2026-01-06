@@ -23,42 +23,84 @@ export function TicketDetail(ticket: BackendTicket, onBack: () => void): HTMLEle
   const contentWrap = el("div", { className: "grid grid-cols-3 gap-6" });
 
   //left column - attributes
-  const leftColumn = el("div", { className: "col-span-1 space-y-4 border-r border-slate-200 pr-6" });
+  const leftColumn = el("div", { className: "col-span-1 space-y-6 border-r border-slate-200 pr-6" });
   
-  //ticket attributes to display with correlating values
-  const attributes = [
-    { label: "Ticket Number", value: ticket.ticket_number },
+  //General section
+  const generalSection = el("div", { className: "space-y-3" });
+  generalSection.append(
+    el("h4", { className: "text-sm font-bold text-slate-700 uppercase tracking-wide", text: "General" })
+  );
+  const generalAttrs = [
     { label: "Company", value: ticket.company },
     { label: "Contact", value: ticket.contact },
     { label: "Status", value: ticket.status },
     { label: "Priority", value: ticket.priority },
-    { label: "Created", value: ticket.created },
-    { label: "Due Date", value: ticket.due_date },
-    { label: "Source", value: ticket.source },
-    { label: "Issue Type", value: ticket.issue_type },
-    { label: "Sub Issue Type", value: ticket.sub_issue_type },
     { label: "Location", value: ticket.location },
-    { label: "Work Type", value: ticket.work_type },
-    { label: "Primary Resource", value: ticket.primary_resource },
-    { label: "Secondary Resource", value: ticket.secondary_resource },
-    { label: "Queue", value: ticket.queue },
-    { label: "Category", value: ticket.ai.category },
-    { label: "Confidence", value: `${(ticket.ai.confidence * 100).toFixed(0)}%` },
-    { label: "Priority Score", value: String(ticket.ai.priority_score) },
   ];
-
-  //add attribute + value to left panel
-  for (const attr of attributes) {
-    leftColumn.append(
+  for (const attr of generalAttrs) {
+    generalSection.append(
       el("div", { className: "space-y-1" }, [
         el("div", { className: "text-xs font-semibold text-slate-600 uppercase", text: attr.label }),
         el("div", { className: "text-sm text-slate-900", text: attr.value }),
       ])
     );
   }
+  leftColumn.append(generalSection);
+
+  //divider between sections
+  leftColumn.append(el("div", { className: "border-t border-slate-200" }));
+
+  //Ticket Info section
+  const ticketInfoSection = el("div", { className: "space-y-3" });
+  ticketInfoSection.append(
+    el("h4", { className: "text-sm font-bold text-slate-700 uppercase tracking-wide", text: "Ticket Info" })
+  );
+  const ticketInfoAttrs = [
+    { label: "Issue Type", value: ticket.issue_type },
+    { label: "Sub Issue Type", value: ticket.sub_issue_type },
+    { label: "Source", value: ticket.source },
+    { label: "Due Date", value: ticket.due_date },
+    { label: "Strike Level", value: ticket.strike_level },
+    { label: "Queue", value: ticket.queue },
+    { label: "Category", value: ticket.ai.category },
+    { label: "Confidence", value: `${(ticket.ai.confidence * 100).toFixed(0)}%` },
+    { label: "Priority Score", value: String(ticket.ai.priority_score) },
+  ];
+  for (const attr of ticketInfoAttrs) {
+    ticketInfoSection.append(
+      el("div", { className: "space-y-1" }, [
+        el("div", { className: "text-xs font-semibold text-slate-600 uppercase", text: attr.label }),
+        el("div", { className: "text-sm text-slate-900", text: attr.value }),
+      ])
+    );
+  }
+  leftColumn.append(ticketInfoSection);
+
+  //divider between sections
+  leftColumn.append(el("div", { className: "border-t border-slate-200" }));
+
+  //Assignment section
+  const assignmentSection = el("div", { className: "space-y-3" });
+  assignmentSection.append(
+    el("h4", { className: "text-sm font-bold text-slate-700 uppercase tracking-wide", text: "Assignment" })
+  );
+  const assignmentAttrs = [
+    { label: "Primary Resource", value: ticket.primary_resource },
+    { label: "Secondary Resource", value: ticket.secondary_resource },
+  ];
+  for (const attr of assignmentAttrs) {
+    assignmentSection.append(
+      el("div", { className: "space-y-1" }, [
+        el("div", { className: "text-xs font-semibold text-slate-600 uppercase", text: attr.label }),
+        el("div", { className: "text-sm text-slate-900", text: attr.value }),
+      ])
+    );
+  }
+  leftColumn.append(assignmentSection);
 
   //right column - description (wider)
-  const rightColumn = el("div", { className: "col-span-2 space-y-2 pl-6" }, [
+  const rightColumn = el("div", { className: "col-span-2 space-y-4 pl-6" }, [
+    el("div", { className: "text-xs text-slate-500", text: `Ticket #${ticket.ticket_number}` }),
     el("h3", { className: "text-lg font-bold text-slate-900", text: "Ticket Description" }),
     el("div", { className: "text-sm text-slate-700 whitespace-pre-wrap", text: ticket.description }),
   ]);

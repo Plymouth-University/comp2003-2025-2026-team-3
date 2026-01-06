@@ -8,6 +8,7 @@ export type BackendTicket = {
   created: string;
   title: string;
   description: string;
+  strike_level: string;
   due_date: string;
   source: string;
   issue_type: string;
