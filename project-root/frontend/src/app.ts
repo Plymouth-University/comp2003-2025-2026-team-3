@@ -50,12 +50,12 @@ function setHash(route: Route) {
 //Sidebar component: returns a sidebar navigation element
 function Sidebar(setRoute: (route: Route) => void): HTMLElement {
   //aside element with tailwind classes 
-  const nav = el("aside", { className: "w-64 hidden md:block bg-gradient-to-t from-[#104069] to-[#1a6a9f] border-r border-slate-200" });
+  const nav = el("aside", { className: "w-64 hidden md:block bg-gradient-to-b from-blue-950 to-cyan-900 border-r border-cyan-800" });
   // Inner container for sidebar content
   const inner = el("div", { className: "p-4" });
   //add title and buttons for all page options
   inner.append(
-    el("div", { className: "font-bold text-lg mb-4 text-white", text: "Global 4 - Ticket Interface" }),
+    el("div", { className: "font-bold text-xl mb-4 text-cyan-200", text: "Ticket Interface" }),
     el("button", {
       className: "w-full text-left px-3 py-2 rounded hover:bg-white hover:bg-opacity-20 text-white transition",
       attrs: { type: "button" },
@@ -96,14 +96,30 @@ function Sidebar(setRoute: (route: Route) => void): HTMLElement {
 }
 
 //TopHeader component: returns a header bar for the app
-function TopHeader(): HTMLElement {
+function TopHeader(routeName: string): HTMLElement {
   //create a header element
-  const hdr = el("header", { className: "bg-gradient-to-r from-[#104069] to-[#1a6a9f] border-b border-slate-300 m-0" });
-  //add a flex container with a title and a subtitle
+  const hdr = el("header", { className: "bg-gradient-to-r from-blue-950 to-cyan-900 border-b border-cyan-800 m-0" });
+  
+  //convert route name to display name
+  const getDisplayName = (name: string): string => {
+    const displayNames: { [key: string]: string } = {
+      "dashboard": "DASHBOARD",
+      "active-tickets": "ACTIVE TICKETS",
+      "closed-tickets": "CLOSED TICKETS",
+      "settings": "SETTINGS",
+      "account": "ACCOUNT",
+      "ticket": "TICKET DETAIL",
+    };
+    return displayNames[name] || "Tickets";
+  };
+  
+  //add a flex container with centered page title and subtitle on the right
   hdr.append(
     el("div", { className: "px-5 py-3 flex items-center justify-between" }, [
-      el("div", { className: "font-semibold text-lg text-white", text: "Tickets" }),
-      el("div", { className: "font-mono font-semibold text-lg text-white", text: "GLOBAL 4" }),
+      el("div", { className: "flex-1 flex justify-center" }, [
+        el("div", { className: "font-bold text-xl text-cyan-200", text: getDisplayName(routeName) }),
+      ]),
+      el("div", { className: "font-sans font-bold text-xl text-cyan-200", text: "GLOBAL 4" }),
     ])
   );
   return hdr;
@@ -112,10 +128,10 @@ function TopHeader(): HTMLElement {
 // Main App function: renders the whole application into the given root element
 // root: the HTML element where the app will be mounted
 export function App(root: HTMLElement) {
-  root.innerHTML = ""; // Clear any existing content
+  root.innerHTML = ""; //remove any existing content
 
   //create the main shell: a flex container for sidebar and main content
-  const shell = el("div", { className: "min-h-screen flex" });
+  const shell = el("div", { className: "min-h-screen flex gap-0" });
   //main column for header and page content
   const mainCol = el("div", { className: "flex-1 flex flex-col" });
 
@@ -129,7 +145,7 @@ export function App(root: HTMLElement) {
 
   //function to update route and re-render
   const setRoute = (route: Route) => {
-    previousRoute = currentRoute; // Remember where we came from
+    previousRoute = currentRoute; //remember where we came from
     currentRoute = route;
     lastSetRoute = route;
     setHash(route);
@@ -140,6 +156,13 @@ export function App(root: HTMLElement) {
   const renderRoute = () => {
     const r = currentRoute;
     content.innerHTML = ""; //remove content
+    
+    //update header to show current page name
+    const header = mainCol.querySelector("header");
+    if (header) {
+      mainCol.removeChild(header);
+      mainCol.insertBefore(TopHeader(r.name), content);
+    }
     
     if (r.name === "dashboard") {
       content.append(Dashboard((ticket) => setRoute({ name: "ticket", ticket })));
@@ -155,7 +178,7 @@ export function App(root: HTMLElement) {
       content.append(ClosedTicketsPage());
     }
       else {
-      //default for other routes like closed-tickets, settings, account
+      //default for other routes like closed-tickets
       content.append(
         el("div", { className: "text-center py-8 text-slate-500", text: `page coming soon` })
       );
@@ -177,7 +200,7 @@ export function App(root: HTMLElement) {
   });
 
   //build page layout: header, sidebar, and content
-  mainCol.append(TopHeader(), content);
+  mainCol.append(TopHeader(currentRoute.name), content);
   shell.append(Sidebar(setRoute), mainCol);
   root.append(shell);
 
