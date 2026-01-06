@@ -41,6 +41,7 @@ import { EllipsisMenu } from "./EllipsisMenu.js";
 
 export function TicketListContainer(onOpenTicket: (ticket: BackendTicket) => void): HTMLElement {
   let ticketsState: BackendTicket[] = [];
+  let searchQuery: string = ""; // store search query
   let collapsedCategories: Set<string> = new Set();
   
   //track sort state for each category
@@ -50,13 +51,33 @@ export function TicketListContainer(onOpenTicket: (ticket: BackendTicket) => voi
     sortByDate: "asc" | "desc";
   }>();
 
-  const mainContainer = el("div", { className: "w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 items-start" });
+  const mainContainer = el("div", { className: "w-full" });
+
+  //create a search bar element
+  const searchBar = el("input", {
+    className: "w-full mb-6 px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500",
+    attrs: { 
+      type: "text", 
+      placeholder: "Search tickets by title, ID, company, or contact..." //search bar hint text
+    }
+  });
+  
+  //add input event listener to search bar and update results
+  searchBar.addEventListener("input", (e) => {
+    searchQuery = (e.target as HTMLInputElement).value.toLowerCase();
+    render();
+  });
+
+  mainContainer.append(searchBar); //add search bar to the main container
+
+  const ticketsContainer = el("div", { className: "w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 items-start" });
+  mainContainer.append(ticketsContainer);
 
   const loadingMsg = el("div", { 
     className: "text-center py-8 text-slate-500 col-span-full",
     text: "Loading tickets..." 
   });
-  mainContainer.append(loadingMsg);
+  ticketsContainer.append(loadingMsg);
 
   //sort tickets within a specific category
   const sortTickets = (tickets: BackendTicket[], category: string): BackendTicket[] => {
@@ -198,7 +219,7 @@ export function TicketListContainer(onOpenTicket: (ticket: BackendTicket) => voi
       }
     }
 
-    //button event listeners - using stored category reference
+    //filter button event listeners - using stored category reference
     const sortCategory = category;
     
     dateBtn.addEventListener("click", (e) => {
@@ -237,13 +258,22 @@ export function TicketListContainer(onOpenTicket: (ticket: BackendTicket) => voi
   };
 
   const render = () => {
-    mainContainer.innerHTML = "";
+    ticketsContainer.innerHTML = "";
     
-    if (ticketsState.length === 0) { //if there are no tickets, display message
-      mainContainer.append(
+    //filter tickets based on search query
+    let filteredTickets = ticketsState;
+    if (searchQuery) {
+      filteredTickets = ticketsState.filter(ticket => {
+        const searchableText = `${ticket.title} ${ticket.autotask_ticket_id} ${ticket.company} ${ticket.contact}`.toLowerCase();
+        return searchableText.includes(searchQuery);
+      });
+    }
+    
+    if (filteredTickets.length === 0) { //if there are no tickets, display message
+      ticketsContainer.append(
         el("div", { 
           className: "text-center py-8 text-slate-500 col-span-full", 
-          text: "No tickets found" 
+          text: searchQuery ? "No tickets found matching your search" : "No tickets found" 
         })
       );
       return;
@@ -251,7 +281,7 @@ export function TicketListContainer(onOpenTicket: (ticket: BackendTicket) => voi
 
     //group tickets by the category
     const categorized = new Map<string, BackendTicket[]>();
-    for (const ticket of ticketsState) {
+    for (const ticket of filteredTickets) {
       const cat = ticket.ai?.category || "uncategorized";
       if (!categorized.has(cat)) {
         categorized.set(cat, []);
@@ -263,7 +293,7 @@ export function TicketListContainer(onOpenTicket: (ticket: BackendTicket) => voi
     const sortedCategories = Array.from(categorized.keys()).sort();
     for (const category of sortedCategories) {
       const tickets = categorized.get(category) || [];
-      mainContainer.append(renderCategorySection(category, tickets));
+      ticketsContainer.append(renderCategorySection(category, tickets));
     }
   };
 
