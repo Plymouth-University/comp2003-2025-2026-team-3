@@ -20,7 +20,7 @@ function priorityDotClass(priority: UITicketCard["priority"]): string {
 export function TicketCard(ticket: UITicketCard, onOpen: (id: string) => void): HTMLElement {
   const card = el("button", {
     className:
-      "bg-white p-4 relative shadow rounded text-left hover:ring-2 hover:ring-slate-400 transition w-full",
+      "bg-emerald-100 p-4 relative shadow rounded text-left hover:ring-2 hover:ring-slate-400 transition w-full",
     attrs: { type: "button" },
   });
 

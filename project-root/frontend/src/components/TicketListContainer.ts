@@ -1,19 +1,4 @@
-type BackendTicket = {
-  autotask_ticket_id: number;
-  ticket_number: string;
-  company: string;
-  contact: string;
-  status: string;
-  priority: string;
-  created: string;
-  title: string;
-  description: string;
-  due_date: string;
-  ai: {
-    category: string;
-    confidence: number;
-  };
-};
+import type { BackendTicket } from "../types.js";
 
 async function fetchTickets(): Promise<BackendTicket[]> {
   try {

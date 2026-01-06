@@ -1,21 +1,5 @@
 import { el } from "../lib/dom.js";
-
-type BackendTicket = {
-  autotask_ticket_id: number;
-  ticket_number: string;
-  company: string;
-  contact: string;
-  status: string;
-  priority: string;
-  created: string;
-  title: string;
-  description: string;
-  due_date: string;
-  ai: {
-    category: string;
-    confidence: number;
-  };
-};
+import type { BackendTicket } from "../types.js";
 
 export function TicketDetail(ticket: BackendTicket, onBack: () => void): HTMLElement {
   const wrap = el("div", { className: "bg-white rounded-xl shadow p-6 border border-slate-200" });
@@ -50,8 +34,17 @@ export function TicketDetail(ticket: BackendTicket, onBack: () => void): HTMLEle
     { label: "Priority", value: ticket.priority },
     { label: "Created", value: ticket.created },
     { label: "Due Date", value: ticket.due_date },
+    { label: "Source", value: ticket.source },
+    { label: "Issue Type", value: ticket.issue_type },
+    { label: "Sub Issue Type", value: ticket.sub_issue_type },
+    { label: "Location", value: ticket.location },
+    { label: "Work Type", value: ticket.work_type },
+    { label: "Primary Resource", value: ticket.primary_resource },
+    { label: "Secondary Resource", value: ticket.secondary_resource },
+    { label: "Queue", value: ticket.queue },
     { label: "Category", value: ticket.ai.category },
     { label: "Confidence", value: `${(ticket.ai.confidence * 100).toFixed(0)}%` },
+    { label: "Priority Score", value: String(ticket.ai.priority_score) },
   ];
 
   //add attribute + value to left panel

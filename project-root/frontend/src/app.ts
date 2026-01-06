@@ -4,26 +4,9 @@ import { el } from "./lib/dom.js";
 import { Dashboard } from "./screens/Dashboard.js";
 import { ActiveTickets } from "./screens/ActiveTickets.js";
 import { TicketDetail } from "./screens/TicketDetail.js";
+//import shared types
+import type { BackendTicket } from "./types.js";
 
-type BackendTicket = {
-  autotask_ticket_id: number;
-  ticket_number: string;
-  company: string;
-  contact: string;
-  status: string;
-  priority: string;
-  created: string;
-  title: string;
-  description: string;
-  due_date: string;
-  ai: {
-    category: string;
-    confidence: number;
-  };
-};
-
-//define a TypeScript type for the possible routes in the app
-//"dashboard" is the main page, "active-tickets" is the page for all active tickets etc. 
 type Route =
   | { name: "dashboard" }
   | { name: "active-tickets"}
@@ -45,7 +28,9 @@ function parseHash(): Route {
 //function to change the URL hash to match the given route
 function setHash(route: Route) {
   if (route.name === "dashboard") location.hash = "#/";
-  if (route.name === "ticket") location.hash = `#/ticket/${encodeURIComponent(String(route.ticket.autotask_ticket_id))}`;
+  if (route.name === "ticket" && "ticket" in route) {
+    location.hash = `#/ticket/${encodeURIComponent(String(route.ticket.autotask_ticket_id))}`;
+  }
   if (route.name === "active-tickets") location.hash = "#/active-tickets";
   if (route.name === "closed-tickets") location.hash = "#/closed-tickets";
   if (route.name === "settings") location.hash = "#/settings";
