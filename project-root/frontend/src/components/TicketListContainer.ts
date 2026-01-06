@@ -42,6 +42,8 @@ import { EllipsisMenu } from "./EllipsisMenu.js";
 export function TicketListContainer(onOpenTicket: (ticket: BackendTicket) => void): HTMLElement {
   let ticketsState: BackendTicket[] = [];
   let searchQuery: string = ""; // store search query
+  let selectedCompany: string = ""; // store selected company filter
+  let selectedQueue: string = ""; // store selected queue filter
   let collapsedCategories: Set<string> = new Set();
   
   //track sort state for each category
@@ -58,7 +60,7 @@ export function TicketListContainer(onOpenTicket: (ticket: BackendTicket) => voi
     className: "w-full mb-6 px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500",
     attrs: { 
       type: "text", 
-      placeholder: "Search tickets by title, ID, company, or contact..." //search bar hint text
+      placeholder: "Search tickets by title, ID, or contact..." //search bar hint text
     }
   });
   
@@ -70,7 +72,38 @@ export function TicketListContainer(onOpenTicket: (ticket: BackendTicket) => voi
 
   mainContainer.append(searchBar); //add search bar to the main container
 
+  //create filter buttons container
+  const filterContainer = el("div", { className: "mb-6 flex gap-4" });
+
+  //create company filter dropdown
+  const companySelect = el("select", {
+    className: "px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500",
+  }) as HTMLSelectElement;
+  companySelect.append(el("option", { attrs: { value: "" }, text: "Company Name" }));
+  for (let i = 1; i <= 20; i++) {
+    companySelect.append(el("option", { attrs: { value: `Company ${i}` }, text: `Company ${i}` }));
+  }
+  companySelect.addEventListener("change", (e) => {
+    selectedCompany = (e.target as HTMLSelectElement).value;
+    render();
+  });
+
+  //create queue filter dropdown
+  const queueSelect = el("select", {
+    className: "px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500",
+  }) as HTMLSelectElement;
+  queueSelect.append(el("option", { attrs: { value: "" }, text: "Queue" }));
+  queueSelect.append(el("option", { attrs: { value: "MS - Secops" }, text: "MS - Secops" }));
+  queueSelect.addEventListener("change", (e) => {
+    selectedQueue = (e.target as HTMLSelectElement).value;
+    render();
+  });
+
+  filterContainer.append(companySelect, queueSelect);
+  mainContainer.append(filterContainer);
+
   const ticketsContainer = el("div", { className: "w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 items-start" });
+  mainContainer.append(ticketsContainer);
   mainContainer.append(ticketsContainer);
 
   const loadingMsg = el("div", { 
@@ -260,20 +293,28 @@ export function TicketListContainer(onOpenTicket: (ticket: BackendTicket) => voi
   const render = () => {
     ticketsContainer.innerHTML = "";
     
-    //filter tickets based on search query
+    //filter tickets based on search query and selected filters
     let filteredTickets = ticketsState;
     if (searchQuery) {
-      filteredTickets = ticketsState.filter(ticket => {
+      filteredTickets = filteredTickets.filter(ticket => {
         const searchableText = `${ticket.title} ${ticket.autotask_ticket_id} ${ticket.company} ${ticket.contact}`.toLowerCase();
         return searchableText.includes(searchQuery);
       });
+    }
+    
+    if (selectedCompany) {
+      filteredTickets = filteredTickets.filter(ticket => ticket.company === selectedCompany);
+    }
+    
+    if (selectedQueue) {
+      filteredTickets = filteredTickets.filter(ticket => ticket.queue === selectedQueue);
     }
     
     if (filteredTickets.length === 0) { //if there are no tickets, display message
       ticketsContainer.append(
         el("div", { 
           className: "text-center py-8 text-slate-500 col-span-full", 
-          text: searchQuery ? "No tickets found matching your search" : "No tickets found" 
+          text: searchQuery || selectedCompany || selectedQueue ? "No tickets found matching your filters" : "No tickets found" 
         })
       );
       return;
