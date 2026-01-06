@@ -4,6 +4,7 @@ import { el } from "./lib/dom.js";
 import { Dashboard } from "./screens/Dashboard.js";
 import { ActiveTickets } from "./screens/ActiveTickets.js";
 import { TicketDetail } from "./screens/TicketDetail.js";
+import { AccountPage } from "./screens/AccountPage.js";
 //import shared types
 import type { BackendTicket } from "./types.js";
 
@@ -20,6 +21,13 @@ function parseHash(): Route {
   const h = location.hash.replace(/^#/, ""); // Remove the #
   if (!h || h === "/") return { name: "dashboard" }; //default route
   const parts = h.split("/").filter(Boolean); // Split by /
+  
+  //handle different route types
+  if (parts[0] === "dashboard") return { name: "dashboard" };
+  if (parts[0] === "active-tickets") return { name: "active-tickets" };
+  if (parts[0] === "closed-tickets") return { name: "closed-tickets" };
+  if (parts[0] === "settings") return { name: "settings" };
+  if (parts[0] === "account") return { name: "account" };
   //cannot restore ticket data from URL alone, so redirect to active-tickets
   if (parts[0] === "ticket") return { name: "active-tickets" };
   return { name: "active-tickets" }; //fallback to active tickets 
@@ -137,6 +145,8 @@ export function App(root: HTMLElement) {
       content.append(ActiveTickets((ticket) => setRoute({ name: "ticket", ticket })));
     } else if (r.name === "ticket") {
       content.append(TicketDetail(r.ticket, () => setRoute(previousRoute)));
+    } else if (r.name === "account") {
+      content.append(AccountPage());
     } else {
       //default for other routes like closed-tickets, settings, account
       content.append(
