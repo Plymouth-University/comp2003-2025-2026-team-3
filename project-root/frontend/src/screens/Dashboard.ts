@@ -1,22 +1,6 @@
 import { el } from "../lib/dom.js";
 import { EllipsisMenu } from "../components/EllipsisMenu.js";
-
-type BackendTicket = {
-  autotask_ticket_id: number;
-  ticket_number: string;
-  company: string;
-  contact: string;
-  status: string;
-  priority: string;
-  created: string;
-  title: string;
-  description: string;
-  due_date: string;
-  ai: {
-    category: string;
-    confidence: number;
-  };
-};
+import type { BackendTicket } from "../types.js";
 
 async function fetchTickets(): Promise<BackendTicket[]> {
   try {
@@ -32,7 +16,7 @@ async function fetchTickets(): Promise<BackendTicket[]> {
   }
 }
 
-export function Dashboard(): HTMLElement {
+export function Dashboard(onOpenTicket?: (ticket: BackendTicket) => void): HTMLElement {
   const container = el("div", { className: "w-full" });
 
   // Create stat card number elements with references for updates
@@ -145,6 +129,9 @@ export function Dashboard(): HTMLElement {
 
       //create an ellipsis menu for each ticket, as with active tickets
       const menu = EllipsisMenu();
+      if (onOpenTicket) {
+        menu.addEventListener("view", () => onOpenTicket(ticket)); // on view, open ticket
+      }
 
       //ticket title row
       const topRow = el("div", { className: "flex justify-between items-start gap-3 mb-3" }, [

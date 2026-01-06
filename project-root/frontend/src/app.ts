@@ -115,9 +115,11 @@ export function App(root: HTMLElement) {
   //track current route state
   let currentRoute: Route = parseHash();
   let lastSetRoute: Route | null = null;
+  let previousRoute: Route = { name: "active-tickets" }; // Track where we came from
 
   //function to update route and re-render
   const setRoute = (route: Route) => {
+    previousRoute = currentRoute; // Remember where we came from
     currentRoute = route;
     lastSetRoute = route;
     setHash(route);
@@ -130,11 +132,11 @@ export function App(root: HTMLElement) {
     content.innerHTML = ""; //remove content
     
     if (r.name === "dashboard") {
-      content.append(Dashboard());
+      content.append(Dashboard((ticket) => setRoute({ name: "ticket", ticket })));
     } else if (r.name === "active-tickets") {
       content.append(ActiveTickets((ticket) => setRoute({ name: "ticket", ticket })));
     } else if (r.name === "ticket") {
-      content.append(TicketDetail(r.ticket, () => setRoute({ name: "active-tickets" })));
+      content.append(TicketDetail(r.ticket, () => setRoute(previousRoute)));
     } else {
       //default for other routes like closed-tickets, settings, account
       content.append(
