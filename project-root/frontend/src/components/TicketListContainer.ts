@@ -1,37 +1,62 @@
 import type { BackendTicket } from "../types.js";
 
+function getTimeStamp(): string {
+  const now = new Date();
+  return now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', fractionalSecondDigits: 3 });
+}
+
 async function fetchTickets(): Promise<BackendTicket[]> {
+  const requestStart = performance.now();
+  const startTime = getTimeStamp();
+  console.log(`[${startTime}] ========== FRONTEND FETCH START ==========`);
+  console.log(`[${startTime}] Initiating API request to http://127.0.0.1:8000/api/tickets`);
+  
   try {
-    console.log("Fetching tickets from API...");
+    const fetchStart = performance.now();
+    console.log(`[${getTimeStamp()}] Sending fetch request...`);
     const res = await fetch("http://127.0.0.1:8000/api/tickets");
-    console.log("Response status:", res.status);
-    console.log("Response headers:", res.headers);
+    const fetchTime = performance.now() - fetchStart;
+    console.log(`[${getTimeStamp()}] Network request completed in ${fetchTime.toFixed(1)}ms, status: ${res.status}`);
     
     if (!res.ok) {
-      console.error("API returned status:", res.status);
+      console.error(`[${getTimeStamp()}] API error - Status: ${res.status}`);
       return [];
     }
     
+    const textStart = performance.now();
     const text = await res.text();
-    console.log("Raw response text:", text);
+    const textTime = performance.now() - textStart;
+    console.log(`[${getTimeStamp()}] Response text received in ${textTime.toFixed(1)}ms (${text.length} characters)`);
     
+    const parseStart = performance.now();
     const json = JSON.parse(text);
-    console.log("Parsed JSON:", json);
-    console.log("Items count:", json.items ? json.items.length : 0);
+    const parseTime = performance.now() - parseStart;
+    console.log(`[${getTimeStamp()}] JSON parsed in ${parseTime.toFixed(1)}ms`);
+    
+    const itemCount = json.items ? json.items.length : 0;
+    console.log(`[${getTimeStamp()}] Response contains ${itemCount} items`);
     
     if (!json.items || json.items.length === 0) {
-      console.warn("No items returned from API");
+      console.warn(`[${getTimeStamp()}] Warning: No items returned from API`);
+      const totalRequestTime = performance.now() - requestStart;
+      console.log(`[${getTimeStamp()}] ========== FRONTEND FETCH COMPLETE (EMPTY) ==========`);
+      console.log(`[${getTimeStamp()}] Total request time: ${totalRequestTime.toFixed(1)}ms`);
       return [];
     }
     
-    //log first ticket to verify structure
     if (json.items.length > 0) {
-      console.log("First ticket structure:", json.items[0]);
+      console.log(`[${getTimeStamp()}] First ticket: ID=${json.items[0].autotask_ticket_id}, Title="${json.items[0].title.substring(0, 50)}..."`);
     }
+    
+    const totalRequestTime = performance.now() - requestStart;
+    console.log(`[${getTimeStamp()}] ========== FRONTEND FETCH COMPLETE ==========`);
+    console.log(`[${getTimeStamp()}] Total request time: ${totalRequestTime.toFixed(1)}ms | Network: ${fetchTime.toFixed(1)}ms | Parse: ${parseTime.toFixed(1)}ms`);
     
     return json.items || [];
   } catch (error) {
-    console.error("Failed to fetch tickets:", error);
+    const errorTime = performance.now() - requestStart;
+    console.error(`[${getTimeStamp()}] FETCH ERROR after ${errorTime.toFixed(1)}ms:`, error);
+    console.log(`[${getTimeStamp()}] ========== FRONTEND FETCH FAILED ==========`);
     return [];
   }
 }
@@ -290,24 +315,36 @@ export function TicketListContainer(onOpenTicket: (ticket: BackendTicket) => voi
   };
 
   const render = () => {
+    const renderStart = performance.now();
+    const startTime = getTimeStamp();
+    console.log(`[${startTime}] ========== FRONTEND RENDER START ==========`);
+    console.log(`[${startTime}] Input: ${ticketsState.length} total tickets, filters: search="${searchQuery}" company="${selectedCompany}" queue="${selectedQueue}"`);
+    
     ticketsContainer.innerHTML = "";
     
     //filter tickets based on search query and selected filters
     let filteredTickets = ticketsState;
+    const filterStart = performance.now();
     if (searchQuery) {
       filteredTickets = filteredTickets.filter(ticket => {
         const searchableText = `${ticket.title} ${ticket.autotask_ticket_id} ${ticket.company} ${ticket.contact}`.toLowerCase();
         return searchableText.includes(searchQuery);
       });
+      console.log(`[${getTimeStamp()}] Search filter applied: ${filteredTickets.length} tickets match`);
     }
     
     if (selectedCompany) {
       filteredTickets = filteredTickets.filter(ticket => ticket.company === selectedCompany);
+      console.log(`[${getTimeStamp()}] Company filter applied: ${filteredTickets.length} tickets match`);
     }
     
     if (selectedQueue) {
       filteredTickets = filteredTickets.filter(ticket => ticket.queue === selectedQueue);
+      console.log(`[${getTimeStamp()}] Queue filter applied: ${filteredTickets.length} tickets match`);
     }
+    
+    const filterTime = performance.now() - filterStart;
+    console.log(`[${getTimeStamp()}] Filtering complete in ${filterTime.toFixed(1)}ms - ${filteredTickets.length} tickets to display`);
     
     if (filteredTickets.length === 0) { //if there are no tickets, display message
       ticketsContainer.append(
@@ -316,10 +353,14 @@ export function TicketListContainer(onOpenTicket: (ticket: BackendTicket) => voi
           text: searchQuery || selectedCompany || selectedQueue ? "No tickets found matching your filters" : "No tickets found" 
         })
       );
+      const totalRenderTime = performance.now() - renderStart;
+      console.log(`[${getTimeStamp()}] ========== FRONTEND RENDER COMPLETE (EMPTY) ==========`);
+      console.log(`[${getTimeStamp()}] Total render time: ${totalRenderTime.toFixed(1)}ms`);
       return;
     }
 
     //group tickets by the category
+    const categorizeStart = performance.now();
     const categorized = new Map<string, BackendTicket[]>();
     for (const ticket of filteredTickets) {
       const cat = ticket.ai?.category || "uncategorized";
@@ -328,19 +369,40 @@ export function TicketListContainer(onOpenTicket: (ticket: BackendTicket) => voi
       }
       categorized.get(cat)!.push(ticket);
     }
+    const categorizeTime = performance.now() - categorizeStart;
+    console.log(`[${getTimeStamp()}] Categorization complete in ${categorizeTime.toFixed(1)}ms - ${categorized.size} categories found`);
 
     //sort the categories and render UI sections
+    const renderUIStart = performance.now();
     const sortedCategories = Array.from(categorized.keys()).sort();
+    console.log(`[${getTimeStamp()}] Rendering UI for ${sortedCategories.length} categories...`);
     for (const category of sortedCategories) {
       const tickets = categorized.get(category) || [];
       ticketsContainer.append(renderCategorySection(category, tickets));
     }
+    const renderUITime = performance.now() - renderUIStart;
+    console.log(`[${getTimeStamp()}] UI rendering complete in ${renderUITime.toFixed(1)}ms`);
+    
+    const totalRenderTime = performance.now() - renderStart;
+    console.log(`[${getTimeStamp()}] ========== FRONTEND RENDER COMPLETE ==========`);
+    console.log(`[${getTimeStamp()}] TIMING BREAKDOWN: Filter=${filterTime.toFixed(1)}ms | Categorize=${categorizeTime.toFixed(1)}ms | RenderUI=${renderUITime.toFixed(1)}ms | Total=${totalRenderTime.toFixed(1)}ms`);
   };
 
   //fetch tickets and render UI
+  const loadStart = performance.now();
+  const loadStartTime = getTimeStamp();
+  console.log(`[${loadStartTime}] ========== TICKET LOAD INITIATED ==========`);
+  console.log(`[${loadStartTime}] Calling fetchTickets()...`);
   fetchTickets().then(t => {
+    const fetchCompleteTime = getTimeStamp();
+    const fetchElapsed = performance.now() - loadStart;
+    console.log(`[${fetchCompleteTime}] fetchTickets() completed in ${fetchElapsed.toFixed(1)}ms, received ${t.length} tickets`);
+    console.log(`[${fetchCompleteTime}] Updating state and calling render()...`);
     ticketsState = t;
     render();
+    const totalLoadTime = performance.now() - loadStart;
+    console.log(`[${getTimeStamp()}] ========== COMPLETE TICKET LOAD SEQUENCE FINISHED ==========`);
+    console.log(`[${getTimeStamp()}] Total time from initiation to full render: ${totalLoadTime.toFixed(1)}ms`);
   });
 
   return mainContainer;
