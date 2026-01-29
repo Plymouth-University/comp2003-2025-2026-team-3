@@ -1,205 +1,94 @@
-# SecOps Autotask AI Ticketing System
+# Documentation Branch Overview
 
-> **An end‑to‑end security operations prototype combining AI‑driven ticket categorisation with a modern TypeScript + Tailwind frontend.**
+This branch contains **all project documentation and evidence** produced during the development of this coursework.
 
----
-
-## ✨ Project Overview
-
-This project is a **full‑stack prototype** designed to demonstrate how **AI‑assisted ticket categorisation** can be integrated into a modern SecOps workflow.
-
-It consists of:
-
-- 🧠 **AI‑powered backend** (FastAPI + NLP models)
-- 🖥️ **Lightweight frontend SPA** (Vanilla TypeScript + Tailwind CSS)
-- 🔗 **Clear separation of concerns** between data ingestion, AI processing, and UI rendering
-- 🚫 **No React, no Vite runtime, no frontend frameworks**
-
-The frontend **never categorises tickets itself** — all intelligence comes from the backend AI pipeline.
+It exists separately from the code branches to keep documentation organised, readable, and easy to assess.
 
 ---
 
-## 🧩 Architecture Overview
+## 📌 Purpose of this branch
 
-```
-Raw Tickets
-   ↓
-Fake Autotask Provider
-   ↓
-AI Categoriser (Sentence Transformers + spaCy)
-   ↓
-FastAPI (/api/tickets)
-   ↓
-TypeScript SPA (Tailwind UI)
-```
+The `documents` branch is used to store:
 
-### Key Principle
-> **AI decisions live exclusively in the backend.**  
-> The frontend is a pure consumer of AI‑enriched data.
+- design artefacts
+- research
+- meeting minutes
+- presentations
+- technical documentation
+- workflow and process guides
+- project planning evidence
+
+This allows the full development process to be reviewed independently of the source code.
 
 ---
 
-## 📁 Project Structure
+## 🚫 What this branch is NOT for
+
+This branch does **not** contain application source code.
+
+The following must **never** be added here:
+
+- backend source files
+- frontend source files
+- `project-root/`
+- compiled binaries
+- development environments
+
+All code lives on the `development` and `main` branches only.
+
+---
+
+## 📂 Folder structure
 
 ```
-secops_autotask_prototype_scaffold/
-├─ backend/
-│  ├─ app/
-│  │  ├─ main.py              # FastAPI entry point
-│  │  ├─ providers/           # Ticket sources (mock Autotask)
-│  │  ├─ services/            # AI categorisation logic
-│  │  └─ models/              # Data models
-│  │
-│  └─ requirements.txt
-│
-├─ frontend/
-│  ├─ src/
-│  │  ├─ main.ts              # Frontend entry point
-│  │  ├─ app.ts               # SPA controller
-│  │  ├─ components/          # UI components
-│  │  ├─ lib/                 # DOM helpers & utilities
-│  │  └─ assets/
-│  │
-│  ├─ index.html
-│  └─ tailwind.config.js
-│
-└─ README.md
+Documentation/
+├── 00-README.md                # Documentation index
+├── Design/                     # UI/UX sketches and design artefacts
+├── Minutes/                    # Client + group meeting minutes
+├── Presentations/              # Project presentations
+├── Research/                   # Background and technical research
+├── Tech/                       # Technical documentation
+├── Git/                        # Git workflow and process guides
+├── Trello/                     # Trello board snapshots
+└── Archive/                    # Deprecated or historical material
 ```
 
 ---
 
-## 🧠 Backend (FastAPI + AI)
+## 🔍 How to navigate this branch
 
-### Technologies
-- **FastAPI** – REST API framework
-- **Sentence Transformers** – semantic similarity & embeddings
-- **spaCy** – NLP preprocessing
-- **Python 3.12+ recommended**
+Start here:
 
-### Key Endpoints
-| Endpoint | Description |
-|--------|------------|
-| `/health` | Service health check |
-| `/api/categories` | Available AI categories |
-| `/api/tickets` | Tickets enriched with AI categorisation |
+**Documentation/00-README.md**
 
-Each ticket returned includes:
-- AI‑assigned category
-- Confidence score
-- Original ticket metadata
+That file provides an index and links to all documentation areas.
 
 ---
 
-## 🖥️ Frontend (TypeScript + Tailwind)
+## 🧠 Project workflow summary
 
-### Technologies
-- **Vanilla TypeScript**
-- **Tailwind CSS**
-- **No frameworks**
-- **SPA architecture**
+- Day-to-day development took place on the `development` branch
+- Feature work was completed on short-lived feature branches
+- Documentation was maintained continuously on this branch
+- The `main` branch contains the final submission snapshot
 
-### Design Goals
-- Fast load time
-- Framework‑free
-- Explicit DOM control
-- Easy extensibility
-- Screen‑based organisation
-
-### Styling Approach
-- All styling via **Tailwind utility classes**
-- No handwritten CSS rules
-- Consistent UI patterns (cards, panels, lists)
+This structure reflects real-world software engineering practice.
 
 ---
 
-## ▶️ How to Run (No Virtual Environment)
+## ✅ Recommended reading order for markers
 
-### Prerequisites
-- Python 3.12+
-- Node.js 18+
-
----
-
-### 1️⃣ Backend
-
-```bash
-cd backend
-pip install fastapi uvicorn sentence-transformers spacy
-python -m spacy download en_core_web_sm
-python -m uvicorn app.main:app --reload
-```
-
-Backend runs at:
-```
-http://127.0.0.1:8000
-```
+1. `Documentation/00-README.md`
+2. Design documents
+3. Research
+4. Meeting minutes
+5. Technical documentation
+6. Git workflow documentation
 
 ---
 
-### 2️⃣ Frontend (new terminal)
+## 📎 Notes
 
-```bash
-cd frontend
-npm install
-npm run dev
-```
+All documents are preserved with full Git history, authorship, and timestamps.
 
-Frontend runs at:
-```
-http://127.0.0.1:5173
-```
-
----
-
-## 🔒 Key Engineering Decisions
-
-- **No frontend frameworks** → clarity over abstraction
-- **AI logic isolated to backend** → correctness & security
-- **Explicit DOM construction** → predictable rendering
-- **Static Tailwind classes** → build‑time safety
-- **SPA routing** → scalable UI without reloads
-
----
-
-## 🚀 Extending the Project
-
-This architecture is intentionally scalable:
-
-- Replace fake Autotask provider with real API
-- Add authentication layer
-- Add ticket detail screens
-- Introduce persistent storage
-- Swap AI models without frontend changes
-- Add role‑based UI views
-
----
-
-## 🧪 Known Limitations (Prototype Scope)
-
-- Uses mock ticket data
-- AI models load at runtime (cold start cost)
-- No persistence layer
-- No authentication
-
-These are **intentional** for a prototype environment.
-
----
-
-## 📜 License
-
-Educational / prototype use.
-
----
-
-## 🧠 Final Note
-
-This project demonstrates that:
-
-> **Modern, scalable frontends do not require heavy frameworks**  
-> and **AI systems must be architecturally isolated from UI concerns**.
-
-Both principles are enforced throughout this codebase.
-
----
-
-*Built for clarity, maintainability, and technical assessment.*
+This branch serves as a complete record of the project’s development process.
