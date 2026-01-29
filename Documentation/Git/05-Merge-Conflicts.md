@@ -131,6 +131,54 @@ Once resolved:
 
 ---
 
+## 🏷️ Archive tags and deleted branches (important)
+
+Sometimes you may see that a feature branch was deleted after merge.
+
+This is normal and does NOT delete anyone’s work.
+
+### Why the work is not lost
+Once a PR is merged:
+- the commits become part of `development`
+- the PR remains on GitHub with full history and authorship
+
+Deleting a feature branch only removes the branch label.
+
+### Our project standard: archive tags before deletion
+Before deleting feature branches, we create an archive tag:
+
+- tags are permanent “bookmarks” in Git history
+- they make it easy to inspect earlier stages of development
+- they keep the branch list clean while preserving traceability
+
+Example archive tag names:
+- `archive/feature-add-latency-logs`
+- `archive/feature-fix-ticket-detail`
+
+### How to view an archived snapshot
+To inspect an archived point in history:
+
+```bash
+git fetch --tags
+git checkout archive/<tag-name>
+```
+
+Example:
+```bash
+git fetch --tags
+git checkout archive/feature-add-latency-logs
+```
+
+⚠️ When you checkout a tag you are in "detached HEAD" mode.
+This is normal for viewing history.
+To go back to normal work:
+
+```bash
+git switch development
+```
+
+---
+
 ## 🧘 Final reminder
 
 Conflicts are part of teamwork.
