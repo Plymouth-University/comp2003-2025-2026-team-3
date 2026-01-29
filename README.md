@@ -71,6 +71,7 @@ That file provides an index and links to all documentation areas.
 - Feature work was completed on short-lived feature branches
 - Documentation was maintained continuously on this branch
 - The `main` branch contains the final submission snapshot
+- Before deleting merged feature branches, we create permanent **archive tags** (e.g. `archive/feature-add-latency-logs`) so earlier development snapshots can be revisited easily for assessment and traceability.
 
 This structure reflects real-world software engineering practice.
 
