@@ -2,22 +2,43 @@ import { el } from "../lib/dom.js";
 import { EllipsisMenu } from "../components/EllipsisMenu.js";
 import type { BackendTicket } from "../types.js";
 
+function getTimeStamp(): string {
+  const now = new Date();
+  return now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', fractionalSecondDigits: 3 });
+}
+
 async function fetchTickets(): Promise<BackendTicket[]> {
+  const requestStart = performance.now();
+  const startTime = getTimeStamp();
+  console.log(`[${startTime}] DASHBOARD: Fetching tickets...`);
+  
   try {
     const res = await fetch("http://127.0.0.1:8000/api/tickets");
+    const fetchTime = performance.now() - requestStart;
+    console.log(`[${getTimeStamp()}] DASHBOARD: Fetch completed in ${fetchTime.toFixed(1)}ms, status: ${res.status}`);
+    
     if (!res.ok) {
+      console.error(`[${getTimeStamp()}] DASHBOARD: API error - Status: ${res.status}`);
       return [];
     }
+    
     const json = await res.json();
+    const itemCount = json.items ? json.items.length : 0;
+    const totalTime = performance.now() - requestStart;
+    console.log(`[${getTimeStamp()}] DASHBOARD: Parsed ${itemCount} tickets in ${totalTime.toFixed(1)}ms total`);
+    
     return json.items || [];
   } catch (error) {
-    console.error("Failed to fetch tickets:", error);
+    console.error(`[${getTimeStamp()}] DASHBOARD: Fetch error:`, error);
     return [];
   }
 }
 
 export function Dashboard(onOpenTicket?: (ticket: BackendTicket) => void): HTMLElement {
   const container = el("div", { className: "w-full" });
+  const dashboardStart = performance.now();
+  const startTime = getTimeStamp();
+  console.log(`[${startTime}] ========== DASHBOARD LOAD START ==========`);
 
   // Create stat card number elements with references for updates
   const criticalCountElem = el("div", { className: "text-3xl font-bold text-blue-900 mt-2", text: "-" });
@@ -80,6 +101,12 @@ export function Dashboard(onOpenTicket?: (ticket: BackendTicket) => void): HTMLE
 
   //fetch the tickets then filter based on pririty being critical
   fetchTickets().then(allTickets => {
+    const ticketsReceivedTime = getTimeStamp();
+    const fetchTime = performance.now() - dashboardStart;
+    console.log(`[${ticketsReceivedTime}] DASHBOARD: Tickets received in ${fetchTime.toFixed(1)}ms, processing ${allTickets.length} tickets...`);
+    
+    const processStart = performance.now();
+    
     //remove loading message once tickets are loaded
     loadingMsg.remove();
     
@@ -108,6 +135,9 @@ export function Dashboard(onOpenTicket?: (ticket: BackendTicket) => void): HTMLE
     const activeCount = allTickets.length;
     
     // Update stat card elements
+    const calcTime = performance.now() - processStart;
+    console.log(`[${getTimeStamp()}] DASHBOARD: Calculations complete in ${calcTime.toFixed(1)}ms - Critical=${criticalCount}, New=${newTicketsCount}, Category=${mostCommonCategory}, Active=${activeCount}`);
+    
     criticalCountElem.textContent = criticalCount.toString();
     newTicketsCountElem.textContent = newTicketsCount.toString();
     mostCommonCategoryElem.textContent = mostCommonCategory;
@@ -115,8 +145,15 @@ export function Dashboard(onOpenTicket?: (ticket: BackendTicket) => void): HTMLE
     
     const criticalTickets = allTickets.filter(t => t.priority === "Critical");
     
+    const renderStart = performance.now();
+    
     if (criticalTickets.length === 0) {
       criticalTicketsWrap.innerHTML = '<div class="text-center py-8 text-slate-500">No critical priority tickets</div>';
+      const renderTime = performance.now() - renderStart;
+      const totalTime = performance.now() - dashboardStart;
+      console.log(`[${getTimeStamp()}] DASHBOARD: Render complete in ${renderTime.toFixed(1)}ms (no critical tickets)`);
+      console.log(`[${getTimeStamp()}] ========== DASHBOARD LOAD COMPLETE ==========`);
+      console.log(`[${getTimeStamp()}] Total dashboard load time: ${totalTime.toFixed(1)}ms`);
       return;
     }
     
@@ -153,6 +190,12 @@ export function Dashboard(onOpenTicket?: (ticket: BackendTicket) => void): HTMLE
       ticketCard.append(topRow, infoRow);
       criticalTicketsWrap.append(ticketCard);
     }
+    
+    const renderTime = performance.now() - renderStart;
+    const totalTime = performance.now() - dashboardStart;
+    console.log(`[${getTimeStamp()}] DASHBOARD: Rendered ${criticalTickets.length} critical tickets in ${renderTime.toFixed(1)}ms`);
+    console.log(`[${getTimeStamp()}] ========== DASHBOARD LOAD COMPLETE ==========`);
+    console.log(`[${getTimeStamp()}] Total dashboard load time: ${totalTime.toFixed(1)}ms (Fetch=${fetchTime.toFixed(1)}ms | Process=${calcTime.toFixed(1)}ms | Render=${renderTime.toFixed(1)}ms)`);
   });
 
   container.append(criticalSection);
