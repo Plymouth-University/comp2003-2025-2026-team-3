@@ -1,9 +1,11 @@
 from fastapi import FastAPI, Query
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import StreamingResponse
 from .providers.fake_autotask import FakeAutotaskProvider
 from .services.ai_categoriser import categorise_ticket
 import logging
 import time
+import json
 from datetime import datetime
 
 # Setup logging
@@ -71,7 +73,7 @@ def list_tickets(
             filter_start = time.time()
             tickets = [t for t in tickets if t.priority == priority]
             filter_time = time.time() - filter_start
-            logger.info(f"[{datetime.now().strftime('%H:%M:%S.%f')[:-3]}] STEP 3: Filtered by priority in {filter_time:.3f}s - {len(tickets)} tickets remaining")
+            logger.info(f"[{datetime.now().strftime('%H:%M:%S.%f')[:-3]}] STEP 3: Filtered by priority in {filter_time:.3f}s - {len(tickets)} remaining")
         
         # Step 4: Categorize tickets (this is usually the bottleneck)
         categorization_start = time.time()
@@ -140,3 +142,75 @@ def get_ticket(autotask_ticket_id: int):
     row = t.model_dump()
     row["ai"] = categorise_ticket({"title": t.title, "description": t.description})
     return row
+
+
+@app.get("/api/tickets/stream/categorize")
+async def stream_categorize_tickets(
+    status: str | None = None,
+    priority: str | None = None,
+    limit: int = Query(100, ge=1, le=500)
+):
+    """
+    Stream ticket categorization results in real-time.
+    Returns Server-Sent Events (SSE) with each ticket as it's processed.
+    """
+    async def event_generator():
+        try:
+            # Get tickets
+            tickets = provider.get_tickets()
+            
+            # Apply filters
+            if status:
+                tickets = [t for t in tickets if t.status == status]
+            if priority:
+                tickets = [t for t in tickets if t.priority == priority]
+            
+            tickets = tickets[:limit]
+            
+            # Send initial status
+            yield f"data: {json.dumps({'type': 'start', 'total': len(tickets)})}\n\n"
+            
+            # Process and stream each ticket
+            for i, t in enumerate(tickets, 1):
+                try:
+                    # Categorize ticket
+                    ai_result = categorise_ticket({"title": t.title, "description": t.description})
+                    
+                    # Prepare ticket data
+                    row = t.model_dump()
+                    row["ai"] = ai_result
+                    
+                    # Stream this ticket
+                    ticket_event = {
+                        'type': 'ticket',
+                        'index': i,
+                        'total': len(tickets),
+                        'data': row
+                    }
+                    yield f"data: {json.dumps(ticket_event)}\n\n"
+                    
+                except Exception as e:
+                    logger.error(f"Error processing ticket {t.ticket_number}: {str(e)}")
+                    error_event = {
+                        'type': 'error',
+                        'ticket_number': t.ticket_number,
+                        'error': str(e)
+                    }
+                    yield f"data: {json.dumps(error_event)}\n\n"
+            
+            # Send completion status
+            yield f"data: {json.dumps({'type': 'complete', 'total': len(tickets)})}\n\n"
+            
+        except Exception as e:
+            logger.error(f"Stream error: {str(e)}", exc_info=True)
+            yield f"data: {json.dumps({'type': 'error', 'error': str(e)})}\n\n"
+    
+    return StreamingResponse(
+        event_generator(),
+        media_type="text/event-stream",
+        headers={
+            "Cache-Control": "no-cache",
+            "Connection": "keep-alive",
+            "X-Accel-Buffering": "no"
+        }
+    )
