@@ -13,6 +13,7 @@ from .config import (
     model
 )
 from .text_processor import preprocess_text
+from .logging_config import perf_logger, metrics
 
 logger = logging.getLogger(__name__)
 
@@ -54,7 +55,8 @@ def predict_category_by_semantic(text: str) -> tuple:
     encode_start = time.time()
     ticket_embedding = model.encode(text, convert_to_tensor=True)
     encode_time = time.time() - encode_start
-    logger.debug(f"[TIMING] model.encode() took {encode_time*1000:.2f}ms (text length: {len(text)})")
+    metrics.record_operation("model.encode", encode_time * 1000)
+    perf_logger.debug(f"[TIMING] model.encode() took {encode_time*1000:.2f}ms (text length: {len(text)})")
     
     # TIMING: cosine similarity computation
     similarities = {}
@@ -67,12 +69,14 @@ def predict_category_by_semantic(text: str) -> tuple:
         similarities[category] = scaled
     
     sim_time = time.time() - sim_start
-    logger.debug(f"[TIMING] Cosine similarity computation took {sim_time*1000:.2f}ms ({len(CATEGORY_EMBEDDINGS)} categories)")
+    metrics.record_operation("cosine_similarity", sim_time * 1000)
+    perf_logger.debug(f"[TIMING] Cosine similarity computation took {sim_time*1000:.2f}ms ({len(CATEGORY_EMBEDDINGS)} categories)")
     
     # Return category with highest semantic similarity
     best_cat = max(similarities, key=similarities.get)
     total_time = encode_time + sim_time
-    logger.debug(f"[TIMING] semantic prediction total: {total_time*1000:.2f}ms")
+    metrics.record_operation("semantic_prediction_total", total_time * 1000)
+    perf_logger.debug(f"[TIMING] semantic prediction total: {total_time*1000:.2f}ms")
     
     return best_cat, similarities
 

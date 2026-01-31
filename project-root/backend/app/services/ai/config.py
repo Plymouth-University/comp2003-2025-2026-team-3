@@ -6,9 +6,10 @@ Centralized configuration for all AI-related constants, models, and paths.
 
 from sentence_transformers import SentenceTransformer
 import logging
+from .logging_config import setup_logging, perf_logger, metrics
 
-# Setup logging
-logger = logging.getLogger(__name__)
+# Setup logging (production-grade configuration)
+logger = setup_logging().getChild("config")
 
 # ============================================================================
 # MODEL INITIALIZATION

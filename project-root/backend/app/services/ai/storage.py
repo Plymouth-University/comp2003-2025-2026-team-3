@@ -58,14 +58,12 @@ def save_ticket_to_json(
         with open(category_file, 'w') as f:
             json.dump(ticket_data, f, indent=2)
         logger.info(f"[SAVED] Categories/{category}/{filename}")
-        print(f"[SAVED] Categories/{category}/{filename}")
         
         # Save to Priority folder
         priority_file = os.path.join(priority_path, filename)
         with open(priority_file, 'w') as f:
             json.dump(ticket_data, f, indent=2)
         logger.info(f"[SAVED] Priority/{priority_label.lower()}/{filename}")
-        print(f"[SAVED] Priority/{priority_label.lower()}/{filename}")
         
         # Save to Company folders
         for company in companies:
@@ -74,7 +72,6 @@ def save_ticket_to_json(
             with open(company_file, 'w') as f:
                 json.dump(ticket_data, f, indent=2)
             logger.info(f"[SAVED] Company/{company}/{filename}")
-            print(f"[SAVED] Company/{company}/{filename}")
         
         return True
         

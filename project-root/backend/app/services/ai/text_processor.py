@@ -8,6 +8,7 @@ import spacy
 import logging
 import time
 from .config import MIN_TOKEN_LENGTH, COMPANY_NAMES
+from .logging_config import perf_logger, metrics
 
 logger = logging.getLogger(__name__)
 
@@ -36,9 +37,10 @@ def preprocess_text(text: str) -> list:
     spacy_start = time.time()
     doc = nlp(text.lower())
     spacy_time = time.time() - spacy_start
+    metrics.record_operation("spacy_nlp", spacy_time * 1000)
     
     if spacy_time > 0.05:  # Only log if slow
-        logger.debug(f"[TIMING] spaCy nlp() took {spacy_time*1000:.2f}ms for text length {len(text)}")
+        perf_logger.debug(f"[TIMING] spaCy nlp() took {spacy_time*1000:.2f}ms for text length {len(text)}")
     
     # Build set of company words to filter
     company_words = set()

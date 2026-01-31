@@ -9,13 +9,14 @@ import logging
 import time
 from datetime import datetime
 
+from .logging_config import logger as base_logger, perf_logger, metrics
 from .categorizer import predict_category_hybrid
 from .priority_calculator import calculate_priority_score, get_priority_label
 from .text_processor import extract_ticket_text, detect_company, preprocess_text
 from .description_generator import generate_ai_description
 from .storage import save_ticket_to_json, get_input_tickets, load_tickets_from_file
 
-logger = logging.getLogger(__name__)
+logger = base_logger.getChild("processor")
 
 
 def process_ticket(ticket_input: dict) -> dict:
@@ -37,14 +38,14 @@ def process_ticket(ticket_input: dict) -> dict:
         Organized ticket summary dictionary
     """
     ticket_start = time.time()
-    logger.debug(f"[TIMING] ========== process_ticket START ==========")
     
     # Extract ticket text and metadata
     if isinstance(ticket_input, dict):
         extract_start = time.time()
         ticket_text = extract_ticket_text(ticket_input)
         extract_time = time.time() - extract_start
-        logger.debug(f"[TIMING] extract_ticket_text() took {extract_time*1000:.2f}ms")
+        metrics.record_operation("extract_ticket_text", extract_time * 1000)
+        perf_logger.debug(f"[TIMING] extract_ticket_text() took {extract_time*1000:.2f}ms")
         
         ticket_metadata = ticket_input
         ai_description = generate_ai_description(ticket_input) if ticket_input else None
@@ -64,7 +65,8 @@ def process_ticket(ticket_input: dict) -> dict:
     pred_start = time.time()
     category, method_used, semantic_scores = predict_category_hybrid(ticket_text)
     pred_time = time.time() - pred_start
-    logger.debug(f"[TIMING] predict_category_hybrid() took {pred_time*1000:.2f}ms")
+    metrics.record_operation("predict_category_hybrid", pred_time * 1000)
+    perf_logger.debug(f"[TIMING] predict_category_hybrid() took {pred_time*1000:.2f}ms")
     
     # Calculate priority
     priority = calculate_priority_score(ticket_text, category, semantic_scores)
@@ -121,14 +123,12 @@ def process_ticket(ticket_input: dict) -> dict:
     save_start = time.time()
     save_ticket_to_json(ticket_data, category, priority_label, companies)
     save_time = time.time() - save_start
-    logger.debug(f"[TIMING] save_ticket_to_json() took {save_time*1000:.2f}ms")
-    
-    # Print summary
-    _print_ticket_summary(ticket_data, sorted_scores)
+    metrics.record_operation("save_ticket_to_json", save_time * 1000)
+    perf_logger.debug(f"[TIMING] save_ticket_to_json() took {save_time*1000:.2f}ms")
     
     total_time = time.time() - ticket_start
-    logger.info(f"[TIMING] process_ticket() TOTAL: {total_time*1000:.2f}ms for ticket '{title[:50]}'")
-    logger.debug(f"[TIMING] ========== process_ticket END ==========")
+    metrics.record_operation("process_ticket_total", total_time * 1000)
+    logger.info(f"Processed ticket '{title[:50]}' in {total_time*1000:.2f}ms - Category: {category}, Priority: {priority_label}")
     
     return organized_ticket
 
@@ -143,21 +143,19 @@ def process_input_tickets() -> int:
     input_files = get_input_tickets()
     
     if not input_files:
-        print(f"No tickets found in input folder")
         logger.info("No tickets found in input folder")
         return 0
     
-    print(f"Found {len(input_files)} ticket file(s) to process\n")
     logger.info(f"Found {len(input_files)} ticket file(s) to process")
     
     total_tickets_processed = 0
+    batch_start = time.time()
     
     for ticket_file in input_files:
         try:
             tickets_to_process = load_tickets_from_file(ticket_file)
             
             if tickets_to_process:
-                print(f"Processing: {ticket_file} ({len(tickets_to_process)} ticket(s))")
                 logger.info(f"Processing: {ticket_file} ({len(tickets_to_process)} ticket(s))")
                 
                 for ticket_data in tickets_to_process:
@@ -166,10 +164,12 @@ def process_input_tickets() -> int:
             
         except Exception as e:
             logger.error(f"Failed to process {ticket_file}: {e}")
-            print(f"Failed to process {ticket_file}: {e}")
     
-    print(f"\nCompleted! Processed {total_tickets_processed} total ticket(s)")
-    logger.info(f"Completed! Processed {total_tickets_processed} total ticket(s)")
+    batch_time = time.time() - batch_start
+    logger.info(f"Batch complete: Processed {total_tickets_processed} total ticket(s) in {batch_time:.2f}s")
+    
+    # Log performance summary
+    metrics.log_summary(logger)
     
     return total_tickets_processed
 
@@ -208,34 +208,4 @@ def _print_ticket_summary(ticket_data: dict, sorted_scores: dict) -> None:
         ticket_data: Complete ticket data
         sorted_scores: Sorted confidence scores
     """
-    print("\n" + "="*80)
-    print("TICKET SUMMARY".center(80))
-    print("="*80)
-    
-    print(f"Ticket Number: {ticket_data.get('ticket_number', 'N/A')}")
-    print(f"Title:         {ticket_data.get('title', 'N/A')}")
-    print(f"\nCompany:       {ticket_data.get('company', 'N/A')}")
-    print(f"Contact:       {ticket_data.get('contact', 'N/A')}")
-    print(f"Due Date:      {ticket_data.get('due_date', 'N/A')}")
-    print(f"\nCategory:      {ticket_data.get('category', 'N/A')}")
-    print(f"Priority:      {ticket_data.get('priority_level', 'N/A')} ({ticket_data.get('priority_score', 0)}/100)")
-    
-    print("\n" + "-"*80)
-    print("AI GENERATED DESCRIPTION".center(80))
-    print("-"*80)
-    
-    ai_desc = ticket_data.get('ai_generated_description', 'N/A')
-    if ai_desc and ai_desc != "No AI description available":
-        print(ai_desc)
-    else:
-        print("No AI description available")
-    
-    print("\n" + "-"*80)
-    print("DETECTION INFORMATION".center(80))
-    print("-"*80)
-    print(f"Detection Method: {ticket_data.get('detection_method', 'N/A')}")
-    print(f"Confidence Scores:")
-    for cat, score in sorted_scores.items():
-        print(f"  {cat}: {score}%")
-    
-    print("\n" + "="*80)
+    pass

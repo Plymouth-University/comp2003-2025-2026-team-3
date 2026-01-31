@@ -7,6 +7,7 @@ Generates AI-powered descriptions and remediation suggestions for tickets.
 import logging
 import time
 from .config import model
+from .logging_config import perf_logger, metrics
 
 logger = logging.getLogger(__name__)
 
@@ -51,7 +52,8 @@ def generate_ai_description(ticket_item: dict) -> str:
         encode_start = time.time()
         model.encode(context, convert_to_tensor=True)
         encode_time = time.time() - encode_start
-        logger.debug(f"[TIMING] generate_ai_description encoding took {encode_time*1000:.2f}ms")
+        metrics.record_operation("description_encoding", encode_time * 1000)
+        perf_logger.debug(f"[TIMING] generate_ai_description encoding took {encode_time*1000:.2f}ms")
         
         # Build comprehensive response based on issue type
         issue_type = ticket_item.get("sub_issue_type", "").lower()
@@ -69,13 +71,14 @@ def generate_ai_description(ticket_item: dict) -> str:
         explanation += _get_issue_remediation(issue_type)
         
         func_time = time.time() - func_start
-        logger.debug(f"[TIMING] generate_ai_description() completed in {func_time*1000:.2f}ms")
+        metrics.record_operation("generate_ai_description_total", func_time * 1000)
+        perf_logger.debug(f"[TIMING] generate_ai_description() completed in {func_time*1000:.2f}ms")
         
         return explanation
         
     except Exception as e:
         func_time = time.time() - func_start
-        logger.error(f"[TIMING] generate_ai_description() failed after {func_time*1000:.2f}ms: {e}")
+        logger.error(f"generate_ai_description() failed after {func_time*1000:.2f}ms: {e}")
         return None
 
 
