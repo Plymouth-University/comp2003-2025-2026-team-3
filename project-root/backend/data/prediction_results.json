@@ -1,0 +1,1969 @@
+{
+  "total_tickets": 100,
+  "predictions": [
+    {
+      "ticket_number": "TCK-2025-0001",
+      "ticket_id": 100001,
+      "company": "Company 10",
+      "title": "RMM Agent Alert: LON-NAS-104 - Backup Failed (Company 10)",
+      "description": "Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 10\nDevice: LON-NAS-104\nSite: London Office\nEvent: Backup job failed\nTypical causes: storage full, agent service down, network interruption\nSuggested action: Check backup agent/service, verify repository access, retry job, confirm last successful restore point.",
+      "full_text": "RMM Agent Alert: LON-NAS-104 - Backup Failed (Company 10) Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 10\nDevice: LON-NAS-104\nSite: London Office\nEvent: Backup job failed\nTypical causes: storage full, agent service down, network interruption\nSuggested action: Check backup agent/service, verify repository access, retry job, confirm last successful restore point.",
+      "predicted_category": "network",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 60,
+        "phishing": 56,
+        "network": 62,
+        "access": 57,
+        "data_breach": 53
+      },
+      "top_confidence": 62
+    },
+    {
+      "ticket_number": "TCK-2025-0002",
+      "ticket_id": 100002,
+      "company": "Company 11",
+      "title": "RMM Agent Alert: BIR-SW-183 - Critical Vulnerabilities Detected (Company 11)",
+      "description": "Datto RMM generated a patch compliance alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 11\nDevice: BIR-SW-183\nSite: Birmingham Office\nEvent: Missing security updates / vulnerabilities detected\nSuggested action: Review missing patches, schedule maintenance window, apply updates, reboot if required, confirm compliance.",
+      "full_text": "RMM Agent Alert: BIR-SW-183 - Critical Vulnerabilities Detected (Company 11) Datto RMM generated a patch compliance alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 11\nDevice: BIR-SW-183\nSite: Birmingham Office\nEvent: Missing security updates / vulnerabilities detected\nSuggested action: Review missing patches, schedule maintenance window, apply updates, reboot if required, confirm compliance.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 63,
+        "phishing": 57,
+        "network": 59,
+        "access": 60,
+        "data_breach": 58
+      },
+      "top_confidence": 63
+    },
+    {
+      "ticket_number": "TCK-2025-0003",
+      "ticket_id": 100003,
+      "company": "Company 12",
+      "title": "RMM Agent Alert: LON-SW-057 - Patch Install Failed (Company 12)",
+      "description": "Datto RMM generated a patching alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 12\nDevice: LON-SW-057\nSite: Birmingham Office\nEvent: Patch installation failed\nPatch: KB2482327\nTypical causes: pending reboot, insufficient disk space, Windows Update corruption\nSuggested action: Check disk space, clear update cache, reboot, retry patch, perform manual install if necessary.",
+      "full_text": "RMM Agent Alert: LON-SW-057 - Patch Install Failed (Company 12) Datto RMM generated a patching alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 12\nDevice: LON-SW-057\nSite: Birmingham Office\nEvent: Patch installation failed\nPatch: KB2482327\nTypical causes: pending reboot, insufficient disk space, Windows Update corruption\nSuggested action: Check disk space, clear update cache, reboot, retry patch, perform manual install if necessary.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 61,
+        "phishing": 54,
+        "network": 57,
+        "access": 55,
+        "data_breach": 54
+      },
+      "top_confidence": 61
+    },
+    {
+      "ticket_number": "TCK-2025-0004",
+      "ticket_id": 100004,
+      "company": "Company 8",
+      "title": "RMM Agent Alert: BRI-ESX-167 - Backup Suspended (Company 8)",
+      "description": "Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 8\nDevice: BRI-ESX-167\nSite: Birmingham Office\nEvent: Backup suspended/paused\nPossible causes: policy disabled, licensing issue, repository unavailable\nSuggested action: Validate policy state, check licensing, verify storage health, resume backups and confirm completion.",
+      "full_text": "RMM Agent Alert: BRI-ESX-167 - Backup Suspended (Company 8) Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 8\nDevice: BRI-ESX-167\nSite: Birmingham Office\nEvent: Backup suspended/paused\nPossible causes: policy disabled, licensing issue, repository unavailable\nSuggested action: Validate policy state, check licensing, verify storage health, resume backups and confirm completion.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 63,
+        "phishing": 56,
+        "network": 60,
+        "access": 56,
+        "data_breach": 57
+      },
+      "top_confidence": 63
+    },
+    {
+      "ticket_number": "TCK-2025-0005",
+      "ticket_id": 100005,
+      "company": "Company 1",
+      "title": "RMM Agent Alert: LEE-FW-039 - Backup Failed (Company 1)",
+      "description": "Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 1\nDevice: LEE-FW-039\nSite: Birmingham Office\nEvent: Backup job failed\nTypical causes: storage full, agent service down, network interruption\nSuggested action: Check backup agent/service, verify repository access, retry job, confirm last successful restore point.",
+      "full_text": "RMM Agent Alert: LEE-FW-039 - Backup Failed (Company 1) Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 1\nDevice: LEE-FW-039\nSite: Birmingham Office\nEvent: Backup job failed\nTypical causes: storage full, agent service down, network interruption\nSuggested action: Check backup agent/service, verify repository access, retry job, confirm last successful restore point.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 61,
+        "phishing": 57,
+        "network": 60,
+        "access": 57,
+        "data_breach": 53
+      },
+      "top_confidence": 61
+    },
+    {
+      "ticket_number": "TCK-2025-0006",
+      "ticket_id": 100006,
+      "company": "Company 11",
+      "title": "RMM Agent Alert: LON-NAS-052 - Patch Install Failed (Company 11)",
+      "description": "Datto RMM generated a patching alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 11\nDevice: LON-NAS-052\nSite: London Office\nEvent: Patch installation failed\nPatch: KB7018695\nTypical causes: pending reboot, insufficient disk space, Windows Update corruption\nSuggested action: Check disk space, clear update cache, reboot, retry patch, perform manual install if necessary.",
+      "full_text": "RMM Agent Alert: LON-NAS-052 - Patch Install Failed (Company 11) Datto RMM generated a patching alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 11\nDevice: LON-NAS-052\nSite: London Office\nEvent: Patch installation failed\nPatch: KB7018695\nTypical causes: pending reboot, insufficient disk space, Windows Update corruption\nSuggested action: Check disk space, clear update cache, reboot, retry patch, perform manual install if necessary.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 61,
+        "phishing": 55,
+        "network": 59,
+        "access": 57,
+        "data_breach": 54
+      },
+      "top_confidence": 61
+    },
+    {
+      "ticket_number": "TCK-2025-0007",
+      "ticket_id": 100007,
+      "company": "Company 12",
+      "title": "RMM Agent Alert: M365 - Message Held in Quarantine (Company 12)",
+      "description": "Datto RMM generated an email security event.\nObserved: 2025-12-24T15:14:19Z\nTenant/Company: Company 12\nEvent: Message held/quarantined\nReason: Suspected phishing / policy match\nSuggested action: Review quarantine, validate sender, release or block, check user exposure.",
+      "full_text": "RMM Agent Alert: M365 - Message Held in Quarantine (Company 12) Datto RMM generated an email security event.\nObserved: 2025-12-24T15:14:19Z\nTenant/Company: Company 12\nEvent: Message held/quarantined\nReason: Suspected phishing / policy match\nSuggested action: Review quarantine, validate sender, release or block, check user exposure.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 69,
+        "phishing": 68,
+        "network": 55,
+        "access": 56,
+        "data_breach": 64
+      },
+      "top_confidence": 69
+    },
+    {
+      "ticket_number": "TCK-2025-0008",
+      "ticket_id": 100008,
+      "company": "Company 1",
+      "title": "RMM Agent Alert: LEE-FW-189 - Device Offline (Company 1)",
+      "description": "Datto RMM generated an availability alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 1\nDevice: LEE-FW-189\nSite: Bristol Office\nEvent: Device/agent offline (last check-in exceeded threshold)\nSuggested action: Verify power and network connectivity, check switch port, attempt out-of-band access if available, escalate onsite if needed.",
+      "full_text": "RMM Agent Alert: LEE-FW-189 - Device Offline (Company 1) Datto RMM generated an availability alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 1\nDevice: LEE-FW-189\nSite: Bristol Office\nEvent: Device/agent offline (last check-in exceeded threshold)\nSuggested action: Verify power and network connectivity, check switch port, attempt out-of-band access if available, escalate onsite if needed.",
+      "predicted_category": "network",
+      "prediction_method": "keyword",
+      "confidence_scores": {
+        "malware": 66,
+        "phishing": 56,
+        "network": 68,
+        "access": 58,
+        "data_breach": 56
+      },
+      "top_confidence": 68
+    },
+    {
+      "ticket_number": "TCK-2025-0009",
+      "ticket_id": 100009,
+      "company": "Company 12",
+      "title": "RMM Agent Alert: M365 - Message Held in Quarantine (Company 12)",
+      "description": "Datto RMM generated an email security event.\nObserved: 2025-12-24T15:14:19Z\nTenant/Company: Company 12\nEvent: Message held/quarantined\nReason: Suspected phishing / policy match\nSuggested action: Review quarantine, validate sender, release or block, check user exposure.",
+      "full_text": "RMM Agent Alert: M365 - Message Held in Quarantine (Company 12) Datto RMM generated an email security event.\nObserved: 2025-12-24T15:14:19Z\nTenant/Company: Company 12\nEvent: Message held/quarantined\nReason: Suspected phishing / policy match\nSuggested action: Review quarantine, validate sender, release or block, check user exposure.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 69,
+        "phishing": 68,
+        "network": 55,
+        "access": 56,
+        "data_breach": 64
+      },
+      "top_confidence": 69
+    },
+    {
+      "ticket_number": "TCK-2025-0010",
+      "ticket_id": 100010,
+      "company": "Company 7",
+      "title": "RMM Agent Alert: MAN-SRV-052 - Critical Vulnerabilities Detected (Company 7)",
+      "description": "Datto RMM generated a patch compliance alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 7\nDevice: MAN-SRV-052\nSite: Manchester Office\nEvent: Missing security updates / vulnerabilities detected\nSuggested action: Review missing patches, schedule maintenance window, apply updates, reboot if required, confirm compliance.",
+      "full_text": "RMM Agent Alert: MAN-SRV-052 - Critical Vulnerabilities Detected (Company 7) Datto RMM generated a patch compliance alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 7\nDevice: MAN-SRV-052\nSite: Manchester Office\nEvent: Missing security updates / vulnerabilities detected\nSuggested action: Review missing patches, schedule maintenance window, apply updates, reboot if required, confirm compliance.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 64,
+        "phishing": 58,
+        "network": 56,
+        "access": 58,
+        "data_breach": 59
+      },
+      "top_confidence": 64
+    },
+    {
+      "ticket_number": "TCK-2025-0011",
+      "ticket_id": 100011,
+      "company": "Company 8",
+      "title": "RMM Agent Alert: MAN-SRV-105 - Backup Suspended (Company 8)",
+      "description": "Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 8\nDevice: MAN-SRV-105\nSite: Leeds Office\nEvent: Backup suspended/paused\nPossible causes: policy disabled, licensing issue, repository unavailable\nSuggested action: Validate policy state, check licensing, verify storage health, resume backups and confirm completion.",
+      "full_text": "RMM Agent Alert: MAN-SRV-105 - Backup Suspended (Company 8) Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 8\nDevice: MAN-SRV-105\nSite: Leeds Office\nEvent: Backup suspended/paused\nPossible causes: policy disabled, licensing issue, repository unavailable\nSuggested action: Validate policy state, check licensing, verify storage health, resume backups and confirm completion.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 62,
+        "phishing": 57,
+        "network": 58,
+        "access": 56,
+        "data_breach": 57
+      },
+      "top_confidence": 62
+    },
+    {
+      "ticket_number": "TCK-2025-0012",
+      "ticket_id": 100012,
+      "company": "Company 2",
+      "title": "RMM Agent Alert: MAN-WS-167 - Backup Suspended (Company 2)",
+      "description": "Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 2\nDevice: MAN-WS-167\nSite: Leeds Office\nEvent: Backup suspended/paused\nPossible causes: policy disabled, licensing issue, repository unavailable\nSuggested action: Validate policy state, check licensing, verify storage health, resume backups and confirm completion.",
+      "full_text": "RMM Agent Alert: MAN-WS-167 - Backup Suspended (Company 2) Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 2\nDevice: MAN-WS-167\nSite: Leeds Office\nEvent: Backup suspended/paused\nPossible causes: policy disabled, licensing issue, repository unavailable\nSuggested action: Validate policy state, check licensing, verify storage health, resume backups and confirm completion.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 62,
+        "phishing": 58,
+        "network": 59,
+        "access": 58,
+        "data_breach": 58
+      },
+      "top_confidence": 62
+    },
+    {
+      "ticket_number": "TCK-2025-0013",
+      "ticket_id": 100013,
+      "company": "Company 11",
+      "title": "RMM Agent Alert: MAN-WS-025 - Critical Vulnerabilities Detected (Company 11)",
+      "description": "Datto RMM generated a patch compliance alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 11\nDevice: MAN-WS-025\nSite: London Office\nEvent: Missing security updates / vulnerabilities detected\nSuggested action: Review missing patches, schedule maintenance window, apply updates, reboot if required, confirm compliance.",
+      "full_text": "RMM Agent Alert: MAN-WS-025 - Critical Vulnerabilities Detected (Company 11) Datto RMM generated a patch compliance alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 11\nDevice: MAN-WS-025\nSite: London Office\nEvent: Missing security updates / vulnerabilities detected\nSuggested action: Review missing patches, schedule maintenance window, apply updates, reboot if required, confirm compliance.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 65,
+        "phishing": 58,
+        "network": 58,
+        "access": 59,
+        "data_breach": 59
+      },
+      "top_confidence": 65
+    },
+    {
+      "ticket_number": "TCK-2025-0014",
+      "ticket_id": 100014,
+      "company": "Company 1",
+      "title": "RMM Agent Alert: LON-NAS-192 - Backup Failed (Company 1)",
+      "description": "Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 1\nDevice: LON-NAS-192\nSite: Leeds Office\nEvent: Backup job failed\nTypical causes: storage full, agent service down, network interruption\nSuggested action: Check backup agent/service, verify repository access, retry job, confirm last successful restore point.",
+      "full_text": "RMM Agent Alert: LON-NAS-192 - Backup Failed (Company 1) Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 1\nDevice: LON-NAS-192\nSite: Leeds Office\nEvent: Backup job failed\nTypical causes: storage full, agent service down, network interruption\nSuggested action: Check backup agent/service, verify repository access, retry job, confirm last successful restore point.",
+      "predicted_category": "network",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 59,
+        "phishing": 56,
+        "network": 64,
+        "access": 57,
+        "data_breach": 52
+      },
+      "top_confidence": 64
+    },
+    {
+      "ticket_number": "TCK-2025-0015",
+      "ticket_id": 100015,
+      "company": "Company 1",
+      "title": "RMM Agent Alert: M365 - Message Held in Quarantine (Company 1)",
+      "description": "Datto RMM generated an email security event.\nObserved: 2025-12-24T15:14:19Z\nTenant/Company: Company 1\nEvent: Message held/quarantined\nReason: Suspected phishing / policy match\nSuggested action: Review quarantine, validate sender, release or block, check user exposure.",
+      "full_text": "RMM Agent Alert: M365 - Message Held in Quarantine (Company 1) Datto RMM generated an email security event.\nObserved: 2025-12-24T15:14:19Z\nTenant/Company: Company 1\nEvent: Message held/quarantined\nReason: Suspected phishing / policy match\nSuggested action: Review quarantine, validate sender, release or block, check user exposure.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 69,
+        "phishing": 68,
+        "network": 55,
+        "access": 56,
+        "data_breach": 64
+      },
+      "top_confidence": 69
+    },
+    {
+      "ticket_number": "TCK-2025-0016",
+      "ticket_id": 100016,
+      "company": "Company 11",
+      "title": "RMM Agent Alert: MAN-FW-131 - Critical Vulnerabilities Detected (Company 11)",
+      "description": "Datto RMM generated a patch compliance alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 11\nDevice: MAN-FW-131\nSite: Bristol Office\nEvent: Missing security updates / vulnerabilities detected\nSuggested action: Review missing patches, schedule maintenance window, apply updates, reboot if required, confirm compliance.",
+      "full_text": "RMM Agent Alert: MAN-FW-131 - Critical Vulnerabilities Detected (Company 11) Datto RMM generated a patch compliance alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 11\nDevice: MAN-FW-131\nSite: Bristol Office\nEvent: Missing security updates / vulnerabilities detected\nSuggested action: Review missing patches, schedule maintenance window, apply updates, reboot if required, confirm compliance.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 64,
+        "phishing": 58,
+        "network": 57,
+        "access": 60,
+        "data_breach": 59
+      },
+      "top_confidence": 64
+    },
+    {
+      "ticket_number": "TCK-2025-0017",
+      "ticket_id": 100017,
+      "company": "Company 11",
+      "title": "RMM Agent Alert: BIR-ESX-150 - Device Offline (Company 11)",
+      "description": "Datto RMM generated an availability alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 11\nDevice: BIR-ESX-150\nSite: Leeds Office\nEvent: Device/agent offline (last check-in exceeded threshold)\nSuggested action: Verify power and network connectivity, check switch port, attempt out-of-band access if available, escalate onsite if needed.",
+      "full_text": "RMM Agent Alert: BIR-ESX-150 - Device Offline (Company 11) Datto RMM generated an availability alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 11\nDevice: BIR-ESX-150\nSite: Leeds Office\nEvent: Device/agent offline (last check-in exceeded threshold)\nSuggested action: Verify power and network connectivity, check switch port, attempt out-of-band access if available, escalate onsite if needed.",
+      "predicted_category": "network",
+      "prediction_method": "keyword",
+      "confidence_scores": {
+        "malware": 61,
+        "phishing": 55,
+        "network": 66,
+        "access": 57,
+        "data_breach": 54
+      },
+      "top_confidence": 66
+    },
+    {
+      "ticket_number": "TCK-2025-0018",
+      "ticket_id": 100018,
+      "company": "Company 2",
+      "title": "RMM Agent Alert: LEE-SW-116 - Device Offline (Company 2)",
+      "description": "Datto RMM generated an availability alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 2\nDevice: LEE-SW-116\nSite: Manchester Office\nEvent: Device/agent offline (last check-in exceeded threshold)\nSuggested action: Verify power and network connectivity, check switch port, attempt out-of-band access if available, escalate onsite if needed.",
+      "full_text": "RMM Agent Alert: LEE-SW-116 - Device Offline (Company 2) Datto RMM generated an availability alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 2\nDevice: LEE-SW-116\nSite: Manchester Office\nEvent: Device/agent offline (last check-in exceeded threshold)\nSuggested action: Verify power and network connectivity, check switch port, attempt out-of-band access if available, escalate onsite if needed.",
+      "predicted_category": "network",
+      "prediction_method": "keyword",
+      "confidence_scores": {
+        "malware": 65,
+        "phishing": 57,
+        "network": 66,
+        "access": 58,
+        "data_breach": 57
+      },
+      "top_confidence": 66
+    },
+    {
+      "ticket_number": "TCK-2025-0019",
+      "ticket_id": 100019,
+      "company": "Company 10",
+      "title": "RMM Agent Alert: M365 - Message Held in Quarantine (Company 10)",
+      "description": "Datto RMM generated an email security event.\nObserved: 2025-12-24T15:14:19Z\nTenant/Company: Company 10\nEvent: Message held/quarantined\nReason: Suspected phishing / policy match\nSuggested action: Review quarantine, validate sender, release or block, check user exposure.",
+      "full_text": "RMM Agent Alert: M365 - Message Held in Quarantine (Company 10) Datto RMM generated an email security event.\nObserved: 2025-12-24T15:14:19Z\nTenant/Company: Company 10\nEvent: Message held/quarantined\nReason: Suspected phishing / policy match\nSuggested action: Review quarantine, validate sender, release or block, check user exposure.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 69,
+        "phishing": 68,
+        "network": 54,
+        "access": 56,
+        "data_breach": 64
+      },
+      "top_confidence": 69
+    },
+    {
+      "ticket_number": "TCK-2025-0020",
+      "ticket_id": 100020,
+      "company": "Company 8",
+      "title": "RMM Agent Alert: LON-SRV-082 - Critical Vulnerabilities Detected (Company 8)",
+      "description": "Datto RMM generated a patch compliance alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 8\nDevice: LON-SRV-082\nSite: London Office\nEvent: Missing security updates / vulnerabilities detected\nSuggested action: Review missing patches, schedule maintenance window, apply updates, reboot if required, confirm compliance.",
+      "full_text": "RMM Agent Alert: LON-SRV-082 - Critical Vulnerabilities Detected (Company 8) Datto RMM generated a patch compliance alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 8\nDevice: LON-SRV-082\nSite: London Office\nEvent: Missing security updates / vulnerabilities detected\nSuggested action: Review missing patches, schedule maintenance window, apply updates, reboot if required, confirm compliance.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 65,
+        "phishing": 57,
+        "network": 60,
+        "access": 59,
+        "data_breach": 59
+      },
+      "top_confidence": 65
+    },
+    {
+      "ticket_number": "TCK-2025-0021",
+      "ticket_id": 100021,
+      "company": "Company 3",
+      "title": "RMM Agent Alert: BRI-SW-125 - Device Offline (Company 3)",
+      "description": "Datto RMM generated an availability alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 3\nDevice: BRI-SW-125\nSite: Leeds Office\nEvent: Device/agent offline (last check-in exceeded threshold)\nSuggested action: Verify power and network connectivity, check switch port, attempt out-of-band access if available, escalate onsite if needed.",
+      "full_text": "RMM Agent Alert: BRI-SW-125 - Device Offline (Company 3) Datto RMM generated an availability alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 3\nDevice: BRI-SW-125\nSite: Leeds Office\nEvent: Device/agent offline (last check-in exceeded threshold)\nSuggested action: Verify power and network connectivity, check switch port, attempt out-of-band access if available, escalate onsite if needed.",
+      "predicted_category": "network",
+      "prediction_method": "keyword",
+      "confidence_scores": {
+        "malware": 63,
+        "phishing": 55,
+        "network": 66,
+        "access": 57,
+        "data_breach": 55
+      },
+      "top_confidence": 66
+    },
+    {
+      "ticket_number": "TCK-2025-0022",
+      "ticket_id": 100022,
+      "company": "Company 2",
+      "title": "RMM Agent Alert: BRI-FW-118 - Backup Failed (Company 2)",
+      "description": "Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 2\nDevice: BRI-FW-118\nSite: London Office\nEvent: Backup job failed\nTypical causes: storage full, agent service down, network interruption\nSuggested action: Check backup agent/service, verify repository access, retry job, confirm last successful restore point.",
+      "full_text": "RMM Agent Alert: BRI-FW-118 - Backup Failed (Company 2) Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 2\nDevice: BRI-FW-118\nSite: London Office\nEvent: Backup job failed\nTypical causes: storage full, agent service down, network interruption\nSuggested action: Check backup agent/service, verify repository access, retry job, confirm last successful restore point.",
+      "predicted_category": "network",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 59,
+        "phishing": 55,
+        "network": 60,
+        "access": 59,
+        "data_breach": 54
+      },
+      "top_confidence": 60
+    },
+    {
+      "ticket_number": "TCK-2025-0023",
+      "ticket_id": 100023,
+      "company": "Company 3",
+      "title": "RMM Agent Alert: M365 - Message Held in Quarantine (Company 3)",
+      "description": "Datto RMM generated an email security event.\nObserved: 2025-12-24T15:14:19Z\nTenant/Company: Company 3\nEvent: Message held/quarantined\nReason: Suspected phishing / policy match\nSuggested action: Review quarantine, validate sender, release or block, check user exposure.",
+      "full_text": "RMM Agent Alert: M365 - Message Held in Quarantine (Company 3) Datto RMM generated an email security event.\nObserved: 2025-12-24T15:14:19Z\nTenant/Company: Company 3\nEvent: Message held/quarantined\nReason: Suspected phishing / policy match\nSuggested action: Review quarantine, validate sender, release or block, check user exposure.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 69,
+        "phishing": 68,
+        "network": 55,
+        "access": 56,
+        "data_breach": 64
+      },
+      "top_confidence": 69
+    },
+    {
+      "ticket_number": "TCK-2025-0024",
+      "ticket_id": 100024,
+      "company": "Company 3",
+      "title": "RMM Agent Alert: BRI-NAS-155 - Patch Install Failed (Company 3)",
+      "description": "Datto RMM generated a patching alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 3\nDevice: BRI-NAS-155\nSite: Birmingham Office\nEvent: Patch installation failed\nPatch: KB2099951\nTypical causes: pending reboot, insufficient disk space, Windows Update corruption\nSuggested action: Check disk space, clear update cache, reboot, retry patch, perform manual install if necessary.",
+      "full_text": "RMM Agent Alert: BRI-NAS-155 - Patch Install Failed (Company 3) Datto RMM generated a patching alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 3\nDevice: BRI-NAS-155\nSite: Birmingham Office\nEvent: Patch installation failed\nPatch: KB2099951\nTypical causes: pending reboot, insufficient disk space, Windows Update corruption\nSuggested action: Check disk space, clear update cache, reboot, retry patch, perform manual install if necessary.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 60,
+        "phishing": 54,
+        "network": 58,
+        "access": 55,
+        "data_breach": 53
+      },
+      "top_confidence": 60
+    },
+    {
+      "ticket_number": "TCK-2025-0025",
+      "ticket_id": 100025,
+      "company": "Company 6",
+      "title": "RMM Agent Alert: LON-FW-171 - Device Offline (Company 6)",
+      "description": "Datto RMM generated an availability alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 6\nDevice: LON-FW-171\nSite: Birmingham Office\nEvent: Device/agent offline (last check-in exceeded threshold)\nSuggested action: Verify power and network connectivity, check switch port, attempt out-of-band access if available, escalate onsite if needed.",
+      "full_text": "RMM Agent Alert: LON-FW-171 - Device Offline (Company 6) Datto RMM generated an availability alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 6\nDevice: LON-FW-171\nSite: Birmingham Office\nEvent: Device/agent offline (last check-in exceeded threshold)\nSuggested action: Verify power and network connectivity, check switch port, attempt out-of-band access if available, escalate onsite if needed.",
+      "predicted_category": "network",
+      "prediction_method": "keyword",
+      "confidence_scores": {
+        "malware": 64,
+        "phishing": 55,
+        "network": 68,
+        "access": 58,
+        "data_breach": 56
+      },
+      "top_confidence": 68
+    },
+    {
+      "ticket_number": "TCK-2025-0026",
+      "ticket_id": 100026,
+      "company": "Company 3",
+      "title": "RMM Agent Alert: BIR-FW-091 - Critical Vulnerabilities Detected (Company 3)",
+      "description": "Datto RMM generated a patch compliance alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 3\nDevice: BIR-FW-091\nSite: Manchester Office\nEvent: Missing security updates / vulnerabilities detected\nSuggested action: Review missing patches, schedule maintenance window, apply updates, reboot if required, confirm compliance.",
+      "full_text": "RMM Agent Alert: BIR-FW-091 - Critical Vulnerabilities Detected (Company 3) Datto RMM generated a patch compliance alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 3\nDevice: BIR-FW-091\nSite: Manchester Office\nEvent: Missing security updates / vulnerabilities detected\nSuggested action: Review missing patches, schedule maintenance window, apply updates, reboot if required, confirm compliance.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 62,
+        "phishing": 58,
+        "network": 58,
+        "access": 60,
+        "data_breach": 58
+      },
+      "top_confidence": 62
+    },
+    {
+      "ticket_number": "TCK-2025-0027",
+      "ticket_id": 100027,
+      "company": "Company 10",
+      "title": "RMM Agent Alert: BIR-FW-076 - Patch Install Failed (Company 10)",
+      "description": "Datto RMM generated a patching alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 10\nDevice: BIR-FW-076\nSite: Birmingham Office\nEvent: Patch installation failed\nPatch: KB7862751\nTypical causes: pending reboot, insufficient disk space, Windows Update corruption\nSuggested action: Check disk space, clear update cache, reboot, retry patch, perform manual install if necessary.",
+      "full_text": "RMM Agent Alert: BIR-FW-076 - Patch Install Failed (Company 10) Datto RMM generated a patching alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 10\nDevice: BIR-FW-076\nSite: Birmingham Office\nEvent: Patch installation failed\nPatch: KB7862751\nTypical causes: pending reboot, insufficient disk space, Windows Update corruption\nSuggested action: Check disk space, clear update cache, reboot, retry patch, perform manual install if necessary.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 59,
+        "phishing": 54,
+        "network": 56,
+        "access": 56,
+        "data_breach": 53
+      },
+      "top_confidence": 59
+    },
+    {
+      "ticket_number": "TCK-2025-0028",
+      "ticket_id": 100028,
+      "company": "Company 4",
+      "title": "RMM Agent Alert: LON-SW-106 - Device Offline (Company 4)",
+      "description": "Datto RMM generated an availability alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 4\nDevice: LON-SW-106\nSite: Birmingham Office\nEvent: Device/agent offline (last check-in exceeded threshold)\nSuggested action: Verify power and network connectivity, check switch port, attempt out-of-band access if available, escalate onsite if needed.",
+      "full_text": "RMM Agent Alert: LON-SW-106 - Device Offline (Company 4) Datto RMM generated an availability alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 4\nDevice: LON-SW-106\nSite: Birmingham Office\nEvent: Device/agent offline (last check-in exceeded threshold)\nSuggested action: Verify power and network connectivity, check switch port, attempt out-of-band access if available, escalate onsite if needed.",
+      "predicted_category": "network",
+      "prediction_method": "keyword",
+      "confidence_scores": {
+        "malware": 64,
+        "phishing": 55,
+        "network": 67,
+        "access": 58,
+        "data_breach": 55
+      },
+      "top_confidence": 67
+    },
+    {
+      "ticket_number": "TCK-2025-0029",
+      "ticket_id": 100029,
+      "company": "Company 5",
+      "title": "RMM Agent Alert: LEE-SW-171 - Device Offline (Company 5)",
+      "description": "Datto RMM generated an availability alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 5\nDevice: LEE-SW-171\nSite: Birmingham Office\nEvent: Device/agent offline (last check-in exceeded threshold)\nSuggested action: Verify power and network connectivity, check switch port, attempt out-of-band access if available, escalate onsite if needed.",
+      "full_text": "RMM Agent Alert: LEE-SW-171 - Device Offline (Company 5) Datto RMM generated an availability alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 5\nDevice: LEE-SW-171\nSite: Birmingham Office\nEvent: Device/agent offline (last check-in exceeded threshold)\nSuggested action: Verify power and network connectivity, check switch port, attempt out-of-band access if available, escalate onsite if needed.",
+      "predicted_category": "network",
+      "prediction_method": "keyword",
+      "confidence_scores": {
+        "malware": 66,
+        "phishing": 56,
+        "network": 67,
+        "access": 57,
+        "data_breach": 56
+      },
+      "top_confidence": 67
+    },
+    {
+      "ticket_number": "TCK-2025-0030",
+      "ticket_id": 100030,
+      "company": "Company 6",
+      "title": "RMM Agent Alert: BRI-SW-035 - Device Offline (Company 6)",
+      "description": "Datto RMM generated an availability alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 6\nDevice: BRI-SW-035\nSite: Leeds Office\nEvent: Device/agent offline (last check-in exceeded threshold)\nSuggested action: Verify power and network connectivity, check switch port, attempt out-of-band access if available, escalate onsite if needed.",
+      "full_text": "RMM Agent Alert: BRI-SW-035 - Device Offline (Company 6) Datto RMM generated an availability alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 6\nDevice: BRI-SW-035\nSite: Leeds Office\nEvent: Device/agent offline (last check-in exceeded threshold)\nSuggested action: Verify power and network connectivity, check switch port, attempt out-of-band access if available, escalate onsite if needed.",
+      "predicted_category": "network",
+      "prediction_method": "keyword",
+      "confidence_scores": {
+        "malware": 63,
+        "phishing": 55,
+        "network": 67,
+        "access": 57,
+        "data_breach": 56
+      },
+      "top_confidence": 67
+    },
+    {
+      "ticket_number": "TCK-2025-0031",
+      "ticket_id": 100031,
+      "company": "Company 1",
+      "title": "RMM Agent Alert: LEE-SW-138 - Backup Failed (Company 1)",
+      "description": "Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 1\nDevice: LEE-SW-138\nSite: Manchester Office\nEvent: Backup job failed\nTypical causes: storage full, agent service down, network interruption\nSuggested action: Check backup agent/service, verify repository access, retry job, confirm last successful restore point.",
+      "full_text": "RMM Agent Alert: LEE-SW-138 - Backup Failed (Company 1) Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 1\nDevice: LEE-SW-138\nSite: Manchester Office\nEvent: Backup job failed\nTypical causes: storage full, agent service down, network interruption\nSuggested action: Check backup agent/service, verify repository access, retry job, confirm last successful restore point.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 61,
+        "phishing": 57,
+        "network": 59,
+        "access": 57,
+        "data_breach": 53
+      },
+      "top_confidence": 61
+    },
+    {
+      "ticket_number": "TCK-2025-0032",
+      "ticket_id": 100032,
+      "company": "Company 10",
+      "title": "RMM Agent Alert: BIR-FW-160 - Backup Suspended (Company 10)",
+      "description": "Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 10\nDevice: BIR-FW-160\nSite: Birmingham Office\nEvent: Backup suspended/paused\nPossible causes: policy disabled, licensing issue, repository unavailable\nSuggested action: Validate policy state, check licensing, verify storage health, resume backups and confirm completion.",
+      "full_text": "RMM Agent Alert: BIR-FW-160 - Backup Suspended (Company 10) Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 10\nDevice: BIR-FW-160\nSite: Birmingham Office\nEvent: Backup suspended/paused\nPossible causes: policy disabled, licensing issue, repository unavailable\nSuggested action: Validate policy state, check licensing, verify storage health, resume backups and confirm completion.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 62,
+        "phishing": 57,
+        "network": 60,
+        "access": 58,
+        "data_breach": 57
+      },
+      "top_confidence": 62
+    },
+    {
+      "ticket_number": "TCK-2025-0033",
+      "ticket_id": 100033,
+      "company": "Company 5",
+      "title": "RMM Agent Alert: BRI-SRV-092 - Patch Install Failed (Company 5)",
+      "description": "Datto RMM generated a patching alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 5\nDevice: BRI-SRV-092\nSite: London Office\nEvent: Patch installation failed\nPatch: KB6871701\nTypical causes: pending reboot, insufficient disk space, Windows Update corruption\nSuggested action: Check disk space, clear update cache, reboot, retry patch, perform manual install if necessary.",
+      "full_text": "RMM Agent Alert: BRI-SRV-092 - Patch Install Failed (Company 5) Datto RMM generated a patching alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 5\nDevice: BRI-SRV-092\nSite: London Office\nEvent: Patch installation failed\nPatch: KB6871701\nTypical causes: pending reboot, insufficient disk space, Windows Update corruption\nSuggested action: Check disk space, clear update cache, reboot, retry patch, perform manual install if necessary.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 59,
+        "phishing": 54,
+        "network": 56,
+        "access": 54,
+        "data_breach": 54
+      },
+      "top_confidence": 59
+    },
+    {
+      "ticket_number": "TCK-2025-0034",
+      "ticket_id": 100034,
+      "company": "Company 8",
+      "title": "RMM Agent Alert: M365 - Message Held in Quarantine (Company 8)",
+      "description": "Datto RMM generated an email security event.\nObserved: 2025-12-24T15:14:19Z\nTenant/Company: Company 8\nEvent: Message held/quarantined\nReason: Suspected phishing / policy match\nSuggested action: Review quarantine, validate sender, release or block, check user exposure.",
+      "full_text": "RMM Agent Alert: M365 - Message Held in Quarantine (Company 8) Datto RMM generated an email security event.\nObserved: 2025-12-24T15:14:19Z\nTenant/Company: Company 8\nEvent: Message held/quarantined\nReason: Suspected phishing / policy match\nSuggested action: Review quarantine, validate sender, release or block, check user exposure.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 69,
+        "phishing": 68,
+        "network": 55,
+        "access": 56,
+        "data_breach": 64
+      },
+      "top_confidence": 69
+    },
+    {
+      "ticket_number": "TCK-2025-0035",
+      "ticket_id": 100035,
+      "company": "Company 4",
+      "title": "RMM Agent Alert: LON-SRV-130 - Backup Suspended (Company 4)",
+      "description": "Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 4\nDevice: LON-SRV-130\nSite: Leeds Office\nEvent: Backup suspended/paused\nPossible causes: policy disabled, licensing issue, repository unavailable\nSuggested action: Validate policy state, check licensing, verify storage health, resume backups and confirm completion.",
+      "full_text": "RMM Agent Alert: LON-SRV-130 - Backup Suspended (Company 4) Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 4\nDevice: LON-SRV-130\nSite: Leeds Office\nEvent: Backup suspended/paused\nPossible causes: policy disabled, licensing issue, repository unavailable\nSuggested action: Validate policy state, check licensing, verify storage health, resume backups and confirm completion.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 62,
+        "phishing": 57,
+        "network": 61,
+        "access": 57,
+        "data_breach": 56
+      },
+      "top_confidence": 62
+    },
+    {
+      "ticket_number": "TCK-2025-0036",
+      "ticket_id": 100036,
+      "company": "Company 4",
+      "title": "RMM Agent Alert: M365 - Message Held in Quarantine (Company 4)",
+      "description": "Datto RMM generated an email security event.\nObserved: 2025-12-24T15:14:19Z\nTenant/Company: Company 4\nEvent: Message held/quarantined\nReason: Suspected phishing / policy match\nSuggested action: Review quarantine, validate sender, release or block, check user exposure.",
+      "full_text": "RMM Agent Alert: M365 - Message Held in Quarantine (Company 4) Datto RMM generated an email security event.\nObserved: 2025-12-24T15:14:19Z\nTenant/Company: Company 4\nEvent: Message held/quarantined\nReason: Suspected phishing / policy match\nSuggested action: Review quarantine, validate sender, release or block, check user exposure.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 69,
+        "phishing": 68,
+        "network": 55,
+        "access": 57,
+        "data_breach": 63
+      },
+      "top_confidence": 69
+    },
+    {
+      "ticket_number": "TCK-2025-0037",
+      "ticket_id": 100037,
+      "company": "Company 5",
+      "title": "RMM Agent Alert: BIR-WS-141 - Backup Suspended (Company 5)",
+      "description": "Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 5\nDevice: BIR-WS-141\nSite: London Office\nEvent: Backup suspended/paused\nPossible causes: policy disabled, licensing issue, repository unavailable\nSuggested action: Validate policy state, check licensing, verify storage health, resume backups and confirm completion.",
+      "full_text": "RMM Agent Alert: BIR-WS-141 - Backup Suspended (Company 5) Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 5\nDevice: BIR-WS-141\nSite: London Office\nEvent: Backup suspended/paused\nPossible causes: policy disabled, licensing issue, repository unavailable\nSuggested action: Validate policy state, check licensing, verify storage health, resume backups and confirm completion.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 62,
+        "phishing": 57,
+        "network": 61,
+        "access": 57,
+        "data_breach": 57
+      },
+      "top_confidence": 62
+    },
+    {
+      "ticket_number": "TCK-2025-0038",
+      "ticket_id": 100038,
+      "company": "Company 9",
+      "title": "RMM Agent Alert: LEE-NAS-176 - Backup Failed (Company 9)",
+      "description": "Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 9\nDevice: LEE-NAS-176\nSite: Birmingham Office\nEvent: Backup job failed\nTypical causes: storage full, agent service down, network interruption\nSuggested action: Check backup agent/service, verify repository access, retry job, confirm last successful restore point.",
+      "full_text": "RMM Agent Alert: LEE-NAS-176 - Backup Failed (Company 9) Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 9\nDevice: LEE-NAS-176\nSite: Birmingham Office\nEvent: Backup job failed\nTypical causes: storage full, agent service down, network interruption\nSuggested action: Check backup agent/service, verify repository access, retry job, confirm last successful restore point.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 62,
+        "phishing": 57,
+        "network": 61,
+        "access": 57,
+        "data_breach": 53
+      },
+      "top_confidence": 62
+    },
+    {
+      "ticket_number": "TCK-2025-0039",
+      "ticket_id": 100039,
+      "company": "Company 5",
+      "title": "RMM Agent Alert: M365 - Message Held in Quarantine (Company 5)",
+      "description": "Datto RMM generated an email security event.\nObserved: 2025-12-24T15:14:19Z\nTenant/Company: Company 5\nEvent: Message held/quarantined\nReason: Suspected phishing / policy match\nSuggested action: Review quarantine, validate sender, release or block, check user exposure.",
+      "full_text": "RMM Agent Alert: M365 - Message Held in Quarantine (Company 5) Datto RMM generated an email security event.\nObserved: 2025-12-24T15:14:19Z\nTenant/Company: Company 5\nEvent: Message held/quarantined\nReason: Suspected phishing / policy match\nSuggested action: Review quarantine, validate sender, release or block, check user exposure.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 69,
+        "phishing": 68,
+        "network": 55,
+        "access": 56,
+        "data_breach": 64
+      },
+      "top_confidence": 69
+    },
+    {
+      "ticket_number": "TCK-2025-0040",
+      "ticket_id": 100040,
+      "company": "Company 10",
+      "title": "RMM Agent Alert: LEE-SRV-030 - Patch Install Failed (Company 10)",
+      "description": "Datto RMM generated a patching alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 10\nDevice: LEE-SRV-030\nSite: London Office\nEvent: Patch installation failed\nPatch: KB6350019\nTypical causes: pending reboot, insufficient disk space, Windows Update corruption\nSuggested action: Check disk space, clear update cache, reboot, retry patch, perform manual install if necessary.",
+      "full_text": "RMM Agent Alert: LEE-SRV-030 - Patch Install Failed (Company 10) Datto RMM generated a patching alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 10\nDevice: LEE-SRV-030\nSite: London Office\nEvent: Patch installation failed\nPatch: KB6350019\nTypical causes: pending reboot, insufficient disk space, Windows Update corruption\nSuggested action: Check disk space, clear update cache, reboot, retry patch, perform manual install if necessary.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 62,
+        "phishing": 55,
+        "network": 56,
+        "access": 54,
+        "data_breach": 53
+      },
+      "top_confidence": 62
+    },
+    {
+      "ticket_number": "TCK-2025-0041",
+      "ticket_id": 100041,
+      "company": "Company 9",
+      "title": "RMM Agent Alert: LON-ESX-089 - Backup Failed (Company 9)",
+      "description": "Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 9\nDevice: LON-ESX-089\nSite: Birmingham Office\nEvent: Backup job failed\nTypical causes: storage full, agent service down, network interruption\nSuggested action: Check backup agent/service, verify repository access, retry job, confirm last successful restore point.",
+      "full_text": "RMM Agent Alert: LON-ESX-089 - Backup Failed (Company 9) Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 9\nDevice: LON-ESX-089\nSite: Birmingham Office\nEvent: Backup job failed\nTypical causes: storage full, agent service down, network interruption\nSuggested action: Check backup agent/service, verify repository access, retry job, confirm last successful restore point.",
+      "predicted_category": "network",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 60,
+        "phishing": 55,
+        "network": 61,
+        "access": 56,
+        "data_breach": 53
+      },
+      "top_confidence": 61
+    },
+    {
+      "ticket_number": "TCK-2025-0042",
+      "ticket_id": 100042,
+      "company": "Company 11",
+      "title": "RMM Agent Alert: BIR-SRV-005 - Device Offline (Company 11)",
+      "description": "Datto RMM generated an availability alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 11\nDevice: BIR-SRV-005\nSite: Birmingham Office\nEvent: Device/agent offline (last check-in exceeded threshold)\nSuggested action: Verify power and network connectivity, check switch port, attempt out-of-band access if available, escalate onsite if needed.",
+      "full_text": "RMM Agent Alert: BIR-SRV-005 - Device Offline (Company 11) Datto RMM generated an availability alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 11\nDevice: BIR-SRV-005\nSite: Birmingham Office\nEvent: Device/agent offline (last check-in exceeded threshold)\nSuggested action: Verify power and network connectivity, check switch port, attempt out-of-band access if available, escalate onsite if needed.",
+      "predicted_category": "network",
+      "prediction_method": "keyword",
+      "confidence_scores": {
+        "malware": 62,
+        "phishing": 55,
+        "network": 66,
+        "access": 57,
+        "data_breach": 55
+      },
+      "top_confidence": 66
+    },
+    {
+      "ticket_number": "TCK-2025-0043",
+      "ticket_id": 100043,
+      "company": "Company 9",
+      "title": "RMM Agent Alert: BIR-SRV-027 - Backup Failed (Company 9)",
+      "description": "Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 9\nDevice: BIR-SRV-027\nSite: Manchester Office\nEvent: Backup job failed\nTypical causes: storage full, agent service down, network interruption\nSuggested action: Check backup agent/service, verify repository access, retry job, confirm last successful restore point.",
+      "full_text": "RMM Agent Alert: BIR-SRV-027 - Backup Failed (Company 9) Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 9\nDevice: BIR-SRV-027\nSite: Manchester Office\nEvent: Backup job failed\nTypical causes: storage full, agent service down, network interruption\nSuggested action: Check backup agent/service, verify repository access, retry job, confirm last successful restore point.",
+      "predicted_category": "network",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 57,
+        "phishing": 55,
+        "network": 59,
+        "access": 56,
+        "data_breach": 52
+      },
+      "top_confidence": 59
+    },
+    {
+      "ticket_number": "TCK-2025-0044",
+      "ticket_id": 100044,
+      "company": "Company 4",
+      "title": "RMM Agent Alert: LON-NAS-162 - Critical Vulnerabilities Detected (Company 4)",
+      "description": "Datto RMM generated a patch compliance alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 4\nDevice: LON-NAS-162\nSite: Leeds Office\nEvent: Missing security updates / vulnerabilities detected\nSuggested action: Review missing patches, schedule maintenance window, apply updates, reboot if required, confirm compliance.",
+      "full_text": "RMM Agent Alert: LON-NAS-162 - Critical Vulnerabilities Detected (Company 4) Datto RMM generated a patch compliance alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 4\nDevice: LON-NAS-162\nSite: Leeds Office\nEvent: Missing security updates / vulnerabilities detected\nSuggested action: Review missing patches, schedule maintenance window, apply updates, reboot if required, confirm compliance.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 64,
+        "phishing": 58,
+        "network": 61,
+        "access": 61,
+        "data_breach": 58
+      },
+      "top_confidence": 64
+    },
+    {
+      "ticket_number": "TCK-2025-0045",
+      "ticket_id": 100045,
+      "company": "Company 12",
+      "title": "RMM Agent Alert: BRI-SW-167 - Backup Failed (Company 12)",
+      "description": "Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 12\nDevice: BRI-SW-167\nSite: Birmingham Office\nEvent: Backup job failed\nTypical causes: storage full, agent service down, network interruption\nSuggested action: Check backup agent/service, verify repository access, retry job, confirm last successful restore point.",
+      "full_text": "RMM Agent Alert: BRI-SW-167 - Backup Failed (Company 12) Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 12\nDevice: BRI-SW-167\nSite: Birmingham Office\nEvent: Backup job failed\nTypical causes: storage full, agent service down, network interruption\nSuggested action: Check backup agent/service, verify repository access, retry job, confirm last successful restore point.",
+      "predicted_category": "network",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 59,
+        "phishing": 55,
+        "network": 60,
+        "access": 55,
+        "data_breach": 52
+      },
+      "top_confidence": 60
+    },
+    {
+      "ticket_number": "TCK-2025-0046",
+      "ticket_id": 100046,
+      "company": "Company 1",
+      "title": "RMM Agent Alert: BIR-FW-059 - Backup Suspended (Company 1)",
+      "description": "Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 1\nDevice: BIR-FW-059\nSite: London Office\nEvent: Backup suspended/paused\nPossible causes: policy disabled, licensing issue, repository unavailable\nSuggested action: Validate policy state, check licensing, verify storage health, resume backups and confirm completion.",
+      "full_text": "RMM Agent Alert: BIR-FW-059 - Backup Suspended (Company 1) Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 1\nDevice: BIR-FW-059\nSite: London Office\nEvent: Backup suspended/paused\nPossible causes: policy disabled, licensing issue, repository unavailable\nSuggested action: Validate policy state, check licensing, verify storage health, resume backups and confirm completion.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 62,
+        "phishing": 58,
+        "network": 60,
+        "access": 58,
+        "data_breach": 58
+      },
+      "top_confidence": 62
+    },
+    {
+      "ticket_number": "TCK-2025-0047",
+      "ticket_id": 100047,
+      "company": "Company 7",
+      "title": "RMM Agent Alert: M365 - Message Held in Quarantine (Company 7)",
+      "description": "Datto RMM generated an email security event.\nObserved: 2025-12-24T15:14:19Z\nTenant/Company: Company 7\nEvent: Message held/quarantined\nReason: Suspected phishing / policy match\nSuggested action: Review quarantine, validate sender, release or block, check user exposure.",
+      "full_text": "RMM Agent Alert: M365 - Message Held in Quarantine (Company 7) Datto RMM generated an email security event.\nObserved: 2025-12-24T15:14:19Z\nTenant/Company: Company 7\nEvent: Message held/quarantined\nReason: Suspected phishing / policy match\nSuggested action: Review quarantine, validate sender, release or block, check user exposure.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 69,
+        "phishing": 68,
+        "network": 54,
+        "access": 56,
+        "data_breach": 64
+      },
+      "top_confidence": 69
+    },
+    {
+      "ticket_number": "TCK-2025-0048",
+      "ticket_id": 100048,
+      "company": "Company 1",
+      "title": "RMM Agent Alert: MAN-ESX-021 - Backup Suspended (Company 1)",
+      "description": "Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 1\nDevice: MAN-ESX-021\nSite: London Office\nEvent: Backup suspended/paused\nPossible causes: policy disabled, licensing issue, repository unavailable\nSuggested action: Validate policy state, check licensing, verify storage health, resume backups and confirm completion.",
+      "full_text": "RMM Agent Alert: MAN-ESX-021 - Backup Suspended (Company 1) Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 1\nDevice: MAN-ESX-021\nSite: London Office\nEvent: Backup suspended/paused\nPossible causes: policy disabled, licensing issue, repository unavailable\nSuggested action: Validate policy state, check licensing, verify storage health, resume backups and confirm completion.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 62,
+        "phishing": 58,
+        "network": 58,
+        "access": 56,
+        "data_breach": 58
+      },
+      "top_confidence": 62
+    },
+    {
+      "ticket_number": "TCK-2025-0049",
+      "ticket_id": 100049,
+      "company": "Company 3",
+      "title": "RMM Agent Alert: LON-WS-008 - Critical Vulnerabilities Detected (Company 3)",
+      "description": "Datto RMM generated a patch compliance alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 3\nDevice: LON-WS-008\nSite: Leeds Office\nEvent: Missing security updates / vulnerabilities detected\nSuggested action: Review missing patches, schedule maintenance window, apply updates, reboot if required, confirm compliance.",
+      "full_text": "RMM Agent Alert: LON-WS-008 - Critical Vulnerabilities Detected (Company 3) Datto RMM generated a patch compliance alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 3\nDevice: LON-WS-008\nSite: Leeds Office\nEvent: Missing security updates / vulnerabilities detected\nSuggested action: Review missing patches, schedule maintenance window, apply updates, reboot if required, confirm compliance.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 64,
+        "phishing": 57,
+        "network": 60,
+        "access": 59,
+        "data_breach": 58
+      },
+      "top_confidence": 64
+    },
+    {
+      "ticket_number": "TCK-2025-0050",
+      "ticket_id": 100050,
+      "company": "Company 1",
+      "title": "RMM Agent Alert: BIR-FW-171 - Critical Vulnerabilities Detected (Company 1)",
+      "description": "Datto RMM generated a patch compliance alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 1\nDevice: BIR-FW-171\nSite: Bristol Office\nEvent: Missing security updates / vulnerabilities detected\nSuggested action: Review missing patches, schedule maintenance window, apply updates, reboot if required, confirm compliance.",
+      "full_text": "RMM Agent Alert: BIR-FW-171 - Critical Vulnerabilities Detected (Company 1) Datto RMM generated a patch compliance alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 1\nDevice: BIR-FW-171\nSite: Bristol Office\nEvent: Missing security updates / vulnerabilities detected\nSuggested action: Review missing patches, schedule maintenance window, apply updates, reboot if required, confirm compliance.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 64,
+        "phishing": 58,
+        "network": 59,
+        "access": 61,
+        "data_breach": 58
+      },
+      "top_confidence": 64
+    },
+    {
+      "ticket_number": "TCK-2025-0051",
+      "ticket_id": 100051,
+      "company": "Company 11",
+      "title": "RMM Agent Alert: LON-ESX-171 - Device Offline (Company 11)",
+      "description": "Datto RMM generated an availability alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 11\nDevice: LON-ESX-171\nSite: Leeds Office\nEvent: Device/agent offline (last check-in exceeded threshold)\nSuggested action: Verify power and network connectivity, check switch port, attempt out-of-band access if available, escalate onsite if needed.",
+      "full_text": "RMM Agent Alert: LON-ESX-171 - Device Offline (Company 11) Datto RMM generated an availability alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 11\nDevice: LON-ESX-171\nSite: Leeds Office\nEvent: Device/agent offline (last check-in exceeded threshold)\nSuggested action: Verify power and network connectivity, check switch port, attempt out-of-band access if available, escalate onsite if needed.",
+      "predicted_category": "network",
+      "prediction_method": "keyword",
+      "confidence_scores": {
+        "malware": 63,
+        "phishing": 55,
+        "network": 67,
+        "access": 57,
+        "data_breach": 55
+      },
+      "top_confidence": 67
+    },
+    {
+      "ticket_number": "TCK-2025-0052",
+      "ticket_id": 100052,
+      "company": "Company 11",
+      "title": "RMM Agent Alert: M365 - Message Held in Quarantine (Company 11)",
+      "description": "Datto RMM generated an email security event.\nObserved: 2025-12-24T15:14:19Z\nTenant/Company: Company 11\nEvent: Message held/quarantined\nReason: Suspected phishing / policy match\nSuggested action: Review quarantine, validate sender, release or block, check user exposure.",
+      "full_text": "RMM Agent Alert: M365 - Message Held in Quarantine (Company 11) Datto RMM generated an email security event.\nObserved: 2025-12-24T15:14:19Z\nTenant/Company: Company 11\nEvent: Message held/quarantined\nReason: Suspected phishing / policy match\nSuggested action: Review quarantine, validate sender, release or block, check user exposure.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 69,
+        "phishing": 68,
+        "network": 55,
+        "access": 56,
+        "data_breach": 64
+      },
+      "top_confidence": 69
+    },
+    {
+      "ticket_number": "TCK-2025-0053",
+      "ticket_id": 100053,
+      "company": "Company 3",
+      "title": "RMM Agent Alert: BIR-WS-025 - Backup Failed (Company 3)",
+      "description": "Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 3\nDevice: BIR-WS-025\nSite: Manchester Office\nEvent: Backup job failed\nTypical causes: storage full, agent service down, network interruption\nSuggested action: Check backup agent/service, verify repository access, retry job, confirm last successful restore point.",
+      "full_text": "RMM Agent Alert: BIR-WS-025 - Backup Failed (Company 3) Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 3\nDevice: BIR-WS-025\nSite: Manchester Office\nEvent: Backup job failed\nTypical causes: storage full, agent service down, network interruption\nSuggested action: Check backup agent/service, verify repository access, retry job, confirm last successful restore point.",
+      "predicted_category": "network",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 58,
+        "phishing": 56,
+        "network": 61,
+        "access": 57,
+        "data_breach": 52
+      },
+      "top_confidence": 61
+    },
+    {
+      "ticket_number": "TCK-2025-0054",
+      "ticket_id": 100054,
+      "company": "Company 2",
+      "title": "RMM Agent Alert: MAN-SRV-192 - Patch Install Failed (Company 2)",
+      "description": "Datto RMM generated a patching alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 2\nDevice: MAN-SRV-192\nSite: Leeds Office\nEvent: Patch installation failed\nPatch: KB7478220\nTypical causes: pending reboot, insufficient disk space, Windows Update corruption\nSuggested action: Check disk space, clear update cache, reboot, retry patch, perform manual install if necessary.",
+      "full_text": "RMM Agent Alert: MAN-SRV-192 - Patch Install Failed (Company 2) Datto RMM generated a patching alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 2\nDevice: MAN-SRV-192\nSite: Leeds Office\nEvent: Patch installation failed\nPatch: KB7478220\nTypical causes: pending reboot, insufficient disk space, Windows Update corruption\nSuggested action: Check disk space, clear update cache, reboot, retry patch, perform manual install if necessary.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 59,
+        "phishing": 54,
+        "network": 55,
+        "access": 55,
+        "data_breach": 53
+      },
+      "top_confidence": 59
+    },
+    {
+      "ticket_number": "TCK-2025-0055",
+      "ticket_id": 100055,
+      "company": "Company 9",
+      "title": "RMM Agent Alert: BIR-ESX-037 - Critical Vulnerabilities Detected (Company 9)",
+      "description": "Datto RMM generated a patch compliance alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 9\nDevice: BIR-ESX-037\nSite: Manchester Office\nEvent: Missing security updates / vulnerabilities detected\nSuggested action: Review missing patches, schedule maintenance window, apply updates, reboot if required, confirm compliance.",
+      "full_text": "RMM Agent Alert: BIR-ESX-037 - Critical Vulnerabilities Detected (Company 9) Datto RMM generated a patch compliance alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 9\nDevice: BIR-ESX-037\nSite: Manchester Office\nEvent: Missing security updates / vulnerabilities detected\nSuggested action: Review missing patches, schedule maintenance window, apply updates, reboot if required, confirm compliance.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 62,
+        "phishing": 58,
+        "network": 57,
+        "access": 59,
+        "data_breach": 58
+      },
+      "top_confidence": 62
+    },
+    {
+      "ticket_number": "TCK-2025-0056",
+      "ticket_id": 100056,
+      "company": "Company 5",
+      "title": "RMM Agent Alert: LEE-SW-035 - Device Offline (Company 5)",
+      "description": "Datto RMM generated an availability alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 5\nDevice: LEE-SW-035\nSite: Leeds Office\nEvent: Device/agent offline (last check-in exceeded threshold)\nSuggested action: Verify power and network connectivity, check switch port, attempt out-of-band access if available, escalate onsite if needed.",
+      "full_text": "RMM Agent Alert: LEE-SW-035 - Device Offline (Company 5) Datto RMM generated an availability alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 5\nDevice: LEE-SW-035\nSite: Leeds Office\nEvent: Device/agent offline (last check-in exceeded threshold)\nSuggested action: Verify power and network connectivity, check switch port, attempt out-of-band access if available, escalate onsite if needed.",
+      "predicted_category": "network",
+      "prediction_method": "keyword",
+      "confidence_scores": {
+        "malware": 65,
+        "phishing": 56,
+        "network": 67,
+        "access": 57,
+        "data_breach": 56
+      },
+      "top_confidence": 67
+    },
+    {
+      "ticket_number": "TCK-2025-0057",
+      "ticket_id": 100057,
+      "company": "Company 5",
+      "title": "RMM Agent Alert: BRI-ESX-038 - Patch Install Failed (Company 5)",
+      "description": "Datto RMM generated a patching alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 5\nDevice: BRI-ESX-038\nSite: Manchester Office\nEvent: Patch installation failed\nPatch: KB9031278\nTypical causes: pending reboot, insufficient disk space, Windows Update corruption\nSuggested action: Check disk space, clear update cache, reboot, retry patch, perform manual install if necessary.",
+      "full_text": "RMM Agent Alert: BRI-ESX-038 - Patch Install Failed (Company 5) Datto RMM generated a patching alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 5\nDevice: BRI-ESX-038\nSite: Manchester Office\nEvent: Patch installation failed\nPatch: KB9031278\nTypical causes: pending reboot, insufficient disk space, Windows Update corruption\nSuggested action: Check disk space, clear update cache, reboot, retry patch, perform manual install if necessary.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 60,
+        "phishing": 54,
+        "network": 55,
+        "access": 54,
+        "data_breach": 54
+      },
+      "top_confidence": 60
+    },
+    {
+      "ticket_number": "TCK-2025-0058",
+      "ticket_id": 100058,
+      "company": "Company 3",
+      "title": "RMM Agent Alert: BIR-FW-053 - Device Offline (Company 3)",
+      "description": "Datto RMM generated an availability alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 3\nDevice: BIR-FW-053\nSite: Manchester Office\nEvent: Device/agent offline (last check-in exceeded threshold)\nSuggested action: Verify power and network connectivity, check switch port, attempt out-of-band access if available, escalate onsite if needed.",
+      "full_text": "RMM Agent Alert: BIR-FW-053 - Device Offline (Company 3) Datto RMM generated an availability alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 3\nDevice: BIR-FW-053\nSite: Manchester Office\nEvent: Device/agent offline (last check-in exceeded threshold)\nSuggested action: Verify power and network connectivity, check switch port, attempt out-of-band access if available, escalate onsite if needed.",
+      "predicted_category": "network",
+      "prediction_method": "keyword",
+      "confidence_scores": {
+        "malware": 62,
+        "phishing": 56,
+        "network": 66,
+        "access": 58,
+        "data_breach": 55
+      },
+      "top_confidence": 66
+    },
+    {
+      "ticket_number": "TCK-2025-0059",
+      "ticket_id": 100059,
+      "company": "Company 8",
+      "title": "RMM Agent Alert: BRI-WS-047 - Patch Install Failed (Company 8)",
+      "description": "Datto RMM generated a patching alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 8\nDevice: BRI-WS-047\nSite: Birmingham Office\nEvent: Patch installation failed\nPatch: KB6056663\nTypical causes: pending reboot, insufficient disk space, Windows Update corruption\nSuggested action: Check disk space, clear update cache, reboot, retry patch, perform manual install if necessary.",
+      "full_text": "RMM Agent Alert: BRI-WS-047 - Patch Install Failed (Company 8) Datto RMM generated a patching alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 8\nDevice: BRI-WS-047\nSite: Birmingham Office\nEvent: Patch installation failed\nPatch: KB6056663\nTypical causes: pending reboot, insufficient disk space, Windows Update corruption\nSuggested action: Check disk space, clear update cache, reboot, retry patch, perform manual install if necessary.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 59,
+        "phishing": 53,
+        "network": 57,
+        "access": 53,
+        "data_breach": 53
+      },
+      "top_confidence": 59
+    },
+    {
+      "ticket_number": "TCK-2025-0060",
+      "ticket_id": 100060,
+      "company": "Company 7",
+      "title": "RMM Agent Alert: LEE-ESX-085 - Patch Install Failed (Company 7)",
+      "description": "Datto RMM generated a patching alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 7\nDevice: LEE-ESX-085\nSite: Bristol Office\nEvent: Patch installation failed\nPatch: KB7554029\nTypical causes: pending reboot, insufficient disk space, Windows Update corruption\nSuggested action: Check disk space, clear update cache, reboot, retry patch, perform manual install if necessary.",
+      "full_text": "RMM Agent Alert: LEE-ESX-085 - Patch Install Failed (Company 7) Datto RMM generated a patching alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 7\nDevice: LEE-ESX-085\nSite: Bristol Office\nEvent: Patch installation failed\nPatch: KB7554029\nTypical causes: pending reboot, insufficient disk space, Windows Update corruption\nSuggested action: Check disk space, clear update cache, reboot, retry patch, perform manual install if necessary.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 63,
+        "phishing": 55,
+        "network": 56,
+        "access": 54,
+        "data_breach": 54
+      },
+      "top_confidence": 63
+    },
+    {
+      "ticket_number": "TCK-2025-0061",
+      "ticket_id": 100061,
+      "company": "Company 4",
+      "title": "RMM Agent Alert: BIR-SRV-086 - Backup Suspended (Company 4)",
+      "description": "Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 4\nDevice: BIR-SRV-086\nSite: Bristol Office\nEvent: Backup suspended/paused\nPossible causes: policy disabled, licensing issue, repository unavailable\nSuggested action: Validate policy state, check licensing, verify storage health, resume backups and confirm completion.",
+      "full_text": "RMM Agent Alert: BIR-SRV-086 - Backup Suspended (Company 4) Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 4\nDevice: BIR-SRV-086\nSite: Bristol Office\nEvent: Backup suspended/paused\nPossible causes: policy disabled, licensing issue, repository unavailable\nSuggested action: Validate policy state, check licensing, verify storage health, resume backups and confirm completion.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 62,
+        "phishing": 58,
+        "network": 60,
+        "access": 57,
+        "data_breach": 57
+      },
+      "top_confidence": 62
+    },
+    {
+      "ticket_number": "TCK-2025-0062",
+      "ticket_id": 100062,
+      "company": "Company 9",
+      "title": "RMM Agent Alert: M365 - Message Held in Quarantine (Company 9)",
+      "description": "Datto RMM generated an email security event.\nObserved: 2025-12-24T15:14:19Z\nTenant/Company: Company 9\nEvent: Message held/quarantined\nReason: Suspected phishing / policy match\nSuggested action: Review quarantine, validate sender, release or block, check user exposure.",
+      "full_text": "RMM Agent Alert: M365 - Message Held in Quarantine (Company 9) Datto RMM generated an email security event.\nObserved: 2025-12-24T15:14:19Z\nTenant/Company: Company 9\nEvent: Message held/quarantined\nReason: Suspected phishing / policy match\nSuggested action: Review quarantine, validate sender, release or block, check user exposure.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 69,
+        "phishing": 68,
+        "network": 54,
+        "access": 56,
+        "data_breach": 64
+      },
+      "top_confidence": 69
+    },
+    {
+      "ticket_number": "TCK-2025-0063",
+      "ticket_id": 100063,
+      "company": "Company 8",
+      "title": "RMM Agent Alert: LON-WS-096 - Backup Failed (Company 8)",
+      "description": "Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 8\nDevice: LON-WS-096\nSite: Manchester Office\nEvent: Backup job failed\nTypical causes: storage full, agent service down, network interruption\nSuggested action: Check backup agent/service, verify repository access, retry job, confirm last successful restore point.",
+      "full_text": "RMM Agent Alert: LON-WS-096 - Backup Failed (Company 8) Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 8\nDevice: LON-WS-096\nSite: Manchester Office\nEvent: Backup job failed\nTypical causes: storage full, agent service down, network interruption\nSuggested action: Check backup agent/service, verify repository access, retry job, confirm last successful restore point.",
+      "predicted_category": "network",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 60,
+        "phishing": 56,
+        "network": 61,
+        "access": 55,
+        "data_breach": 53
+      },
+      "top_confidence": 61
+    },
+    {
+      "ticket_number": "TCK-2025-0064",
+      "ticket_id": 100064,
+      "company": "Company 10",
+      "title": "RMM Agent Alert: LON-FW-153 - Device Offline (Company 10)",
+      "description": "Datto RMM generated an availability alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 10\nDevice: LON-FW-153\nSite: Bristol Office\nEvent: Device/agent offline (last check-in exceeded threshold)\nSuggested action: Verify power and network connectivity, check switch port, attempt out-of-band access if available, escalate onsite if needed.",
+      "full_text": "RMM Agent Alert: LON-FW-153 - Device Offline (Company 10) Datto RMM generated an availability alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 10\nDevice: LON-FW-153\nSite: Bristol Office\nEvent: Device/agent offline (last check-in exceeded threshold)\nSuggested action: Verify power and network connectivity, check switch port, attempt out-of-band access if available, escalate onsite if needed.",
+      "predicted_category": "network",
+      "prediction_method": "keyword",
+      "confidence_scores": {
+        "malware": 64,
+        "phishing": 55,
+        "network": 68,
+        "access": 59,
+        "data_breach": 56
+      },
+      "top_confidence": 68
+    },
+    {
+      "ticket_number": "TCK-2025-0065",
+      "ticket_id": 100065,
+      "company": "Company 2",
+      "title": "RMM Agent Alert: BRI-FW-175 - Critical Vulnerabilities Detected (Company 2)",
+      "description": "Datto RMM generated a patch compliance alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 2\nDevice: BRI-FW-175\nSite: London Office\nEvent: Missing security updates / vulnerabilities detected\nSuggested action: Review missing patches, schedule maintenance window, apply updates, reboot if required, confirm compliance.",
+      "full_text": "RMM Agent Alert: BRI-FW-175 - Critical Vulnerabilities Detected (Company 2) Datto RMM generated a patch compliance alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 2\nDevice: BRI-FW-175\nSite: London Office\nEvent: Missing security updates / vulnerabilities detected\nSuggested action: Review missing patches, schedule maintenance window, apply updates, reboot if required, confirm compliance.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 64,
+        "phishing": 58,
+        "network": 59,
+        "access": 63,
+        "data_breach": 60
+      },
+      "top_confidence": 64
+    },
+    {
+      "ticket_number": "TCK-2025-0066",
+      "ticket_id": 100066,
+      "company": "Company 8",
+      "title": "RMM Agent Alert: LEE-SW-106 - Device Offline (Company 8)",
+      "description": "Datto RMM generated an availability alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 8\nDevice: LEE-SW-106\nSite: Leeds Office\nEvent: Device/agent offline (last check-in exceeded threshold)\nSuggested action: Verify power and network connectivity, check switch port, attempt out-of-band access if available, escalate onsite if needed.",
+      "full_text": "RMM Agent Alert: LEE-SW-106 - Device Offline (Company 8) Datto RMM generated an availability alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 8\nDevice: LEE-SW-106\nSite: Leeds Office\nEvent: Device/agent offline (last check-in exceeded threshold)\nSuggested action: Verify power and network connectivity, check switch port, attempt out-of-band access if available, escalate onsite if needed.",
+      "predicted_category": "network",
+      "prediction_method": "keyword",
+      "confidence_scores": {
+        "malware": 65,
+        "phishing": 56,
+        "network": 67,
+        "access": 58,
+        "data_breach": 56
+      },
+      "top_confidence": 67
+    },
+    {
+      "ticket_number": "TCK-2025-0067",
+      "ticket_id": 100067,
+      "company": "Company 12",
+      "title": "RMM Agent Alert: BIR-FW-135 - Backup Failed (Company 12)",
+      "description": "Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 12\nDevice: BIR-FW-135\nSite: Leeds Office\nEvent: Backup job failed\nTypical causes: storage full, agent service down, network interruption\nSuggested action: Check backup agent/service, verify repository access, retry job, confirm last successful restore point.",
+      "full_text": "RMM Agent Alert: BIR-FW-135 - Backup Failed (Company 12) Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 12\nDevice: BIR-FW-135\nSite: Leeds Office\nEvent: Backup job failed\nTypical causes: storage full, agent service down, network interruption\nSuggested action: Check backup agent/service, verify repository access, retry job, confirm last successful restore point.",
+      "predicted_category": "network",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 57,
+        "phishing": 55,
+        "network": 60,
+        "access": 58,
+        "data_breach": 52
+      },
+      "top_confidence": 60
+    },
+    {
+      "ticket_number": "TCK-2025-0068",
+      "ticket_id": 100068,
+      "company": "Company 9",
+      "title": "RMM Agent Alert: BRI-FW-141 - Backup Failed (Company 9)",
+      "description": "Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 9\nDevice: BRI-FW-141\nSite: Birmingham Office\nEvent: Backup job failed\nTypical causes: storage full, agent service down, network interruption\nSuggested action: Check backup agent/service, verify repository access, retry job, confirm last successful restore point.",
+      "full_text": "RMM Agent Alert: BRI-FW-141 - Backup Failed (Company 9) Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 9\nDevice: BRI-FW-141\nSite: Birmingham Office\nEvent: Backup job failed\nTypical causes: storage full, agent service down, network interruption\nSuggested action: Check backup agent/service, verify repository access, retry job, confirm last successful restore point.",
+      "predicted_category": "network",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 59,
+        "phishing": 55,
+        "network": 60,
+        "access": 57,
+        "data_breach": 53
+      },
+      "top_confidence": 60
+    },
+    {
+      "ticket_number": "TCK-2025-0069",
+      "ticket_id": 100069,
+      "company": "Company 10",
+      "title": "RMM Agent Alert: LON-WS-038 - Critical Vulnerabilities Detected (Company 10)",
+      "description": "Datto RMM generated a patch compliance alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 10\nDevice: LON-WS-038\nSite: Birmingham Office\nEvent: Missing security updates / vulnerabilities detected\nSuggested action: Review missing patches, schedule maintenance window, apply updates, reboot if required, confirm compliance.",
+      "full_text": "RMM Agent Alert: LON-WS-038 - Critical Vulnerabilities Detected (Company 10) Datto RMM generated a patch compliance alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 10\nDevice: LON-WS-038\nSite: Birmingham Office\nEvent: Missing security updates / vulnerabilities detected\nSuggested action: Review missing patches, schedule maintenance window, apply updates, reboot if required, confirm compliance.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 65,
+        "phishing": 57,
+        "network": 60,
+        "access": 59,
+        "data_breach": 58
+      },
+      "top_confidence": 65
+    },
+    {
+      "ticket_number": "TCK-2025-0070",
+      "ticket_id": 100070,
+      "company": "Company 5",
+      "title": "RMM Agent Alert: M365 - Message Held in Quarantine (Company 5)",
+      "description": "Datto RMM generated an email security event.\nObserved: 2025-12-24T15:14:19Z\nTenant/Company: Company 5\nEvent: Message held/quarantined\nReason: Suspected phishing / policy match\nSuggested action: Review quarantine, validate sender, release or block, check user exposure.",
+      "full_text": "RMM Agent Alert: M365 - Message Held in Quarantine (Company 5) Datto RMM generated an email security event.\nObserved: 2025-12-24T15:14:19Z\nTenant/Company: Company 5\nEvent: Message held/quarantined\nReason: Suspected phishing / policy match\nSuggested action: Review quarantine, validate sender, release or block, check user exposure.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 69,
+        "phishing": 68,
+        "network": 55,
+        "access": 56,
+        "data_breach": 64
+      },
+      "top_confidence": 69
+    },
+    {
+      "ticket_number": "TCK-2025-0071",
+      "ticket_id": 100071,
+      "company": "Company 11",
+      "title": "RMM Agent Alert: LON-SRV-041 - Patch Install Failed (Company 11)",
+      "description": "Datto RMM generated a patching alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 11\nDevice: LON-SRV-041\nSite: London Office\nEvent: Patch installation failed\nPatch: KB4052249\nTypical causes: pending reboot, insufficient disk space, Windows Update corruption\nSuggested action: Check disk space, clear update cache, reboot, retry patch, perform manual install if necessary.",
+      "full_text": "RMM Agent Alert: LON-SRV-041 - Patch Install Failed (Company 11) Datto RMM generated a patching alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 11\nDevice: LON-SRV-041\nSite: London Office\nEvent: Patch installation failed\nPatch: KB4052249\nTypical causes: pending reboot, insufficient disk space, Windows Update corruption\nSuggested action: Check disk space, clear update cache, reboot, retry patch, perform manual install if necessary.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 59,
+        "phishing": 53,
+        "network": 57,
+        "access": 54,
+        "data_breach": 53
+      },
+      "top_confidence": 59
+    },
+    {
+      "ticket_number": "TCK-2025-0072",
+      "ticket_id": 100072,
+      "company": "Company 11",
+      "title": "RMM Agent Alert: MAN-NAS-014 - Backup Failed (Company 11)",
+      "description": "Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 11\nDevice: MAN-NAS-014\nSite: Bristol Office\nEvent: Backup job failed\nTypical causes: storage full, agent service down, network interruption\nSuggested action: Check backup agent/service, verify repository access, retry job, confirm last successful restore point.",
+      "full_text": "RMM Agent Alert: MAN-NAS-014 - Backup Failed (Company 11) Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 11\nDevice: MAN-NAS-014\nSite: Bristol Office\nEvent: Backup job failed\nTypical causes: storage full, agent service down, network interruption\nSuggested action: Check backup agent/service, verify repository access, retry job, confirm last successful restore point.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 61,
+        "phishing": 58,
+        "network": 60,
+        "access": 57,
+        "data_breach": 53
+      },
+      "top_confidence": 61
+    },
+    {
+      "ticket_number": "TCK-2025-0073",
+      "ticket_id": 100073,
+      "company": "Company 5",
+      "title": "RMM Agent Alert: BRI-FW-116 - Patch Install Failed (Company 5)",
+      "description": "Datto RMM generated a patching alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 5\nDevice: BRI-FW-116\nSite: Birmingham Office\nEvent: Patch installation failed\nPatch: KB9461196\nTypical causes: pending reboot, insufficient disk space, Windows Update corruption\nSuggested action: Check disk space, clear update cache, reboot, retry patch, perform manual install if necessary.",
+      "full_text": "RMM Agent Alert: BRI-FW-116 - Patch Install Failed (Company 5) Datto RMM generated a patching alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 5\nDevice: BRI-FW-116\nSite: Birmingham Office\nEvent: Patch installation failed\nPatch: KB9461196\nTypical causes: pending reboot, insufficient disk space, Windows Update corruption\nSuggested action: Check disk space, clear update cache, reboot, retry patch, perform manual install if necessary.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 60,
+        "phishing": 53,
+        "network": 57,
+        "access": 56,
+        "data_breach": 54
+      },
+      "top_confidence": 60
+    },
+    {
+      "ticket_number": "TCK-2025-0074",
+      "ticket_id": 100074,
+      "company": "Company 9",
+      "title": "RMM Agent Alert: LEE-SRV-179 - Patch Install Failed (Company 9)",
+      "description": "Datto RMM generated a patching alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 9\nDevice: LEE-SRV-179\nSite: Manchester Office\nEvent: Patch installation failed\nPatch: KB4642012\nTypical causes: pending reboot, insufficient disk space, Windows Update corruption\nSuggested action: Check disk space, clear update cache, reboot, retry patch, perform manual install if necessary.",
+      "full_text": "RMM Agent Alert: LEE-SRV-179 - Patch Install Failed (Company 9) Datto RMM generated a patching alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 9\nDevice: LEE-SRV-179\nSite: Manchester Office\nEvent: Patch installation failed\nPatch: KB4642012\nTypical causes: pending reboot, insufficient disk space, Windows Update corruption\nSuggested action: Check disk space, clear update cache, reboot, retry patch, perform manual install if necessary.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 62,
+        "phishing": 55,
+        "network": 55,
+        "access": 55,
+        "data_breach": 54
+      },
+      "top_confidence": 62
+    },
+    {
+      "ticket_number": "TCK-2025-0075",
+      "ticket_id": 100075,
+      "company": "Company 8",
+      "title": "RMM Agent Alert: M365 - Message Held in Quarantine (Company 8)",
+      "description": "Datto RMM generated an email security event.\nObserved: 2025-12-24T15:14:19Z\nTenant/Company: Company 8\nEvent: Message held/quarantined\nReason: Suspected phishing / policy match\nSuggested action: Review quarantine, validate sender, release or block, check user exposure.",
+      "full_text": "RMM Agent Alert: M365 - Message Held in Quarantine (Company 8) Datto RMM generated an email security event.\nObserved: 2025-12-24T15:14:19Z\nTenant/Company: Company 8\nEvent: Message held/quarantined\nReason: Suspected phishing / policy match\nSuggested action: Review quarantine, validate sender, release or block, check user exposure.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 69,
+        "phishing": 68,
+        "network": 55,
+        "access": 56,
+        "data_breach": 64
+      },
+      "top_confidence": 69
+    },
+    {
+      "ticket_number": "TCK-2025-0076",
+      "ticket_id": 100076,
+      "company": "Company 5",
+      "title": "RMM Agent Alert: LEE-FW-058 - Patch Install Failed (Company 5)",
+      "description": "Datto RMM generated a patching alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 5\nDevice: LEE-FW-058\nSite: Manchester Office\nEvent: Patch installation failed\nPatch: KB3439767\nTypical causes: pending reboot, insufficient disk space, Windows Update corruption\nSuggested action: Check disk space, clear update cache, reboot, retry patch, perform manual install if necessary.",
+      "full_text": "RMM Agent Alert: LEE-FW-058 - Patch Install Failed (Company 5) Datto RMM generated a patching alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 5\nDevice: LEE-FW-058\nSite: Manchester Office\nEvent: Patch installation failed\nPatch: KB3439767\nTypical causes: pending reboot, insufficient disk space, Windows Update corruption\nSuggested action: Check disk space, clear update cache, reboot, retry patch, perform manual install if necessary.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 62,
+        "phishing": 55,
+        "network": 56,
+        "access": 55,
+        "data_breach": 54
+      },
+      "top_confidence": 62
+    },
+    {
+      "ticket_number": "TCK-2025-0077",
+      "ticket_id": 100077,
+      "company": "Company 4",
+      "title": "RMM Agent Alert: BRI-WS-087 - Patch Install Failed (Company 4)",
+      "description": "Datto RMM generated a patching alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 4\nDevice: BRI-WS-087\nSite: Leeds Office\nEvent: Patch installation failed\nPatch: KB4056889\nTypical causes: pending reboot, insufficient disk space, Windows Update corruption\nSuggested action: Check disk space, clear update cache, reboot, retry patch, perform manual install if necessary.",
+      "full_text": "RMM Agent Alert: BRI-WS-087 - Patch Install Failed (Company 4) Datto RMM generated a patching alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 4\nDevice: BRI-WS-087\nSite: Leeds Office\nEvent: Patch installation failed\nPatch: KB4056889\nTypical causes: pending reboot, insufficient disk space, Windows Update corruption\nSuggested action: Check disk space, clear update cache, reboot, retry patch, perform manual install if necessary.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 59,
+        "phishing": 53,
+        "network": 56,
+        "access": 55,
+        "data_breach": 53
+      },
+      "top_confidence": 59
+    },
+    {
+      "ticket_number": "TCK-2025-0078",
+      "ticket_id": 100078,
+      "company": "Company 7",
+      "title": "RMM Agent Alert: LEE-SRV-055 - Patch Install Failed (Company 7)",
+      "description": "Datto RMM generated a patching alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 7\nDevice: LEE-SRV-055\nSite: Bristol Office\nEvent: Patch installation failed\nPatch: KB1423545\nTypical causes: pending reboot, insufficient disk space, Windows Update corruption\nSuggested action: Check disk space, clear update cache, reboot, retry patch, perform manual install if necessary.",
+      "full_text": "RMM Agent Alert: LEE-SRV-055 - Patch Install Failed (Company 7) Datto RMM generated a patching alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 7\nDevice: LEE-SRV-055\nSite: Bristol Office\nEvent: Patch installation failed\nPatch: KB1423545\nTypical causes: pending reboot, insufficient disk space, Windows Update corruption\nSuggested action: Check disk space, clear update cache, reboot, retry patch, perform manual install if necessary.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 63,
+        "phishing": 55,
+        "network": 56,
+        "access": 54,
+        "data_breach": 54
+      },
+      "top_confidence": 63
+    },
+    {
+      "ticket_number": "TCK-2025-0079",
+      "ticket_id": 100079,
+      "company": "Company 6",
+      "title": "RMM Agent Alert: M365 - Message Held in Quarantine (Company 6)",
+      "description": "Datto RMM generated an email security event.\nObserved: 2025-12-24T15:14:19Z\nTenant/Company: Company 6\nEvent: Message held/quarantined\nReason: Suspected phishing / policy match\nSuggested action: Review quarantine, validate sender, release or block, check user exposure.",
+      "full_text": "RMM Agent Alert: M365 - Message Held in Quarantine (Company 6) Datto RMM generated an email security event.\nObserved: 2025-12-24T15:14:19Z\nTenant/Company: Company 6\nEvent: Message held/quarantined\nReason: Suspected phishing / policy match\nSuggested action: Review quarantine, validate sender, release or block, check user exposure.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 69,
+        "phishing": 68,
+        "network": 55,
+        "access": 56,
+        "data_breach": 64
+      },
+      "top_confidence": 69
+    },
+    {
+      "ticket_number": "TCK-2025-0080",
+      "ticket_id": 100080,
+      "company": "Company 9",
+      "title": "RMM Agent Alert: LON-NAS-017 - Backup Suspended (Company 9)",
+      "description": "Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 9\nDevice: LON-NAS-017\nSite: Bristol Office\nEvent: Backup suspended/paused\nPossible causes: policy disabled, licensing issue, repository unavailable\nSuggested action: Validate policy state, check licensing, verify storage health, resume backups and confirm completion.",
+      "full_text": "RMM Agent Alert: LON-NAS-017 - Backup Suspended (Company 9) Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 9\nDevice: LON-NAS-017\nSite: Bristol Office\nEvent: Backup suspended/paused\nPossible causes: policy disabled, licensing issue, repository unavailable\nSuggested action: Validate policy state, check licensing, verify storage health, resume backups and confirm completion.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 63,
+        "phishing": 58,
+        "network": 62,
+        "access": 57,
+        "data_breach": 58
+      },
+      "top_confidence": 63
+    },
+    {
+      "ticket_number": "TCK-2025-0081",
+      "ticket_id": 100081,
+      "company": "Company 10",
+      "title": "RMM Agent Alert: BRI-SRV-172 - Backup Suspended (Company 10)",
+      "description": "Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 10\nDevice: BRI-SRV-172\nSite: Manchester Office\nEvent: Backup suspended/paused\nPossible causes: policy disabled, licensing issue, repository unavailable\nSuggested action: Validate policy state, check licensing, verify storage health, resume backups and confirm completion.",
+      "full_text": "RMM Agent Alert: BRI-SRV-172 - Backup Suspended (Company 10) Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 10\nDevice: BRI-SRV-172\nSite: Manchester Office\nEvent: Backup suspended/paused\nPossible causes: policy disabled, licensing issue, repository unavailable\nSuggested action: Validate policy state, check licensing, verify storage health, resume backups and confirm completion.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 62,
+        "phishing": 57,
+        "network": 60,
+        "access": 56,
+        "data_breach": 57
+      },
+      "top_confidence": 62
+    },
+    {
+      "ticket_number": "TCK-2025-0082",
+      "ticket_id": 100082,
+      "company": "Company 12",
+      "title": "RMM Agent Alert: BRI-NAS-034 - Backup Failed (Company 12)",
+      "description": "Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 12\nDevice: BRI-NAS-034\nSite: Birmingham Office\nEvent: Backup job failed\nTypical causes: storage full, agent service down, network interruption\nSuggested action: Check backup agent/service, verify repository access, retry job, confirm last successful restore point.",
+      "full_text": "RMM Agent Alert: BRI-NAS-034 - Backup Failed (Company 12) Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 12\nDevice: BRI-NAS-034\nSite: Birmingham Office\nEvent: Backup job failed\nTypical causes: storage full, agent service down, network interruption\nSuggested action: Check backup agent/service, verify repository access, retry job, confirm last successful restore point.",
+      "predicted_category": "network",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 60,
+        "phishing": 56,
+        "network": 62,
+        "access": 57,
+        "data_breach": 53
+      },
+      "top_confidence": 62
+    },
+    {
+      "ticket_number": "TCK-2025-0083",
+      "ticket_id": 100083,
+      "company": "Company 7",
+      "title": "RMM Agent Alert: LON-NAS-127 - Backup Failed (Company 7)",
+      "description": "Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 7\nDevice: LON-NAS-127\nSite: London Office\nEvent: Backup job failed\nTypical causes: storage full, agent service down, network interruption\nSuggested action: Check backup agent/service, verify repository access, retry job, confirm last successful restore point.",
+      "full_text": "RMM Agent Alert: LON-NAS-127 - Backup Failed (Company 7) Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 7\nDevice: LON-NAS-127\nSite: London Office\nEvent: Backup job failed\nTypical causes: storage full, agent service down, network interruption\nSuggested action: Check backup agent/service, verify repository access, retry job, confirm last successful restore point.",
+      "predicted_category": "network",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 60,
+        "phishing": 56,
+        "network": 63,
+        "access": 56,
+        "data_breach": 53
+      },
+      "top_confidence": 63
+    },
+    {
+      "ticket_number": "TCK-2025-0084",
+      "ticket_id": 100084,
+      "company": "Company 9",
+      "title": "RMM Agent Alert: LON-SRV-052 - Critical Vulnerabilities Detected (Company 9)",
+      "description": "Datto RMM generated a patch compliance alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 9\nDevice: LON-SRV-052\nSite: London Office\nEvent: Missing security updates / vulnerabilities detected\nSuggested action: Review missing patches, schedule maintenance window, apply updates, reboot if required, confirm compliance.",
+      "full_text": "RMM Agent Alert: LON-SRV-052 - Critical Vulnerabilities Detected (Company 9) Datto RMM generated a patch compliance alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 9\nDevice: LON-SRV-052\nSite: London Office\nEvent: Missing security updates / vulnerabilities detected\nSuggested action: Review missing patches, schedule maintenance window, apply updates, reboot if required, confirm compliance.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 64,
+        "phishing": 57,
+        "network": 59,
+        "access": 59,
+        "data_breach": 59
+      },
+      "top_confidence": 64
+    },
+    {
+      "ticket_number": "TCK-2025-0085",
+      "ticket_id": 100085,
+      "company": "Company 5",
+      "title": "RMM Agent Alert: BIR-ESX-158 - Backup Failed (Company 5)",
+      "description": "Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 5\nDevice: BIR-ESX-158\nSite: Bristol Office\nEvent: Backup job failed\nTypical causes: storage full, agent service down, network interruption\nSuggested action: Check backup agent/service, verify repository access, retry job, confirm last successful restore point.",
+      "full_text": "RMM Agent Alert: BIR-ESX-158 - Backup Failed (Company 5) Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 5\nDevice: BIR-ESX-158\nSite: Bristol Office\nEvent: Backup job failed\nTypical causes: storage full, agent service down, network interruption\nSuggested action: Check backup agent/service, verify repository access, retry job, confirm last successful restore point.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 59,
+        "phishing": 56,
+        "network": 59,
+        "access": 57,
+        "data_breach": 53
+      },
+      "top_confidence": 59
+    },
+    {
+      "ticket_number": "TCK-2025-0086",
+      "ticket_id": 100086,
+      "company": "Company 4",
+      "title": "RMM Agent Alert: BIR-SRV-135 - Backup Failed (Company 4)",
+      "description": "Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 4\nDevice: BIR-SRV-135\nSite: Manchester Office\nEvent: Backup job failed\nTypical causes: storage full, agent service down, network interruption\nSuggested action: Check backup agent/service, verify repository access, retry job, confirm last successful restore point.",
+      "full_text": "RMM Agent Alert: BIR-SRV-135 - Backup Failed (Company 4) Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 4\nDevice: BIR-SRV-135\nSite: Manchester Office\nEvent: Backup job failed\nTypical causes: storage full, agent service down, network interruption\nSuggested action: Check backup agent/service, verify repository access, retry job, confirm last successful restore point.",
+      "predicted_category": "network",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 57,
+        "phishing": 55,
+        "network": 59,
+        "access": 57,
+        "data_breach": 52
+      },
+      "top_confidence": 59
+    },
+    {
+      "ticket_number": "TCK-2025-0087",
+      "ticket_id": 100087,
+      "company": "Company 10",
+      "title": "RMM Agent Alert: MAN-SRV-060 - Device Offline (Company 10)",
+      "description": "Datto RMM generated an availability alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 10\nDevice: MAN-SRV-060\nSite: Birmingham Office\nEvent: Device/agent offline (last check-in exceeded threshold)\nSuggested action: Verify power and network connectivity, check switch port, attempt out-of-band access if available, escalate onsite if needed.",
+      "full_text": "RMM Agent Alert: MAN-SRV-060 - Device Offline (Company 10) Datto RMM generated an availability alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 10\nDevice: MAN-SRV-060\nSite: Birmingham Office\nEvent: Device/agent offline (last check-in exceeded threshold)\nSuggested action: Verify power and network connectivity, check switch port, attempt out-of-band access if available, escalate onsite if needed.",
+      "predicted_category": "network",
+      "prediction_method": "keyword",
+      "confidence_scores": {
+        "malware": 64,
+        "phishing": 56,
+        "network": 66,
+        "access": 56,
+        "data_breach": 56
+      },
+      "top_confidence": 66
+    },
+    {
+      "ticket_number": "TCK-2025-0088",
+      "ticket_id": 100088,
+      "company": "Company 11",
+      "title": "RMM Agent Alert: BRI-SW-104 - Backup Failed (Company 11)",
+      "description": "Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 11\nDevice: BRI-SW-104\nSite: Manchester Office\nEvent: Backup job failed\nTypical causes: storage full, agent service down, network interruption\nSuggested action: Check backup agent/service, verify repository access, retry job, confirm last successful restore point.",
+      "full_text": "RMM Agent Alert: BRI-SW-104 - Backup Failed (Company 11) Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 11\nDevice: BRI-SW-104\nSite: Manchester Office\nEvent: Backup job failed\nTypical causes: storage full, agent service down, network interruption\nSuggested action: Check backup agent/service, verify repository access, retry job, confirm last successful restore point.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 59,
+        "phishing": 56,
+        "network": 59,
+        "access": 56,
+        "data_breach": 53
+      },
+      "top_confidence": 59
+    },
+    {
+      "ticket_number": "TCK-2025-0089",
+      "ticket_id": 100089,
+      "company": "Company 7",
+      "title": "RMM Agent Alert: MAN-SRV-014 - Patch Install Failed (Company 7)",
+      "description": "Datto RMM generated a patching alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 7\nDevice: MAN-SRV-014\nSite: Manchester Office\nEvent: Patch installation failed\nPatch: KB6668166\nTypical causes: pending reboot, insufficient disk space, Windows Update corruption\nSuggested action: Check disk space, clear update cache, reboot, retry patch, perform manual install if necessary.",
+      "full_text": "RMM Agent Alert: MAN-SRV-014 - Patch Install Failed (Company 7) Datto RMM generated a patching alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 7\nDevice: MAN-SRV-014\nSite: Manchester Office\nEvent: Patch installation failed\nPatch: KB6668166\nTypical causes: pending reboot, insufficient disk space, Windows Update corruption\nSuggested action: Check disk space, clear update cache, reboot, retry patch, perform manual install if necessary.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 60,
+        "phishing": 54,
+        "network": 54,
+        "access": 53,
+        "data_breach": 54
+      },
+      "top_confidence": 60
+    },
+    {
+      "ticket_number": "TCK-2025-0090",
+      "ticket_id": 100090,
+      "company": "Company 10",
+      "title": "RMM Agent Alert: M365 - Message Held in Quarantine (Company 10)",
+      "description": "Datto RMM generated an email security event.\nObserved: 2025-12-24T15:14:19Z\nTenant/Company: Company 10\nEvent: Message held/quarantined\nReason: Suspected phishing / policy match\nSuggested action: Review quarantine, validate sender, release or block, check user exposure.",
+      "full_text": "RMM Agent Alert: M365 - Message Held in Quarantine (Company 10) Datto RMM generated an email security event.\nObserved: 2025-12-24T15:14:19Z\nTenant/Company: Company 10\nEvent: Message held/quarantined\nReason: Suspected phishing / policy match\nSuggested action: Review quarantine, validate sender, release or block, check user exposure.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 69,
+        "phishing": 68,
+        "network": 54,
+        "access": 56,
+        "data_breach": 64
+      },
+      "top_confidence": 69
+    },
+    {
+      "ticket_number": "TCK-2025-0091",
+      "ticket_id": 100091,
+      "company": "Company 8",
+      "title": "RMM Agent Alert: BRI-SRV-196 - Critical Vulnerabilities Detected (Company 8)",
+      "description": "Datto RMM generated a patch compliance alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 8\nDevice: BRI-SRV-196\nSite: Birmingham Office\nEvent: Missing security updates / vulnerabilities detected\nSuggested action: Review missing patches, schedule maintenance window, apply updates, reboot if required, confirm compliance.",
+      "full_text": "RMM Agent Alert: BRI-SRV-196 - Critical Vulnerabilities Detected (Company 8) Datto RMM generated a patch compliance alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 8\nDevice: BRI-SRV-196\nSite: Birmingham Office\nEvent: Missing security updates / vulnerabilities detected\nSuggested action: Review missing patches, schedule maintenance window, apply updates, reboot if required, confirm compliance.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 64,
+        "phishing": 56,
+        "network": 60,
+        "access": 58,
+        "data_breach": 58
+      },
+      "top_confidence": 64
+    },
+    {
+      "ticket_number": "TCK-2025-0092",
+      "ticket_id": 100092,
+      "company": "Company 12",
+      "title": "RMM Agent Alert: LEE-FW-013 - Critical Vulnerabilities Detected (Company 12)",
+      "description": "Datto RMM generated a patch compliance alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 12\nDevice: LEE-FW-013\nSite: Bristol Office\nEvent: Missing security updates / vulnerabilities detected\nSuggested action: Review missing patches, schedule maintenance window, apply updates, reboot if required, confirm compliance.",
+      "full_text": "RMM Agent Alert: LEE-FW-013 - Critical Vulnerabilities Detected (Company 12) Datto RMM generated a patch compliance alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 12\nDevice: LEE-FW-013\nSite: Bristol Office\nEvent: Missing security updates / vulnerabilities detected\nSuggested action: Review missing patches, schedule maintenance window, apply updates, reboot if required, confirm compliance.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 67,
+        "phishing": 59,
+        "network": 59,
+        "access": 60,
+        "data_breach": 59
+      },
+      "top_confidence": 67
+    },
+    {
+      "ticket_number": "TCK-2025-0093",
+      "ticket_id": 100093,
+      "company": "Company 7",
+      "title": "RMM Agent Alert: LEE-SRV-067 - Backup Failed (Company 7)",
+      "description": "Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 7\nDevice: LEE-SRV-067\nSite: Birmingham Office\nEvent: Backup job failed\nTypical causes: storage full, agent service down, network interruption\nSuggested action: Check backup agent/service, verify repository access, retry job, confirm last successful restore point.",
+      "full_text": "RMM Agent Alert: LEE-SRV-067 - Backup Failed (Company 7) Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 7\nDevice: LEE-SRV-067\nSite: Birmingham Office\nEvent: Backup job failed\nTypical causes: storage full, agent service down, network interruption\nSuggested action: Check backup agent/service, verify repository access, retry job, confirm last successful restore point.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 61,
+        "phishing": 56,
+        "network": 60,
+        "access": 55,
+        "data_breach": 53
+      },
+      "top_confidence": 61
+    },
+    {
+      "ticket_number": "TCK-2025-0094",
+      "ticket_id": 100094,
+      "company": "Company 8",
+      "title": "RMM Agent Alert: BRI-NAS-042 - Patch Install Failed (Company 8)",
+      "description": "Datto RMM generated a patching alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 8\nDevice: BRI-NAS-042\nSite: Leeds Office\nEvent: Patch installation failed\nPatch: KB6377830\nTypical causes: pending reboot, insufficient disk space, Windows Update corruption\nSuggested action: Check disk space, clear update cache, reboot, retry patch, perform manual install if necessary.",
+      "full_text": "RMM Agent Alert: BRI-NAS-042 - Patch Install Failed (Company 8) Datto RMM generated a patching alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 8\nDevice: BRI-NAS-042\nSite: Leeds Office\nEvent: Patch installation failed\nPatch: KB6377830\nTypical causes: pending reboot, insufficient disk space, Windows Update corruption\nSuggested action: Check disk space, clear update cache, reboot, retry patch, perform manual install if necessary.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 60,
+        "phishing": 54,
+        "network": 58,
+        "access": 56,
+        "data_breach": 53
+      },
+      "top_confidence": 60
+    },
+    {
+      "ticket_number": "TCK-2025-0095",
+      "ticket_id": 100095,
+      "company": "Company 6",
+      "title": "RMM Agent Alert: BRI-NAS-051 - Backup Failed (Company 6)",
+      "description": "Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 6\nDevice: BRI-NAS-051\nSite: Bristol Office\nEvent: Backup job failed\nTypical causes: storage full, agent service down, network interruption\nSuggested action: Check backup agent/service, verify repository access, retry job, confirm last successful restore point.",
+      "full_text": "RMM Agent Alert: BRI-NAS-051 - Backup Failed (Company 6) Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 6\nDevice: BRI-NAS-051\nSite: Bristol Office\nEvent: Backup job failed\nTypical causes: storage full, agent service down, network interruption\nSuggested action: Check backup agent/service, verify repository access, retry job, confirm last successful restore point.",
+      "predicted_category": "network",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 61,
+        "phishing": 57,
+        "network": 62,
+        "access": 57,
+        "data_breach": 53
+      },
+      "top_confidence": 62
+    },
+    {
+      "ticket_number": "TCK-2025-0096",
+      "ticket_id": 100096,
+      "company": "Company 5",
+      "title": "RMM Agent Alert: LEE-SRV-168 - Backup Failed (Company 5)",
+      "description": "Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 5\nDevice: LEE-SRV-168\nSite: Leeds Office\nEvent: Backup job failed\nTypical causes: storage full, agent service down, network interruption\nSuggested action: Check backup agent/service, verify repository access, retry job, confirm last successful restore point.",
+      "full_text": "RMM Agent Alert: LEE-SRV-168 - Backup Failed (Company 5) Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 5\nDevice: LEE-SRV-168\nSite: Leeds Office\nEvent: Backup job failed\nTypical causes: storage full, agent service down, network interruption\nSuggested action: Check backup agent/service, verify repository access, retry job, confirm last successful restore point.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 61,
+        "phishing": 56,
+        "network": 61,
+        "access": 56,
+        "data_breach": 52
+      },
+      "top_confidence": 61
+    },
+    {
+      "ticket_number": "TCK-2025-0097",
+      "ticket_id": 100097,
+      "company": "Company 3",
+      "title": "RMM Agent Alert: LON-WS-010 - Backup Failed (Company 3)",
+      "description": "Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 3\nDevice: LON-WS-010\nSite: Leeds Office\nEvent: Backup job failed\nTypical causes: storage full, agent service down, network interruption\nSuggested action: Check backup agent/service, verify repository access, retry job, confirm last successful restore point.",
+      "full_text": "RMM Agent Alert: LON-WS-010 - Backup Failed (Company 3) Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 3\nDevice: LON-WS-010\nSite: Leeds Office\nEvent: Backup job failed\nTypical causes: storage full, agent service down, network interruption\nSuggested action: Check backup agent/service, verify repository access, retry job, confirm last successful restore point.",
+      "predicted_category": "network",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 60,
+        "phishing": 56,
+        "network": 62,
+        "access": 57,
+        "data_breach": 52
+      },
+      "top_confidence": 62
+    },
+    {
+      "ticket_number": "TCK-2025-0098",
+      "ticket_id": 100098,
+      "company": "Company 7",
+      "title": "RMM Agent Alert: BIR-ESX-034 - Backup Suspended (Company 7)",
+      "description": "Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 7\nDevice: BIR-ESX-034\nSite: London Office\nEvent: Backup suspended/paused\nPossible causes: policy disabled, licensing issue, repository unavailable\nSuggested action: Validate policy state, check licensing, verify storage health, resume backups and confirm completion.",
+      "full_text": "RMM Agent Alert: BIR-ESX-034 - Backup Suspended (Company 7) Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 7\nDevice: BIR-ESX-034\nSite: London Office\nEvent: Backup suspended/paused\nPossible causes: policy disabled, licensing issue, repository unavailable\nSuggested action: Validate policy state, check licensing, verify storage health, resume backups and confirm completion.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 61,
+        "phishing": 58,
+        "network": 60,
+        "access": 57,
+        "data_breach": 58
+      },
+      "top_confidence": 61
+    },
+    {
+      "ticket_number": "TCK-2025-0099",
+      "ticket_id": 100099,
+      "company": "Company 8",
+      "title": "RMM Agent Alert: M365 - Message Held in Quarantine (Company 8)",
+      "description": "Datto RMM generated an email security event.\nObserved: 2025-12-24T15:14:19Z\nTenant/Company: Company 8\nEvent: Message held/quarantined\nReason: Suspected phishing / policy match\nSuggested action: Review quarantine, validate sender, release or block, check user exposure.",
+      "full_text": "RMM Agent Alert: M365 - Message Held in Quarantine (Company 8) Datto RMM generated an email security event.\nObserved: 2025-12-24T15:14:19Z\nTenant/Company: Company 8\nEvent: Message held/quarantined\nReason: Suspected phishing / policy match\nSuggested action: Review quarantine, validate sender, release or block, check user exposure.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 69,
+        "phishing": 68,
+        "network": 55,
+        "access": 56,
+        "data_breach": 64
+      },
+      "top_confidence": 69
+    },
+    {
+      "ticket_number": "TCK-2025-0100",
+      "ticket_id": 100100,
+      "company": "Company 9",
+      "title": "RMM Agent Alert: M365 - Message Held in Quarantine (Company 9)",
+      "description": "Datto RMM generated an email security event.\nObserved: 2025-12-24T15:14:19Z\nTenant/Company: Company 9\nEvent: Message held/quarantined\nReason: Suspected phishing / policy match\nSuggested action: Review quarantine, validate sender, release or block, check user exposure.",
+      "full_text": "RMM Agent Alert: M365 - Message Held in Quarantine (Company 9) Datto RMM generated an email security event.\nObserved: 2025-12-24T15:14:19Z\nTenant/Company: Company 9\nEvent: Message held/quarantined\nReason: Suspected phishing / policy match\nSuggested action: Review quarantine, validate sender, release or block, check user exposure.",
+      "predicted_category": "malware",
+      "prediction_method": "semantic",
+      "confidence_scores": {
+        "malware": 69,
+        "phishing": 68,
+        "network": 54,
+        "access": 56,
+        "data_breach": 64
+      },
+      "top_confidence": 69
+    }
+  ],
+  "suggested_new_categories": [
+    {
+      "suggested_name": "patch_company",
+      "description": "Tickets related to patch, company, alert, install, fail",
+      "ticket_count": 6,
+      "common_themes": [
+        "patch",
+        "company",
+        "alert",
+        "install",
+        "fail",
+        "reboot",
+        "disk",
+        "space"
+      ],
+      "sample_titles": [
+        "RMM Agent Alert: BIR-FW-076 - Patch Install Failed (Company 10)",
+        "RMM Agent Alert: BRI-SRV-092 - Patch Install Failed (Company 5)",
+        "RMM Agent Alert: MAN-SRV-192 - Patch Install Failed (Company 2)",
+        "RMM Agent Alert: BRI-WS-047 - Patch Install Failed (Company 8)",
+        "RMM Agent Alert: LON-SRV-041 - Patch Install Failed (Company 11)"
+      ],
+      "example_tickets": [
+        {
+          "ticket_number": "TCK-2025-0027",
+          "ticket_id": 100027,
+          "company": "Company 10",
+          "title": "RMM Agent Alert: BIR-FW-076 - Patch Install Failed (Company 10)",
+          "description": "Datto RMM generated a patching alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 10\nDevice: BIR-FW-076\nSite: Birmingham Office\nEvent: Patch installation failed\nPatch: KB7862751\nTypical causes: pending reboot, insufficient disk space, Windows Update corruption\nSuggested action: Check disk space, clear update cache, reboot, retry patch, perform manual install if necessary.",
+          "full_text": "RMM Agent Alert: BIR-FW-076 - Patch Install Failed (Company 10) Datto RMM generated a patching alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 10\nDevice: BIR-FW-076\nSite: Birmingham Office\nEvent: Patch installation failed\nPatch: KB7862751\nTypical causes: pending reboot, insufficient disk space, Windows Update corruption\nSuggested action: Check disk space, clear update cache, reboot, retry patch, perform manual install if necessary.",
+          "predicted_category": "malware",
+          "prediction_method": "semantic",
+          "confidence_scores": {
+            "malware": 59,
+            "phishing": 54,
+            "network": 56,
+            "access": 56,
+            "data_breach": 53
+          },
+          "top_confidence": 59
+        },
+        {
+          "ticket_number": "TCK-2025-0033",
+          "ticket_id": 100033,
+          "company": "Company 5",
+          "title": "RMM Agent Alert: BRI-SRV-092 - Patch Install Failed (Company 5)",
+          "description": "Datto RMM generated a patching alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 5\nDevice: BRI-SRV-092\nSite: London Office\nEvent: Patch installation failed\nPatch: KB6871701\nTypical causes: pending reboot, insufficient disk space, Windows Update corruption\nSuggested action: Check disk space, clear update cache, reboot, retry patch, perform manual install if necessary.",
+          "full_text": "RMM Agent Alert: BRI-SRV-092 - Patch Install Failed (Company 5) Datto RMM generated a patching alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 5\nDevice: BRI-SRV-092\nSite: London Office\nEvent: Patch installation failed\nPatch: KB6871701\nTypical causes: pending reboot, insufficient disk space, Windows Update corruption\nSuggested action: Check disk space, clear update cache, reboot, retry patch, perform manual install if necessary.",
+          "predicted_category": "malware",
+          "prediction_method": "semantic",
+          "confidence_scores": {
+            "malware": 59,
+            "phishing": 54,
+            "network": 56,
+            "access": 54,
+            "data_breach": 54
+          },
+          "top_confidence": 59
+        },
+        {
+          "ticket_number": "TCK-2025-0054",
+          "ticket_id": 100054,
+          "company": "Company 2",
+          "title": "RMM Agent Alert: MAN-SRV-192 - Patch Install Failed (Company 2)",
+          "description": "Datto RMM generated a patching alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 2\nDevice: MAN-SRV-192\nSite: Leeds Office\nEvent: Patch installation failed\nPatch: KB7478220\nTypical causes: pending reboot, insufficient disk space, Windows Update corruption\nSuggested action: Check disk space, clear update cache, reboot, retry patch, perform manual install if necessary.",
+          "full_text": "RMM Agent Alert: MAN-SRV-192 - Patch Install Failed (Company 2) Datto RMM generated a patching alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 2\nDevice: MAN-SRV-192\nSite: Leeds Office\nEvent: Patch installation failed\nPatch: KB7478220\nTypical causes: pending reboot, insufficient disk space, Windows Update corruption\nSuggested action: Check disk space, clear update cache, reboot, retry patch, perform manual install if necessary.",
+          "predicted_category": "malware",
+          "prediction_method": "semantic",
+          "confidence_scores": {
+            "malware": 59,
+            "phishing": 54,
+            "network": 55,
+            "access": 55,
+            "data_breach": 53
+          },
+          "top_confidence": 59
+        }
+      ]
+    },
+    {
+      "suggested_name": "backup_agent",
+      "description": "Tickets related to backup, agent, company, alert, fail",
+      "ticket_count": 4,
+      "common_themes": [
+        "backup",
+        "agent",
+        "company",
+        "alert",
+        "fail",
+        "service",
+        "datto",
+        "generate"
+      ],
+      "sample_titles": [
+        "RMM Agent Alert: BIR-SRV-027 - Backup Failed (Company 9)",
+        "RMM Agent Alert: BIR-ESX-158 - Backup Failed (Company 5)",
+        "RMM Agent Alert: BIR-SRV-135 - Backup Failed (Company 4)",
+        "RMM Agent Alert: BRI-SW-104 - Backup Failed (Company 11)"
+      ],
+      "example_tickets": [
+        {
+          "ticket_number": "TCK-2025-0043",
+          "ticket_id": 100043,
+          "company": "Company 9",
+          "title": "RMM Agent Alert: BIR-SRV-027 - Backup Failed (Company 9)",
+          "description": "Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 9\nDevice: BIR-SRV-027\nSite: Manchester Office\nEvent: Backup job failed\nTypical causes: storage full, agent service down, network interruption\nSuggested action: Check backup agent/service, verify repository access, retry job, confirm last successful restore point.",
+          "full_text": "RMM Agent Alert: BIR-SRV-027 - Backup Failed (Company 9) Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 9\nDevice: BIR-SRV-027\nSite: Manchester Office\nEvent: Backup job failed\nTypical causes: storage full, agent service down, network interruption\nSuggested action: Check backup agent/service, verify repository access, retry job, confirm last successful restore point.",
+          "predicted_category": "network",
+          "prediction_method": "semantic",
+          "confidence_scores": {
+            "malware": 57,
+            "phishing": 55,
+            "network": 59,
+            "access": 56,
+            "data_breach": 52
+          },
+          "top_confidence": 59
+        },
+        {
+          "ticket_number": "TCK-2025-0085",
+          "ticket_id": 100085,
+          "company": "Company 5",
+          "title": "RMM Agent Alert: BIR-ESX-158 - Backup Failed (Company 5)",
+          "description": "Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 5\nDevice: BIR-ESX-158\nSite: Bristol Office\nEvent: Backup job failed\nTypical causes: storage full, agent service down, network interruption\nSuggested action: Check backup agent/service, verify repository access, retry job, confirm last successful restore point.",
+          "full_text": "RMM Agent Alert: BIR-ESX-158 - Backup Failed (Company 5) Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 5\nDevice: BIR-ESX-158\nSite: Bristol Office\nEvent: Backup job failed\nTypical causes: storage full, agent service down, network interruption\nSuggested action: Check backup agent/service, verify repository access, retry job, confirm last successful restore point.",
+          "predicted_category": "malware",
+          "prediction_method": "semantic",
+          "confidence_scores": {
+            "malware": 59,
+            "phishing": 56,
+            "network": 59,
+            "access": 57,
+            "data_breach": 53
+          },
+          "top_confidence": 59
+        },
+        {
+          "ticket_number": "TCK-2025-0086",
+          "ticket_id": 100086,
+          "company": "Company 4",
+          "title": "RMM Agent Alert: BIR-SRV-135 - Backup Failed (Company 4)",
+          "description": "Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 4\nDevice: BIR-SRV-135\nSite: Manchester Office\nEvent: Backup job failed\nTypical causes: storage full, agent service down, network interruption\nSuggested action: Check backup agent/service, verify repository access, retry job, confirm last successful restore point.",
+          "full_text": "RMM Agent Alert: BIR-SRV-135 - Backup Failed (Company 4) Datto RMM generated a backup alert.\nObserved: 2025-12-24T15:14:19Z\nCompany: Company 4\nDevice: BIR-SRV-135\nSite: Manchester Office\nEvent: Backup job failed\nTypical causes: storage full, agent service down, network interruption\nSuggested action: Check backup agent/service, verify repository access, retry job, confirm last successful restore point.",
+          "predicted_category": "network",
+          "prediction_method": "semantic",
+          "confidence_scores": {
+            "malware": 57,
+            "phishing": 55,
+            "network": 59,
+            "access": 57,
+            "data_breach": 52
+          },
+          "top_confidence": 59
+        }
+      ]
+    }
+  ],
+  "existing_categories": {
+    "malware": "Device infected with malware, virus, trojan or ransomware.",
+    "phishing": "User received fraudulent or deceptive emails asking for credentials.",
+    "network": "Network outage, slow connectivity, servers unreachable.",
+    "access": "Login problems, password resets, authentication issues, 2FA failures.",
+    "data_breach": "Sensitive information leaked or exposed without authorisation."
+  }
+}

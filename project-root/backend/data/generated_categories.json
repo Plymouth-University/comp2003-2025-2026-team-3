@@ -1,0 +1,833 @@
+{
+  "total_tickets": 100,
+  "number_of_categories": 5,
+  "categories": [
+    {
+      "category_id": 1,
+      "category_name": "backup_agent",
+      "description": "Tickets related to backup, agent, fail, service, generate. Common issues in this category involve these topics.",
+      "ticket_count": 35,
+      "common_themes": [
+        "backup",
+        "agent",
+        "fail",
+        "service",
+        "generate",
+        "observe",
+        "2025",
+        "24t15:14:19z",
+        "event",
+        "cause"
+      ],
+      "sample_titles": [
+        "RMM Agent Alert: LON-NAS-104 - Backup Failed (Company 10)",
+        "RMM Agent Alert: BRI-ESX-167 - Backup Suspended (Company 8)",
+        "RMM Agent Alert: LEE-FW-039 - Backup Failed (Company 1)",
+        "RMM Agent Alert: MAN-SRV-105 - Backup Suspended (Company 8)",
+        "RMM Agent Alert: MAN-WS-167 - Backup Suspended (Company 2)"
+      ]
+    },
+    {
+      "category_id": 2,
+      "category_name": "patch_install",
+      "description": "Tickets related to patch, install, fail, reboot, disk. Common issues in this category involve these topics.",
+      "ticket_count": 18,
+      "common_themes": [
+        "patch",
+        "install",
+        "fail",
+        "reboot",
+        "disk",
+        "space",
+        "update",
+        "agent",
+        "generate",
+        "observe"
+      ],
+      "sample_titles": [
+        "RMM Agent Alert: LON-SW-057 - Patch Install Failed (Company 12)",
+        "RMM Agent Alert: LON-NAS-052 - Patch Install Failed (Company 11)",
+        "RMM Agent Alert: BRI-NAS-155 - Patch Install Failed (Company 3)",
+        "RMM Agent Alert: BIR-FW-076 - Patch Install Failed (Company 10)",
+        "RMM Agent Alert: BRI-SRV-092 - Patch Install Failed (Company 5)"
+      ]
+    },
+    {
+      "category_id": 4,
+      "category_name": "quarantine_message",
+      "description": "Tickets related to quarantine, message, hold, event, agent. Common issues in this category involve these topics.",
+      "ticket_count": 17,
+      "common_themes": [
+        "quarantine",
+        "message",
+        "hold",
+        "event",
+        "agent",
+        "m365",
+        "generate",
+        "email",
+        "security",
+        "observe"
+      ],
+      "sample_titles": [
+        "RMM Agent Alert: M365 - Message Held in Quarantine (Company 12)",
+        "RMM Agent Alert: M365 - Message Held in Quarantine (Company 12)",
+        "RMM Agent Alert: M365 - Message Held in Quarantine (Company 1)",
+        "RMM Agent Alert: M365 - Message Held in Quarantine (Company 10)",
+        "RMM Agent Alert: M365 - Message Held in Quarantine (Company 3)"
+      ]
+    },
+    {
+      "category_id": 5,
+      "category_name": "vulnerability_detect",
+      "description": "Tickets related to vulnerability, detect, patch, compliance, miss. Common issues in this category involve these topics.",
+      "ticket_count": 15,
+      "common_themes": [
+        "vulnerability",
+        "detect",
+        "patch",
+        "compliance",
+        "miss",
+        "update",
+        "agent",
+        "critical",
+        "generate",
+        "observe"
+      ],
+      "sample_titles": [
+        "RMM Agent Alert: BIR-SW-183 - Critical Vulnerabilities Detected (Company 11)",
+        "RMM Agent Alert: MAN-SRV-052 - Critical Vulnerabilities Detected (Company 7)",
+        "RMM Agent Alert: MAN-WS-025 - Critical Vulnerabilities Detected (Company 11)",
+        "RMM Agent Alert: MAN-FW-131 - Critical Vulnerabilities Detected (Company 11)",
+        "RMM Agent Alert: LON-SRV-082 - Critical Vulnerabilities Detected (Company 8)"
+      ]
+    },
+    {
+      "category_id": 3,
+      "category_name": "agent_offline",
+      "description": "Tickets related to agent, offline, check, generate, availability. Common issues in this category involve these topics.",
+      "ticket_count": 15,
+      "common_themes": [
+        "agent",
+        "offline",
+        "check",
+        "generate",
+        "availability",
+        "observe",
+        "2025",
+        "24t15:14:19z",
+        "event",
+        "exceed"
+      ],
+      "sample_titles": [
+        "RMM Agent Alert: LEE-FW-189 - Device Offline (Company 1)",
+        "RMM Agent Alert: BIR-ESX-150 - Device Offline (Company 11)",
+        "RMM Agent Alert: LEE-SW-116 - Device Offline (Company 2)",
+        "RMM Agent Alert: BRI-SW-125 - Device Offline (Company 3)",
+        "RMM Agent Alert: LON-FW-171 - Device Offline (Company 6)"
+      ]
+    }
+  ],
+  "detailed_tickets": [
+    {
+      "ticket_number": "TCK-2025-0001",
+      "ticket_id": 100001,
+      "company": "Company 10",
+      "title": "RMM Agent Alert: LON-NAS-104 - Backup Failed (Company 10)",
+      "assigned_category": "backup_agent"
+    },
+    {
+      "ticket_number": "TCK-2025-0002",
+      "ticket_id": 100002,
+      "company": "Company 11",
+      "title": "RMM Agent Alert: BIR-SW-183 - Critical Vulnerabilities Detected (Company 11)",
+      "assigned_category": "vulnerability_detect"
+    },
+    {
+      "ticket_number": "TCK-2025-0003",
+      "ticket_id": 100003,
+      "company": "Company 12",
+      "title": "RMM Agent Alert: LON-SW-057 - Patch Install Failed (Company 12)",
+      "assigned_category": "patch_install"
+    },
+    {
+      "ticket_number": "TCK-2025-0004",
+      "ticket_id": 100004,
+      "company": "Company 8",
+      "title": "RMM Agent Alert: BRI-ESX-167 - Backup Suspended (Company 8)",
+      "assigned_category": "backup_agent"
+    },
+    {
+      "ticket_number": "TCK-2025-0005",
+      "ticket_id": 100005,
+      "company": "Company 1",
+      "title": "RMM Agent Alert: LEE-FW-039 - Backup Failed (Company 1)",
+      "assigned_category": "backup_agent"
+    },
+    {
+      "ticket_number": "TCK-2025-0006",
+      "ticket_id": 100006,
+      "company": "Company 11",
+      "title": "RMM Agent Alert: LON-NAS-052 - Patch Install Failed (Company 11)",
+      "assigned_category": "patch_install"
+    },
+    {
+      "ticket_number": "TCK-2025-0007",
+      "ticket_id": 100007,
+      "company": "Company 12",
+      "title": "RMM Agent Alert: M365 - Message Held in Quarantine (Company 12)",
+      "assigned_category": "quarantine_message"
+    },
+    {
+      "ticket_number": "TCK-2025-0008",
+      "ticket_id": 100008,
+      "company": "Company 1",
+      "title": "RMM Agent Alert: LEE-FW-189 - Device Offline (Company 1)",
+      "assigned_category": "agent_offline"
+    },
+    {
+      "ticket_number": "TCK-2025-0009",
+      "ticket_id": 100009,
+      "company": "Company 12",
+      "title": "RMM Agent Alert: M365 - Message Held in Quarantine (Company 12)",
+      "assigned_category": "quarantine_message"
+    },
+    {
+      "ticket_number": "TCK-2025-0010",
+      "ticket_id": 100010,
+      "company": "Company 7",
+      "title": "RMM Agent Alert: MAN-SRV-052 - Critical Vulnerabilities Detected (Company 7)",
+      "assigned_category": "vulnerability_detect"
+    },
+    {
+      "ticket_number": "TCK-2025-0011",
+      "ticket_id": 100011,
+      "company": "Company 8",
+      "title": "RMM Agent Alert: MAN-SRV-105 - Backup Suspended (Company 8)",
+      "assigned_category": "backup_agent"
+    },
+    {
+      "ticket_number": "TCK-2025-0012",
+      "ticket_id": 100012,
+      "company": "Company 2",
+      "title": "RMM Agent Alert: MAN-WS-167 - Backup Suspended (Company 2)",
+      "assigned_category": "backup_agent"
+    },
+    {
+      "ticket_number": "TCK-2025-0013",
+      "ticket_id": 100013,
+      "company": "Company 11",
+      "title": "RMM Agent Alert: MAN-WS-025 - Critical Vulnerabilities Detected (Company 11)",
+      "assigned_category": "vulnerability_detect"
+    },
+    {
+      "ticket_number": "TCK-2025-0014",
+      "ticket_id": 100014,
+      "company": "Company 1",
+      "title": "RMM Agent Alert: LON-NAS-192 - Backup Failed (Company 1)",
+      "assigned_category": "backup_agent"
+    },
+    {
+      "ticket_number": "TCK-2025-0015",
+      "ticket_id": 100015,
+      "company": "Company 1",
+      "title": "RMM Agent Alert: M365 - Message Held in Quarantine (Company 1)",
+      "assigned_category": "quarantine_message"
+    },
+    {
+      "ticket_number": "TCK-2025-0016",
+      "ticket_id": 100016,
+      "company": "Company 11",
+      "title": "RMM Agent Alert: MAN-FW-131 - Critical Vulnerabilities Detected (Company 11)",
+      "assigned_category": "vulnerability_detect"
+    },
+    {
+      "ticket_number": "TCK-2025-0017",
+      "ticket_id": 100017,
+      "company": "Company 11",
+      "title": "RMM Agent Alert: BIR-ESX-150 - Device Offline (Company 11)",
+      "assigned_category": "agent_offline"
+    },
+    {
+      "ticket_number": "TCK-2025-0018",
+      "ticket_id": 100018,
+      "company": "Company 2",
+      "title": "RMM Agent Alert: LEE-SW-116 - Device Offline (Company 2)",
+      "assigned_category": "agent_offline"
+    },
+    {
+      "ticket_number": "TCK-2025-0019",
+      "ticket_id": 100019,
+      "company": "Company 10",
+      "title": "RMM Agent Alert: M365 - Message Held in Quarantine (Company 10)",
+      "assigned_category": "quarantine_message"
+    },
+    {
+      "ticket_number": "TCK-2025-0020",
+      "ticket_id": 100020,
+      "company": "Company 8",
+      "title": "RMM Agent Alert: LON-SRV-082 - Critical Vulnerabilities Detected (Company 8)",
+      "assigned_category": "vulnerability_detect"
+    },
+    {
+      "ticket_number": "TCK-2025-0021",
+      "ticket_id": 100021,
+      "company": "Company 3",
+      "title": "RMM Agent Alert: BRI-SW-125 - Device Offline (Company 3)",
+      "assigned_category": "agent_offline"
+    },
+    {
+      "ticket_number": "TCK-2025-0022",
+      "ticket_id": 100022,
+      "company": "Company 2",
+      "title": "RMM Agent Alert: BRI-FW-118 - Backup Failed (Company 2)",
+      "assigned_category": "backup_agent"
+    },
+    {
+      "ticket_number": "TCK-2025-0023",
+      "ticket_id": 100023,
+      "company": "Company 3",
+      "title": "RMM Agent Alert: M365 - Message Held in Quarantine (Company 3)",
+      "assigned_category": "quarantine_message"
+    },
+    {
+      "ticket_number": "TCK-2025-0024",
+      "ticket_id": 100024,
+      "company": "Company 3",
+      "title": "RMM Agent Alert: BRI-NAS-155 - Patch Install Failed (Company 3)",
+      "assigned_category": "patch_install"
+    },
+    {
+      "ticket_number": "TCK-2025-0025",
+      "ticket_id": 100025,
+      "company": "Company 6",
+      "title": "RMM Agent Alert: LON-FW-171 - Device Offline (Company 6)",
+      "assigned_category": "agent_offline"
+    },
+    {
+      "ticket_number": "TCK-2025-0026",
+      "ticket_id": 100026,
+      "company": "Company 3",
+      "title": "RMM Agent Alert: BIR-FW-091 - Critical Vulnerabilities Detected (Company 3)",
+      "assigned_category": "vulnerability_detect"
+    },
+    {
+      "ticket_number": "TCK-2025-0027",
+      "ticket_id": 100027,
+      "company": "Company 10",
+      "title": "RMM Agent Alert: BIR-FW-076 - Patch Install Failed (Company 10)",
+      "assigned_category": "patch_install"
+    },
+    {
+      "ticket_number": "TCK-2025-0028",
+      "ticket_id": 100028,
+      "company": "Company 4",
+      "title": "RMM Agent Alert: LON-SW-106 - Device Offline (Company 4)",
+      "assigned_category": "agent_offline"
+    },
+    {
+      "ticket_number": "TCK-2025-0029",
+      "ticket_id": 100029,
+      "company": "Company 5",
+      "title": "RMM Agent Alert: LEE-SW-171 - Device Offline (Company 5)",
+      "assigned_category": "agent_offline"
+    },
+    {
+      "ticket_number": "TCK-2025-0030",
+      "ticket_id": 100030,
+      "company": "Company 6",
+      "title": "RMM Agent Alert: BRI-SW-035 - Device Offline (Company 6)",
+      "assigned_category": "agent_offline"
+    },
+    {
+      "ticket_number": "TCK-2025-0031",
+      "ticket_id": 100031,
+      "company": "Company 1",
+      "title": "RMM Agent Alert: LEE-SW-138 - Backup Failed (Company 1)",
+      "assigned_category": "backup_agent"
+    },
+    {
+      "ticket_number": "TCK-2025-0032",
+      "ticket_id": 100032,
+      "company": "Company 10",
+      "title": "RMM Agent Alert: BIR-FW-160 - Backup Suspended (Company 10)",
+      "assigned_category": "backup_agent"
+    },
+    {
+      "ticket_number": "TCK-2025-0033",
+      "ticket_id": 100033,
+      "company": "Company 5",
+      "title": "RMM Agent Alert: BRI-SRV-092 - Patch Install Failed (Company 5)",
+      "assigned_category": "patch_install"
+    },
+    {
+      "ticket_number": "TCK-2025-0034",
+      "ticket_id": 100034,
+      "company": "Company 8",
+      "title": "RMM Agent Alert: M365 - Message Held in Quarantine (Company 8)",
+      "assigned_category": "quarantine_message"
+    },
+    {
+      "ticket_number": "TCK-2025-0035",
+      "ticket_id": 100035,
+      "company": "Company 4",
+      "title": "RMM Agent Alert: LON-SRV-130 - Backup Suspended (Company 4)",
+      "assigned_category": "backup_agent"
+    },
+    {
+      "ticket_number": "TCK-2025-0036",
+      "ticket_id": 100036,
+      "company": "Company 4",
+      "title": "RMM Agent Alert: M365 - Message Held in Quarantine (Company 4)",
+      "assigned_category": "quarantine_message"
+    },
+    {
+      "ticket_number": "TCK-2025-0037",
+      "ticket_id": 100037,
+      "company": "Company 5",
+      "title": "RMM Agent Alert: BIR-WS-141 - Backup Suspended (Company 5)",
+      "assigned_category": "backup_agent"
+    },
+    {
+      "ticket_number": "TCK-2025-0038",
+      "ticket_id": 100038,
+      "company": "Company 9",
+      "title": "RMM Agent Alert: LEE-NAS-176 - Backup Failed (Company 9)",
+      "assigned_category": "backup_agent"
+    },
+    {
+      "ticket_number": "TCK-2025-0039",
+      "ticket_id": 100039,
+      "company": "Company 5",
+      "title": "RMM Agent Alert: M365 - Message Held in Quarantine (Company 5)",
+      "assigned_category": "quarantine_message"
+    },
+    {
+      "ticket_number": "TCK-2025-0040",
+      "ticket_id": 100040,
+      "company": "Company 10",
+      "title": "RMM Agent Alert: LEE-SRV-030 - Patch Install Failed (Company 10)",
+      "assigned_category": "patch_install"
+    },
+    {
+      "ticket_number": "TCK-2025-0041",
+      "ticket_id": 100041,
+      "company": "Company 9",
+      "title": "RMM Agent Alert: LON-ESX-089 - Backup Failed (Company 9)",
+      "assigned_category": "backup_agent"
+    },
+    {
+      "ticket_number": "TCK-2025-0042",
+      "ticket_id": 100042,
+      "company": "Company 11",
+      "title": "RMM Agent Alert: BIR-SRV-005 - Device Offline (Company 11)",
+      "assigned_category": "agent_offline"
+    },
+    {
+      "ticket_number": "TCK-2025-0043",
+      "ticket_id": 100043,
+      "company": "Company 9",
+      "title": "RMM Agent Alert: BIR-SRV-027 - Backup Failed (Company 9)",
+      "assigned_category": "backup_agent"
+    },
+    {
+      "ticket_number": "TCK-2025-0044",
+      "ticket_id": 100044,
+      "company": "Company 4",
+      "title": "RMM Agent Alert: LON-NAS-162 - Critical Vulnerabilities Detected (Company 4)",
+      "assigned_category": "vulnerability_detect"
+    },
+    {
+      "ticket_number": "TCK-2025-0045",
+      "ticket_id": 100045,
+      "company": "Company 12",
+      "title": "RMM Agent Alert: BRI-SW-167 - Backup Failed (Company 12)",
+      "assigned_category": "backup_agent"
+    },
+    {
+      "ticket_number": "TCK-2025-0046",
+      "ticket_id": 100046,
+      "company": "Company 1",
+      "title": "RMM Agent Alert: BIR-FW-059 - Backup Suspended (Company 1)",
+      "assigned_category": "backup_agent"
+    },
+    {
+      "ticket_number": "TCK-2025-0047",
+      "ticket_id": 100047,
+      "company": "Company 7",
+      "title": "RMM Agent Alert: M365 - Message Held in Quarantine (Company 7)",
+      "assigned_category": "quarantine_message"
+    },
+    {
+      "ticket_number": "TCK-2025-0048",
+      "ticket_id": 100048,
+      "company": "Company 1",
+      "title": "RMM Agent Alert: MAN-ESX-021 - Backup Suspended (Company 1)",
+      "assigned_category": "backup_agent"
+    },
+    {
+      "ticket_number": "TCK-2025-0049",
+      "ticket_id": 100049,
+      "company": "Company 3",
+      "title": "RMM Agent Alert: LON-WS-008 - Critical Vulnerabilities Detected (Company 3)",
+      "assigned_category": "vulnerability_detect"
+    },
+    {
+      "ticket_number": "TCK-2025-0050",
+      "ticket_id": 100050,
+      "company": "Company 1",
+      "title": "RMM Agent Alert: BIR-FW-171 - Critical Vulnerabilities Detected (Company 1)",
+      "assigned_category": "vulnerability_detect"
+    },
+    {
+      "ticket_number": "TCK-2025-0051",
+      "ticket_id": 100051,
+      "company": "Company 11",
+      "title": "RMM Agent Alert: LON-ESX-171 - Device Offline (Company 11)",
+      "assigned_category": "agent_offline"
+    },
+    {
+      "ticket_number": "TCK-2025-0052",
+      "ticket_id": 100052,
+      "company": "Company 11",
+      "title": "RMM Agent Alert: M365 - Message Held in Quarantine (Company 11)",
+      "assigned_category": "quarantine_message"
+    },
+    {
+      "ticket_number": "TCK-2025-0053",
+      "ticket_id": 100053,
+      "company": "Company 3",
+      "title": "RMM Agent Alert: BIR-WS-025 - Backup Failed (Company 3)",
+      "assigned_category": "backup_agent"
+    },
+    {
+      "ticket_number": "TCK-2025-0054",
+      "ticket_id": 100054,
+      "company": "Company 2",
+      "title": "RMM Agent Alert: MAN-SRV-192 - Patch Install Failed (Company 2)",
+      "assigned_category": "patch_install"
+    },
+    {
+      "ticket_number": "TCK-2025-0055",
+      "ticket_id": 100055,
+      "company": "Company 9",
+      "title": "RMM Agent Alert: BIR-ESX-037 - Critical Vulnerabilities Detected (Company 9)",
+      "assigned_category": "vulnerability_detect"
+    },
+    {
+      "ticket_number": "TCK-2025-0056",
+      "ticket_id": 100056,
+      "company": "Company 5",
+      "title": "RMM Agent Alert: LEE-SW-035 - Device Offline (Company 5)",
+      "assigned_category": "agent_offline"
+    },
+    {
+      "ticket_number": "TCK-2025-0057",
+      "ticket_id": 100057,
+      "company": "Company 5",
+      "title": "RMM Agent Alert: BRI-ESX-038 - Patch Install Failed (Company 5)",
+      "assigned_category": "patch_install"
+    },
+    {
+      "ticket_number": "TCK-2025-0058",
+      "ticket_id": 100058,
+      "company": "Company 3",
+      "title": "RMM Agent Alert: BIR-FW-053 - Device Offline (Company 3)",
+      "assigned_category": "agent_offline"
+    },
+    {
+      "ticket_number": "TCK-2025-0059",
+      "ticket_id": 100059,
+      "company": "Company 8",
+      "title": "RMM Agent Alert: BRI-WS-047 - Patch Install Failed (Company 8)",
+      "assigned_category": "patch_install"
+    },
+    {
+      "ticket_number": "TCK-2025-0060",
+      "ticket_id": 100060,
+      "company": "Company 7",
+      "title": "RMM Agent Alert: LEE-ESX-085 - Patch Install Failed (Company 7)",
+      "assigned_category": "patch_install"
+    },
+    {
+      "ticket_number": "TCK-2025-0061",
+      "ticket_id": 100061,
+      "company": "Company 4",
+      "title": "RMM Agent Alert: BIR-SRV-086 - Backup Suspended (Company 4)",
+      "assigned_category": "backup_agent"
+    },
+    {
+      "ticket_number": "TCK-2025-0062",
+      "ticket_id": 100062,
+      "company": "Company 9",
+      "title": "RMM Agent Alert: M365 - Message Held in Quarantine (Company 9)",
+      "assigned_category": "quarantine_message"
+    },
+    {
+      "ticket_number": "TCK-2025-0063",
+      "ticket_id": 100063,
+      "company": "Company 8",
+      "title": "RMM Agent Alert: LON-WS-096 - Backup Failed (Company 8)",
+      "assigned_category": "backup_agent"
+    },
+    {
+      "ticket_number": "TCK-2025-0064",
+      "ticket_id": 100064,
+      "company": "Company 10",
+      "title": "RMM Agent Alert: LON-FW-153 - Device Offline (Company 10)",
+      "assigned_category": "agent_offline"
+    },
+    {
+      "ticket_number": "TCK-2025-0065",
+      "ticket_id": 100065,
+      "company": "Company 2",
+      "title": "RMM Agent Alert: BRI-FW-175 - Critical Vulnerabilities Detected (Company 2)",
+      "assigned_category": "vulnerability_detect"
+    },
+    {
+      "ticket_number": "TCK-2025-0066",
+      "ticket_id": 100066,
+      "company": "Company 8",
+      "title": "RMM Agent Alert: LEE-SW-106 - Device Offline (Company 8)",
+      "assigned_category": "agent_offline"
+    },
+    {
+      "ticket_number": "TCK-2025-0067",
+      "ticket_id": 100067,
+      "company": "Company 12",
+      "title": "RMM Agent Alert: BIR-FW-135 - Backup Failed (Company 12)",
+      "assigned_category": "backup_agent"
+    },
+    {
+      "ticket_number": "TCK-2025-0068",
+      "ticket_id": 100068,
+      "company": "Company 9",
+      "title": "RMM Agent Alert: BRI-FW-141 - Backup Failed (Company 9)",
+      "assigned_category": "backup_agent"
+    },
+    {
+      "ticket_number": "TCK-2025-0069",
+      "ticket_id": 100069,
+      "company": "Company 10",
+      "title": "RMM Agent Alert: LON-WS-038 - Critical Vulnerabilities Detected (Company 10)",
+      "assigned_category": "vulnerability_detect"
+    },
+    {
+      "ticket_number": "TCK-2025-0070",
+      "ticket_id": 100070,
+      "company": "Company 5",
+      "title": "RMM Agent Alert: M365 - Message Held in Quarantine (Company 5)",
+      "assigned_category": "quarantine_message"
+    },
+    {
+      "ticket_number": "TCK-2025-0071",
+      "ticket_id": 100071,
+      "company": "Company 11",
+      "title": "RMM Agent Alert: LON-SRV-041 - Patch Install Failed (Company 11)",
+      "assigned_category": "patch_install"
+    },
+    {
+      "ticket_number": "TCK-2025-0072",
+      "ticket_id": 100072,
+      "company": "Company 11",
+      "title": "RMM Agent Alert: MAN-NAS-014 - Backup Failed (Company 11)",
+      "assigned_category": "backup_agent"
+    },
+    {
+      "ticket_number": "TCK-2025-0073",
+      "ticket_id": 100073,
+      "company": "Company 5",
+      "title": "RMM Agent Alert: BRI-FW-116 - Patch Install Failed (Company 5)",
+      "assigned_category": "patch_install"
+    },
+    {
+      "ticket_number": "TCK-2025-0074",
+      "ticket_id": 100074,
+      "company": "Company 9",
+      "title": "RMM Agent Alert: LEE-SRV-179 - Patch Install Failed (Company 9)",
+      "assigned_category": "patch_install"
+    },
+    {
+      "ticket_number": "TCK-2025-0075",
+      "ticket_id": 100075,
+      "company": "Company 8",
+      "title": "RMM Agent Alert: M365 - Message Held in Quarantine (Company 8)",
+      "assigned_category": "quarantine_message"
+    },
+    {
+      "ticket_number": "TCK-2025-0076",
+      "ticket_id": 100076,
+      "company": "Company 5",
+      "title": "RMM Agent Alert: LEE-FW-058 - Patch Install Failed (Company 5)",
+      "assigned_category": "patch_install"
+    },
+    {
+      "ticket_number": "TCK-2025-0077",
+      "ticket_id": 100077,
+      "company": "Company 4",
+      "title": "RMM Agent Alert: BRI-WS-087 - Patch Install Failed (Company 4)",
+      "assigned_category": "patch_install"
+    },
+    {
+      "ticket_number": "TCK-2025-0078",
+      "ticket_id": 100078,
+      "company": "Company 7",
+      "title": "RMM Agent Alert: LEE-SRV-055 - Patch Install Failed (Company 7)",
+      "assigned_category": "patch_install"
+    },
+    {
+      "ticket_number": "TCK-2025-0079",
+      "ticket_id": 100079,
+      "company": "Company 6",
+      "title": "RMM Agent Alert: M365 - Message Held in Quarantine (Company 6)",
+      "assigned_category": "quarantine_message"
+    },
+    {
+      "ticket_number": "TCK-2025-0080",
+      "ticket_id": 100080,
+      "company": "Company 9",
+      "title": "RMM Agent Alert: LON-NAS-017 - Backup Suspended (Company 9)",
+      "assigned_category": "backup_agent"
+    },
+    {
+      "ticket_number": "TCK-2025-0081",
+      "ticket_id": 100081,
+      "company": "Company 10",
+      "title": "RMM Agent Alert: BRI-SRV-172 - Backup Suspended (Company 10)",
+      "assigned_category": "backup_agent"
+    },
+    {
+      "ticket_number": "TCK-2025-0082",
+      "ticket_id": 100082,
+      "company": "Company 12",
+      "title": "RMM Agent Alert: BRI-NAS-034 - Backup Failed (Company 12)",
+      "assigned_category": "backup_agent"
+    },
+    {
+      "ticket_number": "TCK-2025-0083",
+      "ticket_id": 100083,
+      "company": "Company 7",
+      "title": "RMM Agent Alert: LON-NAS-127 - Backup Failed (Company 7)",
+      "assigned_category": "backup_agent"
+    },
+    {
+      "ticket_number": "TCK-2025-0084",
+      "ticket_id": 100084,
+      "company": "Company 9",
+      "title": "RMM Agent Alert: LON-SRV-052 - Critical Vulnerabilities Detected (Company 9)",
+      "assigned_category": "vulnerability_detect"
+    },
+    {
+      "ticket_number": "TCK-2025-0085",
+      "ticket_id": 100085,
+      "company": "Company 5",
+      "title": "RMM Agent Alert: BIR-ESX-158 - Backup Failed (Company 5)",
+      "assigned_category": "backup_agent"
+    },
+    {
+      "ticket_number": "TCK-2025-0086",
+      "ticket_id": 100086,
+      "company": "Company 4",
+      "title": "RMM Agent Alert: BIR-SRV-135 - Backup Failed (Company 4)",
+      "assigned_category": "backup_agent"
+    },
+    {
+      "ticket_number": "TCK-2025-0087",
+      "ticket_id": 100087,
+      "company": "Company 10",
+      "title": "RMM Agent Alert: MAN-SRV-060 - Device Offline (Company 10)",
+      "assigned_category": "agent_offline"
+    },
+    {
+      "ticket_number": "TCK-2025-0088",
+      "ticket_id": 100088,
+      "company": "Company 11",
+      "title": "RMM Agent Alert: BRI-SW-104 - Backup Failed (Company 11)",
+      "assigned_category": "backup_agent"
+    },
+    {
+      "ticket_number": "TCK-2025-0089",
+      "ticket_id": 100089,
+      "company": "Company 7",
+      "title": "RMM Agent Alert: MAN-SRV-014 - Patch Install Failed (Company 7)",
+      "assigned_category": "patch_install"
+    },
+    {
+      "ticket_number": "TCK-2025-0090",
+      "ticket_id": 100090,
+      "company": "Company 10",
+      "title": "RMM Agent Alert: M365 - Message Held in Quarantine (Company 10)",
+      "assigned_category": "quarantine_message"
+    },
+    {
+      "ticket_number": "TCK-2025-0091",
+      "ticket_id": 100091,
+      "company": "Company 8",
+      "title": "RMM Agent Alert: BRI-SRV-196 - Critical Vulnerabilities Detected (Company 8)",
+      "assigned_category": "vulnerability_detect"
+    },
+    {
+      "ticket_number": "TCK-2025-0092",
+      "ticket_id": 100092,
+      "company": "Company 12",
+      "title": "RMM Agent Alert: LEE-FW-013 - Critical Vulnerabilities Detected (Company 12)",
+      "assigned_category": "vulnerability_detect"
+    },
+    {
+      "ticket_number": "TCK-2025-0093",
+      "ticket_id": 100093,
+      "company": "Company 7",
+      "title": "RMM Agent Alert: LEE-SRV-067 - Backup Failed (Company 7)",
+      "assigned_category": "backup_agent"
+    },
+    {
+      "ticket_number": "TCK-2025-0094",
+      "ticket_id": 100094,
+      "company": "Company 8",
+      "title": "RMM Agent Alert: BRI-NAS-042 - Patch Install Failed (Company 8)",
+      "assigned_category": "patch_install"
+    },
+    {
+      "ticket_number": "TCK-2025-0095",
+      "ticket_id": 100095,
+      "company": "Company 6",
+      "title": "RMM Agent Alert: BRI-NAS-051 - Backup Failed (Company 6)",
+      "assigned_category": "backup_agent"
+    },
+    {
+      "ticket_number": "TCK-2025-0096",
+      "ticket_id": 100096,
+      "company": "Company 5",
+      "title": "RMM Agent Alert: LEE-SRV-168 - Backup Failed (Company 5)",
+      "assigned_category": "backup_agent"
+    },
+    {
+      "ticket_number": "TCK-2025-0097",
+      "ticket_id": 100097,
+      "company": "Company 3",
+      "title": "RMM Agent Alert: LON-WS-010 - Backup Failed (Company 3)",
+      "assigned_category": "backup_agent"
+    },
+    {
+      "ticket_number": "TCK-2025-0098",
+      "ticket_id": 100098,
+      "company": "Company 7",
+      "title": "RMM Agent Alert: BIR-ESX-034 - Backup Suspended (Company 7)",
+      "assigned_category": "backup_agent"
+    },
+    {
+      "ticket_number": "TCK-2025-0099",
+      "ticket_id": 100099,
+      "company": "Company 8",
+      "title": "RMM Agent Alert: M365 - Message Held in Quarantine (Company 8)",
+      "assigned_category": "quarantine_message"
+    },
+    {
+      "ticket_number": "TCK-2025-0100",
+      "ticket_id": 100100,
+      "company": "Company 9",
+      "title": "RMM Agent Alert: M365 - Message Held in Quarantine (Company 9)",
+      "assigned_category": "quarantine_message"
+    }
+  ]
+}
