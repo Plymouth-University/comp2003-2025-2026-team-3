@@ -16,9 +16,11 @@ Modules:
 """
 
 from .processor import process_ticket, categorise_ticket, process_input_tickets
+from .categorizer import predict_categories_batch
 
 __all__ = [
     "process_ticket",
     "categorise_ticket",
     "process_input_tickets",
+    "predict_categories_batch",
 ]

@@ -20,7 +20,12 @@ logger = setup_logging().getChild("config")
 # ============================================================================
 
 # Initialize semantic model (cached after first load)
+# Set device to CPU and optimize for inference
+import torch
 model = SentenceTransformer('all-MiniLM-L6-v2')
+model = model.to('cpu')  # Explicitly use CPU
+if hasattr(torch, 'set_num_threads'):
+    torch.set_num_threads(4)  # Optimize thread usage
 
 # ============================================================================
 # DYNAMIC CATEGORY LOADING

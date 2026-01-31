@@ -6,6 +6,7 @@ Implements both keyword-based and semantic-based category prediction for tickets
 
 import logging
 from sentence_transformers import util
+import torch
 from .config import (
     CATEGORY_KEYWORDS,
     CATEGORY_EMBEDDINGS,
@@ -14,6 +15,7 @@ from .config import (
 )
 from .text_processor import preprocess_text
 from .logging_config import perf_logger, metrics
+from .embedding_cache import get_cache
 
 logger = logging.getLogger(__name__)
 
@@ -79,6 +81,113 @@ def predict_category_by_semantic(text: str) -> tuple:
     perf_logger.debug(f"[TIMING] semantic prediction total: {total_time*1000:.2f}ms")
     
     return best_cat, similarities
+
+
+def predict_categories_batch(texts: list[str]) -> list[tuple]:
+    """
+    Predict categories for multiple tickets at once using batch processing.
+    This is MUCH faster than processing tickets one-by-one.
+    
+    Args:
+        texts: List of ticket texts to analyze
+        
+    Returns:
+        List of tuples (category, method_used, similarity_scores) for each ticket
+    """
+    import time
+    
+    if not texts:
+        return []
+    
+    batch_start = time.time()
+    logger.debug(f"[BATCH] Processing {len(texts)} tickets in batch mode")
+    
+    # CHECK CACHE: Get cached embeddings and identify what needs encoding
+    cache = get_cache()
+    cache_start = time.time()
+    cached_embeddings, indices_to_encode = cache.get_batch(texts)
+    cache_time = time.time() - cache_start
+    
+    cache_hits = len(texts) - len(indices_to_encode)
+    logger.debug(f"[CACHE] {cache_hits}/{len(texts)} cache hits ({cache_time*1000:.2f}ms)")
+    
+    # BATCH ENCODING: Only encode texts that aren't cached
+    if indices_to_encode:
+        encode_start = time.time()
+        texts_to_encode = [texts[i] for i in indices_to_encode]
+        
+        new_embeddings = model.encode(
+            texts_to_encode, 
+            convert_to_tensor=True, 
+            batch_size=16,
+            show_progress_bar=False,
+            normalize_embeddings=True
+        )
+        encode_time = time.time() - encode_start
+        logger.debug(f"[BATCH] Encoded {len(texts_to_encode)} new tickets in {encode_time*1000:.2f}ms")
+        
+        # Store in cache
+        cache.put_batch(texts_to_encode, new_embeddings)
+        
+        # Merge cached and new embeddings
+        new_idx = 0
+        for i in range(len(texts)):
+            if cached_embeddings[i] is None:
+                cached_embeddings[i] = new_embeddings[new_idx]
+                new_idx += 1
+    
+    # Stack all embeddings into tensor
+    ticket_embeddings = torch.stack(cached_embeddings)
+    
+    # Prepare category embeddings as tensor (cache this for reuse)
+    categories = list(CATEGORY_EMBEDDINGS.keys())
+    category_embeddings_tensor = torch.stack([CATEGORY_EMBEDDINGS[cat] for cat in categories])
+    
+    # BATCH SIMILARITY: Compute all similarities at once
+    sim_start = time.time()
+    similarities_matrix = util.cos_sim(ticket_embeddings, category_embeddings_tensor)
+    sim_time = time.time() - sim_start
+    logger.debug(f"[BATCH] Computed similarities in {sim_time*1000:.2f}ms")
+    
+    # Process results for each ticket
+    results = []
+    for i, text in enumerate(texts):
+        # Get similarities for this ticket (already computed)
+        ticket_similarities = similarities_matrix[i]
+        
+        # Convert to dictionary and scale
+        similarities = {}
+        for j, category in enumerate(categories):
+            similarity = ticket_similarities[j].item()
+            scaled = int(((similarity + 1) / 2) * 100)
+            similarities[category] = scaled
+        
+        # Get best semantic category
+        best_cat = categories[torch.argmax(ticket_similarities).item()]
+        
+        # Quick keyword check (only preprocess if needed)
+        keyword_scores = predict_category_by_keywords(text)
+        
+        # Hybrid decision
+        if keyword_scores:
+            best_keyword = max(keyword_scores, key=keyword_scores.get)
+            if keyword_scores[best_keyword] >= MIN_KEYWORD_MATCHES:
+                final_category = best_keyword
+                method_used = "keyword"
+            else:
+                final_category = best_cat
+                method_used = "semantic"
+        else:
+            final_category = best_cat
+            method_used = "semantic"
+        
+        results.append((final_category, method_used, similarities))
+    
+    batch_time = time.time() - batch_start
+    logger.debug(f"[BATCH] Total batch processing: {batch_time*1000:.2f}ms ({batch_time/len(texts)*1000:.2f}ms per ticket)")
+    logger.info(f"[BATCH] Processed {len(texts)} tickets in {batch_time:.3f}s (avg {batch_time/len(texts):.4f}s per ticket)")
+    
+    return results
 
 
 def predict_category_hybrid(text: str) -> tuple:

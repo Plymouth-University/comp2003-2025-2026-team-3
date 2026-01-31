@@ -48,13 +48,13 @@ def generate_ai_description(ticket_item: dict) -> str:
         
         context = "\n".join(context_parts)
         
-        # Generate semantic embedding for context enrichment
+        """# Generate semantic embedding for context enrichment
         encode_start = time.time()
         model.encode(context, convert_to_tensor=True)
         encode_time = time.time() - encode_start
         metrics.record_operation("description_encoding", encode_time * 1000)
         perf_logger.debug(f"[TIMING] generate_ai_description encoding took {encode_time*1000:.2f}ms")
-        
+        """
         # Build comprehensive response based on issue type
         issue_type = ticket_item.get("sub_issue_type", "").lower()
         
