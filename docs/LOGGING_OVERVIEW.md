@@ -1,6 +1,6 @@
 # AI Services Logging: Developer Guide
 
-This document provides a concise overview of the logging system for the AI services. For the complete implementation, see [`project-root/backend/app/services/ai/logging_config.py`](project-root/backend/app/services/ai/logging_config.py).
+This document provides a concise overview of the logging system for the AI services. For the complete implementation, see [`backend/app/services/ai/logging_config.py`](backend/app/services/ai/logging_config.py).
 
 ## Core Concepts
 
@@ -14,7 +14,7 @@ The logging system is built on Python's standard `logging` module and is designe
 
 ## Log Files
 
-All log files are stored in the `project-root/backend/logs/ai_services/` directory.
+All log files are stored in the `backend/logs/ai_services/` directory.
 
 | File Name                     | Log Level | Purpose                                                                                             | Rotation Policy              |
 | ----------------------------- | --------- | --------------------------------------------------------------------------------------------------- | ---------------------------- |

@@ -8,7 +8,7 @@ The primary goal of the AI system is to automate the initial processing of suppo
 
 ## System Components
 
-The AI logic is encapsulated within the `project-root/backend/app/services/ai/` directory. The system is composed of several specialized modules that work together.
+The AI logic is encapsulated within the `backend/app/services/ai/` directory. The system is composed of several specialized modules that work together.
 
 ```mermaid
 graph TD

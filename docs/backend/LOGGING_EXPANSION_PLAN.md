@@ -13,7 +13,7 @@ This document outlines a strategic plan for extending the robust logging system,
 To maintain isolation, each new service should have its own dedicated log directory.
 
 ```
-project-root/
+./
 └── backend/
     ├── logs/
     │   ├── ai_services/
@@ -42,7 +42,7 @@ When adding a new service (e.g., `billing_service`), follow these steps:
 
 ### 1. Create a Service-Specific `logging_config.py`
 
-- **Copy and Adapt**: Duplicate `project-root/backend/app/services/ai/logging_config.py` into the new service's directory (e.g., `project-root/backend/app/services/billing/`).
+- **Copy and Adapt**: Duplicate `backend/app/services/ai/logging_config.py` into the new service's directory (e.g., `backend/app/services/billing/`).
 - **Customize Paths and Names**:
   - Modify the `LOG_DIR` to point to the new service's log folder (e.g., `.../logs/billing_service`).
   - Change the log file names (e.g., `billing.log`, `billing_errors.log`).

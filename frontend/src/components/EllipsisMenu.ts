@@ -1,4 +1,4 @@
-import { el } from "../lib/dom.js";
+import { el } from "../shared/lib/dom.js";
 
 export function EllipsisMenu(): HTMLElement {
   const wrapper = el("div", { className: "relative" });

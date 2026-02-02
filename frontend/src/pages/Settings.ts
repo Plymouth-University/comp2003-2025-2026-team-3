@@ -1,4 +1,4 @@
-import { el } from "../lib/dom.js";
+import { el } from "../shared/lib/dom.js";
 
 export function Settings(): HTMLElement {
   const wrap = el("div", { className: "bg-white rounded-xl shadow p-8 border border-slate-200" });

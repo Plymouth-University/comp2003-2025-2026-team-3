@@ -17,8 +17,8 @@ import numpy as np
 from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_score
 
-# Add the app directory to Python path
-sys.path.insert(0, str(Path(__file__).parent))
+# Add the backend directory to Python path (so `import app...` works)
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from app.services.ai.config import model
 from app.services.ai.text_processor import preprocess_text
