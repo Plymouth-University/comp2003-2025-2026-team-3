@@ -7,7 +7,7 @@ Only Modify this file to:
 3) Adding performance measurement
 */
 
-import { App } from "./app.js";
+import { App } from "./app/App.js";
 
 const root = document.getElementById("app");
 if (!root) throw new Error("Missing #app root element");

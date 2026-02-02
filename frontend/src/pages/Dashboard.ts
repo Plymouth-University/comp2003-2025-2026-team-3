@@ -1,6 +1,6 @@
-import { el } from "../lib/dom.js";
+import { el } from "../shared/lib/dom.js";
 import { EllipsisMenu } from "../components/EllipsisMenu.js";
-import type { BackendTicket } from "../types.js";
+import type { BackendTicket } from "../shared/types.js";
 
 function getTimeStamp(): string {
   const now = new Date();

@@ -1,14 +1,14 @@
 //import a helper function for creating DOM elements
-import { el } from "./lib/dom.js";
+import { el } from "../shared/lib/dom.js";
 //import screen components
-import { Dashboard } from "./screens/Dashboard.js";
-import { ActiveTickets } from "./screens/ActiveTickets.js";
-import { TicketDetail } from "./screens/TicketDetail.js";
-import { AccountPage } from "./screens/AccountPage.js";
-import { Settings } from "./screens/Settings.js";
-import { ClosedTicketsPage } from "./screens/ClosedTickets.js";
+import { Dashboard } from "../pages/Dashboard.js";
+import { ActiveTickets } from "../pages/ActiveTickets.js";
+import { TicketDetail } from "../pages/TicketDetail.js";
+import { AccountPage } from "../pages/AccountPage.js";
+import { Settings } from "../pages/Settings.js";
+import { ClosedTicketsPage } from "../pages/ClosedTickets.js";
 //import shared types
-import type { BackendTicket } from "./types.js";
+import type { BackendTicket } from "../shared/types.js";
 
 type Route =
   | { name: "dashboard" }

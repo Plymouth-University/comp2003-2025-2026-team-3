@@ -11,7 +11,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-DATA_PATH = Path(__file__).resolve().parent / "data" / "tickets.json"
+DATA_PATH = Path(__file__).resolve().parents[1] / "data" / "tickets.json"
 TOKENS = set()
 
 @app.post("/oauth2/token")

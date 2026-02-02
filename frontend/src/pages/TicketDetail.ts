@@ -1,5 +1,5 @@
-import { el } from "../lib/dom.js";
-import type { BackendTicket } from "../types.js";
+import { el } from "../shared/lib/dom.js";
+import type { BackendTicket } from "../shared/types.js";
 
 export function TicketDetail(ticket: BackendTicket, onBack: () => void): HTMLElement {
   const wrap = el("div", { className: "bg-white rounded-xl shadow p-6 border border-slate-200" });

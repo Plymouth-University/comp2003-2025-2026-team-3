@@ -7,9 +7,9 @@ type UITicketCard = {
   status: keyof typeof StatusLabels;
 };
 
-import { el, formatDueDate } from "../lib/dom.js";
+import { el, formatDueDate } from "../shared/lib/dom.js";
 import { EllipsisMenu } from "./EllipsisMenu.js";
-import { StatusIconPaths, StatusLabels } from "../lib/ticketStatus.js";
+import { StatusIconPaths, StatusLabels } from "../shared/lib/ticketStatus.js";
 
 function priorityDotClass(priority: UITicketCard["priority"]): string {
   if (priority === "Critical") return "bg-red-500";

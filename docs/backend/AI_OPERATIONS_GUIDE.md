@@ -10,18 +10,18 @@ The primary script for processing tickets is `predict_categories.py`.
 
 To run the AI categorization on a batch of tickets:
 
-1.  **Place Ticket Files**: Ensure the raw ticket data (in JSON format) is located in `project-root/backend/data/Unprocessed Tickets/`.
+1.  **Place Ticket Files**: Ensure the raw ticket data (in JSON format) is located in `backend/data/Unprocessed Tickets/`.
 2.  **Execute the Script**: Run the main prediction script from the `backend` directory.
 
     ```powershell
     # Navigate to the backend directory
-    cd project-root/backend
+    cd backend
 
     # Run the prediction process
     python predict_categories.py
     ```
 
-3.  **Check the Output**: The script will process each ticket and save the enriched output to `project-root/backend/data/Unprocessed Tickets/categorized/`. The console will show progress, and detailed logs are available in `project-root/backend/logs/ai_services/`.
+3.  **Check the Output**: The script will process each ticket and save the enriched output to `backend/data/Unprocessed Tickets/categorized/`. The console will show progress, and detailed logs are available in `backend/logs/ai_services/`.
 
 ### Generating Category Embeddings
 
@@ -29,7 +29,7 @@ If you modify the categories in `data/generated_categories.json`, you must regen
 
 ```powershell
 # Navigate to the backend directory
-cd project-root/backend
+cd backend
 
 # Run the category generator
 python -m app.services.ai.category_generator

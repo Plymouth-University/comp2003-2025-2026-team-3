@@ -17,7 +17,8 @@ env/
 # AI / ML model caches
 # =========================
 .cache/
-models/
+/models/
+
 
 # =========================
 # Logs & runtime files
