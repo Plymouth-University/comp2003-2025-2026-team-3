@@ -1,12 +1,16 @@
 from fastapi import FastAPI, Query
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
+from contextlib import asynccontextmanager
 from .providers.fake_autotask import FakeAutotaskProvider
 from .services.ai_categoriser import categorise_ticket
 from .services.ai.categorizer import predict_categories_batch
 from .services.ai.priority_calculator import calculate_priority_score, get_priority_label, calculate_priority_scores_batch
 from .services.ai.text_processor import extract_ticket_text
 from .services.ai.embedding_cache import get_cache
+from .routers.profiles import router as profiles_router
+from .database import close_db
+from .config import settings
 import logging
 import time
 import json
@@ -16,15 +20,35 @@ from datetime import datetime
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-app = FastAPI(title="SecOps Autotask Prototype API", version="0.1.0")
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Application lifespan manager for startup/shutdown events."""
+    # Startup
+    logger.info("Starting up application...")
+    logger.info(f"Environment: {settings.ENVIRONMENT}")
+    yield
+    # Shutdown
+    logger.info("Shutting down application...")
+    await close_db()
+
+
+app = FastAPI(
+    title="SecOps Autotask Prototype API",
+    version="0.2.0",
+    lifespan=lifespan
+)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
+    allow_origins=settings.CORS_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Include profile management router
+app.include_router(profiles_router)
 
 provider = FakeAutotaskProvider()
 
