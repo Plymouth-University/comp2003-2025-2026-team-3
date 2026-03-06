@@ -214,6 +214,10 @@ else Profile exists
 ProfileService-->>API: Return existing profile_id
 end
 ```
+1.	API calls ProfileService to resolve profile.
+2.	ProfileService queries profile from the Profile DB
+3.	If the profile is not found, a new profile will be made, and the ID of the new profile will be returned to API
+4.	If the profile IS found, then simply the profile ID will be returned.
 
 ---
 
