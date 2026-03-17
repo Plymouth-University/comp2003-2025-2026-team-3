@@ -1,3 +1,4 @@
+import { API_BASE_URL } from "../shared/auth.js";
 import { el } from "../shared/lib/dom.js";
 import { EllipsisMenu } from "../components/EllipsisMenu.js";
 import type { BackendTicket } from "../shared/types.js";
@@ -13,7 +14,7 @@ async function fetchTickets(): Promise<BackendTicket[]> {
   console.log(`[${startTime}] DASHBOARD: Fetching tickets...`);
   
   try {
-    const res = await fetch("http://127.0.0.1:8000/api/tickets");
+    const res = await fetch(`${API_BASE_URL}/api/tickets`, { credentials: "include" });
     const fetchTime = performance.now() - requestStart;
     console.log(`[${getTimeStamp()}] DASHBOARD: Fetch completed in ${fetchTime.toFixed(1)}ms, status: ${res.status}`);
     

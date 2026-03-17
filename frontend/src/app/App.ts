@@ -7,6 +7,8 @@ import { TicketDetail } from "../pages/TicketDetail.js";
 import { AccountPage } from "../pages/AccountPage.js";
 import { Settings } from "../pages/Settings.js";
 import { ClosedTicketsPage } from "../pages/ClosedTickets.js";
+import { logout, startLogin } from "../shared/auth.js";
+import type { CurrentUserResponse } from "../shared/auth.js";
 //import shared types
 import type { BackendTicket } from "../shared/types.js";
 
@@ -96,7 +98,7 @@ function Sidebar(setRoute: (route: Route) => void): HTMLElement {
 }
 
 //TopHeader component: returns a header bar for the app
-function TopHeader(routeName: string): HTMLElement {
+function TopHeader(routeName: string, currentUser: CurrentUserResponse): HTMLElement {
   //create a header element
   const hdr = el("header", { className: "bg-gradient-to-r from-blue-950 to-cyan-900 border-b border-cyan-800 m-0" });
   
@@ -114,21 +116,66 @@ function TopHeader(routeName: string): HTMLElement {
   };
   
   //add a flex container with centered page title and subtitle on the right
+  const name = currentUser.profile.display?.display_name || currentUser.session.display_name;
+  const signOutButton = el("button", {
+    className: "rounded-lg border border-cyan-200 px-3 py-1 text-sm font-semibold text-cyan-100 transition hover:bg-white hover:text-cyan-900",
+    attrs: { type: "button" },
+    text: "Sign out",
+  });
+
+  signOutButton.addEventListener("click", async () => {
+    await logout();
+    window.location.reload();
+  });
+
   hdr.append(
-    el("div", { className: "px-5 py-3 flex items-center justify-between" }, [
+    el("div", { className: "px-5 py-3 flex items-center justify-between gap-4" }, [
+      el("div", { className: "font-sans font-bold text-xl text-cyan-200", text: "GLOBAL 4" }),
       el("div", { className: "flex-1 flex justify-center" }, [
         el("div", { className: "font-bold text-xl text-cyan-200", text: getDisplayName(routeName) }),
       ]),
-      el("div", { className: "font-sans font-bold text-xl text-cyan-200", text: "GLOBAL 4" }),
+      el("div", { className: "flex items-center gap-4" }, [
+        el("div", { className: "text-sm font-medium text-cyan-100", text: name }),
+        signOutButton,
+      ]),
     ])
   );
   return hdr;
 }
 
+function SignedOutView(): HTMLElement {
+  const shell = el("div", { className: "min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-100 via-cyan-50 to-blue-100 p-6" });
+  const card = el("div", { className: "w-full max-w-xl rounded-3xl border border-cyan-200 bg-white/90 p-10 shadow-2xl" });
+  const button = el("button", {
+    className: "mt-8 rounded-xl bg-cyan-700 px-5 py-3 font-semibold text-white transition hover:bg-cyan-800",
+    attrs: { type: "button" },
+    text: "Sign in with Microsoft",
+  });
+  button.addEventListener("click", () => startLogin());
+
+  card.append(
+    el("div", { className: "text-sm font-semibold uppercase tracking-[0.3em] text-cyan-700", text: "SecOps" }),
+    el("h1", { className: "mt-4 text-4xl font-bold text-slate-900", text: "Ticket Interface" }),
+    el("p", {
+      className: "mt-4 text-base leading-7 text-slate-600",
+      text: "Authentication is now handled by Microsoft Entra ID. Sign in to open the dashboard and resolve your profile in the backend service.",
+    }),
+    button
+  );
+
+  shell.append(card);
+  return shell;
+}
+
 // Main App function: renders the whole application into the given root element
 // root: the HTML element where the app will be mounted
-export function App(root: HTMLElement) {
+export function App(root: HTMLElement, currentUser: CurrentUserResponse | null) {
   root.innerHTML = ""; //remove any existing content
+
+  if (!currentUser) {
+    root.append(SignedOutView());
+    return;
+  }
 
   //create the main shell: a flex container for sidebar and main content
   const shell = el("div", { className: "min-h-screen flex gap-0" });
@@ -161,7 +208,7 @@ export function App(root: HTMLElement) {
     const header = mainCol.querySelector("header");
     if (header) {
       mainCol.removeChild(header);
-      mainCol.insertBefore(TopHeader(r.name), content);
+      mainCol.insertBefore(TopHeader(r.name, currentUser), content);
     }
     
     if (r.name === "dashboard") {
@@ -171,7 +218,7 @@ export function App(root: HTMLElement) {
     } else if (r.name === "ticket") {
       content.append(TicketDetail(r.ticket, () => setRoute(previousRoute)));
     } else if (r.name === "account") {
-      content.append(AccountPage());
+      content.append(AccountPage(currentUser));
     } else if (r.name === "settings") {
       content.append(Settings());
     } else if (r.name === "closed-tickets"){
@@ -200,7 +247,7 @@ export function App(root: HTMLElement) {
   });
 
   //build page layout: header, sidebar, and content
-  mainCol.append(TopHeader(currentRoute.name), content);
+  mainCol.append(TopHeader(currentRoute.name, currentUser), content);
   shell.append(Sidebar(setRoute), mainCol);
   root.append(shell);
 

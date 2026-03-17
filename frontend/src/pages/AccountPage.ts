@@ -1,6 +1,7 @@
 import { el } from "../shared/lib/dom.js";
+import type { CurrentUserResponse } from "../shared/auth.js";
 
-export function AccountPage(): HTMLElement {
+export function AccountPage(currentUser: CurrentUserResponse): HTMLElement {
   const wrap = el("div", { className: "bg-white rounded-xl shadow p-8 border border-slate-200" });
 
   //two-column layout -- left panel shows account info, right panel shows profile icon
@@ -16,9 +17,9 @@ export function AccountPage(): HTMLElement {
   );
 
   const generalAttrs = [
-    { label: "Name", value: "John Smith" },
-    { label: "Date of Birth", value: "March 15, 1990" },
-    { label: "Gender", value: "Male" },
+    { label: "Display Name", value: currentUser.profile.display?.display_name || currentUser.session.display_name },
+    { label: "Profile ID", value: currentUser.profile.profile_id },
+    { label: "Status", value: currentUser.profile.status },
   ];
 
   for (const attr of generalAttrs) {
@@ -41,11 +42,11 @@ export function AccountPage(): HTMLElement {
   );
 
   const contactAttrs = [
-    { label: "Mobile Number", value: "+1 (555) 123-4567" },
-    { label: "Office Phone", value: "+1 (555) 987-6543" },
-    { label: "Personal Email", value: "john.smith@personal.com" },
-    { label: "Work Email", value: "john.smith@global4.com" },
-    { label: "Address", value: "123 Main Street, Suite 100, New York, NY 10001" },
+    { label: "Entra Tenant ID", value: currentUser.session.entra_tenant_id },
+    { label: "Object ID", value: currentUser.session.object_id },
+    { label: "Internal Tenant ID", value: currentUser.profile.tenant_id },
+    { label: "Created At", value: new Date(currentUser.profile.created_at).toLocaleString() },
+    { label: "Data Policy", value: "No company profile data is copied here beyond identity linkage and display name." },
   ];
 
   for (const attr of contactAttrs) {

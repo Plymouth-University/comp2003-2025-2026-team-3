@@ -1,4 +1,5 @@
 import type { BackendTicket } from "../shared/types.js";
+import { API_BASE_URL } from "../shared/auth.js";
 
 function getTimeStamp(): string {
   const now = new Date();
@@ -9,12 +10,12 @@ async function fetchTickets(): Promise<BackendTicket[]> {
   const requestStart = performance.now();
   const startTime = getTimeStamp();
   console.log(`[${startTime}] ========== FRONTEND FETCH START ==========`);
-  console.log(`[${startTime}] Initiating API request to http://127.0.0.1:8000/api/tickets`);
+  console.log(`[${startTime}] Initiating API request to ${API_BASE_URL}/api/tickets`);
   
   try {
     const fetchStart = performance.now();
     console.log(`[${getTimeStamp()}] Sending fetch request...`);
-    const res = await fetch("http://127.0.0.1:8000/api/tickets");
+    const res = await fetch(`${API_BASE_URL}/api/tickets`, { credentials: "include" });
     const fetchTime = performance.now() - fetchStart;
     console.log(`[${getTimeStamp()}] Network request completed in ${fetchTime.toFixed(1)}ms, status: ${res.status}`);
     
