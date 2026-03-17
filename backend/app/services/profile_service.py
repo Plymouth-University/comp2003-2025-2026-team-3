@@ -3,6 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from typing import Optional, List
 from uuid import UUID
 
+from ..config import settings
 from ..repositories.profile_repository import (
     ProfileRepository, TenantRepository, IdentityRepository, SpecialismRepository
 )
@@ -149,8 +150,58 @@ class ProfileService:
             # Update last login
             await self.identity_repo.update_last_login(idp.idp_id, idp_tenant_subject)
             return ProfileResponse.model_validate(profile)
-        
+
         return None
+
+    async def resolve_entra_profile(
+        self,
+        entra_tenant_id: str,
+        object_id: str,
+        display_name: str,
+    ) -> ProfileResponse:
+        """Resolve or provision a profile from Entra token claims."""
+        tenant = await self.tenant_repo.get_tenant_by_name(settings.ENTRA_INTERNAL_TENANT_NAME)
+        if not tenant:
+            tenant = await self.tenant_repo.create_tenant(settings.ENTRA_INTERNAL_TENANT_NAME)
+
+        idp = await self.identity_repo.get_or_create_identity_provider(settings.ENTRA_IDP_NAME)
+        subject = f"{entra_tenant_id}:{object_id}"
+
+        profile = await self.identity_repo.get_profile_by_identity(
+            idp_id=idp.idp_id,
+            idp_tenant_subject=subject,
+        )
+
+        if profile:
+            await self.identity_repo.update_last_login(idp.idp_id, subject)
+            if profile.status != "active":
+                raise PermissionError("Profile is not active")
+
+            if profile.display and profile.display.display_name != display_name:
+                await self.profile_repo.update_display_name(
+                    profile.profile_id,
+                    tenant.tenant_id,
+                    display_name,
+                )
+
+            refreshed = await self.profile_repo.get_profile_by_id(profile.profile_id, tenant.tenant_id)
+            return ProfileResponse.model_validate(refreshed or profile)
+
+        created_profile = await self.profile_repo.create_profile(
+            tenant_id=tenant.tenant_id,
+            display_name=display_name,
+            status="active",
+            avatar_preset_id=None,
+        )
+        await self.identity_repo.link_profile_identity(
+            profile_id=created_profile.profile_id,
+            tenant_id=tenant.tenant_id,
+            idp_id=idp.idp_id,
+            idp_tenant_subject=subject,
+        )
+        await self.identity_repo.update_last_login(idp.idp_id, subject)
+        resolved = await self.profile_repo.get_profile_by_id(created_profile.profile_id, tenant.tenant_id)
+        return ProfileResponse.model_validate(resolved or created_profile)
 
 
 class TenantService:

@@ -8,8 +8,19 @@ Only Modify this file to:
 */
 
 import { App } from "./app/App.js";
+import { fetchCurrentUser } from "./shared/auth.js";
 
 const root = document.getElementById("app");
 if (!root) throw new Error("Missing #app root element");
 
-App(root);
+async function bootstrap() {
+  try {
+    const currentUser = await fetchCurrentUser();
+    App(root!, currentUser);
+  } catch (error) {
+    console.error("Failed to bootstrap app", error);
+    App(root!, null);
+  }
+}
+
+bootstrap();

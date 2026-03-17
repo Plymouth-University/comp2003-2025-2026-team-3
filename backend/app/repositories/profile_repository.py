@@ -198,6 +198,12 @@ class TenantRepository:
         query = select(Tenant).where(Tenant.tenant_id == tenant_id)
         result = await self.db.execute(query)
         return result.scalar_one_or_none()
+
+    async def get_tenant_by_name(self, tenant_name: str) -> Optional[Tenant]:
+        """Get tenant by display name."""
+        query = select(Tenant).where(Tenant.tenant_name == tenant_name)
+        result = await self.db.execute(query)
+        return result.scalar_one_or_none()
     
     async def get_all_tenants(self) -> List[Tenant]:
         """Get all tenants."""
@@ -225,6 +231,13 @@ class IdentityRepository:
         query = select(IdentityProvider).where(IdentityProvider.idp_name == idp_name)
         result = await self.db.execute(query)
         return result.scalar_one_or_none()
+
+    async def get_or_create_identity_provider(self, idp_name: str) -> IdentityProvider:
+        """Get an identity provider, creating it when needed."""
+        existing = await self.get_identity_provider_by_name(idp_name)
+        if existing:
+            return existing
+        return await self.create_identity_provider(idp_name)
     
     async def link_profile_identity(
         self,
@@ -254,6 +267,11 @@ class IdentityRepository:
         query = (
             select(Profile)
             .join(ProfileIdentity)
+            .options(
+                selectinload(Profile.display),
+                selectinload(Profile.avatar),
+                selectinload(Profile.identities),
+            )
             .where(and_(
                 ProfileIdentity.idp_id == idp_id,
                 ProfileIdentity.idp_tenant_subject == idp_tenant_subject
