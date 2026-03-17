@@ -32,9 +32,18 @@ export type CurrentUserResponse = {
 };
 
 export async function fetchCurrentUser(): Promise<CurrentUserResponse | null> {
-  const response = await fetch(`${API_BASE_URL}/api/v1/auth/me`, {
-    credentials: "include",
-  });
+  const controller = new AbortController();
+  const timeout = window.setTimeout(() => controller.abort(), 5000);
+
+  let response: Response;
+  try {
+    response = await fetch(`${API_BASE_URL}/api/v1/auth/me`, {
+      credentials: "include",
+      signal: controller.signal,
+    });
+  } finally {
+    window.clearTimeout(timeout);
+  }
 
   if (response.status === 401) {
     return null;

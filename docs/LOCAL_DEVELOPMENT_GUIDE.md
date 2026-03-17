@@ -1,109 +1,371 @@
-# Local Run Start To Finish
+# Local Development Guide
 
-This guide provides the minimum steps required to run the full application stack locally and test the Microsoft Entra ID login through the UI.
+This guide is split into three parts:
 
-## What this starts
+1. Clean setup from the beginning
+2. Normal run cheat sheet
+3. Troubleshooting and where to find errors
 
-- **PostgreSQL Database**: Runs in a Docker container on `localhost:5432`.
-- **Backend API**: A FastAPI application served on `http://localhost:8000`.
-- **Frontend UI**: A TypeScript SPA served on `http://localhost:5173`.
+## 1. Clean Setup From The Beginning
 
-## One-time Setup
+Use this section if you want a fully clean local start.
 
-All commands should be run from the repository root: `/home/liam/Documents/GitHub/comp2003-2025-2026-team-3`.
+### Step 1: Go to the repo root
 
-### 1. Start the Database
+```bash
+cd /home/liam/Documents/GitHub/comp2003-2025-2026-team-3
+```
+
+### Step 2: Stop any old processes
+
+If you think old frontend or backend processes may still be running:
+
+```bash
+pkill -f "uvicorn app.main:app" || true
+pkill -f "live-server --port=5173" || true
+```
+
+### Step 3: Remove old local installs if you want a full reset
+
+Backend virtual environment:
+
+```bash
+rm -rf backend/.venv
+```
+
+Frontend packages and build output:
+
+```bash
+rm -rf frontend/node_modules
+rm -rf frontend/dist
+```
+
+Optional Docker cleanup for a fresh database:
+
+```bash
+cd backend
+docker compose down -v
+cd ..
+```
+
+Warning:
+
+- `docker compose down -v` deletes the local PostgreSQL volume and wipes the local database.
+
+### Step 4: Start PostgreSQL
 
 ```bash
 cd backend
 docker compose up -d
+cd ..
 ```
-This command starts a PostgreSQL container in detached mode.
 
-### 2. Set up the Backend
+### Step 5: Set up the backend from scratch
 
 ```bash
 cd backend
 python3 -m venv .venv
 source .venv/bin/activate
 pip install --upgrade pip
+pip install torch --index-url https://download.pytorch.org/whl/cpu
 pip install -r requirements.txt --extra-index-url https://download.pytorch.org/whl/cpu
 python -m spacy download en_core_web_sm
 alembic upgrade head
+cd ..
 ```
-This sets up a Python virtual environment, installs all required dependencies (including CPU-only PyTorch for the AI models), downloads the necessary spaCy language model, and applies the database schema.
 
-### 3. Set up the Frontend
+What this does:
+
+- creates the Python virtual environment
+- installs backend dependencies
+- installs CPU-only PyTorch
+- installs the spaCy English model
+- applies the database schema
+
+### Step 6: Set up the frontend from scratch
 
 ```bash
 cd frontend
 npm install
+cd ..
 ```
-This command installs all the necessary Node.js dependencies for the frontend application.
 
-## Running the Application
+### Step 7: Start the backend
 
-To run the application, you will need to open two separate terminal windows.
+Open terminal 1:
 
-**Terminal 1: Start the Backend**
 ```bash
-cd backend
+cd /home/liam/Documents/GitHub/comp2003-2025-2026-team-3/backend
 ./run_local.sh
 ```
 
-**Terminal 2: Start the Frontend**
+Wait until you see:
+
+- `Application startup complete`
+- `Uvicorn running on http://0.0.0.0:8000`
+
+### Step 8: Start the frontend
+
+Open terminal 2:
+
 ```bash
-cd frontend
+cd /home/liam/Documents/GitHub/comp2003-2025-2026-team-3/frontend
 ./run_local.sh
 ```
 
-## Browser Test
+### Step 9: Open the app
 
-1. Open your web browser and navigate to `http://localhost:5173`.
-2. You should be greeted with a signed-out screen that includes a **"Sign in with Microsoft"** button.
-3. Click the button to initiate the authentication flow.
-4. Sign in using a user from the test tenant: `24e92e30-83bf-4d0e-8a69-3a7b71901db6`.
-5. Upon successful authentication, Entra will redirect you to `http://localhost:8000/auth/callback`.
-6. The backend will then create or resolve your internal profile and redirect you back to the frontend at `http://localhost:5173`.
-7. The application UI should now be visible, and you should be logged in as an authenticated user.
+Open this in your browser:
 
-## Quick Checks
-
-You can use `curl` to perform some quick checks on the backend services.
-
-**Health Check:**
-```bash
-curl -i http://localhost:8000/health
+```text
+http://localhost:5173
 ```
-- **Expected Result**: `200 OK`
 
-**Unauthenticated Session Check:**
+### Step 10: Test sign-in
+
+1. Click `Sign in with Microsoft`
+2. Sign in with a user from your Entra tenant
+3. You should be redirected back to `http://localhost:5173`
+
+## 2. Normal Run Cheat Sheet
+
+Use this section when everything has already been installed before.
+
+### Start database
+
 ```bash
-curl -i http://localhost:8000/api/v1/auth/me
+cd /home/liam/Documents/GitHub/comp2003-2025-2026-team-3/backend
+docker compose up -d
 ```
-- **Expected Result (before login)**: `401 Unauthorized`
 
-## Shutting Down
+### Start backend
 
-To stop the application, press `Ctrl+C` in each of the terminal windows.
+In terminal 1:
 
-To stop the PostgreSQL database container:
 ```bash
-cd backend
+cd /home/liam/Documents/GitHub/comp2003-2025-2026-team-3/backend
+./run_local.sh
+```
+
+### Start frontend
+
+In terminal 2:
+
+```bash
+cd /home/liam/Documents/GitHub/comp2003-2025-2026-team-3/frontend
+./run_local.sh
+```
+
+### Open app
+
+```text
+http://localhost:5173
+```
+
+### Stop app
+
+Press `Ctrl+C` in the backend terminal and frontend terminal.
+
+To stop PostgreSQL too:
+
+```bash
+cd /home/liam/Documents/GitHub/comp2003-2025-2026-team-3/backend
 docker compose down
 ```
 
-## Troubleshooting
+## 3. Troubleshooting And Where To Find Errors
 
-### Login Fails
-- Ensure the Entra app registration has `http://localhost:8000/auth/callback` configured under **Web** redirect URIs.
-- Verify that the `ENTRA_TENANT_ID` and `ENTRA_CLIENT_ID` in `backend/.env` match the values in your Entra app registration.
-- Make sure the backend server is running before you attempt to sign in.
-- Double-check that the frontend is accessed via `http://localhost:5173`.
+This section is for when the app does not load, login fails, or the UI shows a blank screen.
 
-### Slow Backend Start
-- The first time you start the backend, it may take a while to download the sentence-transformer model (`all-MiniLM-L6-v2`) from Hugging Face. This is expected. Subsequent startups will be much faster.
+### Quick health checks
 
-### Security Note
-- The `backend/.env` file contains a live Entra client secret for local testing. It is recommended to rotate this secret after testing is complete.
-- To rotate the secret, generate a new one in the Microsoft Entra admin center and update the `ENTRA_CLIENT_SECRET` value in the `.env` file.
+Check backend health:
+
+```bash
+curl -i http://localhost:8000/health
+```
+
+Expected:
+
+- `200 OK`
+
+Check unauthenticated auth response:
+
+```bash
+curl -i http://localhost:8000/api/v1/auth/me
+```
+
+Expected before login:
+
+- `401 Unauthorized`
+
+If you get a connection error instead, the backend is not running properly.
+
+### Check whether PostgreSQL is running
+
+```bash
+cd /home/liam/Documents/GitHub/comp2003-2025-2026-team-3/backend
+docker compose ps
+```
+
+If Postgres is not up:
+
+```bash
+docker compose up -d
+```
+
+### Check backend startup errors
+
+Start the backend manually and watch the terminal:
+
+```bash
+cd /home/liam/Documents/GitHub/comp2003-2025-2026-team-3/backend
+./run_local.sh
+```
+
+Important:
+
+- backend errors usually appear directly in this terminal
+- if the backend does not fully start, the frontend may show a warning or a blank-looking page
+
+### Check frontend startup errors
+
+Start the frontend manually and watch the terminal:
+
+```bash
+cd /home/liam/Documents/GitHub/comp2003-2025-2026-team-3/frontend
+./run_local.sh
+```
+
+Important:
+
+- TypeScript compile errors appear in this terminal
+- frontend asset serving messages also appear here
+
+### Check backend log files
+
+The AI service writes logs into:
+
+```text
+/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/backend/logs/ai_services
+```
+
+Useful commands:
+
+Main log:
+
+```bash
+tail -n 100 backend/logs/ai_services/ai_services.log
+```
+
+Performance log:
+
+```bash
+tail -n 100 backend/logs/ai_services/ai_services_performance.log
+```
+
+Error log:
+
+```bash
+tail -n 100 backend/logs/ai_services/ai_services_errors.log
+```
+
+Watch logs live:
+
+```bash
+tail -f backend/logs/ai_services/ai_services.log
+```
+
+### Check Docker database logs
+
+If you suspect database problems:
+
+```bash
+cd /home/liam/Documents/GitHub/comp2003-2025-2026-team-3/backend
+docker compose logs postgres
+```
+
+Watch them live:
+
+```bash
+docker compose logs -f postgres
+```
+
+### Common problems
+
+#### Problem: White screen or almost blank page
+
+Most likely causes:
+
+- backend is not running
+- backend is still starting up
+- Postgres is down
+- frontend loaded before backend was available
+
+Do this:
+
+1. `docker compose ps`
+2. `curl -i http://localhost:8000/health`
+3. if backend is down, start backend first
+4. refresh `http://localhost:5173`
+
+#### Problem: Login button appears but sign-in fails
+
+Check:
+
+- Entra redirect URI is still `http://localhost:8000/auth/callback`
+- `backend/.env` has the correct tenant ID, client ID, and client secret
+- backend terminal shows no auth exceptions
+
+#### Problem: Backend starts slowly
+
+Reason:
+
+- on first run, the AI model may download from Hugging Face
+- after that, startup should be faster
+
+#### Problem: Database schema errors
+
+Re-run migrations:
+
+```bash
+cd /home/liam/Documents/GitHub/comp2003-2025-2026-team-3/backend
+source .venv/bin/activate
+alembic upgrade head
+```
+
+#### Problem: Frontend packages are broken
+
+Reinstall frontend packages:
+
+```bash
+cd /home/liam/Documents/GitHub/comp2003-2025-2026-team-3/frontend
+rm -rf node_modules dist
+npm install
+npm run build
+```
+
+#### Problem: Backend packages are broken
+
+Rebuild backend environment:
+
+```bash
+cd /home/liam/Documents/GitHub/comp2003-2025-2026-team-3/backend
+rm -rf .venv
+python3 -m venv .venv
+source .venv/bin/activate
+pip install --upgrade pip
+pip install torch --index-url https://download.pytorch.org/whl/cpu
+pip install -r requirements.txt --extra-index-url https://download.pytorch.org/whl/cpu
+python -m spacy download en_core_web_sm
+```
+
+### Security note
+
+Your backend `.env` contains a live Entra client secret for local testing.
+
+After testing:
+
+1. rotate the secret in Microsoft Entra
+2. update `backend/.env`
+3. restart the backend

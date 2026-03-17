@@ -19,7 +19,7 @@ async function bootstrap() {
     App(root!, currentUser);
   } catch (error) {
     console.error("Failed to bootstrap app", error);
-    App(root!, null);
+    App(root!, null, "Frontend loaded, but the backend did not respond. Start the backend on http://localhost:8000 and refresh.");
   }
 }
 

@@ -11,7 +11,7 @@
     "dev": "concurrently \"npm:dev:css\" \"npm:dev:ts\" \"npm:dev:serve\"",
     "dev:ts": "tsc -p tsconfig.json --watch",
     "dev:css": "tailwindcss -c tailwind.config.js -i ./src/styles/tailwind.css -o ./dist/styles.css --watch",
-    "dev:serve": "live-server --port=5173 --watch=dist,index.html,assets"
+    "dev:serve": "live-server --port=5173 --watch=dist,index.html,public"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.20",

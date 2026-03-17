@@ -88,13 +88,13 @@ sequenceDiagram
 - `backend/app/config.py`: Added Entra and session-related settings.
 - `backend/.env.example`: Template for required local backend environment variables.
 - `backend/.env`: Local runtime values for this test tenant.
-- `backend/run_local.sh`: Helper script to start the local backend server.
+- `backend/run_local.sh`: Helper script to start the local backend server without reload mode, which avoids local watcher issues with `.venv` and large model files.
 
 ### Frontend
 
 - `frontend/src/shared/auth.ts`: Frontend session helpers and backend auth endpoint wrappers.
-- `frontend/src/main.ts`: Bootstraps the app by checking the backend session first.
-- `frontend/src/app/App.ts`: Adds the signed-out screen, sign-in button, and sign-out control.
+- `frontend/src/main.ts`: Bootstraps the app by checking the backend session first and surfaces a visible startup message if the backend is unavailable.
+- `frontend/src/App.ts`: Adds the signed-out screen, sign-in button, sign-out control, and backend-unavailable startup warning.
 - `frontend/src/pages/AccountPage.ts`: Shows local identity-linking information rather than mock personal/company data.
 - `frontend/src/pages/Dashboard.ts`: Sends requests with session cookies.
 - `frontend/src/components/TicketListContainer.ts`: Sends requests with session cookies.
@@ -224,6 +224,27 @@ Check:
 Reason:
 
 - The sentence-transformer model loading happens on startup. This is expected on the first run as `all-MiniLM-L6-v2` may need to be downloaded from Hugging Face. Subsequent startups will be faster.
+
+### Problem: the browser shows a white screen
+
+Most likely causes:
+
+- the backend is not running
+- the backend is still starting its model downloads
+- PostgreSQL is not running
+
+Current local behavior:
+
+- the frontend waits up to 5 seconds for `GET /api/v1/auth/me`
+- if the backend still does not respond, the UI now renders a visible startup warning instead of hanging indefinitely
+
+Recommended run order:
+
+1. `cd backend && docker compose up -d`
+2. `cd backend && ./run_local.sh`
+3. wait for backend startup to finish
+4. `cd frontend && ./run_local.sh`
+5. open `http://localhost:5173`
 
 ### Problem: ticket endpoints fail after login with a 500 error
 

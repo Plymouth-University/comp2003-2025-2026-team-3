@@ -3,8 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from contextlib import asynccontextmanager
 from .providers.fake_autotask import FakeAutotaskProvider
-from .services.ai_categoriser import categorise_ticket
-from .services.ai.categorizer import predict_categories_batch
+from .services.ai import categorise_ticket, predict_categories_batch
 from .services.ai.priority_calculator import calculate_priority_score, get_priority_label, calculate_priority_scores_batch
 from .services.ai.text_processor import extract_ticket_text
 from .services.ai.embedding_cache import get_cache
