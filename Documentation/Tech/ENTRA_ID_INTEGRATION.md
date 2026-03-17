@@ -53,86 +53,52 @@ The current flow is backend-led OAuth/OIDC.
 
 ### Sequence
 
-1. Browser opens the frontend.
-2. Frontend calls `GET /api/v1/auth/me`.
-3. If no session cookie exists, the UI shows the signed-out screen.
-4. User clicks `Sign in with Microsoft`.
-5. Browser goes to `GET /auth/login` on the backend.
-6. Backend creates an OIDC state value and redirects to Entra.
-7. Entra authenticates the user and redirects to `http://localhost:8000/auth/callback`.
-8. Backend exchanges the authorization code for tokens.
-9. Backend validates the Entra ID token.
-10. Backend extracts:
-   - `tid`
-   - `oid`
-   - `name`
-   - `iss`
-11. Backend builds the local identity key as `tid:oid`.
-12. Backend looks for an existing `profile_identity`.
-13. If none exists:
-   - create `tenant` if needed
-   - create `profile`
-   - create `profile_display`
-   - create `profile_avatar`
-   - create or find `identity_provider`
-   - create `profile_identity`
-14. Backend creates a signed session cookie.
-15. Backend redirects the browser back to `http://localhost:5173`.
-16. Frontend calls `GET /api/v1/auth/me` again and renders the authenticated app.
+```mermaid
+sequenceDiagram
+    participant Browser
+    participant Frontend
+    participant Backend
+    participant Entra
+
+    Browser->>Frontend: Access Application
+    Frontend->>Backend: /api/v1/auth/me (401)
+    Frontend->>Frontend: Show Signed Out Screen
+    Browser->>Frontend: Click "Sign in with Microsoft"
+    Frontend->>Backend: /auth/login
+    Backend->>Entra: Redirect to Login
+    Entra-->>Browser: User Authenticates
+    Browser->>Backend: /auth/callback
+    Backend->>Entra: Exchange Code for Token
+    Entra-->>Backend: Access Token
+    Backend->>Backend: Validate Token, Create/Resolve Profile
+    Backend-->>Frontend: Set Session Cookie, Redirect
+    Frontend->>Backend: /api/v1/auth/me (200)
+    Frontend-->>Browser: Authenticated App
+```
 
 ## Files changed
 
 ### Backend
 
-- [backend/app/auth.py](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/backend/app/auth.py)
-  Authentication helpers for Entra OIDC, token validation, and signed session cookies.
-
-- [backend/app/routers/auth.py](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/backend/app/routers/auth.py)
-  Routes for `/auth/login`, `/auth/callback`, `/api/v1/auth/me`, and `/api/v1/auth/logout`.
-
-- [backend/app/services/profile_service.py](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/backend/app/services/profile_service.py)
-  Added `resolve_entra_profile(...)` to find or auto-provision a local profile from Entra claims.
-
-- [backend/app/repositories/profile_repository.py](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/backend/app/repositories/profile_repository.py)
-  Added tenant lookup by name and get-or-create identity provider support.
-
-- [backend/app/main.py](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/backend/app/main.py)
-  Registered auth routes and protected ticket endpoints using the backend session.
-
-- [backend/app/config.py](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/backend/app/config.py)
-  Added Entra and session-related settings.
-
-- [backend/.env.example](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/backend/.env.example)
-  Template for required local backend environment variables.
-
-- [backend/.env](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/backend/.env)
-  Local runtime values for this test tenant.
-
-- [backend/run_local.sh](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/backend/run_local.sh)
-  Helper script to start the local backend server.
+- `backend/app/auth.py`: Authentication helpers for Entra OIDC, token validation, and signed session cookies.
+- `backend/app/routers/auth.py`: Routes for `/auth/login`, `/auth/callback`, `/api/v1/auth/me`, and `/api/v1/auth/logout`.
+- `backend/app/services/profile_service.py`: Added `resolve_entra_profile(...)` to find or auto-provision a local profile from Entra claims.
+- `backend/app/repositories/profile_repository.py`: Added tenant lookup by name and get-or-create identity provider support.
+- `backend/app/main.py`: Registered auth routes and protected ticket endpoints using the backend session.
+- `backend/app/config.py`: Added Entra and session-related settings.
+- `backend/.env.example`: Template for required local backend environment variables.
+- `backend/.env`: Local runtime values for this test tenant.
+- `backend/run_local.sh`: Helper script to start the local backend server.
 
 ### Frontend
 
-- [frontend/src/shared/auth.ts](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/frontend/src/shared/auth.ts)
-  Frontend session helpers and backend auth endpoint wrappers.
-
-- [frontend/src/main.ts](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/frontend/src/main.ts)
-  Bootstraps the app by checking the backend session first.
-
-- [frontend/src/app/App.ts](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/frontend/src/app/App.ts)
-  Adds the signed-out screen, sign-in button, and sign-out control.
-
-- [frontend/src/pages/AccountPage.ts](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/frontend/src/pages/AccountPage.ts)
-  Shows local identity-linking information rather than mock personal/company data.
-
-- [frontend/src/pages/Dashboard.ts](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/frontend/src/pages/Dashboard.ts)
-  Sends requests with session cookies.
-
-- [frontend/src/components/TicketListContainer.ts](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/frontend/src/components/TicketListContainer.ts)
-  Sends requests with session cookies.
-
-- [frontend/run_local.sh](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/frontend/run_local.sh)
-  Helper script to start the local frontend dev server.
+- `frontend/src/shared/auth.ts`: Frontend session helpers and backend auth endpoint wrappers.
+- `frontend/src/main.ts`: Bootstraps the app by checking the backend session first.
+- `frontend/src/app/App.ts`: Adds the signed-out screen, sign-in button, and sign-out control.
+- `frontend/src/pages/AccountPage.ts`: Shows local identity-linking information rather than mock personal/company data.
+- `frontend/src/pages/Dashboard.ts`: Sends requests with session cookies.
+- `frontend/src/components/TicketListContainer.ts`: Sends requests with session cookies.
+- `frontend/run_local.sh`: Helper script to start the local frontend dev server.
 
 ## Auth endpoints
 
@@ -239,33 +205,34 @@ What was not fully automated:
 
 Check:
 
-- `backend/.env` values
-- Entra redirect URI still includes `http://localhost:8000/auth/callback`
-- backend logs in the terminal running `./run_local.sh`
+- `backend/.env` values are correct.
+- Entra redirect URI in the Azure portal is set to `http://localhost:8000/auth/callback`.
+- The backend logs (`./run_local.sh`) for any error messages from the `authlib` library.
+- The system time on your machine is correct, as token validation is time-sensitive.
 
 ### Problem: frontend stays on sign-in screen after login
 
 Check:
 
-- browser was redirected back to `http://localhost:5173`
-- backend set the `secops_session` cookie
-- `GET /api/v1/auth/me` returns `200` in browser dev tools
+- The browser was redirected back to `http://localhost:5173`.
+- The `secops_session` cookie is present in your browser's developer tools for the `localhost:5173` site.
+- The `GET /api/v1/auth/me` call in the browser's network tab returns a `200 OK` status with the user's profile data. A `401` indicates a session issue.
+- The frontend and backend are running on the correct ports (`5173` and `8000` respectively).
 
 ### Problem: backend starts slowly
 
 Reason:
 
-- sentence-transformer model loading happens on startup
+- The sentence-transformer model loading happens on startup. This is expected on the first run as `all-MiniLM-L6-v2` may need to be downloaded from Hugging Face. Subsequent startups will be faster.
 
-That is expected on first run because `all-MiniLM-L6-v2` may need to download.
-
-### Problem: ticket endpoints fail after login
+### Problem: ticket endpoints fail after login with a 500 error
 
 Check:
 
-- backend logs for AI model load failures
-- internet access for initial Hugging Face model download
-- local Python environment still active and intact
+- Backend logs for AI model loading failures. The AI service might have failed to initialize.
+- Internet access is available for the initial Hugging Face model download.
+- The local Python environment is active and all dependencies from `requirements.txt` are installed.
+- The `SPACY_MODEL` environment variable is set correctly in `backend/.env`.
 
 ## Security follow-up
 
@@ -273,7 +240,7 @@ The Entra client secret used during setup should be rotated after testing, becau
 
 After rotation:
 
-1. Update [backend/.env](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/backend/.env)
+1. Update `ENTRA_CLIENT_SECRET` in `backend/.env`
 2. Restart the backend
 
 ## Recommended future improvements
