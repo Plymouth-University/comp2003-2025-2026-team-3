@@ -203,7 +203,7 @@ export function TicketListContainer(onOpenTicket: (ticket: BackendTicket) => voi
     dateBtn.append(
       el("img", {
         className: "w-5 h-5",
-        attrs: { src: "./assets/sort-by-icon/sortIcon.png", alt: "Sort by Date" },
+        attrs: { src: "./public/sort-by-icon/sortIcon.png", alt: "Sort by Date" },
       })
     );
 
@@ -215,7 +215,7 @@ export function TicketListContainer(onOpenTicket: (ticket: BackendTicket) => voi
     priorityBtn.append(
       el("img", {
         className: "w-5 h-5",
-        attrs: { src: "./assets/priority-icon/danger.png", alt: "Sort by Priority" },
+        attrs: { src: "./public/priority-icon/danger.png", alt: "Sort by Priority" },
       })
     );
 

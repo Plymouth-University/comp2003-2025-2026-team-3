@@ -64,7 +64,7 @@ export function AccountPage(currentUser: CurrentUserResponse): HTMLElement {
   rightColumn.append(
     el("img", {
       className: "w-32 h-32 rounded-full border-4 border-slate-300 shadow-lg",
-      attrs: { src: "./assets/profile-icon/profile-placeholder.png", alt: "Profile Icon" },
+      attrs: { src: "./public/profile-icon/profile-placeholder.png", alt: "Profile Icon" },
     }),
     el("div", { className: "mt-4 text-sm text-slate-600", text: "Profile Picture" })
   );

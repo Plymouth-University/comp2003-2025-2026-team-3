@@ -7,7 +7,7 @@ Only Modify this file to:
 3) Adding performance measurement
 */
 
-import { App } from "./app/App.js";
+import { App } from "./App.js";
 import { fetchCurrentUser } from "./shared/auth.js";
 
 const root = document.getElementById("app");
