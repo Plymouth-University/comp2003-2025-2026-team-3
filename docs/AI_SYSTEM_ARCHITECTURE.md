@@ -1,83 +1,134 @@
 # AI System Architecture
 
-This document provides a high-level overview of the AI services responsible for ticket categorization, priority calculation, and content generation.
+This document provides a technical overview of the AI system for intelligent ticket management. The system uses natural language processing and machine learning to categorize tickets, calculate priority, and generate summaries.
 
-## Core Objective
+## High-Level Architecture
 
-The primary goal of the AI system is to automate the initial processing of support tickets. It reads unstructured ticket data, predicts a relevant category and priority, and generates a concise summary for human agents. This reduces manual effort and improves response times.
-
-## System Components
-
-The AI logic is encapsulated within the `backend/app/services/ai/` directory. The system is composed of several specialized modules that work together.
+The AI pipeline processes raw ticket data through a series of components to produce structured, actionable insights.
 
 ```mermaid
 graph TD
-    A[Ticket Data] --> B(processor.py);
-    B --> C{categorizer.py};
-    C --> D[text_processor.py];
-    D --> E[embedding_cache.py];
-    E --> F(Model);
-    C --> G[priority_calculator.py];
-    C --> H[description_generator.py];
-    C --> I[storage.py];
-    I --> J[Processed Ticket JSON];
+    A[Raw Ticket Data] --> B[Text Processor]
+    B --> C[Embedding Cache]
+    C --> D[Categorizer]
+    D --> E[Priority Calculator]
+    D --> F[Description Generator]
+    E --> G[Processed Ticket]
+    F --> G
 
-    subgraph "AI Core Logic"
-        B; C; D; E; G; H; I;
+    subgraph "AI Core Services"
+        B[Text Processor]
+        C[Embedding Cache]
+        D[Categorizer]
+        E[Priority Calculator]
+        F[Description Generator]
     end
 
-    subgraph "External"
-        A; F; J;
+    subgraph "External Dependencies"
+        H[Sentence Transformers Model]
+        I[spaCy Language Model]
     end
 
-    style F fill:#f9f,stroke:#333,stroke-width:2px
+    D -.-> H
+    B -.-> I
 ```
 
-### Component Breakdown
+## Core Components
 
-1.  **`processor.py` (Ticket Processor)**
-    -   **Entry Point**: The main orchestrator for processing a single ticket.
-    -   **Workflow**: It takes a raw ticket, calls the `categorizer` to enrich it with AI predictions, and then uses the `storage` module to save the result.
+### 1. Text Processor (`backend/app/services/ai/text_processor.py`)
 
-2.  **`categorizer.py` (AI Categorizer)**
-    -   **Core Brains**: This is the central component that coordinates the AI prediction tasks.
-    -   **Responsibilities**:
-        -   Uses `text_processor` to clean and prepare ticket text.
-        -   Leverages a sentence-transformer model (via `embedding_cache`) to generate vector embeddings for the ticket content.
-        -   Compares the ticket embedding against pre-generated category embeddings to find the best match (hybrid approach using semantic search and keyword matching).
-        -   Calls `priority_calculator` to determine an initial priority.
-        -   Calls `description_generator` to create a summary.
+**Purpose:** Cleans and preprocesses raw ticket text for AI analysis.
 
-3.  **`text_processor.py` (Text Processor)**
-    -   **Function**: Cleans and normalizes raw text from tickets to improve model accuracy.
-    -   **Operations**: Removes HTML tags, decodes entities, and standardizes formatting.
+**Key Functions:**
 
-4.  **`embedding_cache.py` (Embedding Cache)**
-    -   **Purpose**: Manages the creation and caching of vector embeddings.
-    -   **Mechanism**: It stores generated embeddings on disk to avoid re-computing them for the same text, significantly speeding up processing for repeated or similar tickets.
+-   `preprocess_text(text: str) -> list`:
+    -   Uses the `spaCy` library for tokenization and lemmatization.
+    -   Removes stopwords, punctuation, and company names.
+    -   Filters out short tokens.
+-   `extract_ticket_text(ticket_item) -> str`:
+    -   Extracts and combines text from ticket fields like `title` and `description`.
 
-5.  **`priority_calculator.py` (Priority Calculator)**
-    -   **Logic**: Assigns a priority level (e.g., Low, Medium, High) to a ticket based on keywords and predicted category.
+### 2. Embedding Cache (`backend/app/services/ai/embedding_cache.py`)
 
-6.  **`description_generator.py` (Description Generator)**
-    -   **Function**: Uses a generative model or rule-based system to create a short, one-sentence summary of the ticket's content.
+**Purpose:** Caches sentence embeddings to improve performance by avoiding redundant computations.
 
-7.  **`storage.py` (Storage Manager)**
-    -   **Responsibility**: Handles the serialization and storage of processed tickets.
-    -   **Output**: Saves the final, enriched ticket data as a JSON file in the `data/Unprocessed Tickets/categorized/` directory.
+**Architecture:**
 
-8.  **`category_generator.py` (Category Generator)**
-    -   **Utility**: A script used to pre-process the list of possible categories. It generates the vector embeddings for each category description, which are then used by the `categorizer` for semantic comparison.
+-   Implements a Least Recently Used (LRU) cache with a Time-to-Live (TTL) for each entry.
+-   Uses an in-memory dictionary for storage, with an access order list to track usage.
+-   The cache key is an MD5 hash of the ticket text.
 
-## Data Flow: Single Ticket Journey
+**Key Functions:**
 
-1.  A script like `predict_categories.py` reads a raw ticket from a JSON file.
-2.  It passes the ticket data to `processor.process_ticket()`.
-3.  The `processor` calls the `categorizer`, which performs the core AI tasks:
-    a.  The ticket's text is cleaned by `text_processor`.
-    b.  An embedding is generated for the cleaned text using a pre-trained model, managed by `embedding_cache`.
-    c.  This embedding is compared against the pre-calculated category embeddings to find the most likely category.
-    d.  A priority is calculated.
-    e.  A summary description is generated.
-4.  The `processor` receives the enriched ticket data.
-5.  `storage.save_ticket_to_json()` writes the final result to a new JSON file, ready for the next stage in the pipeline.
+-   `get(text: str)`: Retrieves an embedding from the cache.
+-   `put(text: str, embedding: torch.Tensor)`: Stores an embedding in the cache.
+-   `get_batch(texts: list[str])`: Retrieves a batch of embeddings.
+-   `put_batch(texts: list[str], embeddings: torch.Tensor)`: Stores a batch of embeddings.
+
+### 3. Categorizer (`backend/app/services/ai/categorizer.py`)
+
+**Purpose:** Predicts the category of a ticket using a hybrid approach.
+
+**Classification Strategy:**
+
+1.  **Keyword Matching:** Uses predefined keywords for each category to quickly find a match.
+2.  **Semantic Similarity:** If keyword matching is not decisive, it uses the `all-MiniLM-L6-v2` sentence transformer model to compute embeddings and find the most similar category.
+3.  **Batch Processing:** Supports batching for significantly faster processing of multiple tickets.
+
+**Key Functions:**
+
+-   `predict_category_by_keywords(text: str)`: Scores categories based on keyword matches.
+-   `predict_category_by_semantic(text: str)`: Finds the best category based on embedding similarity.
+-   `predict_categories_batch(texts: list[str])`: Processes a batch of tickets efficiently.
+-   `predict_category_hybrid(text: str)`: Combines keyword and semantic methods.
+
+### 4. Priority Calculator (`backend/app/services/ai/priority_calculator.py`)
+
+**Purpose:** Calculates a priority score for a ticket based on multiple factors.
+
+**Scoring Algorithm:**
+
+The priority score is calculated based on:
+
+-   **Category Weight:** Each category has a predefined weight.
+-   **Urgency Keywords:** The presence of words like "urgent" or "critical" increases the score.
+-   **Semantic Confidence:** The confidence of the category prediction.
+-   **Text Length:** Longer, more detailed tickets are given a slight boost.
+
+**Key Functions:**
+
+-   `calculate_priority_score(text: str, category: str, semantic_scores: dict)`: Calculates the priority for a single ticket.
+-   `calculate_priority_scores_batch(texts: list[str], categories: list[str], semantic_scores_list: list[dict])`: Calculates priorities for a batch of tickets.
+-   `get_priority_label(priority_score: int)`: Converts the numeric score to a label (e.g., "High", "Medium").
+
+### 5. Description Generator (`backend/app/services/ai/description_generator.py`)
+
+**Purpose:** Generates a summary and suggested remediation steps for a ticket.
+
+**Functionality:**
+
+-   The system uses a predefined map of issue types to remediation steps.
+-   It does not involve advanced AI generation but rather provides templated responses based on the ticket's issue type.
+
+**Key Functions:**
+
+-   `generate_ai_description(ticket_item: dict)`: Creates the description and remediation suggestions.
+-   `_get_issue_remediation(issue_type: str)`: Retrieves the appropriate remediation steps from the map.
+
+### 6. Category Generator (`backend/app/services/ai/category_generator.py`)
+
+**Purpose:** Automatically discovers and generates categories from a collection of tickets.
+
+**Process:**
+
+1.  **Load Tickets:** Loads ticket data from a JSON file.
+2.  **Generate Embeddings:** Creates embeddings for all tickets.
+3.  **Find Optimal Clusters:** Uses K-means clustering and silhouette scores to determine the best number of categories.
+4.  **Cluster Tickets:** Assigns each ticket to a cluster.
+5.  **Name Categories:** Analyzes the keywords in each cluster to generate a descriptive name.
+
+## Performance
+
+-   **Caching:** The embedding cache is the most critical performance feature, significantly reducing the need for expensive model inference.
+-   **Batch Processing:** The categorizer and priority calculator are optimized for batch operations, making them highly efficient for large numbers of tickets.
+-   **Asynchronous Operations:** The backend is built on FastAPI, which allows for asynchronous request handling.

@@ -7,7 +7,7 @@ Only Modify this file to:
 3) Adding performance measurement
 */
 
-import { App } from "./app/App.js";
+import { App } from "./App.js";
 import { fetchCurrentUser } from "./shared/auth.js";
 
 const root = document.getElementById("app");
@@ -19,7 +19,7 @@ async function bootstrap() {
     App(root!, currentUser);
   } catch (error) {
     console.error("Failed to bootstrap app", error);
-    App(root!, null);
+    App(root!, null, "Frontend loaded, but the backend did not respond. Start the backend on http://localhost:8000 and refresh.");
   }
 }
 

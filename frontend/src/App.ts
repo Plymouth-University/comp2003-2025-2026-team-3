@@ -1,16 +1,16 @@
 //import a helper function for creating DOM elements
-import { el } from "../shared/lib/dom.js";
+import { el } from "./shared/lib/dom.js";
 //import screen components
-import { Dashboard } from "../pages/Dashboard.js";
-import { ActiveTickets } from "../pages/ActiveTickets.js";
-import { TicketDetail } from "../pages/TicketDetail.js";
-import { AccountPage } from "../pages/AccountPage.js";
-import { Settings } from "../pages/Settings.js";
-import { ClosedTicketsPage } from "../pages/ClosedTickets.js";
-import { logout, startLogin } from "../shared/auth.js";
-import type { CurrentUserResponse } from "../shared/auth.js";
+import { Dashboard } from "./pages/Dashboard.js";
+import { ActiveTickets } from "./pages/ActiveTickets.js";
+import { TicketDetail } from "./pages/TicketDetail.js";
+import { AccountPage } from "./pages/AccountPage.js";
+import { Settings } from "./pages/Settings.js";
+import { ClosedTicketsPage } from "./pages/ClosedTickets.js";
+import { logout, startLogin } from "./shared/auth.js";
+import type { CurrentUserResponse } from "./shared/auth.js";
 //import shared types
-import type { BackendTicket } from "../shared/types.js";
+import type { BackendTicket } from "./shared/types.js";
 
 type Route =
   | { name: "dashboard" }
@@ -143,7 +143,7 @@ function TopHeader(routeName: string, currentUser: CurrentUserResponse): HTMLEle
   return hdr;
 }
 
-function SignedOutView(): HTMLElement {
+function SignedOutView(message?: string): HTMLElement {
   const shell = el("div", { className: "min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-100 via-cyan-50 to-blue-100 p-6" });
   const card = el("div", { className: "w-full max-w-xl rounded-3xl border border-cyan-200 bg-white/90 p-10 shadow-2xl" });
   const button = el("button", {
@@ -160,6 +160,12 @@ function SignedOutView(): HTMLElement {
       className: "mt-4 text-base leading-7 text-slate-600",
       text: "Authentication is now handled by Microsoft Entra ID. Sign in to open the dashboard and resolve your profile in the backend service.",
     }),
+    ...(message ? [
+      el("div", {
+        className: "mt-5 rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900",
+        text: message,
+      }),
+    ] : []),
     button
   );
 
@@ -169,11 +175,11 @@ function SignedOutView(): HTMLElement {
 
 // Main App function: renders the whole application into the given root element
 // root: the HTML element where the app will be mounted
-export function App(root: HTMLElement, currentUser: CurrentUserResponse | null) {
+export function App(root: HTMLElement, currentUser: CurrentUserResponse | null, startupMessage?: string) {
   root.innerHTML = ""; //remove any existing content
 
   if (!currentUser) {
-    root.append(SignedOutView());
+    root.append(SignedOutView(startupMessage));
     return;
   }
 

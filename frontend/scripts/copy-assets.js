@@ -3,7 +3,7 @@ import { existsSync } from "node:fs";
 import path from "node:path";
 
 
-const srcDir = path.resolve("assets"); // assets source directory
+const srcDir = path.resolve("public"); // public source directory
 const outDir = path.resolve("dist", "assets"); // dist (js) output directory
 
 // copy assets from srcDir to outDir
