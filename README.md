@@ -1,205 +1,224 @@
 # SecOps Autotask AI Ticketing System
 
-> **An end‑to‑end security operations prototype combining AI‑driven ticket categorisation with a modern TypeScript + Tailwind frontend.**
+> **An end-to-end security operations prototype combining AI-assisted ticket enrichment with a lightweight TypeScript frontend and a FastAPI backend.**
 
 ---
 
-## ✨ Project Overview
+## Project Overview
 
-This project is a **full‑stack prototype** designed to demonstrate how **AI‑assisted ticket categorisation** can be integrated into a modern SecOps workflow.
+This repository is a full-stack prototype for exploring how ticket operations, local profile management, and AI-assisted enrichment can work together in one system.
 
-It consists of:
+It currently includes:
 
-- 🧠 **AI‑powered backend** (FastAPI + NLP models)
-- 🖥️ **Lightweight frontend SPA** (Vanilla TypeScript + Tailwind CSS)
-- 🔗 **Clear separation of concerns** between data ingestion, AI processing, and UI rendering
-- 🚫 **No React, no Vite runtime, no frontend frameworks**
+- an AI-assisted backend for ticket categorization, priority scoring, and explanation generation
+- a vanilla TypeScript single-page frontend
+- Microsoft Entra ID sign-in with backend session cookies
+- a PostgreSQL-backed profile and tenant domain
+- a fake local ticket provider backed by JSON data
 
-The frontend **never categorises tickets itself** — all intelligence comes from the backend AI pipeline.
+The frontend does not categorize tickets itself. It consumes ticket data that has already been enriched by the backend.
 
 ---
 
-## 🧩 Architecture Overview
+## Architecture Overview
 
-```
-Raw Tickets
+```text
+Browser
    ↓
-Fake Autotask Provider
+Vanilla TypeScript SPA
    ↓
-AI Categoriser (Sentence Transformers + spaCy)
-   ↓
-FastAPI (/api/tickets)
-   ↓
-TypeScript SPA (Tailwind UI)
+FastAPI Backend
+   ├─ Microsoft Entra ID auth flow
+   ├─ Profile + tenant persistence (PostgreSQL)
+   ├─ Fake ticket provider (local JSON)
+   └─ AI enrichment pipeline (spaCy + sentence-transformers + heuristics)
 ```
 
 ### Key Principle
-> **AI decisions live exclusively in the backend.**  
-> The frontend is a pure consumer of AI‑enriched data.
+
+> **Auth, persistence, and AI decisions live in the backend.**
+> The frontend is responsible for presentation, navigation, and user interaction.
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
-```
-secops_autotask_prototype_scaffold/
+```text
+.
 ├─ backend/
 │  ├─ app/
-│  │  ├─ main.py              # FastAPI entry point
-│  │  ├─ providers/           # Ticket sources (mock Autotask)
-│  │  ├─ services/            # AI categorisation logic
-│  │  └─ models/              # Data models
-│  │
+│  │  ├─ main.py                # FastAPI entry point and ticket endpoints
+│  │  ├─ auth.py                # Entra/OIDC and backend session helpers
+│  │  ├─ routers/               # Auth and profile API routes
+│  │  ├─ services/
+│  │  │  ├─ ai/                 # AI enrichment pipeline
+│  │  │  └─ profile_service.py  # Profile/tenant/specialism logic
+│  │  ├─ repositories/          # Database access layer
+│  │  ├─ models/                # SQLAlchemy models
+│  │  └─ providers/             # Ticket source providers
+│  ├─ alembic/                  # Database migrations
+│  ├─ data/                     # Local ticket/category data
+│  ├─ compose.yml               # Local PostgreSQL
 │  └─ requirements.txt
 │
 ├─ frontend/
 │  ├─ src/
-│  │  ├─ main.ts              # Frontend entry point
-│  │  ├─ app.ts               # SPA controller
-│  │  ├─ components/          # UI components
-│  │  ├─ lib/                 # DOM helpers & utilities
-│  │  └─ assets/
-│  │
-│  ├─ index.html
-│  └─ tailwind.config.js
+│  │  ├─ main.ts                # Frontend bootstrap
+│  │  ├─ App.ts                 # SPA shell and routing
+│  │  ├─ pages/                 # Screen-level views
+│  │  ├─ components/            # Reusable UI components
+│  │  └─ shared/                # Auth helpers, types, DOM utilities
+│  ├─ package.json
+│  └─ run_local.sh
+│
+├─ docs/
+│  ├─ getting-started/
+│  ├─ architecture/
+│  ├─ services/
+│  └─ runbooks/
 │
 └─ README.md
 ```
 
 ---
 
-## 🧠 Backend (FastAPI + AI)
+## Backend
 
-### Technologies
-- **FastAPI** – REST API framework
-- **Sentence Transformers** – semantic similarity & embeddings
-- **spaCy** – NLP preprocessing
-- **Python 3.12+ recommended**
+### Main Technologies
 
-### Key Endpoints
+- FastAPI
+- SQLAlchemy asyncio
+- PostgreSQL
+- sentence-transformers
+- spaCy
+- scikit-learn
+
+### Current Responsibilities
+
+- expose health, auth, profile, cache, category, and ticket endpoints
+- perform Microsoft Entra ID sign-in and backend session management
+- persist tenants, profiles, identities, avatar config, and specialisms
+- load raw ticket data from the current fake provider
+- enrich tickets with category, priority, and explanation data
+
+### Important Current Endpoints
+
 | Endpoint | Description |
-|--------|------------|
-| `/health` | Service health check |
-| `/api/categories` | Available AI categories |
-| `/api/tickets` | Tickets enriched with AI categorisation |
+|---|---|
+| `/health` | Backend health check |
+| `/auth/login` | Start Microsoft Entra ID login |
+| `/api/v1/auth/me` | Return current authenticated user |
+| `/api/categories` | Return category list |
+| `/api/tickets` | Return AI-enriched tickets |
+| `/api/cache/stats` | Return embedding-cache stats |
 
-Each ticket returned includes:
-- AI‑assigned category
-- Confidence score
-- Original ticket metadata
+### Important Current Reality
 
----
-
-## 🖥️ Frontend (TypeScript + Tailwind)
-
-### Technologies
-- **Vanilla TypeScript**
-- **Tailwind CSS**
-- **No frameworks**
-- **SPA architecture**
-
-### Design Goals
-- Fast load time
-- Framework‑free
-- Explicit DOM control
-- Easy extensibility
-- Screen‑based organisation
-
-### Styling Approach
-- All styling via **Tailwind utility classes**
-- No handwritten CSS rules
-- Consistent UI patterns (cards, panels, lists)
+- ticket data is still coming from a fake local provider, not a real Autotask API integration
+- the backend owns AI categorization and auth/session logic
 
 ---
 
-## ▶️ How to Run (No Virtual Environment)
+## Frontend
 
-### Prerequisites
-- Python 3.12+
-- Node.js 18+
+### Main Technologies
 
----
+- Vanilla TypeScript
+- Tailwind CSS
+- live-server
+- no React
+- no Vite runtime
 
-### 1️⃣ Backend
+### Current Responsibilities
 
-```bash
-cd backend
-pip install fastapi uvicorn sentence-transformers spacy
-python -m spacy download en_core_web_sm
-python -m uvicorn app.main:app --reload
-```
+- bootstrap the app in the browser
+- check current backend-authenticated user on startup
+- render signed-in and signed-out states
+- navigate between dashboard, active tickets, ticket detail, account, settings, and closed tickets
+- fetch and display AI-enriched ticket data
 
-Backend runs at:
-```
-http://127.0.0.1:8000
-```
+### Important Current Reality
 
----
-
-### 2️⃣ Frontend (new terminal)
-
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-Frontend runs at:
-```
-http://127.0.0.1:5173
-```
+- the frontend uses a backend-led auth model
+- it does not store or validate identity tokens itself
+- some screens, especially `Settings` and `Closed Tickets`, are still placeholder or demo-level
 
 ---
 
-## 🔒 Key Engineering Decisions
+## How To Get Started
 
-- **No frontend frameworks** → clarity over abstraction
-- **AI logic isolated to backend** → correctness & security
-- **Explicit DOM construction** → predictable rendering
-- **Static Tailwind classes** → build‑time safety
-- **SPA routing** → scalable UI without reloads
+The detailed onboarding docs now live under `docs/getting-started/` so we do not duplicate setup instructions in multiple places.
 
----
+Use these in order:
 
-## 🚀 Extending the Project
+1. [First-Time Setup](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/docs/getting-started/first-time-setup.md)
+2. [Environment](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/docs/getting-started/environment.md)
+3. [Daily Run](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/docs/getting-started/daily-run.md)
 
-This architecture is intentionally scalable:
+If startup fails, use:
 
-- Replace fake Autotask provider with real API
-- Add authentication layer
-- Add ticket detail screens
-- Introduce persistent storage
-- Swap AI models without frontend changes
-- Add role‑based UI views
+- [Troubleshooting](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/docs/runbooks/troubleshooting.md)
 
----
+### Quick Summary
 
-## 🧪 Known Limitations (Prototype Scope)
+At a high level, local development currently looks like:
 
-- Uses mock ticket data
-- AI models load at runtime (cold start cost)
-- No persistence layer
-- No authentication
-
-These are **intentional** for a prototype environment.
+1. start PostgreSQL from `backend/compose.yml`
+2. prepare the backend virtual environment and install Python dependencies
+3. install the spaCy model
+4. create `backend/.env` with Entra settings if you want the authenticated flow to work
+5. run database migrations
+6. start the backend
+7. start the frontend
 
 ---
 
-## 📜 License
+## Documentation Map
 
-Educational / prototype use.
+For architecture and service-level understanding, start with:
+
+- [System Overview](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/docs/architecture/system-overview.md)
+- [Backend Overview](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/docs/architecture/backend-overview.md)
+- [Frontend Overview](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/docs/architecture/frontend-overview.md)
+- [Service Boundaries](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/docs/architecture/services-boundaries.md)
+
+For service-specific detail:
+
+- [Profile Service](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/docs/services/profile-service/overview.md)
+- [Logging System](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/docs/services/logging-system/overview.md)
+- [AI Service](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/docs/services/ai-service/overview.md)
 
 ---
 
-## 🧠 Final Note
+## Key Engineering Decisions
 
-This project demonstrates that:
-
-> **Modern, scalable frontends do not require heavy frameworks**  
-> and **AI systems must be architecturally isolated from UI concerns**.
-
-Both principles are enforced throughout this codebase.
+- No heavy frontend framework: the UI uses explicit DOM construction and simple routing.
+- Backend-owned intelligence: ticket categorization and priority logic stay server-side.
+- Backend-owned auth: Entra validation and session cookies are handled on the backend.
+- Layered profile domain: profile/tenant logic is split into router, service, repository, and model layers.
+- Modular AI pipeline: text processing, categorization, priority scoring, description generation, caching, and logging are separated into dedicated modules.
 
 ---
 
-*Built for clarity, maintainability, and technical assessment.*
+## Known Limitations
+
+This is still a prototype or evolving system in several important ways:
+
+- the ticket provider is fake/local rather than a real external integration
+- authenticated flows depend on Microsoft Entra ID being configured correctly
+- some frontend pages are placeholders
+- AI startup can be heavy because models load at runtime
+- parts of the AI service still include prototype-style offline/file-processing workflows
+- there is no checked-in backend `.env.example` at the moment
+
+---
+
+## Final Note
+
+This project is no longer just “AI tickets plus a frontend”.
+
+It is now better understood as:
+
+> a backend-centered system that combines auth, local profile persistence, ticket enrichment, and a lightweight frontend interface.
+
+That makes the newer docs under `docs/` the best place to continue after this README.
