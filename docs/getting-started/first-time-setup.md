@@ -148,6 +148,14 @@ alembic upgrade head
 Why this matters:
 
 - the profile, auth, and tenant/specialism features depend on the DB schema existing
+- Microsoft sign-in can fail with a backend `500 Internal Server Error` on a fresh machine if the tables have not been created yet
+
+Important usage note:
+
+- this is not a command you need to run every time you start the app
+- run it the first time a developer sets up the project on a machine
+- run it again only when the schema changes and the repo includes new migrations
+- if the database volume is deleted or a brand new local database is created, run it again
 
 Migration files currently live in:
 

@@ -206,6 +206,25 @@ source .venv/bin/activate
 alembic upgrade head
 ```
 
+When this command is needed:
+
+- first-time setup on a machine
+- after pulling schema changes that add a new migration
+- after recreating or wiping the local database
+
+When it is not needed:
+
+- normal day-to-day startup when the schema has not changed
+
+Why this matters:
+
+- copying `.env` values to another machine does not copy the PostgreSQL tables
+- a fresh `mydb` can still be missing tables even if all environment variables are correct
+
+One common symptom:
+
+- Microsoft sign-in reaches `/auth/callback` and then fails with `500 Internal Server Error` because the auth/profile flow expects tables like `tenant` and `identity_provider` to already exist
+
 Relevant files:
 
 - `backend/alembic.ini`
