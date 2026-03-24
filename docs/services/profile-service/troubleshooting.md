@@ -93,6 +93,38 @@ What to check:
 - if the profile was intentionally deactivated, this is expected behavior
 - if the profile should be allowed back in, the codebase currently has no dedicated reactivation endpoint
 
+## Symptom: Entra login fails with `500 Internal Server Error` on a new machine
+
+Likely causes:
+
+- the teammate copied the backend `.env`, but the local PostgreSQL schema was never created
+- the local `mydb` exists but does not yet contain tables such as `tenant`, `profile`, `identity_provider`, and `profile_identity`
+
+Where to look:
+
+- `backend/app/routers/auth.py`
+- `backend/app/services/profile_service.py`
+- `backend/alembic/versions/`
+
+Why this happens:
+
+- `resolve_entra_profile(...)` can create some rows on first login, such as the internal tenant, identity provider, and profile
+- it cannot do that until the underlying tables already exist
+- if the schema was never applied, the callback flow fails before local provisioning can finish
+
+What to check:
+
+- confirm PostgreSQL is running and `DATABASE_URL` points to the intended local database
+- from `backend/`, run `alembic upgrade head`
+- confirm tables now exist in `mydb`
+- restart the backend and retry sign-in
+
+Important operational note:
+
+- this migration step is not something developers should run on every startup
+- run it during first-time machine setup
+- run it again only when the schema changes or when the local database has been recreated
+
 ## Symptom: Entra login creates unexpected users in one shared tenant
 
 Likely cause:

@@ -124,6 +124,18 @@ Example:
 
 ## Quick Notes For Everyday Work
 
+### If you are wondering whether to run migrations today
+
+Usually, no.
+
+Use `alembic upgrade head` only when:
+
+- you are setting up the project on a machine for the first time
+- someone has pulled schema changes and new Alembic migration files
+- your local database was reset, deleted, or recreated
+
+You do not need to run migrations as part of every normal daily startup.
+
 ### If the frontend says the backend did not respond
 
 Check:
@@ -137,6 +149,7 @@ Check:
 
 - your backend `.env`
 - Entra redirect URI and credentials
+- whether your local database schema has been created with `alembic upgrade head`
 
 ### If tickets are slow
 
