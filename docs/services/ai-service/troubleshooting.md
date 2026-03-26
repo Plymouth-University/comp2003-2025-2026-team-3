@@ -8,40 +8,54 @@ This guide helps developers diagnose common AI-service problems in the current i
 
 When the AI service behaves unexpectedly, check these first:
 
-1. Is the backend able to start the sentence-transformer model?
-2. Is the spaCy model `en_core_web_sm` installed?
-3. Are categories being loaded from `generated_categories.json` or default fallbacks?
-4. Are you using batch mode or sequential mode?
-5. Are file-based storage paths valid for the current machine?
+1. Does `backend/data/ticket_categories.json` exist and validate?
+2. Is the backend able to load the sentence-transformer model?
+3. Are you testing batch mode or sequential mode?
+4. Does `/api/categories` return the category list you expect?
+5. Are the ticket endpoints returning AI metadata with `category`, `confidence`, `priority`, and `priority_score`?
 
-## Symptom: categories look wrong or too generic
+## Symptom: categories look wrong
 
 Likely causes:
 
-- generated categories were loaded and may not be high quality
-- the system fell back to default categories
-- preprocessing removed too much useful signal
+- the configured categories do not match the real SecOps workflow
+- keyword lists are too weak or too broad
+- ticket text does not contain the expected language
 
 What to check:
 
-- backend logs from `config.py`
-- whether `backend/data/generated_categories.json` exists
-- whether startup logged "Using default fallback categories"
+- [ticket_categories.json](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/backend/data/ticket_categories.json)
+- `/api/categories`
+- backend logs from `config.py` and `categorizer.py`
 
-## Symptom: preprocessing returns poor tokens or empty results
+## Symptom: category changes do not appear in the API
 
 Likely cause:
 
-- spaCy model not loaded successfully
+- the backend has not been restarted after changing the JSON config
 
 What to check:
 
-- backend logs for warnings like `spaCy model not found`
-- whether `python -m spacy download en_core_web_sm` has been run in the active environment
+- restart the backend process
+- call `/api/categories` again
 
-Code location:
+## Symptom: semantic classification is unavailable
 
-- `backend/app/services/ai/text_processor.py`
+Likely causes:
+
+- the embedding model is not provisioned in the environment
+- local-only model loading is enabled and the model is not cached locally
+
+What to check:
+
+- backend startup logs from `config.py`
+- `AI_EMBEDDING_MODEL_NAME`
+- `AI_EMBEDDING_MODEL_LOCAL_ONLY`
+
+Expected behavior:
+
+- the service should still start
+- keyword-only fallback should still classify tickets
 
 ## Symptom: semantic categorization is slow
 
@@ -63,61 +77,32 @@ Code locations:
 - `embedding_cache.py`
 - `main.py`
 
-## Symptom: one ticket path works, but file-processing path fails
+## Symptom: batch and sequential results differ slightly
 
 Likely cause:
 
-- the request-time API path and the file-storage path are not the same workflow
+- the two paths share the same category logic, but batch mode uses batched semantic scoring and sequential mode goes through `categorise_ticket(...)`
 
 What to check:
 
-- whether the failure is coming from `processor.py` and `storage.py`
-- whether `TICKETS_BASE_PATH` and `INPUT_TICKETS_PATH` are valid on this machine
+- `GET /api/tickets`
+- `GET /api/tickets?batch=false`
 
 Important note:
 
-- hard-coded Windows paths in `config.py` are a likely source of failure outside that environment
-
-## Symptom: generated descriptions do not feel very "AI"
-
-Likely cause:
-
-- the description generator is mostly template/remediation based in the current implementation
-
-What to check:
-
-- `backend/app/services/ai/description_generator.py`
-
-Explanation:
-
-- this is expected from the current code
-- the name sounds more advanced than the implementation actually is
-
-## Symptom: category generation at startup takes too long or fails
-
-Likely causes:
-
-- ticket dataset is large
-- clustering work is expensive
-- not enough tickets exist for meaningful clustering
-- dependencies or file inputs are missing
-
-What to check:
-
-- logs from `category_generator.py`
-- whether `tickets.json` exists
-- whether there are at least about 10 tickets
+- major differences are a bug
+- small score differences may happen because the two paths are assembled differently
 
 ## Symptom: priority labels feel surprising
 
 Likely cause:
 
-- priority scoring is heuristic, not learned from labeled training data
+- priority scoring is heuristic and depends on configured category weights plus urgency text
 
 What to check:
 
-- category weight
-- urgency keywords in the text
+- category `priority_weight` values in `ticket_categories.json`
+- urgency keywords in the ticket text
 - semantic confidence value
 - text length adjustment
 
@@ -132,34 +117,19 @@ Likely causes:
 - requests are using different text each time
 - cache TTL expired
 - cache was cleared
+- the process restarted
 
 What to check:
 
 - `/api/cache/stats`
 - whether texts are truly repeated
-- whether the process restarted
-
-## Symptom: batch and sequential results differ slightly
-
-Likely cause:
-
-- the request-time implementation uses slightly different enrichment paths for batch and sequential modes
-
-What to check:
-
-- batch mode in `/api/tickets` returns `ai` objects assembled from batch categorization and batch priority scoring
-- sequential mode relies more directly on `categorise_ticket(...)`
-
-Why this matters:
-
-- performance and output shape may not be perfectly identical between the two paths
 
 ## Known Structural Gaps
 
 Verified from the current code:
 
-- no persisted metrics store
-- no experiment tracking
-- no model versioning surfaced in API responses
-- hard-coded storage paths
-- a mixture of prototype-style file processing and live API inference paths
+- no persisted AI state store
+- no assignment or workload-balancing logic yet
+- no category-management API yet
+- no model version surfaced in AI responses
+- no durable metrics store

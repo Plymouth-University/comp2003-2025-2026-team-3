@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This document explains what the AI service depends on and why those dependencies matter.
+This document explains what the current AI service depends on and why those dependencies matter.
 
 ## Internal Code Dependencies
 
@@ -13,37 +13,35 @@ Depends on:
 - `sentence_transformers.SentenceTransformer`
 - `torch`
 - `logging_config.py`
-- optional `category_generator.py`
+- `backend/data/ticket_categories.json`
 
 Why it matters:
 
-- this file loads the model and category configuration that many other modules rely on
+- this module loads the category registry and semantic model used by the rest of the service
 
 ### `text_processor.py`
 
 Depends on:
 
-- `spacy`
 - constants from `config.py`
 - metrics/logging objects
 
 Why it matters:
 
-- without spaCy loading successfully, preprocessing quality drops sharply and some downstream logic becomes weaker
+- it provides the normalization and ticket-text extraction used by classification
 
 ### `categorizer.py`
 
 Depends on:
 
-- category keywords and embeddings from `config.py`
-- the sentence-transformer model from `config.py`
+- category definitions, embeddings, and model state from `config.py`
 - `text_processor.py`
 - `embedding_cache.py`
 - metrics/logging objects
 
 Why it matters:
 
-- this module is where the main classification logic lives
+- this is where the category decision logic lives
 
 ### `priority_calculator.py`
 
@@ -53,18 +51,7 @@ Depends on:
 
 Why it matters:
 
-- the priority system is only as good as its configured weights and heuristics
-
-### `description_generator.py`
-
-Depends on:
-
-- metrics/logging objects
-- ticket input fields
-
-Why it matters:
-
-- it relies more on rule/template logic than on model inference in the current implementation
+- priority scores depend on configured category weights
 
 ### `processor.py`
 
@@ -73,60 +60,22 @@ Depends on:
 - text extraction
 - categorization
 - priority calculation
-- company detection
-- description generation
-- storage
 
 Why it matters:
 
-- this is the orchestrator that ties the AI service together
+- this is the live orchestrator used by the request-time API path
 
-### `category_generator.py`
+### `embedding_cache.py`
 
 Depends on:
 
-- the sentence-transformer model
-- preprocessing
-- `numpy`
-- `sklearn.cluster.KMeans`
-- `sklearn.metrics.silhouette_score`
+- in-memory process state
 
 Why it matters:
 
-- this path is what makes startup-time dynamic category generation possible
-
-### `storage.py`
-
-Depends on:
-
-- file paths from `config.py`
-- filesystem read/write access
-
-Why it matters:
-
-- if those paths are wrong for the current environment, file-based processing workflows will fail
+- repeated batch requests can be faster when embeddings are reused
 
 ## Third-Party Dependencies
-
-### spaCy
-
-Declared in:
-
-- `backend/requirements.txt`
-
-Used for:
-
-- tokenization
-- lemmatization
-- filtering stopwords and punctuation
-
-Developer-friendly explanation:
-
-- spaCy is the main text-cleaning and linguistic preprocessing library in this codebase
-
-Important runtime detail:
-
-- `text_processor.py` expects the `en_core_web_sm` model to be installed
 
 ### sentence-transformers
 
@@ -138,59 +87,57 @@ Used for:
 
 - encoding category descriptions and ticket text into embeddings
 
-Developer-friendly explanation:
+Important runtime detail:
 
-- this library provides the semantic-similarity part of the service
+- the current default model is `all-MiniLM-L6-v2`
+- the service can fall back to keyword-only classification if the model is unavailable
 
 ### PyTorch
 
 Used indirectly by:
 
 - sentence-transformers
-- embedding tensors
-- batch operations in categorization
+- tensor operations in batch categorization
 
 Why it matters:
 
-- embeddings and tensor operations rely on it
+- semantic similarity depends on it
 
 ### NumPy
-
-Used by:
-
-- `category_generator.py`
-
-Why it matters:
-
-- clustering inputs are handled as arrays there
-
-### scikit-learn
 
 Declared in:
 
 - `backend/requirements.txt`
 
-Used by:
-
-- `category_generator.py`
-
 Why it matters:
 
-- KMeans and silhouette scoring come from scikit-learn
+- it remains available in the backend environment, although it is not a major part of the current live AI path
 
 ## Runtime Dependencies
 
-### Ticket data files
+### Category configuration file
 
-Relevant files or expected inputs:
+Relevant file:
 
-- `backend/data/tickets.json`
-- `backend/data/generated_categories.json`
+- `backend/data/ticket_categories.json`
 
-Why they matter:
+Why it matters:
 
-- `tickets.json` can be used to auto-generate categories
-- `generated_categories.json` can override the default category set
+- it defines category keys, labels, descriptions, keywords, and priority weights
+- `/api/categories` reflects this file
+- the classifier depends on this file being valid
+
+### Embedding model availability
+
+Relevant configuration:
+
+- `AI_EMBEDDING_MODEL_NAME`
+- `AI_EMBEDDING_MODEL_LOCAL_ONLY`
+
+Why it matters:
+
+- the semantic path only works if the model is provisioned in the deployment environment
+- if not, the service uses keyword fallback behavior
 
 ### In-memory cache
 
@@ -202,24 +149,11 @@ Why it matters:
 
 - batch performance depends partly on cache hit rate
 
-### Filesystem paths in config
-
-Relevant constants:
-
-- `TICKETS_BASE_PATH`
-- `INPUT_TICKETS_PATH`
-
-Important note:
-
-- these are currently hard-coded Windows-style paths
-- that may not line up with the current repository location or OS environment
-
 ## Dependency Risks
 
 Visible from the current code:
 
-- if `en_core_web_sm` is missing, preprocessing falls back badly and logs warnings/errors
-- if the sentence-transformer model cannot load, major AI functionality will fail
-- if generated categories are malformed, the system falls back to defaults
-- if file paths are invalid, storage workflows will fail even if API-time enrichment still works
-- import-time model loading can make startup heavier and failures more immediate
+- if `ticket_categories.json` is malformed, startup should fail fast
+- if the embedding model is unavailable, semantic classification is disabled until the model is provisioned
+- import-time model loading still affects startup time
+- cache and metrics are process-local, so they do not survive restarts or scale across instances
