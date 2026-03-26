@@ -20,7 +20,7 @@ It does not yet provide:
 - SecOps specialism-aware assignment
 - company continuity assignment
 - workload balancing
-- profile/resource-linked routing state
+- routing decisions built on top of the existing profile/resource-linked AI state
 - AI-specific CRUD endpoints for category management or routing actions
 
 ## Best Next Improvements
@@ -31,7 +31,6 @@ The hosted database-backed AI-state layer now exists.
 
 The next major step is to extend it with:
 
-- profile/resource mapping
 - assignment decisions
 - company continuity signals
 - workload signals
@@ -103,11 +102,11 @@ The best next step is not another round of classifier cleanup.
 
 The best next sequence is:
 
-1. extend the AI-state model with profile/resource mapping
-2. design the routing data model
-3. build specialism-aware assignment
-4. add company continuity logic
-5. add workload balancing
-6. expose richer AI-specific endpoints for the frontend and future integrations
+1. design the routing data model on top of the existing AI-state and profile/resource mapping
+2. build specialism-aware assignment
+3. add company continuity logic
+4. add workload balancing
+5. expose richer AI-specific endpoints for the frontend and future integrations
+6. add manual override and assignment-audit support
 
 That path moves the service from "clean classifier" to "real SecOps workflow engine."

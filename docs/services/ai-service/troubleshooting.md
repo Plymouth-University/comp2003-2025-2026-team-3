@@ -15,6 +15,7 @@ When the AI service behaves unexpectedly, check these first:
 5. Are the ticket endpoints returning AI metadata with `category`, `confidence`, `priority`, and `priority_score`?
 6. If using AI-state endpoints, has the database migration been applied?
 7. If using `/my-primary` or `/my-secondary`, have you refreshed AI ticket state after creating matching local profiles?
+8. If Swagger shows `401 Unauthorized`, are you authenticated in Swagger itself or only in the frontend UI?
 
 ## Symptom: categories look wrong
 
@@ -164,6 +165,50 @@ Why it matters:
 - if you created new test SecOps profiles, use refresh
 - if `/my-primary` and `/my-secondary` are empty unexpectedly, use refresh
 
+Recommended local-dev order:
+
+1. run `alembic upgrade head`
+2. restart the backend
+3. trigger refresh
+4. test the frontend views again
+
+## Symptom: `column ticket_ai_state.created does not exist`
+
+Likely cause:
+
+- the local database schema is behind the current code
+
+What to check:
+
+- run `cd backend && .venv/bin/alembic upgrade head`
+- restart the backend
+- rerun `POST /api/v1/ai/ticket-states/refresh`
+
+Why this happens:
+
+- the AI-state table now stores the original ticket `created` timestamp for frontend use
+
+## Symptom: `401 Unauthorized` when calling AI-state endpoints in Swagger
+
+Likely cause:
+
+- Swagger is not sharing the frontend login session from `localhost:5173`
+
+Practical workaround:
+
+Use the authenticated browser console from the signed-in frontend:
+
+```js
+fetch("http://localhost:8000/api/v1/ai/ticket-states/refresh", {
+  method: "POST",
+  credentials: "include",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ include_closed: false, limit: 100 })
+}).then(async (r) => {
+  console.log(r.status, await r.text());
+});
+```
+
 ## Symptom: `/my-primary` or `/my-secondary` is empty even though `/team` works
 
 Likely causes:
@@ -179,6 +224,21 @@ What to check:
 - `GET /api/v1/ai/ticket-states/team`
 - `GET /api/v1/ai/ticket-states/my-primary`
 - `GET /api/v1/ai/ticket-states/my-secondary`
+
+## Symptom: the wrong active-ticket tab looks selected or the URL hash does not change
+
+Likely cause:
+
+- the frontend is not running the latest build after the AI-state view-switcher update
+
+What to check:
+
+- rebuild or restart the frontend
+- verify these hashes update as you switch views:
+  - `#/active-tickets`
+  - `#/active-tickets/my-primary`
+  - `#/active-tickets/my-secondary`
+  - `#/active-tickets/team`
 
 ## Known Structural Gaps
 

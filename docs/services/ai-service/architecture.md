@@ -151,6 +151,7 @@ Purpose:
 What it stores:
 
 - ticket snapshot fields needed by the AI/routing layer
+- original ticket `created` timestamp used by frontend dashboard and active-ticket views
 - category and confidence
 - priority label and score
 - classification method
@@ -185,10 +186,15 @@ flowchart TD
   Processor --> Persist[(ticket_ai_state)]
   ProfileLookup --> Persist
   Persist --> Read[GET /api/v1/ai/ticket-states]
+  Persist --> MyAssigned[GET /api/v1/ai/ticket-states/my-assigned]
   Persist --> MyPrimary[GET /api/v1/ai/ticket-states/my-primary]
   Persist --> MySecondary[GET /api/v1/ai/ticket-states/my-secondary]
   Persist --> Team[GET /api/v1/ai/ticket-states/team]
   Persist --> One[GET /api/v1/ai/ticket-states/{id}]
+  MyAssigned --> Frontend[Active Tickets UI]
+  MyPrimary --> Frontend
+  MySecondary --> Frontend
+  Team --> Frontend
 ```
 
 ## Important Design Choices
@@ -226,6 +232,7 @@ Verified from the current code:
 - AI ticket state can now be persisted centrally in the hosted backend
 - AI-specific endpoints now exist for category reading and ticket-state refresh/list/get
 - AI ticket state can now support profile-based primary/secondary ticket views
+- the frontend now consumes AI-state endpoints for `My Assigned`, `My Primary`, `My Secondary`, and `Team Queue`
 
 ## Architecture Weaknesses
 
@@ -235,3 +242,4 @@ Also visible in the current code:
 - category management still requires editing a JSON file rather than using a dedicated API
 - cache and metrics are still process-local rather than durable
 - persisted state now includes profile-resource mapping, but not routing decisions yet
+- AI-state refresh is still a manual sync step during development and testing

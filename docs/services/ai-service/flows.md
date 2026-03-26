@@ -55,6 +55,7 @@ The key idea is:
 - the provider still owns ticket truth
 - the hosted backend stores a refreshed AI snapshot for operational use
 - profile-linked user views depend on this refresh step having already populated the hosted AI state
+- the frontend `Active Tickets` page reads those persisted views instead of loading the old raw ticket list
 
 ### High-level sequence
 
@@ -96,6 +97,23 @@ That makes it especially useful during development and troubleshooting:
 - if you add new profiles that should map to ticket resources, refresh again
 - if categories change, refresh again
 - if the AI-state endpoints look stale, refresh again
+
+### Practical local-testing note
+
+Swagger at `http://localhost:8000/docs` may not share the same authenticated session as the frontend at `http://localhost:5173`.
+
+If `POST /api/v1/ai/ticket-states/refresh` returns `401 Unauthorized` in Swagger while the UI is signed in, trigger it from the authenticated browser session instead:
+
+```js
+fetch("http://localhost:8000/api/v1/ai/ticket-states/refresh", {
+  method: "POST",
+  credentials: "include",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ include_closed: false, limit: 100 })
+}).then(async (r) => {
+  console.log(r.status, await r.text());
+});
+```
 
 ## Flow 2: Load Configured Categories
 
@@ -306,6 +324,35 @@ flowchart TD
   Resolve --> Upsert[Upsert ticket_ai_state rows]
   Upsert --> Cleanup[Delete stale retained rows]
   Cleanup --> Readback[State available via AI endpoints]
+```
+
+## Flow 10: Drive The Active Tickets UI
+
+Primary frontend code:
+
+- `frontend/src/shared/api/aiTickets.ts`
+- `frontend/src/components/TicketListContainer.ts`
+- `frontend/src/pages/ActiveTickets.ts`
+
+What it does:
+
+1. `Active Tickets` loads `My Assigned` by default
+2. the top tabs switch between `My Assigned`, `My Primary`, `My Secondary`, and `Team Queue`
+3. the frontend calls the matching AI-state endpoint
+4. the URL hash updates to match the selected view
+5. the returned AI-state rows render in the categorized ticket layout
+
+```mermaid
+flowchart LR
+  Active[Active Tickets page] --> Tabs[Top view tabs]
+  Tabs --> Assigned[/my-assigned/]
+  Tabs --> Primary[/my-primary/]
+  Tabs --> Secondary[/my-secondary/]
+  Tabs --> Team[/team/]
+  Assigned --> Render[Categorized ticket cards]
+  Primary --> Render
+  Secondary --> Render
+  Team --> Render
 ```
 
 ## What New Developers Should Remember

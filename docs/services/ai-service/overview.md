@@ -13,6 +13,7 @@ Today that means:
 - exposing the configured category list through the API
 - persisting hosted AI ticket state for refreshable ticket snapshots
 - exposing profile-aware AI ticket-state endpoints for team and user views
+- powering the frontend `Active Tickets` page views for `My Assigned`, `My Primary`, `My Secondary`, and `Team Queue`
 
 In plain English:
 
@@ -130,6 +131,17 @@ The current backend integration points are:
 - `GET /api/v1/ai/ticket-states/team`
 - `GET /api/v1/ai/ticket-states/{autotask_ticket_id}`
 
+The current frontend integration points are:
+
+- `#/active-tickets`
+- `#/active-tickets/my-primary`
+- `#/active-tickets/my-secondary`
+- `#/active-tickets/team`
+
+Important current detail:
+
+- the separate sidebar `Team Tickets` entry has been removed, and the `Active Tickets` page now switches between personal and team AI-state views using the top tab bar
+
 ## Important Current Limitations
 
 Verified from the current implementation:
@@ -143,6 +155,7 @@ Verified from the current implementation:
 - persisted AI ticket state exists, but routing/assignment state does not yet
 - there is still no category-management API yet, only category reading plus ticket-state refresh/list/get endpoints
 - user-specific ticket views depend on the AI ticket state being refreshed after matching profiles exist
+- local testing may require triggering refresh from the authenticated browser session if Swagger is not authenticated for the protected AI endpoints
 
 ## Recommended Reading Order
 
