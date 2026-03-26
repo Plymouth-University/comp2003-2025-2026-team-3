@@ -248,7 +248,7 @@ export function App(root: HTMLElement, currentUser: CurrentUserResponse | null, 
     } else if (r.name === "account") {
       content.append(AccountPage(currentUser));
     } else if (r.name === "settings") {
-      content.append(Settings());
+      content.append(Settings(currentUser));
     } else if (r.name === "closed-tickets"){
       content.append(ClosedTicketsPage());
     }

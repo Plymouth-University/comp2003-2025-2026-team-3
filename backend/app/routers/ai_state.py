@@ -8,11 +8,13 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from ..auth import AuthenticatedSession, get_current_session
 from ..database import get_db
 from ..schemas.ai_state import (
+    TicketAssignmentRecommendationResponse,
     TicketAIRefreshRequest,
     TicketAIRefreshResponse,
     TicketAIStateResponse,
 )
 from ..services.ai import list_available_categories
+from ..services.ai_assignment_service import AIAssignmentService
 from ..services.ai_state_service import AIStateService
 
 router = APIRouter(prefix="/api/v1/ai", tags=["ai"])
@@ -157,3 +159,23 @@ async def get_ai_ticket_state(
             detail=f"AI ticket state not found for autotask_ticket_id={autotask_ticket_id}",
         )
     return state
+
+
+@router.get(
+    "/ticket-states/{autotask_ticket_id}/assignment-recommendation",
+    response_model=TicketAssignmentRecommendationResponse,
+)
+async def get_ticket_assignment_recommendation(
+    autotask_ticket_id: int,
+    session: AuthenticatedSession = Depends(get_current_session),
+    db: AsyncSession = Depends(get_db),
+):
+    """Recommend an assignee based on stored profile specialisms for this ticket category."""
+    service = AIAssignmentService(db)
+    recommendation = await service.recommend_for_ticket(UUID(session.tenant_id), autotask_ticket_id)
+    if recommendation is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"AI ticket state not found for autotask_ticket_id={autotask_ticket_id}",
+        )
+    return recommendation

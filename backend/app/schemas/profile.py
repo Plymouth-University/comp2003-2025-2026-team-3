@@ -86,6 +86,31 @@ class ProfileResponse(ProfileBase):
         from_attributes = True
 
 
+class AuthenticatedProfileSpecialismsUpdateRequest(BaseModel):
+    specialism_keys: List[str] = Field(default_factory=list)
+
+    @field_validator("specialism_keys")
+    @classmethod
+    def validate_specialism_keys(cls, value: List[str]) -> List[str]:
+        normalized: List[str] = []
+        seen: set[str] = set()
+        for item in value:
+            key = item.strip()
+            if not key:
+                continue
+            if key in seen:
+                continue
+            seen.add(key)
+            normalized.append(key)
+        return normalized
+
+
+class ProfileSpecialismAssignmentItem(BaseModel):
+    specialism: "SpecialismResponse"
+    proficiency_level: Optional[str] = None
+    assigned_at: datetime
+
+
 # ============ Identity Provider Schemas ============
 
 class IdentityProviderBase(BaseModel):

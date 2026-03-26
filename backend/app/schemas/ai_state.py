@@ -56,3 +56,23 @@ class TicketAIRefreshResponse(BaseModel):
     mapped_secondary_count: int
     include_closed: bool
     refreshed_at: datetime
+
+
+class AssignmentRecommendationCandidateResponse(BaseModel):
+    profile_id: UUID
+    display_name: str
+    matched_specialism_keys: list[str]
+    score: int
+    reasons: list[str]
+    is_current_primary: bool
+    is_current_secondary: bool
+
+
+class TicketAssignmentRecommendationResponse(BaseModel):
+    autotask_ticket_id: int
+    category: str
+    category_label: str
+    recommended_profile_id: Optional[UUID] = None
+    recommended_display_name: Optional[str] = None
+    recommendation_summary: str
+    candidates: list[AssignmentRecommendationCandidateResponse]

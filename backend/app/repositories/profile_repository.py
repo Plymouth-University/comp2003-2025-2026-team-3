@@ -91,6 +91,27 @@ class ProfileRepository:
         query = query.limit(limit).offset(offset)
         result = await self.db.execute(query)
         return list(result.scalars().all())
+
+    async def get_profiles_by_tenant_with_specialisms(
+        self,
+        tenant_id: UUID,
+        status: Optional[str] = None,
+    ) -> List[Profile]:
+        """Get profiles for a tenant with display and specialism relationships loaded."""
+        query = (
+            select(Profile)
+            .options(
+                selectinload(Profile.display),
+                selectinload(Profile.specialisms).selectinload(ProfileSpecialism.specialism),
+            )
+            .where(Profile.tenant_id == tenant_id)
+        )
+
+        if status:
+            query = query.where(Profile.status == status)
+
+        result = await self.db.execute(query)
+        return list(result.scalars().all())
     
     async def update_profile(
         self,
@@ -334,7 +355,8 @@ class SpecialismRepository:
         tenant_id: UUID,
         specialism_key: str,
         specialism_name: str,
-        description: Optional[str] = None
+        description: Optional[str] = None,
+        commit: bool = True,
     ) -> Specialism:
         """Create a new specialism."""
         specialism = Specialism(
@@ -344,8 +366,10 @@ class SpecialismRepository:
             description=description
         )
         self.db.add(specialism)
-        await self.db.commit()
-        await self.db.refresh(specialism)
+        await self.db.flush()
+        if commit:
+            await self.db.commit()
+            await self.db.refresh(specialism)
         return specialism
     
     async def get_specialisms_by_tenant(
@@ -359,6 +383,28 @@ class SpecialismRepository:
         if active_only:
             query = query.where(Specialism.is_active == True)
         
+        result = await self.db.execute(query)
+        return list(result.scalars().all())
+
+    async def get_specialisms_by_keys(
+        self,
+        tenant_id: UUID,
+        specialism_keys: List[str],
+        active_only: bool = True,
+    ) -> List[Specialism]:
+        """Resolve specialisms by tenant-scoped stable keys."""
+        if not specialism_keys:
+            return []
+
+        query = select(Specialism).where(
+            and_(
+                Specialism.tenant_id == tenant_id,
+                Specialism.specialism_key.in_(specialism_keys),
+            )
+        )
+        if active_only:
+            query = query.where(Specialism.is_active.is_(True))
+
         result = await self.db.execute(query)
         return list(result.scalars().all())
     
@@ -399,3 +445,31 @@ class SpecialismRepository:
         )
         result = await self.db.execute(query)
         return list(result.scalars().all())
+
+    async def replace_profile_specialisms(
+        self,
+        tenant_id: UUID,
+        profile_id: UUID,
+        specialism_ids: List[UUID],
+        assigned_by_profile_id: Optional[UUID] = None,
+    ) -> None:
+        """Replace all specialisms assigned to a profile with the provided set."""
+        delete_stmt = delete(ProfileSpecialism).where(
+            and_(
+                ProfileSpecialism.tenant_id == tenant_id,
+                ProfileSpecialism.profile_id == profile_id,
+            )
+        )
+        await self.db.execute(delete_stmt)
+
+        for specialism_id in specialism_ids:
+            self.db.add(
+                ProfileSpecialism(
+                    tenant_id=tenant_id,
+                    profile_id=profile_id,
+                    specialism_id=specialism_id,
+                    assigned_by_profile_id=assigned_by_profile_id,
+                )
+            )
+
+        await self.db.commit()

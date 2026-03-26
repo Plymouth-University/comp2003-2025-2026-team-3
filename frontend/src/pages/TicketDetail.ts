@@ -1,4 +1,5 @@
 import { el } from "../shared/lib/dom.js";
+import { fetchAssignmentRecommendation } from "../shared/api/aiAssignments.js";
 import type { BackendTicket } from "../shared/types.js";
 
 export function TicketDetail(ticket: BackendTicket, onBack: () => void): HTMLElement {
@@ -96,6 +97,13 @@ export function TicketDetail(ticket: BackendTicket, onBack: () => void): HTMLEle
       ])
     );
   }
+  const recommendationWrap = el("div", {
+    className: "space-y-2 rounded-lg border border-cyan-200 bg-cyan-50 p-3",
+  }, [
+    el("div", { className: "text-xs font-semibold text-cyan-800 uppercase", text: "AI Recommendation" }),
+    el("div", { className: "text-sm text-slate-700", text: "Loading assignment recommendation..." }),
+  ]);
+  assignmentSection.append(recommendationWrap);
   leftColumn.append(assignmentSection);
 
   //right column - description (wider)
@@ -146,6 +154,49 @@ export function TicketDetail(ticket: BackendTicket, onBack: () => void): HTMLEle
   if (backButton) {
     backButton.addEventListener("click", onBack);
   }
+
+  void fetchAssignmentRecommendation(ticket.autotask_ticket_id)
+    .then((recommendation) => {
+      recommendationWrap.innerHTML = "";
+      recommendationWrap.append(
+        el("div", { className: "text-xs font-semibold text-cyan-800 uppercase", text: "AI Recommendation" }),
+        el("div", {
+          className: "text-sm font-semibold text-slate-900",
+          text: recommendation.recommended_display_name ?? "No recommended assignee",
+        }),
+        el("div", {
+          className: "text-sm text-slate-700",
+          text: recommendation.recommendation_summary,
+        }),
+      );
+
+      if (recommendation.candidates.length > 0) {
+        const candidateList = el("div", { className: "space-y-2 pt-2" });
+        recommendation.candidates.slice(0, 3).forEach((candidate) => {
+          candidateList.append(
+            el("div", { className: "rounded border border-cyan-100 bg-white px-3 py-2" }, [
+              el("div", {
+                className: "text-sm font-semibold text-slate-900",
+                text: `${candidate.display_name} (${candidate.score})`,
+              }),
+              el("div", {
+                className: "text-xs text-slate-600",
+                text: candidate.reasons.join(" "),
+              }),
+            ]),
+          );
+        });
+        recommendationWrap.append(candidateList);
+      }
+    })
+    .catch((error) => {
+      console.error("Failed to load assignment recommendation", error);
+      recommendationWrap.innerHTML = "";
+      recommendationWrap.append(
+        el("div", { className: "text-xs font-semibold text-cyan-800 uppercase", text: "AI Recommendation" }),
+        el("div", { className: "text-sm text-red-600", text: "Failed to load assignment recommendation." }),
+      );
+    });
 
   return wrap;
 }

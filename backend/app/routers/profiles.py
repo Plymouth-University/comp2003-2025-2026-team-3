@@ -4,13 +4,16 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from typing import List, Optional
 from uuid import UUID
 
+from ..auth import AuthenticatedSession, get_current_session
 from ..database import get_db
 from ..services.profile_service import ProfileService, TenantService, SpecialismService
 from ..schemas.profile import (
     ProfileCreate, ProfileUpdate, ProfileResponse,
     TenantCreate, TenantResponse,
     SpecialismCreate, SpecialismResponse,
-    ProfileIdentityCreate
+    ProfileIdentityCreate,
+    AuthenticatedProfileSpecialismsUpdateRequest,
+    ProfileSpecialismAssignmentItem,
 )
 
 router = APIRouter(prefix="/api/v1", tags=["profiles"])
@@ -244,3 +247,38 @@ async def get_profile_specialisms(
     """Get all specialisms assigned to a profile."""
     service = SpecialismService(db)
     return await service.get_profile_specialisms(tenant_id, profile_id)
+
+
+@router.get("/auth/profile/specialisms", response_model=List[ProfileSpecialismAssignmentItem])
+async def get_authenticated_profile_specialisms(
+    session: AuthenticatedSession = Depends(get_current_session),
+    db: AsyncSession = Depends(get_db),
+):
+    """Get the authenticated user's assigned specialisms."""
+    service = SpecialismService(db)
+    return await service.get_profile_specialisms(
+        tenant_id=UUID(session.tenant_id),
+        profile_id=UUID(session.profile_id),
+    )
+
+
+@router.put("/auth/profile/specialisms", response_model=List[ProfileSpecialismAssignmentItem])
+async def replace_authenticated_profile_specialisms(
+    request: AuthenticatedProfileSpecialismsUpdateRequest,
+    session: AuthenticatedSession = Depends(get_current_session),
+    db: AsyncSession = Depends(get_db),
+):
+    """Replace the authenticated user's specialisms using AI category keys."""
+    service = SpecialismService(db)
+    try:
+        return await service.replace_profile_specialisms_from_category_keys(
+            tenant_id=UUID(session.tenant_id),
+            profile_id=UUID(session.profile_id),
+            category_keys=request.specialism_keys,
+            assigned_by_profile_id=UUID(session.profile_id),
+        )
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(exc),
+        ) from exc
