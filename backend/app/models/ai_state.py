@@ -41,6 +41,18 @@ class TicketAIState(Base):
         ForeignKey("profile.profile_id", ondelete="SET NULL"),
         nullable=True,
     )
+    manual_override_profile_id = Column(
+        UUID(as_uuid=True),
+        ForeignKey("profile.profile_id", ondelete="SET NULL"),
+        nullable=True,
+    )
+    manual_override_set_by_profile_id = Column(
+        UUID(as_uuid=True),
+        ForeignKey("profile.profile_id", ondelete="SET NULL"),
+        nullable=True,
+    )
+    manual_override_reason = Column(Text, nullable=True)
+    manual_override_set_at = Column(TIMESTAMP(timezone=True), nullable=True)
     category = Column(Text, nullable=False)
     confidence = Column(Integer, nullable=False)
     priority_label = Column(Text, nullable=False)
@@ -64,6 +76,7 @@ class TicketAIState(Base):
         Index("ix_ticket_ai_state_tenant_closed", "tenant_id", "is_closed"),
         Index("ix_ticket_ai_state_tenant_primary_profile", "tenant_id", "primary_profile_id"),
         Index("ix_ticket_ai_state_tenant_secondary_profile", "tenant_id", "secondary_profile_id"),
+        Index("ix_ticket_ai_state_tenant_manual_override_profile", "tenant_id", "manual_override_profile_id"),
     )
 
     def __repr__(self) -> str:

@@ -27,6 +27,10 @@ class TicketAIStateResponse(BaseModel):
     secondary_resource: Optional[str] = None
     primary_profile_id: Optional[UUID] = None
     secondary_profile_id: Optional[UUID] = None
+    manual_override_profile_id: Optional[UUID] = None
+    manual_override_set_by_profile_id: Optional[UUID] = None
+    manual_override_reason: Optional[str] = None
+    manual_override_set_at: Optional[datetime] = None
     category: str
     confidence: int
     priority_label: str
@@ -78,5 +82,17 @@ class TicketAssignmentRecommendationResponse(BaseModel):
     category_label: str
     recommended_profile_id: Optional[UUID] = None
     recommended_display_name: Optional[str] = None
+    effective_profile_id: Optional[UUID] = None
+    effective_display_name: Optional[str] = None
+    has_manual_override: bool = False
+    manual_override_profile_id: Optional[UUID] = None
+    manual_override_display_name: Optional[str] = None
+    manual_override_reason: Optional[str] = None
+    manual_override_set_at: Optional[datetime] = None
     recommendation_summary: str
     candidates: list[AssignmentRecommendationCandidateResponse]
+
+
+class TicketAssignmentOverrideRequest(BaseModel):
+    profile_id: UUID
+    reason: Optional[str] = Field(default=None, max_length=1000)

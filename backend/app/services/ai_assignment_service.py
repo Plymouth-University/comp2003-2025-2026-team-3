@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from collections import defaultdict
+from datetime import datetime
 from uuid import UUID
 
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -174,11 +175,31 @@ class AIAssignmentService:
             )
         )
 
+        manual_override_profile_id = ticket_state.manual_override_profile_id
+        manual_override_reason = ticket_state.manual_override_reason
+        manual_override_set_at: datetime | None = ticket_state.manual_override_set_at
+        manual_override_display_name: str | None = None
+
+        if manual_override_profile_id is not None:
+            manual_override_profile = next(
+                (profile for profile in profiles if profile.profile_id == manual_override_profile_id and profile.display is not None),
+                None,
+            )
+            if manual_override_profile is not None and manual_override_profile.display is not None:
+                manual_override_display_name = manual_override_profile.display.display_name
+
         if not candidates:
             return TicketAssignmentRecommendationResponse(
                 autotask_ticket_id=ticket_state.autotask_ticket_id,
                 category=ticket_state.category,
                 category_label=category_label,
+                effective_profile_id=manual_override_profile_id,
+                effective_display_name=manual_override_display_name,
+                has_manual_override=manual_override_profile_id is not None,
+                manual_override_profile_id=manual_override_profile_id,
+                manual_override_display_name=manual_override_display_name,
+                manual_override_reason=manual_override_reason,
+                manual_override_set_at=manual_override_set_at,
                 recommendation_summary=(
                     "No active profiles currently have a stored specialism match or same-company continuity signal for this ticket."
                 ),
@@ -201,14 +222,27 @@ class AIAssignmentService:
             summary_reasons.append("they still outranked others despite a heavier active workload")
 
         summary_text = ", and ".join(summary_reasons) if summary_reasons else "they received the highest recommendation score"
+        effective_profile_id = manual_override_profile_id or top_candidate.profile_id
+        effective_display_name = manual_override_display_name or top_candidate.display_name
+        summary = f"Recommended {top_candidate.display_name} because {summary_text}."
+        if manual_override_profile_id is not None and manual_override_display_name is not None:
+            summary = (
+                f"Manual override active for {manual_override_display_name}. "
+                f"AI would otherwise recommend {top_candidate.display_name} because {summary_text}."
+            )
         return TicketAssignmentRecommendationResponse(
             autotask_ticket_id=ticket_state.autotask_ticket_id,
             category=ticket_state.category,
             category_label=category_label,
             recommended_profile_id=top_candidate.profile_id,
             recommended_display_name=top_candidate.display_name,
-            recommendation_summary=(
-                f"Recommended {top_candidate.display_name} because {summary_text}."
-            ),
+            effective_profile_id=effective_profile_id,
+            effective_display_name=effective_display_name,
+            has_manual_override=manual_override_profile_id is not None,
+            manual_override_profile_id=manual_override_profile_id,
+            manual_override_display_name=manual_override_display_name,
+            manual_override_reason=manual_override_reason,
+            manual_override_set_at=manual_override_set_at,
+            recommendation_summary=summary,
             candidates=candidates,
         )

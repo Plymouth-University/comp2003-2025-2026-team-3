@@ -8,6 +8,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from ..auth import AuthenticatedSession, get_current_session
 from ..database import get_db
 from ..schemas.ai_state import (
+    TicketAssignmentOverrideRequest,
     TicketAssignmentRecommendationResponse,
     TicketAIRefreshRequest,
     TicketAIRefreshResponse,
@@ -171,6 +172,72 @@ async def get_ticket_assignment_recommendation(
     db: AsyncSession = Depends(get_db),
 ):
     """Recommend an assignee based on stored profile specialisms for this ticket category."""
+    service = AIAssignmentService(db)
+    recommendation = await service.recommend_for_ticket(UUID(session.tenant_id), autotask_ticket_id)
+    if recommendation is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"AI ticket state not found for autotask_ticket_id={autotask_ticket_id}",
+        )
+    return recommendation
+
+
+@router.put(
+    "/ticket-states/{autotask_ticket_id}/assignment-override",
+    response_model=TicketAssignmentRecommendationResponse,
+)
+async def set_ticket_assignment_override(
+    autotask_ticket_id: int,
+    override_request: TicketAssignmentOverrideRequest,
+    session: AuthenticatedSession = Depends(get_current_session),
+    db: AsyncSession = Depends(get_db),
+):
+    """Persist a manual assignment override for a ticket."""
+    state_service = AIStateService(db)
+    updated = await state_service.set_manual_override(
+        tenant_id=UUID(session.tenant_id),
+        autotask_ticket_id=autotask_ticket_id,
+        override_profile_id=override_request.profile_id,
+        set_by_profile_id=UUID(session.profile_id),
+        reason=override_request.reason,
+    )
+    if updated is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"AI ticket state not found for autotask_ticket_id={autotask_ticket_id}",
+        )
+
+    service = AIAssignmentService(db)
+    recommendation = await service.recommend_for_ticket(UUID(session.tenant_id), autotask_ticket_id)
+    if recommendation is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"AI ticket state not found for autotask_ticket_id={autotask_ticket_id}",
+        )
+    return recommendation
+
+
+@router.delete(
+    "/ticket-states/{autotask_ticket_id}/assignment-override",
+    response_model=TicketAssignmentRecommendationResponse,
+)
+async def clear_ticket_assignment_override(
+    autotask_ticket_id: int,
+    session: AuthenticatedSession = Depends(get_current_session),
+    db: AsyncSession = Depends(get_db),
+):
+    """Clear any persisted manual assignment override for a ticket."""
+    state_service = AIStateService(db)
+    updated = await state_service.clear_manual_override(
+        tenant_id=UUID(session.tenant_id),
+        autotask_ticket_id=autotask_ticket_id,
+    )
+    if updated is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"AI ticket state not found for autotask_ticket_id={autotask_ticket_id}",
+        )
+
     service = AIAssignmentService(db)
     recommendation = await service.recommend_for_ticket(UUID(session.tenant_id), autotask_ticket_id)
     if recommendation is None:

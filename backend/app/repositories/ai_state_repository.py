@@ -203,6 +203,42 @@ class TicketAIStateRepository:
         await self.db.flush()
         return state
 
+    async def set_manual_override(
+        self,
+        tenant_id: UUID,
+        autotask_ticket_id: int,
+        override_profile_id: UUID,
+        set_by_profile_id: UUID,
+        reason: str | None,
+    ) -> Optional[TicketAIState]:
+        state = await self.get_by_ticket_id(tenant_id, autotask_ticket_id)
+        if state is None:
+            return None
+
+        now = datetime.now(timezone.utc)
+        state.manual_override_profile_id = override_profile_id
+        state.manual_override_set_by_profile_id = set_by_profile_id
+        state.manual_override_reason = reason
+        state.manual_override_set_at = now
+        await self.db.flush()
+        return state
+
+    async def clear_manual_override(
+        self,
+        tenant_id: UUID,
+        autotask_ticket_id: int,
+    ) -> Optional[TicketAIState]:
+        state = await self.get_by_ticket_id(tenant_id, autotask_ticket_id)
+        if state is None:
+            return None
+
+        state.manual_override_profile_id = None
+        state.manual_override_set_by_profile_id = None
+        state.manual_override_reason = None
+        state.manual_override_set_at = None
+        await self.db.flush()
+        return state
+
     async def delete_missing_active_tickets(
         self,
         tenant_id: UUID,

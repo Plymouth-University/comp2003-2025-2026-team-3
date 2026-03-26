@@ -153,3 +153,29 @@ class AIStateService:
         if not state:
             return None
         return TicketAIStateResponse.model_validate(state)
+
+    async def set_manual_override(
+        self,
+        tenant_id: UUID,
+        autotask_ticket_id: int,
+        override_profile_id: UUID,
+        set_by_profile_id: UUID,
+        reason: str | None = None,
+    ):
+        return await self.repository.set_manual_override(
+            tenant_id=tenant_id,
+            autotask_ticket_id=autotask_ticket_id,
+            override_profile_id=override_profile_id,
+            set_by_profile_id=set_by_profile_id,
+            reason=reason,
+        )
+
+    async def clear_manual_override(
+        self,
+        tenant_id: UUID,
+        autotask_ticket_id: int,
+    ):
+        return await self.repository.clear_manual_override(
+            tenant_id=tenant_id,
+            autotask_ticket_id=autotask_ticket_id,
+        )

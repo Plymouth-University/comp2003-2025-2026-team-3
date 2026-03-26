@@ -1,5 +1,10 @@
 import { el } from "../shared/lib/dom.js";
-import { fetchAssignmentRecommendation } from "../shared/api/aiAssignments.js";
+import {
+  clearAssignmentOverride,
+  fetchAssignmentRecommendation,
+  setAssignmentOverride,
+  type TicketAssignmentRecommendation,
+} from "../shared/api/aiAssignments.js";
 import type { BackendTicket } from "../shared/types.js";
 
 export function TicketDetail(ticket: BackendTicket, onBack: () => void): HTMLElement {
@@ -155,48 +160,127 @@ export function TicketDetail(ticket: BackendTicket, onBack: () => void): HTMLEle
     backButton.addEventListener("click", onBack);
   }
 
-  void fetchAssignmentRecommendation(ticket.autotask_ticket_id)
-    .then((recommendation) => {
-      recommendationWrap.innerHTML = "";
-      recommendationWrap.append(
-        el("div", { className: "text-xs font-semibold text-cyan-800 uppercase", text: "AI Recommendation" }),
-        el("div", {
-          className: "text-sm font-semibold text-slate-900",
-          text: recommendation.recommended_display_name ?? "No recommended assignee",
-        }),
-        el("div", {
-          className: "text-sm text-slate-700",
-          text: recommendation.recommendation_summary,
-        }),
-      );
-
-      if (recommendation.candidates.length > 0) {
-        const candidateList = el("div", { className: "space-y-2 pt-2" });
-        recommendation.candidates.slice(0, 3).forEach((candidate) => {
-          candidateList.append(
-            el("div", { className: "rounded border border-cyan-100 bg-white px-3 py-2" }, [
-              el("div", {
-                className: "text-sm font-semibold text-slate-900",
-                text: `${candidate.display_name} (${candidate.score})`,
-              }),
-              el("div", {
-                className: "text-xs text-slate-600",
-                text: candidate.reasons.join(" "),
-              }),
-            ]),
-          );
-        });
-        recommendationWrap.append(candidateList);
-      }
-    })
-    .catch((error) => {
+  async function loadRecommendation(): Promise<void> {
+    try {
+      const recommendation = await fetchAssignmentRecommendation(ticket.autotask_ticket_id);
+      renderRecommendation(recommendation);
+    } catch (error) {
       console.error("Failed to load assignment recommendation", error);
       recommendationWrap.innerHTML = "";
       recommendationWrap.append(
         el("div", { className: "text-xs font-semibold text-cyan-800 uppercase", text: "AI Recommendation" }),
         el("div", { className: "text-sm text-red-600", text: "Failed to load assignment recommendation." }),
       );
-    });
+    }
+  }
+
+  function renderRecommendation(recommendation: TicketAssignmentRecommendation): void {
+    recommendationWrap.innerHTML = "";
+    recommendationWrap.append(
+      el("div", { className: "text-xs font-semibold text-cyan-800 uppercase", text: "AI Recommendation" }),
+      el("div", {
+        className: "text-sm font-semibold text-slate-900",
+        text: recommendation.effective_display_name ?? recommendation.recommended_display_name ?? "No effective assignee",
+      }),
+      el("div", {
+        className: "text-sm text-slate-700",
+        text: recommendation.recommendation_summary,
+      }),
+    );
+
+    if (recommendation.has_manual_override) {
+      const overrideCard = el("div", {
+        className: "rounded border border-amber-300 bg-amber-50 px-3 py-2 space-y-2",
+      });
+      overrideCard.append(
+        el("div", {
+          className: "text-xs font-semibold text-amber-800 uppercase",
+          text: "Manual Override Active",
+        }),
+        el("div", {
+          className: "text-sm text-slate-900",
+          text: `Effective assignee: ${recommendation.manual_override_display_name ?? "Unknown"}`,
+        }),
+      );
+      if (recommendation.manual_override_reason) {
+        overrideCard.append(
+          el("div", {
+            className: "text-xs text-slate-700",
+            text: `Reason: ${recommendation.manual_override_reason}`,
+          }),
+        );
+      }
+      const clearButton = el("button", {
+        className: "rounded bg-amber-600 px-3 py-1 text-sm font-semibold text-white hover:bg-amber-700 transition",
+        attrs: { type: "button" },
+        text: "Clear Override",
+      }) as HTMLButtonElement;
+      clearButton.addEventListener("click", async () => {
+        clearButton.disabled = true;
+        try {
+          const updated = await clearAssignmentOverride(ticket.autotask_ticket_id);
+          renderRecommendation(updated);
+        } catch (error) {
+          console.error("Failed to clear override", error);
+          clearButton.disabled = false;
+        }
+      });
+      overrideCard.append(clearButton);
+      recommendationWrap.append(overrideCard);
+    }
+
+    if (recommendation.candidates.length > 0) {
+      const candidateList = el("div", { className: "space-y-2 pt-2" });
+      recommendation.candidates.slice(0, 3).forEach((candidate) => {
+        const card = el("div", { className: "rounded border border-cyan-100 bg-white px-3 py-2 space-y-2" });
+        card.append(
+          el("div", {
+            className: "text-sm font-semibold text-slate-900",
+            text: `${candidate.display_name} (${candidate.score})`,
+          }),
+          el("div", {
+            className: "text-xs text-slate-600",
+            text: candidate.reasons.join(" "),
+          }),
+          el("div", {
+            className: "text-xs text-slate-500",
+            text: `Load: ${candidate.open_primary_ticket_count} primary, ${candidate.open_secondary_ticket_count} secondary, ${candidate.high_priority_ticket_count} high-priority, weighted ${candidate.weighted_open_load.toFixed(2)}`,
+          }),
+        );
+
+        const overrideButton = el("button", {
+          className: "rounded bg-slate-900 px-3 py-1 text-sm font-semibold text-white hover:bg-slate-800 transition",
+          attrs: { type: "button" },
+          text: recommendation.manual_override_profile_id === candidate.profile_id ? "Override Active" : "Set Override",
+        }) as HTMLButtonElement;
+        overrideButton.disabled = recommendation.manual_override_profile_id === candidate.profile_id;
+        overrideButton.addEventListener("click", async () => {
+          const reason = window.prompt(
+            `Why are you overriding this ticket to ${candidate.display_name}?`,
+            recommendation.manual_override_reason ?? "",
+          );
+          if (reason === null) return;
+          overrideButton.disabled = true;
+          try {
+            const updated = await setAssignmentOverride(
+              ticket.autotask_ticket_id,
+              candidate.profile_id,
+              reason.trim() || null,
+            );
+            renderRecommendation(updated);
+          } catch (error) {
+            console.error("Failed to save override", error);
+            overrideButton.disabled = false;
+          }
+        });
+        card.append(overrideButton);
+        candidateList.append(card);
+      });
+      recommendationWrap.append(candidateList);
+    }
+  }
+
+  void loadRecommendation();
 
   return wrap;
 }
