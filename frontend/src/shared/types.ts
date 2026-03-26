@@ -22,7 +22,8 @@ export type BackendTicket = {
   ai: {
     category: string;
     confidence: number;
+    priority: string;
     priority_score: number;
-    ai_generated_description: string;
+    method: string;
   };
 };

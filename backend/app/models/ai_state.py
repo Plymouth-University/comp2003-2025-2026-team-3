@@ -19,6 +19,7 @@ class TicketAIState(Base):
     autotask_ticket_id = Column(Integer, nullable=False)
     ticket_number = Column(Text, nullable=False)
     status = Column(Text, nullable=False)
+    created = Column(Text, nullable=False)
     company = Column(Text, nullable=False)
     contact = Column(Text, nullable=False)
     title = Column(Text, nullable=False)

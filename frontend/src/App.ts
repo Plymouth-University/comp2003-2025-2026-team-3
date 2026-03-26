@@ -9,16 +9,21 @@ import { Settings } from "./pages/Settings.js";
 import { ClosedTicketsPage } from "./pages/ClosedTickets.js";
 import { logout, startLogin } from "./shared/auth.js";
 import type { CurrentUserResponse } from "./shared/auth.js";
+import type { TicketViewKey } from "./shared/api/aiTickets.js";
 //import shared types
 import type { BackendTicket } from "./shared/types.js";
 
 type Route =
   | { name: "dashboard" }
-  | { name: "active-tickets"}
+  | { name: "active-tickets"; view?: TicketViewKey }
   | { name: "closed-tickets"}
   | { name: "settings" }
   | { name: "account" }
   | { name: "ticket"; ticket: BackendTicket };
+
+function isTicketViewKey(value: string | undefined): value is TicketViewKey {
+  return value === "my-assigned" || value === "my-primary" || value === "my-secondary" || value === "team";
+}
 
 //reads the URL hash (after #) and returns the current route as a Route object
 function parseHash(): Route {
@@ -28,7 +33,10 @@ function parseHash(): Route {
   
   //handle different route types
   if (parts[0] === "dashboard") return { name: "dashboard" };
-  if (parts[0] === "active-tickets") return { name: "active-tickets" };
+  if (parts[0] === "active-tickets") {
+    return { name: "active-tickets", view: isTicketViewKey(parts[1]) ? parts[1] : "my-assigned" };
+  }
+  if (parts[0] === "team-tickets") return { name: "active-tickets", view: "team" };
   if (parts[0] === "closed-tickets") return { name: "closed-tickets" };
   if (parts[0] === "settings") return { name: "settings" };
   if (parts[0] === "account") return { name: "account" };
@@ -43,7 +51,11 @@ function setHash(route: Route) {
   if (route.name === "ticket" && "ticket" in route) {
     location.hash = `#/ticket/${encodeURIComponent(String(route.ticket.autotask_ticket_id))}`;
   }
-  if (route.name === "active-tickets") location.hash = "#/active-tickets";
+  if (route.name === "active-tickets") {
+    location.hash = route.view && route.view !== "my-assigned"
+      ? `#/active-tickets/${route.view}`
+      : "#/active-tickets";
+  }
   if (route.name === "closed-tickets") location.hash = "#/closed-tickets";
   if (route.name === "settings") location.hash = "#/settings";
   if (route.name === "account") location.hash = "#/account";
@@ -88,7 +100,7 @@ function Sidebar(setRoute: (route: Route) => void): HTMLElement {
   //set routes to sidebar buttons for navigation
   const buttons = inner.querySelectorAll("button");
   buttons[0].addEventListener("click", () => setRoute({ name: "dashboard" }));
-  buttons[1].addEventListener("click", () => setRoute({ name: "active-tickets" }));
+  buttons[1].addEventListener("click", () => setRoute({ name: "active-tickets", view: "my-assigned" }));
   buttons[2].addEventListener("click", () => setRoute({ name: "closed-tickets" }));
   buttons[3].addEventListener("click", () => setRoute({ name: "settings" }));
   buttons[4].addEventListener("click", () => setRoute({ name: "account" }));
@@ -194,7 +206,7 @@ export function App(root: HTMLElement, currentUser: CurrentUserResponse | null, 
   //track current route state
   let currentRoute: Route = parseHash();
   let lastSetRoute: Route | null = null;
-  let previousRoute: Route = { name: "active-tickets" }; // Track where we came from
+  let previousRoute: Route = { name: "active-tickets", view: "my-assigned" }; // Track where we came from
 
   //function to update route and re-render
   const setRoute = (route: Route) => {
@@ -220,7 +232,17 @@ export function App(root: HTMLElement, currentUser: CurrentUserResponse | null, 
     if (r.name === "dashboard") {
       content.append(Dashboard((ticket) => setRoute({ name: "ticket", ticket })));
     } else if (r.name === "active-tickets") {
-      content.append(ActiveTickets((ticket) => setRoute({ name: "ticket", ticket })));
+      content.append(ActiveTickets(
+        (ticket) => setRoute({ name: "ticket", ticket }),
+        {
+          initialView: r.view ?? "my-assigned",
+          onViewChange: (view) => {
+            currentRoute = { name: "active-tickets", view };
+            lastSetRoute = currentRoute;
+            setHash(currentRoute);
+          },
+        },
+      ));
     } else if (r.name === "ticket") {
       content.append(TicketDetail(r.ticket, () => setRoute(previousRoute)));
     } else if (r.name === "account") {

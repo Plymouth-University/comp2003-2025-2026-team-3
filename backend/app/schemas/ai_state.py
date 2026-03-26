@@ -13,6 +13,7 @@ class TicketAIStateResponse(BaseModel):
     autotask_ticket_id: int
     ticket_number: str
     status: str
+    created: str
     company: str
     contact: str
     title: str

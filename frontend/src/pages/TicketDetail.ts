@@ -63,7 +63,7 @@ export function TicketDetail(ticket: BackendTicket, onBack: () => void): HTMLEle
     { label: "Strike Level", value: ticket.strike_level },
     { label: "Queue", value: ticket.queue },
     { label: "Category", value: ticket.ai.category },
-    { label: "Confidence", value: `${(ticket.ai.confidence * 100).toFixed(0)}%` },
+    { label: "Confidence", value: `${ticket.ai.confidence.toFixed(0)}%` },
     { label: "Priority Score", value: String(ticket.ai.priority_score) },
   ];
   for (const attr of ticketInfoAttrs) {

@@ -130,6 +130,7 @@ class TicketAIStateRepository:
             "autotask_ticket_id": ticket_payload["autotask_ticket_id"],
             "ticket_number": ticket_payload["ticket_number"],
             "status": ticket_payload["status"],
+            "created": ticket_payload["created"],
             "company": ticket_payload["company"],
             "contact": ticket_payload["contact"],
             "title": ticket_payload["title"],
