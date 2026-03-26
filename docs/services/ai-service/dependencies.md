@@ -65,6 +65,30 @@ Why it matters:
 
 - this is the live orchestrator used by the request-time API path
 
+### `ai_state_service.py`
+
+Depends on:
+
+- the current ticket provider
+- `categorise_ticket(...)`
+- `ai_state_repository.py`
+- AI-state schemas
+
+Why it matters:
+
+- this is the bridge between provider tickets and persisted hosted AI ticket state
+
+### `ai_state_repository.py`
+
+Depends on:
+
+- `TicketAIState` model
+- async SQLAlchemy session
+
+Why it matters:
+
+- it stores and retrieves the hosted AI snapshots used by new AI endpoints
+
 ### `embedding_cache.py`
 
 Depends on:
@@ -149,6 +173,17 @@ Why it matters:
 
 - batch performance depends partly on cache hit rate
 
+### Hosted database
+
+Relevant pieces:
+
+- `ticket_ai_state` table
+- Alembic migration for AI state
+
+Why it matters:
+
+- AI ticket snapshots now persist in the hosted backend instead of existing only in request memory
+
 ## Dependency Risks
 
 Visible from the current code:
@@ -157,3 +192,4 @@ Visible from the current code:
 - if the embedding model is unavailable, semantic classification is disabled until the model is provisioned
 - import-time model loading still affects startup time
 - cache and metrics are process-local, so they do not survive restarts or scale across instances
+- AI-state refresh depends on the hosted database being migrated and available

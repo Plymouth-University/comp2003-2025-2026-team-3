@@ -38,6 +38,37 @@ sequenceDiagram
   AI-->>API: category + confidence + priority
 ```
 
+## Flow 1B: Refresh Hosted AI Ticket State
+
+Primary integration points:
+
+- `POST /api/v1/ai/ticket-states/refresh`
+- `GET /api/v1/ai/ticket-states`
+- `GET /api/v1/ai/ticket-states/{autotask_ticket_id}`
+
+The key idea is:
+
+- the provider still owns ticket truth
+- the hosted backend stores a refreshed AI snapshot for operational use
+
+### High-level sequence
+
+```mermaid
+sequenceDiagram
+  autonumber
+  participant API as AI router
+  participant Service as AIStateService
+  participant Provider as Ticket provider
+  participant AI as Classifier
+  participant DB as ticket_ai_state table
+
+  API->>Service: refresh_ticket_states(...)
+  Service->>Provider: get_tickets()
+  Service->>AI: categorise_ticket(ticket)
+  Service->>DB: upsert AI ticket state
+  DB-->>API: persisted refresh result
+```
+
 ## Flow 2: Load Configured Categories
 
 Primary code:
@@ -216,6 +247,35 @@ sequenceDiagram
   Proc->>Cat: predict_category_hybrid(...)
   Proc->>Pri: calculate_priority_score(...)
   Proc-->>Input: category + confidence + priority
+```
+
+## Flow 9: Persist And Read AI Ticket State
+
+Primary code:
+
+- `AIStateService.refresh_ticket_states(...)`
+- `TicketAIStateRepository.upsert_ticket_state(...)`
+- `TicketAIStateRepository.list_for_tenant(...)`
+
+What it does:
+
+1. fetch current tickets from the provider
+2. optionally filter out closed tickets
+3. classify each ticket through the AI pipeline
+4. upsert a tenant-scoped AI ticket snapshot into the database
+5. remove stale rows that are no longer retained in the refresh set
+6. serve list/get responses from persisted state
+
+### AI-state persistence flow
+
+```mermaid
+flowchart TD
+  Refresh[Refresh request] --> Load[Load provider tickets]
+  Load --> Filter[Filter closed tickets if needed]
+  Filter --> Classify[Run categorise_ticket]
+  Classify --> Upsert[Upsert ticket_ai_state rows]
+  Upsert --> Cleanup[Delete stale retained rows]
+  Cleanup --> Readback[State available via AI endpoints]
 ```
 
 ## What New Developers Should Remember

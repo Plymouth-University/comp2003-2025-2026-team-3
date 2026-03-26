@@ -2,7 +2,7 @@
 
 ## Architecture In One Sentence
 
-The AI service is a configurable ticket-classification pipeline that combines category configuration, lightweight text normalization, keyword matching, optional semantic similarity, and heuristic priority scoring.
+The AI service is a configurable ticket-classification pipeline with a hosted AI-state layer that combines category configuration, lightweight text normalization, keyword matching, optional semantic similarity, heuristic priority scoring, and persisted ticket snapshots.
 
 ## Why It Is Structured This Way
 
@@ -28,8 +28,11 @@ flowchart TD
   Categorizer --> Processor
   Priority --> Processor
   Cache[embedding_cache.py] --> Categorizer
+  AIStateService[ai_state_service.py] --> AIRepo[ai_state_repository.py]
+  AIRepo --> AIStateTable[(ticket_ai_state)]
 
   Processor --> API[backend/app/main.py]
+  API --> AIRouter[ai_state.py router]
   CategoryFile[ticket_categories.json] --> Config
 ```
 
@@ -125,6 +128,34 @@ What it coordinates:
 - priority calculation
 - response shaping
 
+### `ai_state_service.py`
+
+Purpose:
+
+- refresh and read persisted AI ticket state for the hosted backend
+
+What it coordinates:
+
+- pulling tickets from the current provider
+- classifying them through the existing AI path
+- storing the resulting AI metadata in the database
+- returning refresh/list/get responses for AI endpoints
+
+### `ai_state_repository.py`
+
+Purpose:
+
+- persist tenant-scoped AI ticket state
+
+What it stores:
+
+- ticket snapshot fields needed by the AI/routing layer
+- category and confidence
+- priority label and score
+- classification method
+- refresh timestamps
+- closed/open state
+
 ## Runtime Architecture
 
 ### Request-time classification path
@@ -142,15 +173,16 @@ flowchart LR
   Score --> Final[AI response]
 ```
 
-### Data flow through the orchestrator
+### Persisted AI-state path
 
 ```mermaid
 flowchart TD
-  Input[Ticket input] --> Processor[process_ticket]
-  Processor --> Text[extract_ticket_text]
-  Processor --> Categorizer[predict_category_hybrid]
-  Processor --> Priority[calculate_priority_score]
-  Priority --> Output[category + confidence + priority]
+  Provider[Ticket provider] --> Refresh[POST /api/v1/ai/ticket-states/refresh]
+  Refresh --> AIService[AIStateService]
+  AIService --> Processor[process_ticket]
+  Processor --> Persist[(ticket_ai_state)]
+  Persist --> Read[GET /api/v1/ai/ticket-states]
+  Persist --> One[GET /api/v1/ai/ticket-states/{id}]
 ```
 
 ## Important Design Choices
@@ -185,12 +217,14 @@ Verified from the current code:
 - deleted prototype-only modules are no longer in the live path
 - single-ticket and batch modes both still work
 - model availability failures are handled more safely
+- AI ticket state can now be persisted centrally in the hosted backend
+- AI-specific endpoints now exist for category reading and ticket-state refresh/list/get
 
 ## Architecture Weaknesses
 
 Also visible in the current code:
 
-- there is still no persisted AI state for active tickets
 - there is still no assignment or routing layer
 - category management still requires editing a JSON file rather than using a dedicated API
 - cache and metrics are still process-local rather than durable
+- persisted state currently stores ticket AI snapshots, but not profile-resource mapping or routing decisions yet

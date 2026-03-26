@@ -16,6 +16,7 @@ from .services.ai.text_processor import extract_ticket_text
 from .services.ai.embedding_cache import get_cache
 from .auth import AuthenticatedSession, get_current_session
 from .routers.auth import router as auth_router
+from .routers.ai_state import router as ai_state_router
 from .routers.profiles import router as profiles_router
 from .database import close_db
 from .config import settings
@@ -57,6 +58,7 @@ app.add_middleware(
 
 # Include profile management router
 app.include_router(auth_router)
+app.include_router(ai_state_router)
 app.include_router(profiles_router)
 
 provider = FakeAutotaskProvider()

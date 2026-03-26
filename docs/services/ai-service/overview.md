@@ -11,6 +11,7 @@ Today that means:
 - calculating a priority score
 - returning a priority label
 - exposing the configured category list through the API
+- persisting hosted AI ticket state for refreshable ticket snapshots
 
 In plain English:
 
@@ -39,6 +40,7 @@ Verified from the current code:
 
 - loads category definitions from `backend/data/ticket_categories.json`
 - exposes those categories through `GET /api/categories`
+- exposes AI-specific endpoints under `GET/POST /api/v1/ai/...`
 - extracts relevant fields from ticket data before classification
 - uses regex-based normalization instead of spaCy
 - uses keyword matching for interpretable category detection
@@ -47,6 +49,7 @@ Verified from the current code:
 - supports both single-ticket and batch categorization paths
 - caches embeddings in memory for repeated batch work
 - calculates priority scores from configured weights plus simple heuristics
+- can refresh and persist AI ticket state into the hosted backend database
 
 ## What "AI" Means Here
 
@@ -101,6 +104,10 @@ This documentation is based on the current implementation in:
 - `backend/app/services/ai/priority_calculator.py`
 - `backend/app/services/ai/embedding_cache.py`
 - `backend/app/services/ai/processor.py`
+- `backend/app/services/ai_state_service.py`
+- `backend/app/repositories/ai_state_repository.py`
+- `backend/app/models/ai_state.py`
+- `backend/app/routers/ai_state.py`
 - `backend/app/main.py`
 - `backend/data/ticket_categories.json`
 
@@ -112,6 +119,10 @@ The current backend integration points are:
 - `GET /api/tickets`
 - `GET /api/tickets/{autotask_ticket_id}`
 - `GET /api/tickets/stream/categorize`
+- `GET /api/v1/ai/categories`
+- `POST /api/v1/ai/ticket-states/refresh`
+- `GET /api/v1/ai/ticket-states`
+- `GET /api/v1/ai/ticket-states/{autotask_ticket_id}`
 
 ## Important Current Limitations
 
@@ -123,8 +134,8 @@ Verified from the current implementation:
 - it does not yet balance workloads across analysts
 - category quality depends on the configured category definitions and ticket text quality
 - embedding cache and metrics are in-memory only
-- there is no persisted AI/routing state yet
-- there is no category-management API yet, only category loading from JSON config
+- persisted AI ticket state exists, but routing/assignment state does not yet
+- there is still no category-management API yet, only category reading plus ticket-state refresh/list/get endpoints
 
 ## Recommended Reading Order
 

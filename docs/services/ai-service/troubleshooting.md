@@ -13,6 +13,7 @@ When the AI service behaves unexpectedly, check these first:
 3. Are you testing batch mode or sequential mode?
 4. Does `/api/categories` return the category list you expect?
 5. Are the ticket endpoints returning AI metadata with `category`, `confidence`, `priority`, and `priority_score`?
+6. If using AI-state endpoints, has the database migration been applied?
 
 ## Symptom: categories look wrong
 
@@ -38,6 +39,7 @@ What to check:
 
 - restart the backend process
 - call `/api/categories` again
+- call `/api/v1/ai/categories` as well if you are testing the AI-specific router
 
 ## Symptom: semantic classification is unavailable
 
@@ -124,12 +126,32 @@ What to check:
 - `/api/cache/stats`
 - whether texts are truly repeated
 
+## Symptom: AI ticket-state refresh fails
+
+Likely causes:
+
+- database migration has not been applied
+- the backend database is unavailable
+- authentication is missing for `/api/v1/ai/...` endpoints
+
+What to check:
+
+- `alembic upgrade head`
+- backend database connectivity
+- `POST /api/v1/ai/ticket-states/refresh`
+- backend logs from `ai_state_service.py` or the router
+
+Expected behavior:
+
+- refresh returns a non-zero `refreshed_count`
+- `GET /api/v1/ai/ticket-states` then returns persisted rows
+
 ## Known Structural Gaps
 
 Verified from the current code:
 
-- no persisted AI state store
 - no assignment or workload-balancing logic yet
 - no category-management API yet
 - no model version surfaced in AI responses
 - no durable metrics store
+- persisted AI ticket state exists, but routing state does not yet
