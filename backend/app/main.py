@@ -3,8 +3,15 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from contextlib import asynccontextmanager
 from .providers.fake_autotask import FakeAutotaskProvider
-from .services.ai import categorise_ticket, predict_categories_batch
-from .services.ai.priority_calculator import calculate_priority_score, get_priority_label, calculate_priority_scores_batch
+from .services.ai import (
+    categorise_ticket,
+    list_available_categories,
+    predict_categories_batch,
+)
+from .services.ai.priority_calculator import (
+    calculate_priority_scores_batch,
+    get_priority_label,
+)
 from .services.ai.text_processor import extract_ticket_text
 from .services.ai.embedding_cache import get_cache
 from .auth import AuthenticatedSession, get_current_session
@@ -73,14 +80,7 @@ def clear_cache():
 
 @app.get("/api/categories")
 def categories():
-    return {"items": [{"key": k, "label": k} for k in [
-        "Email blocked/held",
-        "Backup failed",
-        "Backup suspended",
-        "Hardware offline",
-        "Patching vulnerabilities",
-        "Patch failed",
-    ]]}
+    return {"items": list_available_categories()}
 
 @app.get("/api/tickets")
 def list_tickets(
@@ -132,9 +132,8 @@ def list_tickets(
         
         if batch and len(tickets) > 1:
             # BATCH PROCESSING MODE (MUCH FASTER)
-            # Simple text combination - no complex extraction needed
             extract_start = time.time()
-            ticket_texts = [f"{t.title} {t.description}" for t in tickets]
+            ticket_texts = [extract_ticket_text(t.model_dump()) for t in tickets]
             extract_time = time.time() - extract_start
             logger.debug(f"[{datetime.now().strftime('%H:%M:%S.%f')[:-3]}] Text preparation: {extract_time:.3f}s")
             
@@ -173,7 +172,7 @@ def list_tickets(
             for i, t in enumerate(tickets):
                 try:
                     ticket_cat_start = time.time()
-                    ai = categorise_ticket({"title": t.title, "description": t.description})
+                    ai = categorise_ticket(t.model_dump())
                     ticket_cat_time = time.time() - ticket_cat_start
                     row = t.model_dump()
                     row["ai"] = ai

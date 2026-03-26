@@ -2,99 +2,92 @@
 
 ## Why This Exists
 
-The AI service helps the application turn raw ticket text into something more useful for humans.
+The AI service helps the backend turn raw SecOps ticket text into operational metadata the frontend can use immediately.
 
-Instead of returning only the original ticket fields, the AI service tries to add:
+Today that means:
 
-- a category
-- a confidence-like score
-- a calculated priority score
-- a human-readable priority label
-- an AI-generated explanation/remediation block
+- assigning a category
+- producing a confidence-like score
+- calculating a priority score
+- returning a priority label
+- exposing the configured category list through the API
 
-In simple terms:
+In plain English:
 
-- the ticket provider gives the backend raw ticket data
-- the AI service reads the text in that ticket
-- the AI service tries to work out what the ticket is about and how urgent it seems
+- the ticket provider returns raw tickets
+- the AI service reads the ticket text
+- the AI service decides which configured category fits best
+- the AI service scores how urgent the ticket appears
 
 ## Human-Friendly Summary
 
-If you are new to AI or NLP, the important thing to know is that this service is not one giant mysterious model.
+This is not a generative AI system and it is not yet the future workflow manager you want.
 
-It is a pipeline made of smaller steps:
+It is currently a lightweight ticket-classification pipeline made of:
 
-1. clean the text
-2. compare the text to known categories
-3. choose a category
-4. calculate a priority score using rules and confidence signals
-5. build a useful summary/explanation
+1. text extraction
+2. lightweight text normalization
+3. keyword matching
+4. semantic similarity, when the embedding model is available
+5. heuristic priority scoring
 
-So this is really an "AI-assisted ticket enrichment" pipeline rather than a fully autonomous reasoning system.
+That makes it a CPU-friendly AI-assisted classifier rather than an autonomous decision engine.
 
 ## What The AI Service Actually Does Today
 
 Verified from the current code:
 
-- preprocesses ticket text with spaCy
-- uses keyword matching for fast category guesses
-- uses sentence embeddings for semantic similarity
-- combines those into a hybrid category decision
-- calculates a priority score using heuristics
-- produces a human-readable priority label
-- generates a ticket explanation and remediation suggestions
-- supports both single-ticket and batch processing
-- caches embeddings in memory to reduce repeated work
-- can auto-generate categories from ticket data at startup if generated categories are missing
-- can save processed ticket output to JSON files in the file-processing path
+- loads category definitions from `backend/data/ticket_categories.json`
+- exposes those categories through `GET /api/categories`
+- extracts relevant fields from ticket data before classification
+- uses regex-based normalization instead of spaCy
+- uses keyword matching for interpretable category detection
+- uses sentence embeddings with `all-MiniLM-L6-v2` when available
+- falls back to keyword-only classification if the embedding model is unavailable
+- supports both single-ticket and batch categorization paths
+- caches embeddings in memory for repeated batch work
+- calculates priority scores from configured weights plus simple heuristics
 
 ## What "AI" Means Here
 
-There are two main AI-style techniques in this codebase:
+There are two main decision techniques in the current implementation.
 
-### 1. NLP preprocessing with spaCy
+### 1. Config-driven keyword classification
 
-spaCy is a natural language processing library.
+Each category has:
 
-Here it is used mainly for:
+- a stable key
+- a UI label
+- a description
+- a keyword list
+- a priority weight
 
-- tokenizing text into words/pieces
-- normalizing words into lemmas
-- removing stopwords and punctuation
+Those definitions live in [ticket_categories.json](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/backend/data/ticket_categories.json).
 
-This is not "decision making" by itself. It prepares text so later steps can work better.
+This is the most important current change because categories are no longer hard-coded inside Python source.
 
-### 2. Semantic similarity with sentence embeddings
+### 2. Semantic similarity with embeddings
 
-The service uses the `all-MiniLM-L6-v2` sentence-transformer model.
+When the embedding model is available, the service:
 
-That model turns text into a numeric vector called an embedding.
+- encodes the ticket text
+- compares it with precomputed category embeddings
+- uses cosine similarity as a semantic signal
 
-A useful beginner mental model is:
-
-- texts with similar meaning should end up closer together in vector space
-
-The service uses that to compare:
-
-- the ticket text embedding
-- category description embeddings
-
-and then chooses the closest category.
+If the model is not provisioned, the service still starts and falls back to keyword-only behavior.
 
 ## High-Level Pipeline
 
 ```mermaid
 flowchart TD
   Raw[Raw ticket data] --> Extract[Extract relevant text]
-  Extract --> Clean[spaCy preprocessing]
-  Clean --> Keyword[Keyword category scoring]
+  Extract --> Normalize[Normalize text]
+  Normalize --> Keyword[Keyword category scoring]
   Extract --> Semantic[Sentence embedding comparison]
   Keyword --> Decision[Hybrid category decision]
   Semantic --> Decision
   Decision --> Priority[Priority score calculation]
-  Decision --> Description[Description and remediation generation]
-  Priority --> Output[AI-enriched ticket]
-  Description --> Output
+  Priority --> Output[AI metadata for ticket]
 ```
 
 ## Source Of Truth
@@ -106,50 +99,34 @@ This documentation is based on the current implementation in:
 - `backend/app/services/ai/text_processor.py`
 - `backend/app/services/ai/categorizer.py`
 - `backend/app/services/ai/priority_calculator.py`
-- `backend/app/services/ai/description_generator.py`
 - `backend/app/services/ai/embedding_cache.py`
 - `backend/app/services/ai/processor.py`
-- `backend/app/services/ai/storage.py`
-- `backend/app/services/ai/category_generator.py`
 - `backend/app/main.py`
-
-Legacy AI docs were used only as reference.
+- `backend/data/ticket_categories.json`
 
 ## Where The AI Service Is Used
 
-The main backend integration points today are:
+The current backend integration points are:
 
+- `GET /api/categories`
 - `GET /api/tickets`
 - `GET /api/tickets/{autotask_ticket_id}`
 - `GET /api/tickets/stream/categorize`
-
-Those routes call AI functions from `backend/app/services/ai`.
-
-## The Service In Plain English
-
-When a ticket comes in, the AI service roughly asks:
-
-- what words are in this ticket?
-- do those words strongly match a known category?
-- if not, which category description is semantically closest?
-- how serious does this ticket sound?
-- can we produce a useful explanatory text for the user or operator?
 
 ## Important Current Limitations
 
 Verified from the current implementation:
 
-- this is not a learning system that continuously retrains itself during normal request handling
-- the "description generator" is mostly template/remediation logic, not full generative AI text synthesis
-- many priority decisions are heuristic and rule-based
-- category quality depends heavily on the ticket text, available categories, and preprocessing behavior
+- this service does not yet assign tickets to SecOps users
+- it does not yet use profile specialisms for routing
+- it does not yet enforce company continuity ownership
+- it does not yet balance workloads across analysts
+- category quality depends on the configured category definitions and ticket text quality
 - embedding cache and metrics are in-memory only
-- some file-storage paths in `config.py` are hard-coded Windows-style paths, which may not match the current repository environment
-- the file-processing/storage path looks more prototype-like than the request-time API categorization path
+- there is no persisted AI/routing state yet
+- there is no category-management API yet, only category loading from JSON config
 
 ## Recommended Reading Order
-
-For teammates, the best reading order is:
 
 1. [overview.md](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/docs/services/ai-service/overview.md)
 2. [architecture.md](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/docs/services/ai-service/architecture.md)

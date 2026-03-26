@@ -1,8 +1,6 @@
 fastapi
 uvicorn[standard]
 sentence-transformers
-spacy
-scikit-learn
 numpy
 
 # Database dependencies

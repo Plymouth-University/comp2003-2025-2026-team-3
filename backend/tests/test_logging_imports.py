@@ -27,11 +27,15 @@ try:
     
     print("\nTesting config imports...")
     from app.services.ai.config import (
+        CATEGORY_DEFINITIONS,
         CATEGORY_KEYWORDS,
+        CATEGORY_LABELS,
         SLOW_OPERATION_THRESHOLD as CONFIG_THRESHOLD,
         MIN_KEYWORD_MATCHES
     )
     print("✓ config imports successful")
+    print(f"  - CATEGORY_DEFINITIONS: {len(CATEGORY_DEFINITIONS)} configured")
+    print(f"  - CATEGORY_LABELS: {list(CATEGORY_LABELS.values())}")
     print(f"  - CONFIG_THRESHOLD: {CONFIG_THRESHOLD}")
     print(f"  - MIN_KEYWORD_MATCHES: {MIN_KEYWORD_MATCHES}")
     

@@ -2,89 +2,81 @@
 
 ## Purpose
 
-This file separates future improvement ideas from the description of what currently exists.
+This file separates the future AI-service target from the current implemented classifier.
 
-That is important because the AI service already works, but it also clearly shows signs of being in a prototype or early iteration stage.
+That matters because the code now has a cleaner foundation, but it still does not implement the real routing workflow you described.
 
 ## Current Reality
 
-The current AI service is useful and understandable, but it mixes several concerns:
+The AI service currently provides:
 
-- request-time categorization
-- batch optimization
-- startup-time category generation
-- file-based processing/storage workflows
-- in-memory metrics and caches
+- configurable category classification
+- heuristic priority scoring
+- batch support
+- model fallback behavior
 
-That is normal for a developing prototype, but it creates opportunities for cleanup and clearer boundaries.
+It does not yet provide:
 
-## Good Next Improvements
+- SecOps specialism-aware assignment
+- company continuity assignment
+- workload balancing
+- persisted AI/routing state
+- AI-specific CRUD endpoints for category management or routing actions
 
-### 1. Separate online inference from offline processing
+## Best Next Improvements
 
-Right now, the service mixes:
+### 1. Add persisted AI operational state
 
-- API-time enrichment used by `/api/tickets`
-- file-processing and JSON export workflows
+The next major step should be a centrally hosted database-backed layer for:
 
-A stronger design would separate:
+- active tickets known to the app
+- cached categorization results
+- assignment decisions
+- company continuity signals
+- workload signals
+- timestamps and refresh metadata
 
-- online inference modules
-- offline processing scripts/jobs
+This should not replace Autotask as the source of truth.
 
-### 2. Clarify what is truly model-driven vs heuristic
+It should store only the operational state this application needs.
 
-The service would benefit from clearer naming and boundaries such as:
+### 2. Build the routing layer
 
-- semantic classifier
-- heuristic priority scorer
-- template-based remediation generator
+After persisted state exists, add a dedicated routing service that can score candidates using:
 
-That would make the architecture easier for new developers to trust and modify.
+- ticket category
+- profile specialisms
+- company continuity
+- current ticket load
+- priority pressure
+- future availability signals
 
-### 3. Improve portability of file paths
+### 3. Add AI-specific endpoints
 
-The hard-coded Windows paths in `config.py` should become:
+The AI service should eventually expose endpoints for:
 
-- repository-relative paths
-- environment-driven settings
-- or optional offline-job configuration
+- reading configured categories
+- updating category definitions safely
+- categorizing a ticket directly
+- evaluating assignment recommendations
+- viewing assignment reasoning and audit details
 
-### 4. Add stronger model abstraction
+### 4. Add evaluation and benchmarking
 
-Right now, the sentence-transformer model is loaded directly in `config.py`.
-
-A future abstraction could separate:
-
-- model provider
-- embedding service
-- category index
-
-That would make model swaps easier.
-
-### 5. Add evaluation and benchmarking
-
-The current service logs timings, but it does not appear to have a formal evaluation workflow for:
-
-- category accuracy
-- priority usefulness
-- description quality
-
-Useful future additions:
+Useful next additions:
 
 - labeled test datasets
-- regression evaluation scripts
-- confusion-matrix style reports
+- classifier accuracy checks
+- routing decision test fixtures
+- regression reports
 
-### 6. Persist metrics more deliberately
+### 5. Add hosted deployment readiness checks
 
-The current metrics object is helpful but temporary.
+Useful next additions:
 
-Future improvements could include:
-
-- durable performance metrics storage
-- API-level metrics endpoints
-- dashboards for latency and cache efficiency
+- model provisioning checks at startup
+- health endpoints that report semantic-model availability
+- clearer deployment documentation for client-hosted infrastructure
 
 ## Suggested Future Architecture
 
@@ -92,41 +84,31 @@ This is not implemented yet. It is a recommendation-level picture only.
 
 ```mermaid
 flowchart TD
-  subgraph Online
-    API[Ticket API] --> Inference[Online inference pipeline]
-    Inference --> Cache[Embedding cache]
-    Inference --> CategoryIndex[Category index]
-  end
+  Autotask[Autotask source of truth] --> Sync[Ticket sync/refresh layer]
+  Sync --> State[(AI operational state DB)]
 
-  subgraph Offline
-    Dataset[Ticket dataset] --> CategoryGen[Offline category generation]
-    Dataset --> Eval[Evaluation pipeline]
-    Eval --> Reports[Quality reports]
-  end
+  State --> Classifier[Classifier service]
+  State --> Router[Routing service]
+  Profile[(Profile + specialism DB)] --> Router
 
-  subgraph Shared
-    ModelProvider[Embedding model provider]
-    Metrics[Durable metrics store]
-    Config[Environment-driven config]
-  end
+  Classifier --> Router
+  Router --> API[AI service endpoints]
+  API --> Frontend[Frontend UI]
 
-  Inference --> ModelProvider
-  CategoryGen --> ModelProvider
-  Inference --> Metrics
-  CategoryGen --> Metrics
-  Eval --> Metrics
+  Router --> Audit[Assignment reasoning/audit trail]
 ```
 
 ## Recommendation For The Team
 
-The best next step is probably not "replace the whole AI service."
+The best next step is not another round of classifier cleanup.
 
-A better sequence would be:
+The best next sequence is:
 
-1. cleanly separate online and offline responsibilities
-2. fix path/config portability
-3. make naming more honest about heuristic vs model-driven steps
-4. add evaluation and benchmarking
-5. add more durable metrics and observability
+1. add persisted AI operational state
+2. design the routing data model
+3. build specialism-aware assignment
+4. add company continuity logic
+5. add workload balancing
+6. expose clean AI-specific endpoints for the frontend and future integrations
 
-That path improves maintainability without losing the parts of the service that are already working.
+That path moves the service from "clean classifier" to "real SecOps workflow engine."

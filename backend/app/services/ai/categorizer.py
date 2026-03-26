@@ -10,10 +10,11 @@ import torch
 from .config import (
     CATEGORY_KEYWORDS,
     CATEGORY_EMBEDDINGS,
+    CATEGORY_LABELS,
     MIN_KEYWORD_MATCHES,
     model
 )
-from .text_processor import preprocess_text
+from .text_processor import normalize_text, preprocess_text
 from .logging_config import perf_logger, metrics
 from .embedding_cache import get_cache
 
@@ -31,10 +32,20 @@ def predict_category_by_keywords(text: str) -> dict:
         Dictionary of category scores (higher = better match)
     """
     tokens = preprocess_text(text)
+    normalized_text = normalize_text(text)
+    token_set = set(tokens)
     scores = {}
     
     for category, keywords in CATEGORY_KEYWORDS.items():
-        score = sum(1 for kw in keywords if kw in tokens)
+        score = 0
+        for keyword in keywords:
+            normalized_keyword = normalize_text(keyword)
+            if not normalized_keyword:
+                continue
+            if " " in normalized_keyword:
+                score += int(normalized_keyword in normalized_text)
+            else:
+                score += int(normalized_keyword in token_set)
         if score > 0:
             scores[category] = score
     
@@ -52,6 +63,14 @@ def predict_category_by_semantic(text: str) -> tuple:
         Tuple of (best_category, similarity_scores_dict)
     """
     import time
+
+    if model is None or not CATEGORY_EMBEDDINGS:
+        similarities = {category: 0 for category in CATEGORY_KEYWORDS}
+        fallback_category = next(iter(CATEGORY_KEYWORDS))
+        logger.warning(
+            "Semantic classifier unavailable; using zero-confidence fallback for semantic prediction"
+        )
+        return fallback_category, similarities
     
     # TIMING: model.encode() - expensive operation
     encode_start = time.time()
@@ -98,6 +117,21 @@ def predict_categories_batch(texts: list[str]) -> list[tuple]:
     
     if not texts:
         return []
+
+    if model is None or not CATEGORY_EMBEDDINGS:
+        zero_scores = {category: 0 for category in CATEGORY_KEYWORDS}
+        fallback_category = next(iter(CATEGORY_KEYWORDS))
+        results = []
+        for text in texts:
+            keyword_scores = predict_category_by_keywords(text)
+            if keyword_scores:
+                predicted = max(keyword_scores, key=keyword_scores.get)
+                method_used = "keyword_fallback"
+            else:
+                predicted = fallback_category
+                method_used = "unclassified"
+            results.append((predicted, method_used, dict(zero_scores)))
+        return results
     
     batch_start = time.time()
     logger.debug(f"[BATCH] Processing {len(texts)} tickets in batch mode")
@@ -202,6 +236,24 @@ def predict_category_hybrid(text: str) -> tuple:
         where method_used is "keyword" or "semantic"
     """
     keyword_scores = predict_category_by_keywords(text)
+
+    if model is None or not CATEGORY_EMBEDDINGS:
+        zero_scores = {category: 0 for category in CATEGORY_KEYWORDS}
+        if keyword_scores:
+            predicted = max(keyword_scores, key=keyword_scores.get)
+            logger.debug(
+                "Semantic classifier unavailable, using keyword fallback prediction: %s",
+                predicted,
+            )
+            return predicted, "keyword_fallback", zero_scores
+
+        fallback_category = next(iter(CATEGORY_KEYWORDS))
+        logger.debug(
+            "Semantic classifier unavailable and no keywords matched, returning fallback category: %s",
+            fallback_category,
+        )
+        return fallback_category, "unclassified", zero_scores
+
     semantic_best, semantic_scores = predict_category_by_semantic(text)
     
     # If keywords were confident, trust them
@@ -213,3 +265,11 @@ def predict_category_hybrid(text: str) -> tuple:
     # Otherwise fall back to semantic match
     logger.debug(f"Using semantic prediction: {semantic_best} (confidence: {semantic_scores[semantic_best]}%)")
     return semantic_best, "semantic", semantic_scores
+
+
+def list_available_categories() -> list[dict[str, str]]:
+    """Expose the configured category list for API consumers."""
+    return [
+        {"key": category_key, "label": CATEGORY_LABELS[category_key]}
+        for category_key in CATEGORY_LABELS
+    ]
