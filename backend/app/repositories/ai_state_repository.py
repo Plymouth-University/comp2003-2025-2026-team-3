@@ -135,6 +135,24 @@ class TicketAIStateRepository:
         result = await self.db.execute(query)
         return list(result.scalars().all())
 
+    async def list_active_tickets_for_tenant(
+        self,
+        tenant_id: UUID,
+    ) -> list[TicketAIState]:
+        """List all open AI-state tickets for workload calculations."""
+        query = (
+            select(TicketAIState)
+            .where(
+                and_(
+                    TicketAIState.tenant_id == tenant_id,
+                    TicketAIState.is_closed.is_(False),
+                )
+            )
+            .order_by(TicketAIState.priority_score.desc(), TicketAIState.refreshed_at.desc())
+        )
+        result = await self.db.execute(query)
+        return list(result.scalars().all())
+
     async def upsert_ticket_state(
         self,
         tenant_id: UUID,

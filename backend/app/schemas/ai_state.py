@@ -66,6 +66,10 @@ class AssignmentRecommendationCandidateResponse(BaseModel):
     reasons: list[str]
     is_current_primary: bool
     is_current_secondary: bool
+    open_primary_ticket_count: int
+    open_secondary_ticket_count: int
+    high_priority_ticket_count: int
+    weighted_open_load: float
 
 
 class TicketAssignmentRecommendationResponse(BaseModel):

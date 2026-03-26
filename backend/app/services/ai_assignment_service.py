@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from collections import defaultdict
 from uuid import UUID
 
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -39,10 +40,40 @@ class AIAssignmentService:
             company=ticket_state.company,
             exclude_autotask_ticket_id=ticket_state.autotask_ticket_id,
         )
+        active_tickets = await self.ai_state_repository.list_active_tickets_for_tenant(tenant_id)
 
         profiles = await self.profile_repository.get_profiles_by_tenant_with_specialisms(
             tenant_id=tenant_id,
             status="active",
+        )
+        active_profile_ids = {profile.profile_id for profile in profiles}
+
+        open_primary_counts: dict[UUID, int] = defaultdict(int)
+        open_secondary_counts: dict[UUID, int] = defaultdict(int)
+        high_priority_counts: dict[UUID, int] = defaultdict(int)
+        weighted_loads: dict[UUID, float] = defaultdict(float)
+
+        for active_ticket in active_tickets:
+            is_high_priority = active_ticket.priority_label in {"High", "Critical"}
+            if active_ticket.primary_profile_id in active_profile_ids:
+                primary_profile_id = active_ticket.primary_profile_id
+                open_primary_counts[primary_profile_id] += 1
+                weighted_loads[primary_profile_id] += 1.0
+                if is_high_priority:
+                    high_priority_counts[primary_profile_id] += 1
+                    weighted_loads[primary_profile_id] += 0.75
+            if active_ticket.secondary_profile_id in active_profile_ids:
+                secondary_profile_id = active_ticket.secondary_profile_id
+                open_secondary_counts[secondary_profile_id] += 1
+                weighted_loads[secondary_profile_id] += 0.5
+                if is_high_priority:
+                    high_priority_counts[secondary_profile_id] += 1
+                    weighted_loads[secondary_profile_id] += 0.25
+
+        average_weighted_load = (
+            sum(weighted_loads.get(profile.profile_id, 0.0) for profile in profiles) / len(profiles)
+            if profiles
+            else 0.0
         )
 
         candidates: list[AssignmentRecommendationCandidateResponse] = []
@@ -55,6 +86,10 @@ class AIAssignmentService:
             score = 0
             same_company_primary_count = 0
             same_company_secondary_count = 0
+            open_primary_ticket_count = open_primary_counts.get(profile.profile_id, 0)
+            open_secondary_ticket_count = open_secondary_counts.get(profile.profile_id, 0)
+            high_priority_ticket_count = high_priority_counts.get(profile.profile_id, 0)
+            weighted_open_load = weighted_loads.get(profile.profile_id, 0.0)
 
             for profile_specialism in profile.specialisms:
                 specialism = profile_specialism.specialism
@@ -97,6 +132,22 @@ class AIAssignmentService:
                 score += 15
                 reasons.append("Already the current secondary resource on this ticket.")
 
+            load_delta = weighted_open_load - average_weighted_load
+            if load_delta > 0.5:
+                workload_penalty = min(45, round(load_delta * 12))
+                score -= workload_penalty
+                reasons.append(
+                    f"Workload penalty: {open_primary_ticket_count} primary, {open_secondary_ticket_count} secondary, "
+                    f"and {high_priority_ticket_count} high-priority open ticket(s), which is above the current team average."
+                )
+            elif load_delta < -0.5:
+                workload_bonus = min(20, round(abs(load_delta) * 8))
+                score += workload_bonus
+                reasons.append(
+                    f"Workload bonus: {open_primary_ticket_count} primary, {open_secondary_ticket_count} secondary, "
+                    f"and {high_priority_ticket_count} high-priority open ticket(s), which is below the current team average."
+                )
+
             if score <= 0:
                 continue
 
@@ -109,6 +160,10 @@ class AIAssignmentService:
                     reasons=reasons,
                     is_current_primary=profile.profile_id == ticket_state.primary_profile_id,
                     is_current_secondary=profile.profile_id == ticket_state.secondary_profile_id,
+                    open_primary_ticket_count=open_primary_ticket_count,
+                    open_secondary_ticket_count=open_secondary_ticket_count,
+                    high_priority_ticket_count=high_priority_ticket_count,
+                    weighted_open_load=round(weighted_open_load, 2),
                 )
             )
 
@@ -140,6 +195,10 @@ class AIAssignmentService:
             summary_reasons.append("they are already the current primary resource")
         elif top_candidate.is_current_secondary:
             summary_reasons.append("they are already the current secondary resource")
+        if any("Workload bonus" in reason for reason in top_candidate.reasons):
+            summary_reasons.append("their active workload is lighter than the current team average")
+        elif any("Workload penalty" in reason for reason in top_candidate.reasons):
+            summary_reasons.append("they still outranked others despite a heavier active workload")
 
         summary_text = ", and ".join(summary_reasons) if summary_reasons else "they received the highest recommendation score"
         return TicketAssignmentRecommendationResponse(
