@@ -2,6 +2,7 @@ from fastapi import Depends, FastAPI, Query
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from contextlib import asynccontextmanager
+import asyncio
 from .providers.fake_autotask import FakeAutotaskProvider
 from .services.ai import (
     categorise_ticket,
@@ -18,8 +19,10 @@ from .auth import AuthenticatedSession, get_current_session
 from .routers.auth import router as auth_router
 from .routers.ai_state import router as ai_state_router
 from .routers.profiles import router as profiles_router
-from .database import close_db
+from .database import AsyncSessionLocal, close_db
 from .config import settings
+from .repositories.profile_repository import TenantRepository
+from .services.ai_state_service import AIStateService
 import logging
 import time
 import json
@@ -36,9 +39,54 @@ async def lifespan(app: FastAPI):
     # Startup
     logger.info("Starting up application...")
     logger.info(f"Environment: {settings.ENVIRONMENT}")
+
+    oversight_task: asyncio.Task | None = None
+
+    async def oversight_worker() -> None:
+        interval = max(5, settings.AI_OVERSIGHT_INTERVAL_SECONDS)
+        queue_name = settings.AI_OVERSIGHT_QUEUE
+        while True:
+            try:
+                async with AsyncSessionLocal() as db:
+                    tenant_repo = TenantRepository(db)
+                    tenants = await tenant_repo.get_all_tenants()
+                    for tenant in tenants:
+                        service = AIStateService(db)
+                        await service.refresh_ticket_states(
+                            tenant_id=tenant.tenant_id,
+                            include_closed=settings.AI_OVERSIGHT_INCLUDE_CLOSED,
+                            limit=settings.AI_OVERSIGHT_REFRESH_LIMIT,
+                            apply_oversight=True,
+                            oversight_queue=queue_name,
+                        )
+                    await db.commit()
+                await asyncio.sleep(interval)
+            except asyncio.CancelledError:
+                logger.info("AI oversight worker cancelled.")
+                raise
+            except Exception:
+                logger.exception("AI oversight worker cycle failed.")
+                await asyncio.sleep(interval)
+
+    if settings.AI_OVERSIGHT_ENABLED:
+        logger.info(
+            "AI oversight worker enabled: queue=%s, interval=%ss",
+            settings.AI_OVERSIGHT_QUEUE,
+            max(5, settings.AI_OVERSIGHT_INTERVAL_SECONDS),
+        )
+        oversight_task = asyncio.create_task(oversight_worker())
+    else:
+        logger.info("AI oversight worker disabled by configuration.")
+
     yield
     # Shutdown
     logger.info("Shutting down application...")
+    if oversight_task is not None:
+        oversight_task.cancel()
+        try:
+            await oversight_task
+        except asyncio.CancelledError:
+            pass
     await close_db()
 
 

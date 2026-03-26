@@ -78,6 +78,18 @@ Why it matters:
 
 - this is the bridge between provider tickets and persisted hosted AI ticket state
 
+### `ai_oversight_service.py`
+
+Depends on:
+
+- `ai_state_repository.py`
+- `ai_assignment_service.py`
+- `profile_repository.py`
+
+Why it matters:
+
+- this module applies queue-wide internal AI-managed assignment rules and writes `ai_managed_*` state
+
 ### `ai_state_repository.py`
 
 Depends on:
@@ -183,6 +195,7 @@ Relevant pieces:
 Why it matters:
 
 - AI ticket snapshots now persist in the hosted backend instead of existing only in request memory
+- AI-managed assignment decisions are also persisted (`ai_managed_profile_id`, reason, timestamp)
 
 ### Local profile data
 
@@ -195,6 +208,25 @@ Why it matters:
 
 - resource-to-profile mapping depends on local profiles existing with matching display names
 - endpoints like `/api/v1/ai/ticket-states/my-primary` only become useful once refresh has mapped those resources
+- oversight assignment only works for active local profiles that can be resolved in the tenant
+
+### Background worker settings
+
+Relevant settings in:
+
+- `backend/app/config.py`
+
+Important keys:
+
+- `AI_OVERSIGHT_ENABLED`
+- `AI_OVERSIGHT_INTERVAL_SECONDS`
+- `AI_OVERSIGHT_QUEUE`
+- `AI_OVERSIGHT_REFRESH_LIMIT`
+- `AI_OVERSIGHT_INCLUDE_CLOSED`
+
+Why it matters:
+
+- these settings control the continuous refresh/oversight loop at backend startup
 
 ## Dependency Risks
 

@@ -239,6 +239,56 @@ class TicketAIStateRepository:
         await self.db.flush()
         return state
 
+    async def set_ai_managed_assignment(
+        self,
+        tenant_id: UUID,
+        autotask_ticket_id: int,
+        profile_id: UUID,
+        reason: str,
+    ) -> Optional[TicketAIState]:
+        state = await self.get_by_ticket_id(tenant_id, autotask_ticket_id)
+        if state is None:
+            return None
+
+        now = datetime.now(timezone.utc)
+        state.ai_managed_profile_id = profile_id
+        state.ai_managed_reason = reason
+        state.ai_managed_set_at = now
+        await self.db.flush()
+        return state
+
+    async def clear_ai_managed_assignment(
+        self,
+        tenant_id: UUID,
+        autotask_ticket_id: int,
+    ) -> Optional[TicketAIState]:
+        state = await self.get_by_ticket_id(tenant_id, autotask_ticket_id)
+        if state is None:
+            return None
+
+        state.ai_managed_profile_id = None
+        state.ai_managed_reason = None
+        state.ai_managed_set_at = None
+        await self.db.flush()
+        return state
+
+    async def set_primary_assignment(
+        self,
+        tenant_id: UUID,
+        autotask_ticket_id: int,
+        primary_resource: str | None,
+        primary_profile_id: UUID | None,
+    ) -> Optional[TicketAIState]:
+        """Update primary assignment snapshot fields on ticket AI state."""
+        state = await self.get_by_ticket_id(tenant_id, autotask_ticket_id)
+        if state is None:
+            return None
+
+        state.primary_resource = primary_resource
+        state.primary_profile_id = primary_profile_id
+        await self.db.flush()
+        return state
+
     async def delete_missing_active_tickets(
         self,
         tenant_id: UUID,

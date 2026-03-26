@@ -91,6 +91,22 @@ Why it matters:
 
 - these settings control how Entra users are mapped into the local profile domain
 
+### AI category dependency for authenticated specialism replacement
+
+Files:
+
+- `backend/app/services/profile_service.py`
+- `backend/app/services/ai/__init__.py`
+
+Used for:
+
+- validating authenticated specialism keys against configured AI category keys
+- creating tenant specialisms from AI category labels when missing
+
+Why it matters:
+
+- profile specialism replacement for authenticated users is now coupled to the currently configured AI category set
+
 ## Third-Party Dependencies
 
 ### FastAPI

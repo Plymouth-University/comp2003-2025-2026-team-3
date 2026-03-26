@@ -370,11 +370,42 @@ What happens:
    - `proficiency_level`
    - `assigned_at`
 
+### Get authenticated profile specialisms
+
+Entry point:
+
+- `GET /api/v1/auth/profile/specialisms`
+
+What happens:
+
+1. session is resolved via `get_current_session`
+2. tenant/profile IDs come from the authenticated session
+3. the service returns assigned specialisms for that profile
+
+### Replace authenticated profile specialisms using AI category keys
+
+Entry point:
+
+- `PUT /api/v1/auth/profile/specialisms`
+
+What happens:
+
+1. session is resolved via `get_current_session`
+2. request keys are normalized and de-duplicated
+3. unknown keys are rejected (`400`)
+4. missing tenant specialisms are created from AI category labels
+5. existing inactive matching specialisms are reactivated
+6. profile assignments are replaced with the requested set
+
+Important behavior detail:
+
+- this endpoint can remove previously assigned specialisms by omitting them from the replacement set
+
 ## Flow Gaps To Keep In Mind
 
 Verified in the current implementation:
 
-- no endpoint removes a specialism assignment
+- no dedicated delete endpoint removes a specialism assignment directly
 - no endpoint updates a specialism definition
 - no dedicated endpoint reactivates a profile
 - route-layer authorization is not currently applied to profile routes

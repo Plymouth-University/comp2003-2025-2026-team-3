@@ -32,6 +32,10 @@ class TicketAIStateResponse(BaseModel):
     manual_override_reason: Optional[str] = None
     manual_override_set_at: Optional[datetime] = None
     manual_override_display_name: Optional[str] = None
+    ai_managed_profile_id: Optional[UUID] = None
+    ai_managed_reason: Optional[str] = None
+    ai_managed_set_at: Optional[datetime] = None
+    ai_managed_display_name: Optional[str] = None
     effective_assignee_display_name: Optional[str] = None
     category: str
     confidence: int
@@ -53,6 +57,14 @@ class TicketAIRefreshRequest(BaseModel):
         description="Whether closed tickets should be retained in AI operational state.",
     )
     limit: int = Field(default=250, ge=1, le=1000)
+    apply_oversight: bool = Field(
+        default=True,
+        description="Whether to run AI oversight auto-assignment rules after refresh.",
+    )
+    oversight_queue: str = Field(
+        default="MS - SecOps",
+        description="Queue name used for oversight evaluation.",
+    )
 
 
 class TicketAIRefreshResponse(BaseModel):
@@ -62,6 +74,17 @@ class TicketAIRefreshResponse(BaseModel):
     mapped_secondary_count: int
     include_closed: bool
     refreshed_at: datetime
+
+
+class AIOversightRunResponse(BaseModel):
+    tenant_id: UUID
+    queue: str
+    evaluated_count: int
+    auto_assigned_count: int
+    auto_moved_count: int
+    protected_in_progress_count: int
+    unchanged_count: int
+    run_at: datetime
 
 
 class AssignmentRecommendationCandidateResponse(BaseModel):

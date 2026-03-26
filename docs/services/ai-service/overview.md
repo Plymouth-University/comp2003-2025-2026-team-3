@@ -19,7 +19,9 @@ Today that means:
 - boosting recommendations when the same analyst is already handling that company
 - balancing recommendations against current active workload
 - supporting manual override with persisted audit state
+- storing AI-managed assignment state when oversight makes an automatic decision
 - surfacing the effective assignee and override state in list views
+- running a configurable background refresh/oversight loop at backend startup
 
 In plain English:
 
@@ -43,6 +45,7 @@ It is currently a lightweight ticket-classification pipeline made of:
 7. company continuity scoring
 8. workload balancing
 9. manual override and effective-assignee tracking
+10. queue-level AI oversight guardrails for automatic assignment/move decisions
 
 That makes it a CPU-friendly AI-assisted classifier rather than an autonomous decision engine.
 
@@ -70,6 +73,7 @@ Verified from the current code:
   - workload balancing
   - current ticket ownership continuity
 - persists manual assignment override state with reason and timestamp
+- persists AI-managed assignment state (`ai_managed_profile_id`, reason, timestamp)
 - returns the effective assignee alongside the raw ticket snapshot for frontend list views
 
 ## What "AI" Means Here
@@ -165,6 +169,7 @@ The current backend integration points are:
 - `GET /api/v1/ai/ticket-states/{autotask_ticket_id}/assignment-recommendation`
 - `PUT /api/v1/ai/ticket-states/{autotask_ticket_id}/assignment-override`
 - `DELETE /api/v1/ai/ticket-states/{autotask_ticket_id}/assignment-override`
+- `POST /api/v1/ai/oversight/run`
 - `GET /api/v1/auth/profile/specialisms`
 - `PUT /api/v1/auth/profile/specialisms`
 

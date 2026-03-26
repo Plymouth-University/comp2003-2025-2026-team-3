@@ -53,6 +53,13 @@ class TicketAIState(Base):
     )
     manual_override_reason = Column(Text, nullable=True)
     manual_override_set_at = Column(TIMESTAMP(timezone=True), nullable=True)
+    ai_managed_profile_id = Column(
+        UUID(as_uuid=True),
+        ForeignKey("profile.profile_id", ondelete="SET NULL"),
+        nullable=True,
+    )
+    ai_managed_reason = Column(Text, nullable=True)
+    ai_managed_set_at = Column(TIMESTAMP(timezone=True), nullable=True)
     category = Column(Text, nullable=False)
     confidence = Column(Integer, nullable=False)
     priority_label = Column(Text, nullable=False)

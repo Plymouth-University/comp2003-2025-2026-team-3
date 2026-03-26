@@ -18,6 +18,7 @@ When the AI service behaves unexpectedly, check these first:
 8. If Swagger shows `401 Unauthorized`, are you authenticated in Swagger itself or only in the frontend UI?
 9. If assignment recommendation is empty, does any active profile actually have a stored specialism matching the ticket category?
 10. If override actions fail, has the latest AI-state migration been applied?
+11. If expected auto-assignment behavior is missing, is oversight enabled in backend config?
 
 ## Symptom: categories look wrong
 
@@ -190,17 +191,36 @@ Why this happens:
 
 - the AI-state table now stores the original ticket `created` timestamp for frontend use
 
-## Symptom: override buttons fail or `manual_override_*` columns do not exist
+## Symptom: override buttons fail or `manual_override_*` / `ai_managed_*` columns do not exist
 
 Likely cause:
 
-- the database is missing the latest AI-state override migration
+- the database is missing one or more recent AI-state migrations
 
 What to check:
 
 - run `cd backend && .venv/bin/alembic upgrade head`
 - restart the backend
 - retry the override action
+
+## Symptom: expected automatic assignment/move behavior does not happen
+
+Likely causes:
+
+- oversight is disabled (`AI_OVERSIGHT_ENABLED=false`)
+- ticket is already started (protected by rule)
+- manual override exists (hard stop for auto-changes)
+- recommendation did not materially outrank incumbent
+
+What to check:
+
+- `AI_OVERSIGHT_ENABLED`
+- `AI_OVERSIGHT_INTERVAL_SECONDS`
+- `POST /api/v1/ai/oversight/run` response counts
+- specific ticket state fields:
+  - `manual_override_profile_id`
+  - `ai_managed_profile_id`
+  - `status`
 
 ## Symptom: `401 Unauthorized` when calling AI-state endpoints in Swagger
 

@@ -22,20 +22,19 @@ The AI service currently provides:
 
 It does not yet provide:
 
-- automatic routing decisions built on top of the existing profile/resource-linked AI state
+- full production-grade routing orchestration beyond the current queue-level oversight rules
 - AI-specific CRUD endpoints for category management
 - write-back of final assignment to an external ticket source
 
 ## Best Next Improvements
 
-### 1. Extend the persisted AI operational state
+### 1. Extend the persisted AI operational state and oversight history
 
-The hosted database-backed AI-state layer now exists.
+The hosted database-backed AI-state layer and queue-level oversight loop now exist.
 
 The next major step is to extend it with:
 
-- automated assignment decisions
-- richer audit history beyond the current override fields
+- richer audit history beyond the current override/AI-managed fields
 - optional refresh/sync scheduling
 - external write-back hooks
 

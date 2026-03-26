@@ -29,9 +29,13 @@ flowchart TD
   Priority --> Processor
   Cache[embedding_cache.py] --> Categorizer
   AIStateService[ai_state_service.py] --> AIRepo[ai_state_repository.py]
+  AIStateService --> Oversight[AIOversightService]
   AIRepo --> AIStateTable[(ticket_ai_state)]
   Assign[AIAssignmentService] --> AIRepo
   Assign --> ProfileRepo[profile_repository.py]
+  Oversight --> Assign
+  Oversight --> AIRepo
+  Main[main.py lifespan worker] --> AIStateService
 
   Processor --> API[backend/app/main.py]
   API --> AIRouter[ai_state.py router]
@@ -161,6 +165,21 @@ What it coordinates:
 - respecting any persisted manual override when computing the effective assignee
 - returning an explainable candidate list and top recommendation
 
+### `ai_oversight_service.py`
+
+Purpose:
+
+- apply continuous queue-level assignment safety rules on top of recommendations
+
+What it coordinates:
+
+- reading queue ticket AI-state rows
+- respecting manual override as a hard stop for automatic changes
+- enforcing that tickets without a primary assignee are auto-assigned
+- preventing auto-moves for tickets that have already started
+- allowing pre-start auto-move only when recommendation materially outranks incumbent
+- storing AI-managed assignment reason and timestamp metadata
+
 ### `ai_state_repository.py`
 
 Purpose:
@@ -176,6 +195,7 @@ What it stores:
 - classification method
 - primary and secondary profile mappings
 - manual override profile, reason, setter, and timestamp
+- AI-managed profile, reason, and timestamp
 - refresh timestamps
 - closed/open state
 
@@ -214,6 +234,8 @@ flowchart TD
   Persist --> One[GET /api/v1/ai/ticket-states/{id}]
   Persist --> Recommend[GET /assignment-recommendation]
   Persist --> Override[PUT/DELETE assignment-override]
+  Persist --> OversightOnce[POST /api/v1/ai/oversight/run]
+  MainLoop[main.py background worker] --> Refresh
   MyAssigned --> Frontend[Active Tickets UI]
   MyPrimary --> Frontend
   MySecondary --> Frontend

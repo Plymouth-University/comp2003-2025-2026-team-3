@@ -16,6 +16,7 @@ from ..schemas.ai_state import (
     TicketAIStateResponse,
 )
 from .ai import categorise_ticket
+from .ai_oversight_service import AIOversightService
 
 
 class AIStateService:
@@ -31,11 +32,43 @@ class AIStateService:
         self.repository = TicketAIStateRepository(db)
         self.profile_repository = ProfileRepository(db)
 
+    async def apply_primary_assignment(
+        self,
+        tenant_id: UUID,
+        autotask_ticket_id: int,
+        profile_id: UUID,
+    ) -> TicketAIStateResponse | None:
+        """Persist a primary assignment to provider source and mirrored AI-state row."""
+        profile_rows = await self.profile_repository.get_profiles_by_ids(tenant_id, [profile_id])
+        if not profile_rows:
+            raise ValueError(f"Profile not found for tenant: {profile_id}")
+
+        profile = profile_rows[0]
+        if profile.display is None or not profile.display.display_name:
+            raise ValueError(f"Profile has no display name: {profile_id}")
+
+        display_name = profile.display.display_name
+        self.provider.set_primary_resource(autotask_ticket_id, display_name)
+
+        updated = await self.repository.set_primary_assignment(
+            tenant_id=tenant_id,
+            autotask_ticket_id=autotask_ticket_id,
+            primary_resource=display_name,
+            primary_profile_id=profile_id,
+        )
+        if updated is None:
+            return None
+
+        responses = await self._build_ticket_state_responses(tenant_id, [updated])
+        return responses[0] if responses else None
+
     async def refresh_ticket_states(
         self,
         tenant_id: UUID,
         include_closed: bool = False,
         limit: int = 250,
+        apply_oversight: bool = True,
+        oversight_queue: str = "MS - SecOps",
     ) -> TicketAIRefreshResponse:
         tickets = self.provider.get_tickets()[:limit]
         if not include_closed:
@@ -84,6 +117,13 @@ class AIStateService:
 
         removed_count = await self.repository.delete_missing_active_tickets(tenant_id, retained_ids)
 
+        if apply_oversight:
+            oversight_service = AIOversightService(self.db)
+            await oversight_service.run_for_tenant(
+                tenant_id=tenant_id,
+                queue=oversight_queue,
+            )
+
         return TicketAIRefreshResponse(
             refreshed_count=len(retained_ids),
             removed_count=removed_count,
@@ -103,7 +143,15 @@ class AIStateService:
             for state in states
             if state.manual_override_profile_id is not None
         ]
-        profiles = await self.profile_repository.get_profiles_by_ids(tenant_id, override_profile_ids)
+        ai_managed_profile_ids = [
+            state.ai_managed_profile_id
+            for state in states
+            if state.ai_managed_profile_id is not None
+        ]
+        profiles = await self.profile_repository.get_profiles_by_ids(
+            tenant_id,
+            list({*override_profile_ids, *ai_managed_profile_ids}),
+        )
         display_name_by_profile_id = {
             profile.profile_id: profile.display.display_name
             for profile in profiles
@@ -114,9 +162,12 @@ class AIStateService:
         for state in states:
             payload = TicketAIStateResponse.model_validate(state).model_dump()
             manual_override_display_name = display_name_by_profile_id.get(state.manual_override_profile_id)
+            ai_managed_display_name = display_name_by_profile_id.get(state.ai_managed_profile_id)
             payload["manual_override_display_name"] = manual_override_display_name
+            payload["ai_managed_display_name"] = ai_managed_display_name
             payload["effective_assignee_display_name"] = (
                 manual_override_display_name
+                or ai_managed_display_name
                 or state.primary_resource
                 or state.secondary_resource
             )
@@ -193,13 +244,22 @@ class AIStateService:
         set_by_profile_id: UUID,
         reason: str | None = None,
     ):
-        return await self.repository.set_manual_override(
+        updated = await self.repository.set_manual_override(
             tenant_id=tenant_id,
             autotask_ticket_id=autotask_ticket_id,
             override_profile_id=override_profile_id,
             set_by_profile_id=set_by_profile_id,
             reason=reason,
         )
+        if updated is None:
+            return None
+
+        await self.apply_primary_assignment(
+            tenant_id=tenant_id,
+            autotask_ticket_id=autotask_ticket_id,
+            profile_id=override_profile_id,
+        )
+        return updated
 
     async def clear_manual_override(
         self,

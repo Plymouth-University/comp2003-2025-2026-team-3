@@ -358,6 +358,7 @@ This is an important distinction:
 Boundary:
 
 - the frontend currently consumes authenticated profile data mainly through `/api/v1/auth/me`
+- the frontend settings flow also consumes `/api/v1/auth/profile/specialisms` and updates assignments through `PUT /api/v1/auth/profile/specialisms`
 - the current frontend does not appear to expose the full profile CRUD surface yet
 
 ### Ticket and AI services

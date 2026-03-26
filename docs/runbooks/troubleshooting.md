@@ -12,6 +12,7 @@ It covers:
 - auth issues
 - AI-service startup and runtime issues
 - cross-stack integration mismatches
+- backend fixture/test-script issues
 
 ## Quick Triage Order
 
@@ -23,6 +24,7 @@ When something is broken, check things in this order:
 4. Is the backend environment configured, especially for Entra?
 5. Are required Python/Node dependencies installed?
 6. Is the issue actually in auth rather than general startup?
+7. Are backend test fixtures/scripts in the expected state for what you are validating?
 
 ## System Troubleshooting Map
 
@@ -37,7 +39,7 @@ flowchart TD
   FEQ -->|Yes| AuthQ{Authenticated flow working?}
   AuthQ -->|No| AuthFix[Check Entra settings and callback flow]
   AuthQ -->|Yes| AIQ{Ticket enrichment working?}
-  AIQ -->|No| AIFix[Check AI deps, spaCy model, category setup]
+  AIQ -->|No| AIFix[Check AI deps, category setup, and fixture scripts]
 ```
 
 ## Symptom: PostgreSQL is not running
@@ -235,23 +237,28 @@ Relevant files:
 Likely causes:
 
 - sentence-transformer dependencies are missing
-- spaCy model is missing
-- generated categories are malformed
-- startup category generation failed
+- ticket category configuration is malformed
+- fixture data (`tickets.json`) is in an unexpected state for the scenario you are testing
 
 What to check:
 
 - backend logs from `backend/app/services/ai/config.py`
-- whether `en_core_web_sm` is installed
-- whether `backend/data/generated_categories.json` exists and is valid JSON
+- whether `backend/data/ticket_categories.json` exists and is valid JSON
+- whether `backend/data/tickets.json` matches your intended test setup
+- whether fixture scripts were run in the expected order
 
-Helpful command:
+Helpful commands:
 
 ```bash
 cd backend
 source .venv/bin/activate
-python -m spacy download en_core_web_sm
+python scripts/reset_tickets.py
+python scripts/expand_tickets.py --multiplier 5 --start-id 100001
 ```
+
+Detailed script guidance:
+
+- [backend-test-scripts.md](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/docs/runbooks/backend-test-scripts.md)
 
 ## Symptom: Ticket endpoints return empty/error responses after login
 

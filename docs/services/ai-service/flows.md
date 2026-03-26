@@ -52,11 +52,13 @@ Primary integration points:
 - `GET /api/v1/ai/ticket-states/{autotask_ticket_id}/assignment-recommendation`
 - `PUT /api/v1/ai/ticket-states/{autotask_ticket_id}/assignment-override`
 - `DELETE /api/v1/ai/ticket-states/{autotask_ticket_id}/assignment-override`
+- `POST /api/v1/ai/oversight/run`
 
 The key idea is:
 
 - the provider still owns ticket truth
 - the hosted backend stores a refreshed AI snapshot for operational use
+- refresh can immediately trigger oversight rules in the same call
 - profile-linked user views depend on this refresh step having already populated the hosted AI state
 - the frontend `Active Tickets` page reads those persisted views instead of loading the old raw ticket list
 
@@ -70,6 +72,7 @@ sequenceDiagram
   participant Provider as Ticket provider
   participant AI as Classifier
   participant Profiles as Local profiles
+  participant Oversight as AIOversightService
   participant DB as ticket_ai_state table
 
   API->>Service: refresh_ticket_states(...)
@@ -77,6 +80,8 @@ sequenceDiagram
   Service->>AI: categorise_ticket(ticket)
   Service->>Profiles: resolve primary/secondary resource names
   Service->>DB: upsert AI ticket state
+  Service->>Oversight: run_for_tenant(...) when apply_oversight=true
+  Oversight->>DB: set/clear ai_managed_* fields
   DB-->>API: persisted refresh result
 ```
 
@@ -94,12 +99,63 @@ What it does is:
 2. rerun classification for that set
 3. map ticket resources to local profiles when possible
 4. update the hosted AI ticket snapshot table
+5. optionally apply oversight rules in the same request (`apply_oversight=true`)
 
 That makes it especially useful during development and troubleshooting:
 
 - if you add new profiles that should map to ticket resources, refresh again
 - if categories change, refresh again
 - if the AI-state endpoints look stale, refresh again
+
+## Flow 1C: Run One Oversight Cycle Directly
+
+Primary integration point:
+
+- `POST /api/v1/ai/oversight/run`
+
+What happens:
+
+1. load queue-scoped open AI-state rows
+2. compute recommendation for each ticket
+3. apply hard safety rules:
+   - manual override present: no automatic changes
+   - no primary assignee: auto-assign
+   - started ticket: protect from auto-move
+   - unstarted ticket: auto-move only when recommendation materially outranks incumbent
+4. persist AI-managed assignment reason/timestamp when changes are made
+
+## Flow 1D: Fixture-Script-Assisted Oversight Testing
+
+When validating AI-state behavior at scale, the backend fixture scripts provide a deterministic setup path.
+
+Relevant scripts:
+
+- `backend/scripts/reset_tickets.py`
+- `backend/scripts/expand_tickets.py`
+
+Typical sequence:
+
+```mermaid
+sequenceDiagram
+  autonumber
+  participant Dev as Developer
+  participant Scripts as Fixture scripts
+  participant API as Backend API
+  participant UI as Browser fetch calls
+
+  Dev->>Scripts: reset_tickets.py
+  Dev->>Scripts: expand_tickets.py (--multiplier ...)
+  Dev->>API: Start backend
+  Dev->>UI: POST /api/v1/ai/ticket-states/refresh (apply_oversight=true)
+  Dev->>UI: POST /api/v1/ai/oversight/run
+  Dev->>UI: GET /api/v1/ai/ticket-states/team?limit=1000
+```
+
+Why this matters:
+
+- repeatable ticket volume and assignment shape
+- predictable unassigned-ticket coverage for auto-assignment checks
+- cleaner troubleshooting when comparing refresh vs oversight results
 
 ### Practical local-testing note
 

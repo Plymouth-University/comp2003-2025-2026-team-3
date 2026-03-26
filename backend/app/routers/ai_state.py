@@ -8,6 +8,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from ..auth import AuthenticatedSession, get_current_session
 from ..database import get_db
 from ..schemas.ai_state import (
+    AIOversightRunResponse,
     TicketAssignmentOverrideRequest,
     TicketAssignmentRecommendationResponse,
     TicketAIRefreshRequest,
@@ -16,6 +17,7 @@ from ..schemas.ai_state import (
 )
 from ..services.ai import list_available_categories
 from ..services.ai_assignment_service import AIAssignmentService
+from ..services.ai_oversight_service import AIOversightService
 from ..services.ai_state_service import AIStateService
 
 router = APIRouter(prefix="/api/v1/ai", tags=["ai"])
@@ -44,13 +46,29 @@ async def refresh_ai_ticket_states(
         tenant_id=UUID(session.tenant_id),
         include_closed=refresh_request.include_closed,
         limit=refresh_request.limit,
+        apply_oversight=refresh_request.apply_oversight,
+        oversight_queue=refresh_request.oversight_queue,
+    )
+
+
+@router.post("/oversight/run", response_model=AIOversightRunResponse)
+async def run_ai_oversight(
+    queue: str = Query("MS - SecOps"),
+    session: AuthenticatedSession = Depends(get_current_session),
+    db: AsyncSession = Depends(get_db),
+):
+    """Run AI oversight once for the current tenant queue."""
+    service = AIOversightService(db)
+    return await service.run_for_tenant(
+        tenant_id=UUID(session.tenant_id),
+        queue=queue,
     )
 
 
 @router.get("/ticket-states", response_model=list[TicketAIStateResponse])
 async def list_ai_ticket_states(
     include_closed: bool = Query(False),
-    limit: int = Query(100, ge=1, le=500),
+    limit: int = Query(500, ge=1, le=1000),
     offset: int = Query(0, ge=0),
     session: AuthenticatedSession = Depends(get_current_session),
     db: AsyncSession = Depends(get_db),
@@ -68,7 +86,7 @@ async def list_ai_ticket_states(
 @router.get("/ticket-states/my-primary", response_model=list[TicketAIStateResponse])
 async def list_my_primary_ticket_states(
     include_closed: bool = Query(False),
-    limit: int = Query(100, ge=1, le=500),
+    limit: int = Query(500, ge=1, le=1000),
     offset: int = Query(0, ge=0),
     session: AuthenticatedSession = Depends(get_current_session),
     db: AsyncSession = Depends(get_db),
@@ -88,7 +106,7 @@ async def list_my_primary_ticket_states(
 @router.get("/ticket-states/my-secondary", response_model=list[TicketAIStateResponse])
 async def list_my_secondary_ticket_states(
     include_closed: bool = Query(False),
-    limit: int = Query(100, ge=1, le=500),
+    limit: int = Query(500, ge=1, le=1000),
     offset: int = Query(0, ge=0),
     session: AuthenticatedSession = Depends(get_current_session),
     db: AsyncSession = Depends(get_db),
@@ -108,7 +126,7 @@ async def list_my_secondary_ticket_states(
 @router.get("/ticket-states/my-assigned", response_model=list[TicketAIStateResponse])
 async def list_my_assigned_ticket_states(
     include_closed: bool = Query(False),
-    limit: int = Query(100, ge=1, le=500),
+    limit: int = Query(500, ge=1, le=1000),
     offset: int = Query(0, ge=0),
     session: AuthenticatedSession = Depends(get_current_session),
     db: AsyncSession = Depends(get_db),
@@ -129,7 +147,7 @@ async def list_my_assigned_ticket_states(
 async def list_team_ticket_states(
     queue: str = Query("MS - SecOps"),
     include_closed: bool = Query(False),
-    limit: int = Query(100, ge=1, le=500),
+    limit: int = Query(500, ge=1, le=1000),
     offset: int = Query(0, ge=0),
     session: AuthenticatedSession = Depends(get_current_session),
     db: AsyncSession = Depends(get_db),
@@ -194,13 +212,19 @@ async def set_ticket_assignment_override(
 ):
     """Persist a manual assignment override for a ticket."""
     state_service = AIStateService(db)
-    updated = await state_service.set_manual_override(
-        tenant_id=UUID(session.tenant_id),
-        autotask_ticket_id=autotask_ticket_id,
-        override_profile_id=override_request.profile_id,
-        set_by_profile_id=UUID(session.profile_id),
-        reason=override_request.reason,
-    )
+    try:
+        updated = await state_service.set_manual_override(
+            tenant_id=UUID(session.tenant_id),
+            autotask_ticket_id=autotask_ticket_id,
+            override_profile_id=override_request.profile_id,
+            set_by_profile_id=UUID(session.profile_id),
+            reason=override_request.reason,
+        )
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(exc),
+        ) from exc
     if updated is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
