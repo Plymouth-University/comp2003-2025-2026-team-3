@@ -2,7 +2,7 @@
 Priority Calculation Module
 
 Calculates ticket priority scores based on category, urgency, and other factors.
-Dynamically adapts to both predefined and AI-generated categories.
+Uses configured category weights rather than hard-coded category names.
 """
 
 import logging
@@ -14,14 +14,12 @@ from .config import (
     MAX_LENGTH_ADJUSTMENT,
     WORDS_PER_LENGTH_UNIT
 )
-from .text_processor import preprocess_text
-
 logger = logging.getLogger(__name__)
 
 
 def get_dynamic_category_weight(category: str) -> int:
     """
-    Get priority weight for a category, using heuristics for AI-generated categories.
+    Get priority weight for a configured category.
     
     Args:
         category: Category name
@@ -29,32 +27,7 @@ def get_dynamic_category_weight(category: str) -> int:
     Returns:
         Priority weight (0-70)
     """
-    # First check if it's a predefined category
-    if category in CATEGORY_PRIORITY_WEIGHTS:
-        return CATEGORY_PRIORITY_WEIGHTS[category]
-    
-    # For AI-generated categories, use keyword heuristics
-    cat_lower = category.lower()
-    
-    # Security-related keywords get higher priority
-    security_keywords = ['breach', 'malware', 'virus', 'security', 'vulnerability', 'hack', 'attack', 'ransomware']
-    critical_keywords = ['backup', 'offline', 'down', 'critical', 'failed', 'hardware']
-    high_keywords = ['patch', 'update', 'access', 'login', 'password', 'authentication']
-    
-    for keyword in security_keywords:
-        if keyword in cat_lower:
-            return 70
-    
-    for keyword in critical_keywords:
-        if keyword in cat_lower:
-            return 50
-    
-    for keyword in high_keywords:
-        if keyword in cat_lower:
-            return 35
-    
-    # Default priority for other categories
-    return 30
+    return CATEGORY_PRIORITY_WEIGHTS.get(category, 30)
 
 
 def calculate_priority_score(

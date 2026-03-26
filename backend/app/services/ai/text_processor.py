@@ -1,124 +1,99 @@
-"""
-Text Processing Module
+"""Text normalization helpers for ticket classification."""
 
-Handles text preprocessing, cleaning, and extraction from various ticket formats.
-"""
-
-import spacy
 import logging
+import re
 import time
-from .config import MIN_TOKEN_LENGTH, COMPANY_NAMES
-from .logging_config import perf_logger, metrics
+
+from .config import MIN_TOKEN_LENGTH
+from .logging_config import metrics, perf_logger
 
 logger = logging.getLogger(__name__)
 
-# Load spaCy model once
-try:
-    nlp = spacy.load("en_core_web_sm")
-except OSError:
-    logger.warning("spaCy model not found. Install with: python -m spacy download en_core_web_sm")
-    nlp = None
+TOKEN_PATTERN = re.compile(r"[a-z0-9]+")
+STOP_WORDS = {
+    "a",
+    "an",
+    "and",
+    "are",
+    "as",
+    "at",
+    "be",
+    "by",
+    "for",
+    "from",
+    "has",
+    "have",
+    "in",
+    "is",
+    "it",
+    "of",
+    "on",
+    "or",
+    "that",
+    "the",
+    "their",
+    "this",
+    "to",
+    "was",
+    "were",
+    "will",
+    "with",
+}
 
 
-def preprocess_text(text: str) -> list:
-    """
-    Preprocess text using spaCy for tokenization, lemmatization, and filtering.
-    
-    Args:
-        text: Raw text to preprocess
-        
-    Returns:
-        List of lemmatized, cleaned tokens
-    """
-    if not nlp:
-        logger.error("spaCy model not loaded, cannot preprocess text")
-        return []
-    
-    spacy_start = time.time()
-    doc = nlp(text.lower())
-    spacy_time = time.time() - spacy_start
-    metrics.record_operation("spacy_nlp", spacy_time * 1000)
-    
-    if spacy_time > 0.05:  # Only log if slow
-        perf_logger.debug(f"[TIMING] spaCy nlp() took {spacy_time*1000:.2f}ms for text length {len(text)}")
-    
-    # Build set of company words to filter
-    company_words = set()
-    for company in COMPANY_NAMES:
-        company_words.update(company.lower().split())
-    
-    # Find multi-word company names in text
-    text_lower = text.lower()
-    company_tokens_to_exclude = set()
-    for company in COMPANY_NAMES:
-        if company in text_lower:
-            company_tokens_to_exclude.update(company.split())
-    
-    # Filter tokens: remove stopwords, punctuation, company names, and short tokens
-    filtered = [
-        token.lemma_ for token in doc 
-        if not token.is_stop 
-        and not token.is_punct 
-        and token.lemma_ not in company_tokens_to_exclude
-        and len(token.lemma_) > MIN_TOKEN_LENGTH
+def normalize_text(text: str | None) -> str:
+    """Normalize free text into a lowercase token-friendly string."""
+    if not text:
+        return ""
+    return " ".join(TOKEN_PATTERN.findall(text.lower()))
+
+
+def preprocess_text(text: str) -> list[str]:
+    """Tokenize text using a lightweight regex-based normalizer."""
+    start_time = time.time()
+    normalized_text = normalize_text(text)
+    tokens = [
+        token
+        for token in normalized_text.split()
+        if token not in STOP_WORDS and len(token) > MIN_TOKEN_LENGTH
     ]
-    
-    return filtered
+
+    duration = time.time() - start_time
+    metrics.record_operation("text_normalization", duration * 1000)
+    if duration > 0.05:
+        perf_logger.debug(
+            "[TIMING] normalize_text() took %.2fms for text length %s",
+            duration * 1000,
+            len(text),
+        )
+
+    return tokens
 
 
 def extract_ticket_text(ticket_item) -> str:
-    """
-    Extract and combine relevant text from various ticket formats.
-    
-    Args:
-        ticket_item: Can be a string, dict with text fields, or structured ticket
-        
-    Returns:
-        Combined text representation of the ticket
-    """
+    """Extract the ticket fields that should influence AI categorization."""
     if isinstance(ticket_item, str):
         return ticket_item
-    
+
     if not isinstance(ticket_item, dict):
-        return None
-    
-    # Try direct text fields first
+        return ""
+
     if "text" in ticket_item:
-        return ticket_item["text"]
+        return str(ticket_item["text"])
     if "input_text" in ticket_item:
-        return ticket_item["input_text"]
-    
-    # For structured tickets, combine relevant fields
-    parts = []
-    
-    if "title" in ticket_item:
-        parts.append(ticket_item["title"])
-    
-    if "description" in ticket_item:
-        parts.append(ticket_item["description"])
-    
-    if "sub_issue_type" in ticket_item:
-        parts.append(f"Type: {ticket_item['sub_issue_type']}")
-    
-    return " ".join(parts) if parts else None
+        return str(ticket_item["input_text"])
 
+    parts: list[str] = []
+    for field_name in (
+        "title",
+        "description",
+        "issue_type",
+        "sub_issue_type",
+        "queue",
+        "source",
+    ):
+        value = ticket_item.get(field_name)
+        if value:
+            parts.append(str(value))
 
-def detect_company(text: str) -> list:
-    """
-    Detect company names mentioned in ticket text.
-    
-    Args:
-        text: Ticket text to search
-        
-    Returns:
-        List of detected company names
-    """
-    tokens = preprocess_text(text)
-    text_lower = text.lower()
-    
-    detected_companies = []
-    for company in COMPANY_NAMES:
-        if company in tokens or company in text_lower:
-            detected_companies.append(company)
-    
-    return detected_companies
+    return " ".join(parts)
