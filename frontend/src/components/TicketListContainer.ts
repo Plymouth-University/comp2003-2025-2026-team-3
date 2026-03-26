@@ -34,6 +34,9 @@ export function TicketListContainer(
   let searchQuery = "";
   let selectedCompany = "";
   let selectedQueue = "";
+  let selectedEffectiveAssignee = "";
+  let selectedAssignmentState: "all" | "recommended" | "override" = "all";
+  let assignmentStateSortMode: "default" | "override_first" | "recommended_first" = "default";
   let collapsedCategories: Set<string> = new Set();
   let activeView: TicketViewKey = options?.initialView ?? "my-assigned";
 
@@ -64,16 +67,40 @@ export function TicketListContainer(
       "px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500",
   }) as HTMLSelectElement;
   companySelect.append(el("option", { attrs: { value: "" }, text: "Company Name" }));
-  for (let i = 1; i <= 20; i += 1) {
-    companySelect.append(el("option", { attrs: { value: `Company ${i}` }, text: `Company ${i}` }));
-  }
 
   const queueSelect = el("select", {
     className:
       "px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500",
   }) as HTMLSelectElement;
   queueSelect.append(el("option", { attrs: { value: "" }, text: "Queue" }));
-  queueSelect.append(el("option", { attrs: { value: "MS - SecOps" }, text: "MS - SecOps" }));
+
+  const effectiveAssigneeSelect = el("select", {
+    className:
+      "px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500",
+  }) as HTMLSelectElement;
+  effectiveAssigneeSelect.append(
+    el("option", { attrs: { value: "" }, text: "Effective Assignee" }),
+  );
+
+  const assignmentStateSelect = el("select", {
+    className:
+      "px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500",
+  }) as HTMLSelectElement;
+  assignmentStateSelect.append(
+    el("option", { attrs: { value: "all" }, text: "All Tickets" }),
+    el("option", { attrs: { value: "recommended" }, text: "Recommended Only" }),
+    el("option", { attrs: { value: "override" }, text: "Manual Override Only" }),
+  );
+
+  const assignmentSortSelect = el("select", {
+    className:
+      "px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500",
+  }) as HTMLSelectElement;
+  assignmentSortSelect.append(
+    el("option", { attrs: { value: "default" }, text: "Sort: Default" }),
+    el("option", { attrs: { value: "override_first" }, text: "Sort: Override First" }),
+    el("option", { attrs: { value: "recommended_first" }, text: "Sort: Recommended First" }),
+  );
 
   const ticketsContainer = el("div", {
     className: "w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 items-start",
@@ -121,6 +148,7 @@ export function TicketListContainer(
 
     try {
       ticketsState = await fetchAITickets(activeView);
+      populateFilterOptions();
       console.log(
         `[${getTimeStamp()}] Loaded ${ticketsState.length} AI tickets from ${API_BASE_URL} for ${activeView}`,
       );
@@ -152,8 +180,82 @@ export function TicketListContainer(
     render();
   });
 
-  filterContainer.append(companySelect, queueSelect);
+  effectiveAssigneeSelect.addEventListener("change", (event) => {
+    selectedEffectiveAssignee = (event.target as HTMLSelectElement).value;
+    render();
+  });
+
+  assignmentStateSelect.addEventListener("change", (event) => {
+    selectedAssignmentState = (event.target as HTMLSelectElement).value as
+      | "all"
+      | "recommended"
+      | "override";
+    render();
+  });
+
+  assignmentSortSelect.addEventListener("change", (event) => {
+    assignmentStateSortMode = (event.target as HTMLSelectElement).value as
+      | "default"
+      | "override_first"
+      | "recommended_first";
+    render();
+  });
+
+  filterContainer.append(
+    companySelect,
+    queueSelect,
+    effectiveAssigneeSelect,
+    assignmentStateSelect,
+    assignmentSortSelect,
+  );
   mainContainer.append(viewSwitcher, searchBar, filterContainer, ticketsContainer);
+
+  const assignmentStateOf = (ticket: BackendTicket): "recommended" | "override" =>
+    ticket.manual_override_display_name ? "override" : "recommended";
+
+  const normalizeAssignee = (displayName: string | null | undefined): string =>
+    displayName && displayName.trim().length > 0 ? displayName : "Unassigned";
+
+  const populateSelectFromValues = (
+    select: HTMLSelectElement,
+    placeholder: string,
+    values: string[],
+    selectedValue: string,
+  ): void => {
+    select.innerHTML = "";
+    select.append(el("option", { attrs: { value: "" }, text: placeholder }));
+    values.forEach((value) => {
+      select.append(el("option", { attrs: { value }, text: value }));
+    });
+    select.value = selectedValue;
+    if (select.value !== selectedValue) {
+      select.value = "";
+    }
+  };
+
+  const populateFilterOptions = (): void => {
+    const companyValues = Array.from(
+      new Set(ticketsState.map((ticket) => ticket.company).filter(Boolean)),
+    ).sort((a, b) => a.localeCompare(b));
+    populateSelectFromValues(companySelect, "Company Name", companyValues, selectedCompany);
+    selectedCompany = companySelect.value;
+
+    const queueValues = Array.from(new Set(ticketsState.map((ticket) => ticket.queue).filter(Boolean)))
+      .sort((a, b) => a.localeCompare(b));
+    populateSelectFromValues(queueSelect, "Queue", queueValues, selectedQueue);
+    selectedQueue = queueSelect.value;
+
+    const assigneeValues = Array.from(
+      new Set(ticketsState.map((ticket) => normalizeAssignee(ticket.effective_assignee_display_name))),
+    ).sort((a, b) => a.localeCompare(b));
+    populateSelectFromValues(
+      effectiveAssigneeSelect,
+      "Effective Assignee",
+      assigneeValues,
+      selectedEffectiveAssignee,
+    );
+    selectedEffectiveAssignee = effectiveAssigneeSelect.value;
+  };
 
   const sortTickets = (tickets: BackendTicket[], category: string): BackendTicket[] => {
     if (!categorySortState.has(category)) {
@@ -336,13 +438,38 @@ export function TicketListContainer(
     if (selectedQueue) {
       filteredTickets = filteredTickets.filter((ticket) => ticket.queue === selectedQueue);
     }
+    if (selectedEffectiveAssignee) {
+      filteredTickets = filteredTickets.filter(
+        (ticket) =>
+          normalizeAssignee(ticket.effective_assignee_display_name) === selectedEffectiveAssignee,
+      );
+    }
+    if (selectedAssignmentState !== "all") {
+      filteredTickets = filteredTickets.filter(
+        (ticket) => assignmentStateOf(ticket) === selectedAssignmentState,
+      );
+    }
+
+    if (assignmentStateSortMode !== "default") {
+      const prioritizedState = assignmentStateSortMode === "override_first" ? "override" : "recommended";
+      filteredTickets = [...filteredTickets].sort((a, b) => {
+        const aScore = assignmentStateOf(a) === prioritizedState ? 0 : 1;
+        const bScore = assignmentStateOf(b) === prioritizedState ? 0 : 1;
+        if (aScore !== bScore) return aScore - bScore;
+        return a.autotask_ticket_id - b.autotask_ticket_id;
+      });
+    }
 
     if (filteredTickets.length === 0) {
       ticketsContainer.append(
         el("div", {
           className: "text-center py-8 text-slate-500 col-span-full",
           text:
-            searchQuery || selectedCompany || selectedQueue
+            searchQuery ||
+            selectedCompany ||
+            selectedQueue ||
+            selectedEffectiveAssignee ||
+            selectedAssignmentState !== "all"
               ? "No tickets found matching your filters"
               : `No tickets found for ${VIEW_LABELS[activeView]}`,
         }),
