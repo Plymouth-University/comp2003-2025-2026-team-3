@@ -78,6 +78,27 @@ class TicketAIStateRepository:
         result = await self.db.execute(query)
         return list(result.scalars().all())
 
+    async def list_active_company_tickets(
+        self,
+        tenant_id: UUID,
+        company: str,
+        exclude_autotask_ticket_id: int | None = None,
+    ) -> list[TicketAIState]:
+        """List open AI-state tickets for a company within a tenant."""
+        query = select(TicketAIState).where(
+            and_(
+                TicketAIState.tenant_id == tenant_id,
+                TicketAIState.company == company,
+                TicketAIState.is_closed.is_(False),
+            )
+        )
+        if exclude_autotask_ticket_id is not None:
+            query = query.where(TicketAIState.autotask_ticket_id != exclude_autotask_ticket_id)
+
+        query = query.order_by(TicketAIState.priority_score.desc(), TicketAIState.refreshed_at.desc())
+        result = await self.db.execute(query)
+        return list(result.scalars().all())
+
     async def list_for_profile_assignment(
         self,
         tenant_id: UUID,

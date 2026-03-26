@@ -34,6 +34,11 @@ class AIAssignmentService:
 
         categories = {item["key"]: item["label"] for item in list_available_categories()}
         category_label = categories.get(ticket_state.category, ticket_state.category)
+        same_company_tickets = await self.ai_state_repository.list_active_company_tickets(
+            tenant_id=tenant_id,
+            company=ticket_state.company,
+            exclude_autotask_ticket_id=ticket_state.autotask_ticket_id,
+        )
 
         profiles = await self.profile_repository.get_profiles_by_tenant_with_specialisms(
             tenant_id=tenant_id,
@@ -48,6 +53,8 @@ class AIAssignmentService:
             matched_specialism_keys: list[str] = []
             reasons: list[str] = []
             score = 0
+            same_company_primary_count = 0
+            same_company_secondary_count = 0
 
             for profile_specialism in profile.specialisms:
                 specialism = profile_specialism.specialism
@@ -62,6 +69,33 @@ class AIAssignmentService:
                     reasons.append(
                         f"Matched ticket category '{category_label}' to specialism '{specialism.specialism_name}'."
                     )
+
+            for company_ticket in same_company_tickets:
+                if company_ticket.primary_profile_id == profile.profile_id:
+                    same_company_primary_count += 1
+                if company_ticket.secondary_profile_id == profile.profile_id:
+                    same_company_secondary_count += 1
+
+            if same_company_primary_count:
+                continuity_score = min(60, 20 + (same_company_primary_count * 10))
+                score += continuity_score
+                reasons.append(
+                    f"Already primary on {same_company_primary_count} other open ticket(s) for {ticket_state.company}."
+                )
+
+            if same_company_secondary_count:
+                continuity_score = min(25, 5 + (same_company_secondary_count * 5))
+                score += continuity_score
+                reasons.append(
+                    f"Already secondary on {same_company_secondary_count} other open ticket(s) for {ticket_state.company}."
+                )
+
+            if profile.profile_id == ticket_state.primary_profile_id:
+                score += 30
+                reasons.append("Already the current primary resource on this ticket.")
+            elif profile.profile_id == ticket_state.secondary_profile_id:
+                score += 15
+                reasons.append("Already the current secondary resource on this ticket.")
 
             if score <= 0:
                 continue
@@ -91,12 +125,23 @@ class AIAssignmentService:
                 category=ticket_state.category,
                 category_label=category_label,
                 recommendation_summary=(
-                    "No active profiles currently have a stored specialism matching this ticket category."
+                    "No active profiles currently have a stored specialism match or same-company continuity signal for this ticket."
                 ),
                 candidates=[],
             )
 
         top_candidate = candidates[0]
+        summary_reasons: list[str] = []
+        if top_candidate.matched_specialism_keys:
+            summary_reasons.append("their stored specialisms match the ticket category")
+        if any("other open ticket" in reason for reason in top_candidate.reasons):
+            summary_reasons.append(f"they are already handling {ticket_state.company} tickets")
+        if top_candidate.is_current_primary:
+            summary_reasons.append("they are already the current primary resource")
+        elif top_candidate.is_current_secondary:
+            summary_reasons.append("they are already the current secondary resource")
+
+        summary_text = ", and ".join(summary_reasons) if summary_reasons else "they received the highest recommendation score"
         return TicketAssignmentRecommendationResponse(
             autotask_ticket_id=ticket_state.autotask_ticket_id,
             category=ticket_state.category,
@@ -104,8 +149,7 @@ class AIAssignmentService:
             recommended_profile_id=top_candidate.profile_id,
             recommended_display_name=top_candidate.display_name,
             recommendation_summary=(
-                f"Recommended {top_candidate.display_name} because their stored specialisms match "
-                f"the '{category_label}' category."
+                f"Recommended {top_candidate.display_name} because {summary_text}."
             ),
             candidates=candidates,
         )
