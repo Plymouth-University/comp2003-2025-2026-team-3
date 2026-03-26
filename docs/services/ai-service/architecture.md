@@ -139,6 +139,7 @@ What it coordinates:
 - pulling tickets from the current provider
 - classifying them through the existing AI path
 - storing the resulting AI metadata in the database
+- mapping ticket resources onto local profiles when display names match
 - returning refresh/list/get responses for AI endpoints
 
 ### `ai_state_repository.py`
@@ -180,8 +181,13 @@ flowchart TD
   Provider[Ticket provider] --> Refresh[POST /api/v1/ai/ticket-states/refresh]
   Refresh --> AIService[AIStateService]
   AIService --> Processor[process_ticket]
+  AIService --> ProfileLookup[Resolve resource names to profiles]
   Processor --> Persist[(ticket_ai_state)]
+  ProfileLookup --> Persist
   Persist --> Read[GET /api/v1/ai/ticket-states]
+  Persist --> MyPrimary[GET /api/v1/ai/ticket-states/my-primary]
+  Persist --> MySecondary[GET /api/v1/ai/ticket-states/my-secondary]
+  Persist --> Team[GET /api/v1/ai/ticket-states/team]
   Persist --> One[GET /api/v1/ai/ticket-states/{id}]
 ```
 
@@ -219,6 +225,7 @@ Verified from the current code:
 - model availability failures are handled more safely
 - AI ticket state can now be persisted centrally in the hosted backend
 - AI-specific endpoints now exist for category reading and ticket-state refresh/list/get
+- AI ticket state can now support profile-based primary/secondary ticket views
 
 ## Architecture Weaknesses
 
@@ -227,4 +234,4 @@ Also visible in the current code:
 - there is still no assignment or routing layer
 - category management still requires editing a JSON file rather than using a dedicated API
 - cache and metrics are still process-local rather than durable
-- persisted state currently stores ticket AI snapshots, but not profile-resource mapping or routing decisions yet
+- persisted state now includes profile-resource mapping, but not routing decisions yet

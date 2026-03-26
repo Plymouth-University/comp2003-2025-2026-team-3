@@ -44,12 +44,17 @@ Primary integration points:
 
 - `POST /api/v1/ai/ticket-states/refresh`
 - `GET /api/v1/ai/ticket-states`
+- `GET /api/v1/ai/ticket-states/my-primary`
+- `GET /api/v1/ai/ticket-states/my-secondary`
+- `GET /api/v1/ai/ticket-states/my-assigned`
+- `GET /api/v1/ai/ticket-states/team`
 - `GET /api/v1/ai/ticket-states/{autotask_ticket_id}`
 
 The key idea is:
 
 - the provider still owns ticket truth
 - the hosted backend stores a refreshed AI snapshot for operational use
+- profile-linked user views depend on this refresh step having already populated the hosted AI state
 
 ### High-level sequence
 
@@ -60,14 +65,37 @@ sequenceDiagram
   participant Service as AIStateService
   participant Provider as Ticket provider
   participant AI as Classifier
+  participant Profiles as Local profiles
   participant DB as ticket_ai_state table
 
   API->>Service: refresh_ticket_states(...)
   Service->>Provider: get_tickets()
   Service->>AI: categorise_ticket(ticket)
+  Service->>Profiles: resolve primary/secondary resource names
   Service->>DB: upsert AI ticket state
   DB-->>API: persisted refresh result
 ```
+
+### Why `POST /api/v1/ai/ticket-states/refresh` matters
+
+This endpoint is the AI-state sync step.
+
+It does not create new Autotask tickets.
+
+It does not replace Autotask as the source of truth.
+
+What it does is:
+
+1. read the current provider ticket set
+2. rerun classification for that set
+3. map ticket resources to local profiles when possible
+4. update the hosted AI ticket snapshot table
+
+That makes it especially useful during development and troubleshooting:
+
+- if you add new profiles that should map to ticket resources, refresh again
+- if categories change, refresh again
+- if the AI-state endpoints look stale, refresh again
 
 ## Flow 2: Load Configured Categories
 
@@ -262,9 +290,10 @@ What it does:
 1. fetch current tickets from the provider
 2. optionally filter out closed tickets
 3. classify each ticket through the AI pipeline
-4. upsert a tenant-scoped AI ticket snapshot into the database
-5. remove stale rows that are no longer retained in the refresh set
-6. serve list/get responses from persisted state
+4. resolve primary and secondary resources against local profiles
+5. upsert a tenant-scoped AI ticket snapshot into the database
+6. remove stale rows that are no longer retained in the refresh set
+7. serve list/get responses from persisted state
 
 ### AI-state persistence flow
 
@@ -273,7 +302,8 @@ flowchart TD
   Refresh[Refresh request] --> Load[Load provider tickets]
   Load --> Filter[Filter closed tickets if needed]
   Filter --> Classify[Run categorise_ticket]
-  Classify --> Upsert[Upsert ticket_ai_state rows]
+  Classify --> Resolve[Resolve primary/secondary profiles]
+  Resolve --> Upsert[Upsert ticket_ai_state rows]
   Upsert --> Cleanup[Delete stale retained rows]
   Cleanup --> Readback[State available via AI endpoints]
 ```

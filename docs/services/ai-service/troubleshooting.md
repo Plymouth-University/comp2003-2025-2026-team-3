@@ -14,6 +14,7 @@ When the AI service behaves unexpectedly, check these first:
 4. Does `/api/categories` return the category list you expect?
 5. Are the ticket endpoints returning AI metadata with `category`, `confidence`, `priority`, and `priority_score`?
 6. If using AI-state endpoints, has the database migration been applied?
+7. If using `/my-primary` or `/my-secondary`, have you refreshed AI ticket state after creating matching local profiles?
 
 ## Symptom: categories look wrong
 
@@ -145,6 +146,39 @@ Expected behavior:
 
 - refresh returns a non-zero `refreshed_count`
 - `GET /api/v1/ai/ticket-states` then returns persisted rows
+
+Important troubleshooting endpoint:
+
+- `POST /api/v1/ai/ticket-states/refresh`
+
+What it does:
+
+- pulls the current provider ticket set
+- reruns AI categorization
+- updates persisted hosted AI ticket state
+- attempts to map ticket resources to matching local profiles
+
+Why it matters:
+
+- if AI-state endpoints are stale, use refresh
+- if you created new test SecOps profiles, use refresh
+- if `/my-primary` and `/my-secondary` are empty unexpectedly, use refresh
+
+## Symptom: `/my-primary` or `/my-secondary` is empty even though `/team` works
+
+Likely causes:
+
+- the logged-in profile does not match any `primary_resource` or `secondary_resource` values
+- matching local profiles were created after the last refresh
+- profile display names do not exactly match the resource names in the ticket data
+
+What to check:
+
+- `POST /api/v1/ai/ticket-states/refresh`
+- whether local profile display names match the ticket resource names
+- `GET /api/v1/ai/ticket-states/team`
+- `GET /api/v1/ai/ticket-states/my-primary`
+- `GET /api/v1/ai/ticket-states/my-secondary`
 
 ## Known Structural Gaps
 

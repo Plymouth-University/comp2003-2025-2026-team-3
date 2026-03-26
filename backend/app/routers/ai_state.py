@@ -62,6 +62,86 @@ async def list_ai_ticket_states(
     )
 
 
+@router.get("/ticket-states/my-primary", response_model=list[TicketAIStateResponse])
+async def list_my_primary_ticket_states(
+    include_closed: bool = Query(False),
+    limit: int = Query(100, ge=1, le=500),
+    offset: int = Query(0, ge=0),
+    session: AuthenticatedSession = Depends(get_current_session),
+    db: AsyncSession = Depends(get_db),
+):
+    """List persisted AI ticket states where the current user is the primary resource."""
+    service = AIStateService(db)
+    return await service.list_profile_ticket_states(
+        tenant_id=UUID(session.tenant_id),
+        profile_id=UUID(session.profile_id),
+        assignment_role="primary",
+        include_closed=include_closed,
+        limit=limit,
+        offset=offset,
+    )
+
+
+@router.get("/ticket-states/my-secondary", response_model=list[TicketAIStateResponse])
+async def list_my_secondary_ticket_states(
+    include_closed: bool = Query(False),
+    limit: int = Query(100, ge=1, le=500),
+    offset: int = Query(0, ge=0),
+    session: AuthenticatedSession = Depends(get_current_session),
+    db: AsyncSession = Depends(get_db),
+):
+    """List persisted AI ticket states where the current user is the secondary resource."""
+    service = AIStateService(db)
+    return await service.list_profile_ticket_states(
+        tenant_id=UUID(session.tenant_id),
+        profile_id=UUID(session.profile_id),
+        assignment_role="secondary",
+        include_closed=include_closed,
+        limit=limit,
+        offset=offset,
+    )
+
+
+@router.get("/ticket-states/my-assigned", response_model=list[TicketAIStateResponse])
+async def list_my_assigned_ticket_states(
+    include_closed: bool = Query(False),
+    limit: int = Query(100, ge=1, le=500),
+    offset: int = Query(0, ge=0),
+    session: AuthenticatedSession = Depends(get_current_session),
+    db: AsyncSession = Depends(get_db),
+):
+    """List persisted AI ticket states where the current user is primary or secondary."""
+    service = AIStateService(db)
+    return await service.list_profile_ticket_states(
+        tenant_id=UUID(session.tenant_id),
+        profile_id=UUID(session.profile_id),
+        assignment_role="assigned",
+        include_closed=include_closed,
+        limit=limit,
+        offset=offset,
+    )
+
+
+@router.get("/ticket-states/team", response_model=list[TicketAIStateResponse])
+async def list_team_ticket_states(
+    queue: str = Query("MS - SecOps"),
+    include_closed: bool = Query(False),
+    limit: int = Query(100, ge=1, le=500),
+    offset: int = Query(0, ge=0),
+    session: AuthenticatedSession = Depends(get_current_session),
+    db: AsyncSession = Depends(get_db),
+):
+    """List persisted AI ticket states for the SecOps queue."""
+    service = AIStateService(db)
+    return await service.list_queue_ticket_states(
+        tenant_id=UUID(session.tenant_id),
+        queue=queue,
+        include_closed=include_closed,
+        limit=limit,
+        offset=offset,
+    )
+
+
 @router.get("/ticket-states/{autotask_ticket_id}", response_model=TicketAIStateResponse)
 async def get_ai_ticket_state(
     autotask_ticket_id: int,

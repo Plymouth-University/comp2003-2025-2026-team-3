@@ -6,7 +6,7 @@ from datetime import datetime, timezone
 from typing import Iterable, Optional
 from uuid import UUID
 
-from sqlalchemy import and_, delete, select
+from sqlalchemy import and_, delete, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from ..models.ai_state import TicketAIState
@@ -52,11 +52,75 @@ class TicketAIStateRepository:
         result = await self.db.execute(query)
         return list(result.scalars().all())
 
+    async def list_for_queue(
+        self,
+        tenant_id: UUID,
+        queue: str,
+        include_closed: bool = False,
+        limit: int = 100,
+        offset: int = 0,
+    ) -> list[TicketAIState]:
+        query = (
+            select(TicketAIState)
+            .where(
+                and_(
+                    TicketAIState.tenant_id == tenant_id,
+                    TicketAIState.queue == queue,
+                )
+            )
+            .order_by(TicketAIState.priority_score.desc(), TicketAIState.refreshed_at.desc())
+            .limit(limit)
+            .offset(offset)
+        )
+        if not include_closed:
+            query = query.where(TicketAIState.is_closed.is_(False))
+
+        result = await self.db.execute(query)
+        return list(result.scalars().all())
+
+    async def list_for_profile_assignment(
+        self,
+        tenant_id: UUID,
+        profile_id: UUID,
+        assignment_role: str,
+        include_closed: bool = False,
+        limit: int = 100,
+        offset: int = 0,
+    ) -> list[TicketAIState]:
+        query = select(TicketAIState).where(TicketAIState.tenant_id == tenant_id)
+
+        if assignment_role == "primary":
+            query = query.where(TicketAIState.primary_profile_id == profile_id)
+        elif assignment_role == "secondary":
+            query = query.where(TicketAIState.secondary_profile_id == profile_id)
+        elif assignment_role == "assigned":
+            query = query.where(
+                or_(
+                    TicketAIState.primary_profile_id == profile_id,
+                    TicketAIState.secondary_profile_id == profile_id,
+                )
+            )
+        else:
+            raise ValueError(f"Unsupported assignment role: {assignment_role}")
+
+        if not include_closed:
+            query = query.where(TicketAIState.is_closed.is_(False))
+
+        query = (
+            query.order_by(TicketAIState.priority_score.desc(), TicketAIState.refreshed_at.desc())
+            .limit(limit)
+            .offset(offset)
+        )
+        result = await self.db.execute(query)
+        return list(result.scalars().all())
+
     async def upsert_ticket_state(
         self,
         tenant_id: UUID,
         ticket_payload: dict,
         ai_payload: dict,
+        primary_profile_id: UUID | None = None,
+        secondary_profile_id: UUID | None = None,
     ) -> TicketAIState:
         existing = await self.get_by_ticket_id(tenant_id, ticket_payload["autotask_ticket_id"])
         now = datetime.now(timezone.utc)
@@ -77,6 +141,8 @@ class TicketAIStateRepository:
             "due_date": ticket_payload["due_date"],
             "primary_resource": ticket_payload.get("primary_resource"),
             "secondary_resource": ticket_payload.get("secondary_resource"),
+            "primary_profile_id": primary_profile_id,
+            "secondary_profile_id": secondary_profile_id,
             "category": ai_payload["category"],
             "confidence": int(ai_payload["confidence"]),
             "priority_label": ai_payload["priority"],

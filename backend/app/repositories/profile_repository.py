@@ -1,6 +1,6 @@
 """Repository layer for profile data access."""
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, and_, or_, update, delete
+from sqlalchemy import select, and_, or_, update, delete, func
 from sqlalchemy.orm import selectinload
 from typing import Optional, List
 from uuid import UUID
@@ -174,6 +174,30 @@ class ProfileRepository:
                 ProfileDisplay.display_name_normalized.contains(normalized_term)
             ))
             .limit(limit)
+        )
+        result = await self.db.execute(query)
+        return list(result.scalars().all())
+
+    async def get_profiles_by_display_names(
+        self,
+        tenant_id: UUID,
+        display_names: List[str],
+    ) -> List[Profile]:
+        """Resolve profiles by exact normalized display names for a tenant."""
+        normalized_names = [name.strip().lower() for name in display_names if name and name.strip()]
+        if not normalized_names:
+            return []
+
+        query = (
+            select(Profile)
+            .join(ProfileDisplay)
+            .options(selectinload(Profile.display))
+            .where(
+                and_(
+                    Profile.tenant_id == tenant_id,
+                    ProfileDisplay.display_name_normalized.in_(normalized_names),
+                )
+            )
         )
         result = await self.db.execute(query)
         return list(result.scalars().all())

@@ -12,6 +12,7 @@ Today that means:
 - returning a priority label
 - exposing the configured category list through the API
 - persisting hosted AI ticket state for refreshable ticket snapshots
+- exposing profile-aware AI ticket-state endpoints for team and user views
 
 In plain English:
 
@@ -50,6 +51,7 @@ Verified from the current code:
 - caches embeddings in memory for repeated batch work
 - calculates priority scores from configured weights plus simple heuristics
 - can refresh and persist AI ticket state into the hosted backend database
+- maps ticket `primary_resource` and `secondary_resource` names onto local profiles when matching display names exist
 
 ## What "AI" Means Here
 
@@ -122,6 +124,10 @@ The current backend integration points are:
 - `GET /api/v1/ai/categories`
 - `POST /api/v1/ai/ticket-states/refresh`
 - `GET /api/v1/ai/ticket-states`
+- `GET /api/v1/ai/ticket-states/my-primary`
+- `GET /api/v1/ai/ticket-states/my-secondary`
+- `GET /api/v1/ai/ticket-states/my-assigned`
+- `GET /api/v1/ai/ticket-states/team`
 - `GET /api/v1/ai/ticket-states/{autotask_ticket_id}`
 
 ## Important Current Limitations
@@ -136,6 +142,7 @@ Verified from the current implementation:
 - embedding cache and metrics are in-memory only
 - persisted AI ticket state exists, but routing/assignment state does not yet
 - there is still no category-management API yet, only category reading plus ticket-state refresh/list/get endpoints
+- user-specific ticket views depend on the AI ticket state being refreshed after matching profiles exist
 
 ## Recommended Reading Order
 

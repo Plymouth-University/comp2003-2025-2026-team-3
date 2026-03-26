@@ -24,6 +24,8 @@ class TicketAIStateResponse(BaseModel):
     due_date: str
     primary_resource: Optional[str] = None
     secondary_resource: Optional[str] = None
+    primary_profile_id: Optional[UUID] = None
+    secondary_profile_id: Optional[UUID] = None
     category: str
     confidence: int
     priority_label: str
@@ -49,5 +51,7 @@ class TicketAIRefreshRequest(BaseModel):
 class TicketAIRefreshResponse(BaseModel):
     refreshed_count: int
     removed_count: int
+    mapped_primary_count: int
+    mapped_secondary_count: int
     include_closed: bool
     refreshed_at: datetime

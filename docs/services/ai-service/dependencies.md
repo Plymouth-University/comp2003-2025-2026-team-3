@@ -184,6 +184,18 @@ Why it matters:
 
 - AI ticket snapshots now persist in the hosted backend instead of existing only in request memory
 
+### Local profile data
+
+Relevant pieces:
+
+- `profile`
+- `profile_display`
+
+Why it matters:
+
+- resource-to-profile mapping depends on local profiles existing with matching display names
+- endpoints like `/api/v1/ai/ticket-states/my-primary` only become useful once refresh has mapped those resources
+
 ## Dependency Risks
 
 Visible from the current code:

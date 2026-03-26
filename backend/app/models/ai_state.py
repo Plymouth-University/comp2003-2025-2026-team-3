@@ -2,7 +2,7 @@
 
 import uuid
 
-from sqlalchemy import Column, Integer, Text, Index, Boolean
+from sqlalchemy import Column, Integer, Text, Index, Boolean, ForeignKey
 from sqlalchemy.dialects.postgresql import UUID, TIMESTAMP
 from sqlalchemy.sql import func
 
@@ -30,6 +30,16 @@ class TicketAIState(Base):
     due_date = Column(Text, nullable=False)
     primary_resource = Column(Text, nullable=True)
     secondary_resource = Column(Text, nullable=True)
+    primary_profile_id = Column(
+        UUID(as_uuid=True),
+        ForeignKey("profile.profile_id", ondelete="SET NULL"),
+        nullable=True,
+    )
+    secondary_profile_id = Column(
+        UUID(as_uuid=True),
+        ForeignKey("profile.profile_id", ondelete="SET NULL"),
+        nullable=True,
+    )
     category = Column(Text, nullable=False)
     confidence = Column(Integer, nullable=False)
     priority_label = Column(Text, nullable=False)
@@ -51,6 +61,8 @@ class TicketAIState(Base):
         Index("ix_ticket_ai_state_tenant_company", "tenant_id", "company"),
         Index("ix_ticket_ai_state_tenant_category", "tenant_id", "category"),
         Index("ix_ticket_ai_state_tenant_closed", "tenant_id", "is_closed"),
+        Index("ix_ticket_ai_state_tenant_primary_profile", "tenant_id", "primary_profile_id"),
+        Index("ix_ticket_ai_state_tenant_secondary_profile", "tenant_id", "secondary_profile_id"),
     )
 
     def __repr__(self) -> str:
