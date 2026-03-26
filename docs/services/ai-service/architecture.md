@@ -2,7 +2,7 @@
 
 ## Architecture In One Sentence
 
-The AI service is a configurable ticket-classification pipeline with a hosted AI-state layer that combines category configuration, lightweight text normalization, keyword matching, optional semantic similarity, heuristic priority scoring, and persisted ticket snapshots.
+The AI service is a configurable ticket-classification pipeline with a hosted AI-state layer that combines category configuration, lightweight text normalization, keyword matching, optional semantic similarity, heuristic priority scoring, persisted ticket snapshots, and simple profile-specialism assignment recommendations.
 
 ## Why It Is Structured This Way
 
@@ -30,9 +30,12 @@ flowchart TD
   Cache[embedding_cache.py] --> Categorizer
   AIStateService[ai_state_service.py] --> AIRepo[ai_state_repository.py]
   AIRepo --> AIStateTable[(ticket_ai_state)]
+  Assign[AIAssignmentService] --> AIRepo
+  Assign --> ProfileRepo[profile_repository.py]
 
   Processor --> API[backend/app/main.py]
   API --> AIRouter[ai_state.py router]
+  API --> ProfileRouter[profiles.py router]
   CategoryFile[ticket_categories.json] --> Config
 ```
 
@@ -142,6 +145,19 @@ What it coordinates:
 - mapping ticket resources onto local profiles when display names match
 - returning refresh/list/get responses for AI endpoints
 
+### `ai_assignment_service.py`
+
+Purpose:
+
+- recommend candidate assignees from persisted AI ticket state and stored profile specialisms
+
+What it coordinates:
+
+- loading one persisted AI ticket state row
+- loading active profiles with assigned specialisms
+- matching ticket category keys to specialism keys
+- returning an explainable candidate list and top recommendation
+
 ### `ai_state_repository.py`
 
 Purpose:
@@ -155,6 +171,7 @@ What it stores:
 - category and confidence
 - priority label and score
 - classification method
+- primary and secondary profile mappings
 - refresh timestamps
 - closed/open state
 
@@ -191,10 +208,12 @@ flowchart TD
   Persist --> MySecondary[GET /api/v1/ai/ticket-states/my-secondary]
   Persist --> Team[GET /api/v1/ai/ticket-states/team]
   Persist --> One[GET /api/v1/ai/ticket-states/{id}]
+  Persist --> Recommend[GET /assignment-recommendation]
   MyAssigned --> Frontend[Active Tickets UI]
   MyPrimary --> Frontend
   MySecondary --> Frontend
   Team --> Frontend
+  Recommend --> TicketDetail[Ticket Detail UI]
 ```
 
 ## Important Design Choices
@@ -220,6 +239,14 @@ Why:
 - spaCy added dependency and startup cost without being central to the desired product direction
 - the current classifier only needs simple normalization for this phase
 
+### Category keys reused as specialism keys
+
+Why:
+
+- it gives the team one stable vocabulary for the first assignment slice
+- the Settings page can be wired to real backend data without inventing a second taxonomy first
+- it keeps the recommendation logic explainable and low-risk
+
 ## Architecture Strengths
 
 Verified from the current code:
@@ -233,13 +260,15 @@ Verified from the current code:
 - AI-specific endpoints now exist for category reading and ticket-state refresh/list/get
 - AI ticket state can now support profile-based primary/secondary ticket views
 - the frontend now consumes AI-state endpoints for `My Assigned`, `My Primary`, `My Secondary`, and `Team Queue`
+- the Settings page now persists authenticated-user specialisms into the profile service database
+- the ticket detail page can now show a specialism-aware assignee recommendation
 
 ## Architecture Weaknesses
 
 Also visible in the current code:
 
-- there is still no assignment or routing layer
+- the current assignment recommendation only considers category-specialism matching
 - category management still requires editing a JSON file rather than using a dedicated API
 - cache and metrics are still process-local rather than durable
-- persisted state now includes profile-resource mapping, but not routing decisions yet
+- persisted state now includes profile-resource mapping, but not company continuity or workload-based routing decisions yet
 - AI-state refresh is still a manual sync step during development and testing

@@ -16,6 +16,7 @@ When the AI service behaves unexpectedly, check these first:
 6. If using AI-state endpoints, has the database migration been applied?
 7. If using `/my-primary` or `/my-secondary`, have you refreshed AI ticket state after creating matching local profiles?
 8. If Swagger shows `401 Unauthorized`, are you authenticated in Swagger itself or only in the frontend UI?
+9. If assignment recommendation is empty, does any active profile actually have a stored specialism matching the ticket category?
 
 ## Symptom: categories look wrong
 
@@ -225,6 +226,40 @@ What to check:
 - `GET /api/v1/ai/ticket-states/my-primary`
 - `GET /api/v1/ai/ticket-states/my-secondary`
 
+## Symptom: Settings still looks like placeholder data
+
+Likely causes:
+
+- the frontend is not running the latest build
+- the authenticated specialism endpoints are failing
+
+What to check:
+
+- `GET /api/v1/auth/profile/specialisms`
+- `PUT /api/v1/auth/profile/specialisms`
+- frontend network requests from the `Settings` page
+- whether category options from `GET /api/v1/ai/categories` are loading
+
+Expected behavior:
+
+- the `Settings` page should load category-aligned specialisations from the backend
+- adding or removing a specialisation should persist immediately
+
+## Symptom: assignment recommendation shows no suggested assignee
+
+Likely causes:
+
+- no active profile has a specialism matching the ticket's AI category
+- the user saved specialisms before the latest frontend build and needs to reload
+- the ticket category is valid, but no one has claimed that category as a strength yet
+
+What to check:
+
+- `GET /api/v1/auth/profile/specialisms` for one or more test users
+- `GET /api/v1/ai/ticket-states/{autotask_ticket_id}/assignment-recommendation`
+- the ticket category shown in ticket detail
+- whether at least one active test user has saved that same category key as a specialism
+
 ## Symptom: the wrong active-ticket tab looks selected or the URL hash does not change
 
 Likely cause:
@@ -244,8 +279,8 @@ What to check:
 
 Verified from the current code:
 
-- no assignment or workload-balancing logic yet
-- no category-management API yet
-- no model version surfaced in AI responses
-- no durable metrics store
-- persisted AI ticket state exists, but routing state does not yet
+ - no company continuity or workload-balancing logic yet
+ - no category-management API yet
+ - no model version surfaced in AI responses
+ - no durable metrics store
+ - persisted AI ticket state and specialism-aware recommendation exist, but full routing state does not yet

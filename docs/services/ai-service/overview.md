@@ -14,6 +14,8 @@ Today that means:
 - persisting hosted AI ticket state for refreshable ticket snapshots
 - exposing profile-aware AI ticket-state endpoints for team and user views
 - powering the frontend `Active Tickets` page views for `My Assigned`, `My Primary`, `My Secondary`, and `Team Queue`
+- storing authenticated-user specialisms in the profile service
+- recommending candidate assignees for a ticket based on category-matched profile specialisms
 
 In plain English:
 
@@ -33,6 +35,7 @@ It is currently a lightweight ticket-classification pipeline made of:
 3. keyword matching
 4. semantic similarity, when the embedding model is available
 5. heuristic priority scoring
+6. specialism-aware assignment recommendation from persisted AI ticket state
 
 That makes it a CPU-friendly AI-assisted classifier rather than an autonomous decision engine.
 
@@ -53,6 +56,8 @@ Verified from the current code:
 - calculates priority scores from configured weights plus simple heuristics
 - can refresh and persist AI ticket state into the hosted backend database
 - maps ticket `primary_resource` and `secondary_resource` names onto local profiles when matching display names exist
+- stores the authenticated user's selected AI-category-aligned specialisms in the profile service database
+- recommends assignee candidates for a ticket by matching its AI category to active profile specialisms
 
 ## What "AI" Means Here
 
@@ -81,6 +86,17 @@ When the embedding model is available, the service:
 - uses cosine similarity as a semantic signal
 
 If the model is not provisioned, the service still starts and falls back to keyword-only behavior.
+
+### 3. Explainable specialism-aware recommendation
+
+For assignment recommendation, the service currently:
+
+- looks up the persisted AI category for a ticket
+- loads active profiles and their assigned specialisms
+- finds profiles whose specialism key matches the ticket category key
+- returns a scored candidate list with simple reasoning text
+
+This is intentionally lightweight and explainable. It is the first routing signal, not the final routing engine.
 
 ## High-Level Pipeline
 
@@ -130,6 +146,9 @@ The current backend integration points are:
 - `GET /api/v1/ai/ticket-states/my-assigned`
 - `GET /api/v1/ai/ticket-states/team`
 - `GET /api/v1/ai/ticket-states/{autotask_ticket_id}`
+- `GET /api/v1/ai/ticket-states/{autotask_ticket_id}/assignment-recommendation`
+- `GET /api/v1/auth/profile/specialisms`
+- `PUT /api/v1/auth/profile/specialisms`
 
 The current frontend integration points are:
 
@@ -141,18 +160,19 @@ The current frontend integration points are:
 Important current detail:
 
 - the separate sidebar `Team Tickets` entry has been removed, and the `Active Tickets` page now switches between personal and team AI-state views using the top tab bar
+- the `Settings` page now reads and writes real profile specialisms instead of mutating placeholder browser-only state
+- the ticket detail page now shows an `AI Recommendation` panel backed by the assignment-recommendation endpoint
 
 ## Important Current Limitations
 
 Verified from the current implementation:
 
-- this service does not yet assign tickets to SecOps users
-- it does not yet use profile specialisms for routing
+ - this service does not yet automatically write ticket ownership back to an external system
 - it does not yet enforce company continuity ownership
 - it does not yet balance workloads across analysts
 - category quality depends on the configured category definitions and ticket text quality
 - embedding cache and metrics are in-memory only
-- persisted AI ticket state exists, but routing/assignment state does not yet
+- persisted AI ticket state exists, and specialism-aware recommendation now exists, but full routing state does not yet
 - there is still no category-management API yet, only category reading plus ticket-state refresh/list/get endpoints
 - user-specific ticket views depend on the AI ticket state being refreshed after matching profiles exist
 - local testing may require triggering refresh from the authenticated browser session if Swagger is not authenticated for the protected AI endpoints

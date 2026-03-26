@@ -14,13 +14,14 @@ The AI service currently provides:
 - heuristic priority scoring
 - batch support
 - model fallback behavior
+- authenticated-user specialism persistence aligned to AI category keys
+- ticket-level assignee recommendation based on matching active profile specialisms
 
 It does not yet provide:
 
-- SecOps specialism-aware assignment
 - company continuity assignment
 - workload balancing
-- routing decisions built on top of the existing profile/resource-linked AI state
+- automatic routing decisions built on top of the existing profile/resource-linked AI state
 - AI-specific CRUD endpoints for category management or routing actions
 
 ## Best Next Improvements
@@ -48,6 +49,8 @@ Now that persisted state exists, add a dedicated routing service that can score 
 - current ticket load
 - priority pressure
 - future availability signals
+
+The existing specialism-aware recommendation should be treated as the first scoring signal, not the finished router.
 
 ### 3. Add AI-specific endpoints
 
@@ -103,10 +106,10 @@ The best next step is not another round of classifier cleanup.
 The best next sequence is:
 
 1. design the routing data model on top of the existing AI-state and profile/resource mapping
-2. build specialism-aware assignment
-3. add company continuity logic
-4. add workload balancing
-5. expose richer AI-specific endpoints for the frontend and future integrations
-6. add manual override and assignment-audit support
+2. extend the current specialism-aware recommendation with company continuity scoring
+3. add workload balancing
+4. expose richer AI-specific endpoints for the frontend and future integrations
+5. add manual override and assignment-audit support
+6. decide when, if ever, recommendation should become automatic assignment
 
 That path moves the service from "clean classifier" to "real SecOps workflow engine."

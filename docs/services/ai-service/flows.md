@@ -49,6 +49,7 @@ Primary integration points:
 - `GET /api/v1/ai/ticket-states/my-assigned`
 - `GET /api/v1/ai/ticket-states/team`
 - `GET /api/v1/ai/ticket-states/{autotask_ticket_id}`
+- `GET /api/v1/ai/ticket-states/{autotask_ticket_id}/assignment-recommendation`
 
 The key idea is:
 
@@ -353,6 +354,64 @@ flowchart LR
   Primary --> Render
   Secondary --> Render
   Team --> Render
+```
+
+## Flow 11: Save User Specialisms From Settings
+
+Primary integration points:
+
+- `GET /api/v1/auth/profile/specialisms`
+- `PUT /api/v1/auth/profile/specialisms`
+
+The key idea is:
+
+- the frontend no longer keeps specialisms as placeholder-only local state
+- the authenticated user now stores category-aligned specialisms in the real profile service database
+
+### High-level sequence
+
+```mermaid
+sequenceDiagram
+  autonumber
+  participant Settings as Settings page
+  participant ProfileAPI as Profiles router
+  participant Service as SpecialismService
+  participant ProfileDB as profile/specialism tables
+
+  Settings->>ProfileAPI: GET /auth/profile/specialisms
+  ProfileAPI->>Service: get_profile_specialisms(...)
+  Service->>ProfileDB: load assigned specialisms
+  ProfileDB-->>Settings: current assignments
+
+  Settings->>ProfileAPI: PUT /auth/profile/specialisms
+  ProfileAPI->>Service: replace_profile_specialisms_from_category_keys(...)
+  Service->>ProfileDB: create missing specialisms if needed
+  Service->>ProfileDB: replace profile_specialism rows
+  ProfileDB-->>Settings: updated assignments
+```
+
+## Flow 12: Recommend An Assignee From Ticket Detail
+
+Primary integration points:
+
+- `GET /api/v1/ai/ticket-states/{autotask_ticket_id}/assignment-recommendation`
+
+The key idea is:
+
+- the service uses the persisted AI category for a ticket
+- then finds active profiles with matching stored specialisms
+- then returns an explainable recommendation rather than auto-assigning ownership
+
+### Recommendation flow
+
+```mermaid
+flowchart TD
+  TicketDetail[Ticket Detail page] --> API[/assignment-recommendation/]
+  API --> LoadState[Load persisted AI ticket state]
+  LoadState --> LoadProfiles[Load active profiles + specialisms]
+  LoadProfiles --> Match[Match ticket category key to specialism keys]
+  Match --> Score[Build scored candidate list]
+  Score --> Response[Return recommendation + reasons]
 ```
 
 ## What New Developers Should Remember
