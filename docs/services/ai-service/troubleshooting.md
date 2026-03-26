@@ -17,6 +17,7 @@ When the AI service behaves unexpectedly, check these first:
 7. If using `/my-primary` or `/my-secondary`, have you refreshed AI ticket state after creating matching local profiles?
 8. If Swagger shows `401 Unauthorized`, are you authenticated in Swagger itself or only in the frontend UI?
 9. If assignment recommendation is empty, does any active profile actually have a stored specialism matching the ticket category?
+10. If override actions fail, has the latest AI-state migration been applied?
 
 ## Symptom: categories look wrong
 
@@ -189,6 +190,18 @@ Why this happens:
 
 - the AI-state table now stores the original ticket `created` timestamp for frontend use
 
+## Symptom: override buttons fail or `manual_override_*` columns do not exist
+
+Likely cause:
+
+- the database is missing the latest AI-state override migration
+
+What to check:
+
+- run `cd backend && .venv/bin/alembic upgrade head`
+- restart the backend
+- retry the override action
+
 ## Symptom: `401 Unauthorized` when calling AI-state endpoints in Swagger
 
 Likely cause:
@@ -260,6 +273,20 @@ What to check:
 - the ticket category shown in ticket detail
 - whether at least one active test user has saved that same category key as a specialism
 
+## Symptom: recommendation ignores company continuity or workload
+
+Likely causes:
+
+- the AI-state snapshot is stale
+- there are too few open tickets for that company to create a continuity signal
+- the team workload is currently too even to create a visible penalty/bonus
+
+What to check:
+
+- refresh AI ticket state again
+- inspect recommendation reasons for same-company and workload lines
+- confirm the company appears on multiple open tickets in the team queue
+
 ## Symptom: the wrong active-ticket tab looks selected or the URL hash does not change
 
 Likely cause:
@@ -279,8 +306,7 @@ What to check:
 
 Verified from the current code:
 
- - no company continuity or workload-balancing logic yet
  - no category-management API yet
  - no model version surfaced in AI responses
  - no durable metrics store
- - persisted AI ticket state and specialism-aware recommendation exist, but full routing state does not yet
+ - persisted AI ticket state, recommendation logic, continuity scoring, workload balancing, and manual override exist, but external write-back and full workflow automation do not yet

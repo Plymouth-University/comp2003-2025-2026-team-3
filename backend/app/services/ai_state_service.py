@@ -93,6 +93,36 @@ class AIStateService:
             refreshed_at=datetime.now(timezone.utc),
         )
 
+    async def _build_ticket_state_responses(
+        self,
+        tenant_id: UUID,
+        states,
+    ) -> list[TicketAIStateResponse]:
+        override_profile_ids = [
+            state.manual_override_profile_id
+            for state in states
+            if state.manual_override_profile_id is not None
+        ]
+        profiles = await self.profile_repository.get_profiles_by_ids(tenant_id, override_profile_ids)
+        display_name_by_profile_id = {
+            profile.profile_id: profile.display.display_name
+            for profile in profiles
+            if profile.display is not None
+        }
+
+        responses: list[TicketAIStateResponse] = []
+        for state in states:
+            payload = TicketAIStateResponse.model_validate(state).model_dump()
+            manual_override_display_name = display_name_by_profile_id.get(state.manual_override_profile_id)
+            payload["manual_override_display_name"] = manual_override_display_name
+            payload["effective_assignee_display_name"] = (
+                manual_override_display_name
+                or state.primary_resource
+                or state.secondary_resource
+            )
+            responses.append(TicketAIStateResponse(**payload))
+        return responses
+
     async def list_ticket_states(
         self,
         tenant_id: UUID,
@@ -106,7 +136,7 @@ class AIStateService:
             limit=limit,
             offset=offset,
         )
-        return [TicketAIStateResponse.model_validate(state) for state in states]
+        return await self._build_ticket_state_responses(tenant_id, states)
 
     async def list_queue_ticket_states(
         self,
@@ -123,7 +153,7 @@ class AIStateService:
             limit=limit,
             offset=offset,
         )
-        return [TicketAIStateResponse.model_validate(state) for state in states]
+        return await self._build_ticket_state_responses(tenant_id, states)
 
     async def list_profile_ticket_states(
         self,
@@ -142,7 +172,7 @@ class AIStateService:
             limit=limit,
             offset=offset,
         )
-        return [TicketAIStateResponse.model_validate(state) for state in states]
+        return await self._build_ticket_state_responses(tenant_id, states)
 
     async def get_ticket_state(
         self,
@@ -152,7 +182,8 @@ class AIStateService:
         state = await self.repository.get_by_ticket_id(tenant_id, autotask_ticket_id)
         if not state:
             return None
-        return TicketAIStateResponse.model_validate(state)
+        responses = await self._build_ticket_state_responses(tenant_id, [state])
+        return responses[0] if responses else None
 
     async def set_manual_override(
         self,

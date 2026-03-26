@@ -16,13 +16,15 @@ The AI service currently provides:
 - model fallback behavior
 - authenticated-user specialism persistence aligned to AI category keys
 - ticket-level assignee recommendation based on matching active profile specialisms
+- company continuity scoring
+- workload balancing
+- persisted manual override and effective-assignee tracking
 
 It does not yet provide:
 
-- company continuity assignment
-- workload balancing
 - automatic routing decisions built on top of the existing profile/resource-linked AI state
-- AI-specific CRUD endpoints for category management or routing actions
+- AI-specific CRUD endpoints for category management
+- write-back of final assignment to an external ticket source
 
 ## Best Next Improvements
 
@@ -32,10 +34,10 @@ The hosted database-backed AI-state layer now exists.
 
 The next major step is to extend it with:
 
-- assignment decisions
-- company continuity signals
-- workload signals
-- override and audit state
+- automated assignment decisions
+- richer audit history beyond the current override fields
+- optional refresh/sync scheduling
+- external write-back hooks
 
 This should still not replace Autotask as the source of truth.
 
@@ -105,11 +107,11 @@ The best next step is not another round of classifier cleanup.
 
 The best next sequence is:
 
-1. design the routing data model on top of the existing AI-state and profile/resource mapping
-2. extend the current specialism-aware recommendation with company continuity scoring
-3. add workload balancing
-4. expose richer AI-specific endpoints for the frontend and future integrations
-5. add manual override and assignment-audit support
-6. decide when, if ever, recommendation should become automatic assignment
+1. decide whether recommendation should become automatic assignment or remain human-confirmed
+2. add external write-back integration hooks for final assignment state
+3. expose richer AI-specific endpoints for admin/reporting workflows
+4. add category-management API support
+5. add scheduled refresh and operational health/reporting
+6. expand audit history and evaluation tooling
 
 That path moves the service from "clean classifier" to "real SecOps workflow engine."

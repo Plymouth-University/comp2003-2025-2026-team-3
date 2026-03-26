@@ -17,6 +17,10 @@ type TicketAIState = {
   due_date: string;
   primary_resource: string | null;
   secondary_resource: string | null;
+  manual_override_display_name: string | null;
+  effective_assignee_display_name: string | null;
+  manual_override_reason: string | null;
+  manual_override_set_at: string | null;
   category: string;
   confidence: number;
   priority_label: string;
@@ -54,6 +58,10 @@ function toBackendTicket(ticket: TicketAIState): BackendTicket {
     work_type: "",
     primary_resource: ticket.primary_resource ?? "",
     secondary_resource: ticket.secondary_resource ?? "",
+    effective_assignee_display_name: ticket.effective_assignee_display_name ?? ticket.primary_resource ?? ticket.secondary_resource ?? "",
+    manual_override_display_name: ticket.manual_override_display_name,
+    manual_override_reason: ticket.manual_override_reason,
+    manual_override_set_at: ticket.manual_override_set_at,
     queue: ticket.queue,
     ai: {
       category: ticket.category,

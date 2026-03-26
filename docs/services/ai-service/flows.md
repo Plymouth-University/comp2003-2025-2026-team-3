@@ -50,6 +50,8 @@ Primary integration points:
 - `GET /api/v1/ai/ticket-states/team`
 - `GET /api/v1/ai/ticket-states/{autotask_ticket_id}`
 - `GET /api/v1/ai/ticket-states/{autotask_ticket_id}/assignment-recommendation`
+- `PUT /api/v1/ai/ticket-states/{autotask_ticket_id}/assignment-override`
+- `DELETE /api/v1/ai/ticket-states/{autotask_ticket_id}/assignment-override`
 
 The key idea is:
 
@@ -400,6 +402,8 @@ The key idea is:
 
 - the service uses the persisted AI category for a ticket
 - then finds active profiles with matching stored specialisms
+- then adds company continuity and workload scoring
+- then applies any manual override to determine the effective assignee
 - then returns an explainable recommendation rather than auto-assigning ownership
 
 ### Recommendation flow
@@ -410,9 +414,55 @@ flowchart TD
   API --> LoadState[Load persisted AI ticket state]
   LoadState --> LoadProfiles[Load active profiles + specialisms]
   LoadProfiles --> Match[Match ticket category key to specialism keys]
-  Match --> Score[Build scored candidate list]
-  Score --> Response[Return recommendation + reasons]
+  Match --> Continuity[Add same-company continuity score]
+  Continuity --> Load[Add workload adjustment]
+  Load --> Score[Build scored candidate list]
+  Score --> Override[Apply manual override if present]
+  Override --> Response[Return recommendation + effective assignee]
 ```
+
+## Flow 13: Apply Or Clear Manual Override
+
+Primary integration points:
+
+- `PUT /api/v1/ai/ticket-states/{autotask_ticket_id}/assignment-override`
+- `DELETE /api/v1/ai/ticket-states/{autotask_ticket_id}/assignment-override`
+
+The key idea is:
+
+- SecOps can deliberately overrule the recommended assignee
+- the override is stored in hosted AI state with a reason and timestamp
+- the recommendation endpoint still returns the AI recommendation, but also returns the effective assignee after override
+
+```mermaid
+sequenceDiagram
+  autonumber
+  participant UI as Ticket Detail UI
+  participant API as AI router
+  participant State as AIStateService
+  participant DB as ticket_ai_state
+  participant Assign as AIAssignmentService
+
+  UI->>API: PUT/DELETE assignment-override
+  API->>State: set_manual_override(...) or clear_manual_override(...)
+  State->>DB: update override columns
+  API->>Assign: recommend_for_ticket(...)
+  Assign-->>UI: recommendation + effective assignee + override metadata
+```
+
+## Flow 14: Show Effective Assignee In List Views
+
+Primary frontend code:
+
+- `frontend/src/shared/api/aiTickets.ts`
+- `frontend/src/components/TicketListContainer.ts`
+
+What it does:
+
+1. list endpoints return manual-override metadata and effective assignee name
+2. the frontend maps those fields into shared ticket objects
+3. active/team ticket cards display the effective assignee
+4. ticket cards show a manual-override badge when one exists
 
 ## What New Developers Should Remember
 

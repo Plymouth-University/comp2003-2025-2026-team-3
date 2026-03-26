@@ -223,6 +223,28 @@ class ProfileRepository:
         result = await self.db.execute(query)
         return list(result.scalars().all())
 
+    async def get_profiles_by_ids(
+        self,
+        tenant_id: UUID,
+        profile_ids: List[UUID],
+    ) -> List[Profile]:
+        """Resolve profiles by ids for a tenant."""
+        if not profile_ids:
+            return []
+
+        query = (
+            select(Profile)
+            .options(selectinload(Profile.display))
+            .where(
+                and_(
+                    Profile.tenant_id == tenant_id,
+                    Profile.profile_id.in_(profile_ids),
+                )
+            )
+        )
+        result = await self.db.execute(query)
+        return list(result.scalars().all())
+
 
 class TenantRepository:
     """Data access layer for tenants."""

@@ -18,6 +18,10 @@ export type BackendTicket = {
   work_type: string;
   primary_resource: string;
   secondary_resource: string;
+  effective_assignee_display_name: string;
+  manual_override_display_name: string | null;
+  manual_override_reason: string | null;
+  manual_override_set_at: string | null;
   queue: string;
   ai: {
     category: string;

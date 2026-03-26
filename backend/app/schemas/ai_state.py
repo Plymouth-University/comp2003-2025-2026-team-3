@@ -31,6 +31,8 @@ class TicketAIStateResponse(BaseModel):
     manual_override_set_by_profile_id: Optional[UUID] = None
     manual_override_reason: Optional[str] = None
     manual_override_set_at: Optional[datetime] = None
+    manual_override_display_name: Optional[str] = None
+    effective_assignee_display_name: Optional[str] = None
     category: str
     confidence: int
     priority_label: str

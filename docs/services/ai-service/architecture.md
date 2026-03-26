@@ -2,7 +2,7 @@
 
 ## Architecture In One Sentence
 
-The AI service is a configurable ticket-classification pipeline with a hosted AI-state layer that combines category configuration, lightweight text normalization, keyword matching, optional semantic similarity, heuristic priority scoring, persisted ticket snapshots, and simple profile-specialism assignment recommendations.
+The AI service is a configurable ticket-classification pipeline with a hosted AI-state layer that combines category configuration, lightweight text normalization, keyword matching, optional semantic similarity, heuristic priority scoring, persisted ticket snapshots, assignment recommendation scoring, and manual override state.
 
 ## Why It Is Structured This Way
 
@@ -156,6 +156,9 @@ What it coordinates:
 - loading one persisted AI ticket state row
 - loading active profiles with assigned specialisms
 - matching ticket category keys to specialism keys
+- adding company continuity scoring
+- adding workload balancing
+- respecting any persisted manual override when computing the effective assignee
 - returning an explainable candidate list and top recommendation
 
 ### `ai_state_repository.py`
@@ -172,6 +175,7 @@ What it stores:
 - priority label and score
 - classification method
 - primary and secondary profile mappings
+- manual override profile, reason, setter, and timestamp
 - refresh timestamps
 - closed/open state
 
@@ -209,11 +213,13 @@ flowchart TD
   Persist --> Team[GET /api/v1/ai/ticket-states/team]
   Persist --> One[GET /api/v1/ai/ticket-states/{id}]
   Persist --> Recommend[GET /assignment-recommendation]
+  Persist --> Override[PUT/DELETE assignment-override]
   MyAssigned --> Frontend[Active Tickets UI]
   MyPrimary --> Frontend
   MySecondary --> Frontend
   Team --> Frontend
   Recommend --> TicketDetail[Ticket Detail UI]
+  Override --> TicketDetail
 ```
 
 ## Important Design Choices
@@ -262,13 +268,16 @@ Verified from the current code:
 - the frontend now consumes AI-state endpoints for `My Assigned`, `My Primary`, `My Secondary`, and `Team Queue`
 - the Settings page now persists authenticated-user specialisms into the profile service database
 - the ticket detail page can now show a specialism-aware assignee recommendation
+- company continuity and workload balancing now influence recommendation scoring
+- manual override is now persisted in hosted AI state and exposed to the UI
+- active/team list views now show the effective assignee rather than only raw resource names
 
 ## Architecture Weaknesses
 
 Also visible in the current code:
 
-- the current assignment recommendation only considers category-specialism matching
+- the current routing logic is still recommendation-oriented rather than a full automatic workflow manager
 - category management still requires editing a JSON file rather than using a dedicated API
 - cache and metrics are still process-local rather than durable
-- persisted state now includes profile-resource mapping, but not company continuity or workload-based routing decisions yet
+- the service still does not write ownership changes back to an external ticket source
 - AI-state refresh is still a manual sync step during development and testing

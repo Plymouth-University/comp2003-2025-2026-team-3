@@ -263,6 +263,16 @@ export function TicketListContainer(
               el("span", { text: `Priority: ${ticket.priority}` }),
               el("span", { text: `Confidence: ${ticket.ai.confidence.toFixed(0)}%` }),
             ]),
+            el("div", {
+              className: "text-xs text-slate-500 mt-2",
+              text: `Effective Assignee: ${ticket.effective_assignee_display_name || "Unassigned"}`,
+            }),
+            ...(ticket.manual_override_display_name ? [
+              el("div", {
+                className: "mt-2 inline-flex rounded-full bg-amber-100 px-2 py-1 text-xs font-semibold text-amber-900",
+                text: `Manual Override: ${ticket.manual_override_display_name}`,
+              }),
+            ] : []),
             el("div", { className: "text-xs text-slate-500 mt-2", text: `Due: ${ticket.due_date}` }),
           ]),
         ]);
