@@ -224,6 +224,6 @@ These are not necessarily bugs, but they can surprise developers:
 
 - profile routes are not guarded by session auth in `backend/app/routers/profiles.py`
 - there is no audit trail for profile mutations
-- there is no specialism removal endpoint
+- there is no dedicated delete endpoint for specialism assignment removal (authenticated replacement can still remove by omission)
 - there is no dedicated profile reactivation endpoint
 - direct identity linking and specialism assignment expose only generic `400` errors on failure

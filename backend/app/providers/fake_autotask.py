@@ -39,6 +39,14 @@ class FakeAutotaskProvider:
             logger.error(f"[{datetime.now().strftime('%H:%M:%S.%f')[:-3]}] FakeAutotaskProvider: Error loading tickets: {str(e)}", exc_info=True)
             raise
 
+    def _persist(self):
+        """Persist in-memory tickets back to local JSON source."""
+        if self._tickets is None:
+            self._load()
+        assert self._tickets is not None
+        payload = [ticket.model_dump() for ticket in self._tickets]
+        DATA_PATH.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+
     def get_tickets(self) -> list[Ticket]:
         call_time = datetime.now().strftime("%H:%M:%S.%f")[:-3]
         if self._tickets is None:
@@ -64,4 +72,27 @@ class FakeAutotaskProvider:
         
         search_time = time.time() - search_start
         logger.warning(f"[{datetime.now().strftime('%H:%M:%S.%f')[:-3]}] FakeAutotaskProvider.get_ticket({autotask_ticket_id}): Not found after {search_time:.3f}s")
+        raise KeyError(f"Ticket not found: {autotask_ticket_id}")
+
+    def set_primary_resource(self, autotask_ticket_id: int, primary_resource: str | None) -> Ticket:
+        """Update a ticket's primary resource and persist the change to local JSON."""
+        if self._tickets is None:
+            self._load()
+        assert self._tickets is not None
+
+        for index, ticket in enumerate(self._tickets):
+            if ticket.autotask_ticket_id != autotask_ticket_id:
+                continue
+
+            updated = ticket.model_copy(update={"primary_resource": primary_resource})
+            self._tickets[index] = updated
+            self._persist()
+            logger.info(
+                "Updated ticket %s primary_resource to %s and persisted to %s",
+                autotask_ticket_id,
+                primary_resource,
+                DATA_PATH,
+            )
+            return updated
+
         raise KeyError(f"Ticket not found: {autotask_ticket_id}")

@@ -18,6 +18,7 @@ from app.models.profile import (
     ProfileDisplay, AvatarPreset, ProfileAvatar,
     Specialism, ProfileSpecialism
 )
+from app.models.ai_state import TicketAIState
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

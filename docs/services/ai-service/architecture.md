@@ -2,7 +2,7 @@
 
 ## Architecture In One Sentence
 
-The AI service is a configurable ticket-classification pipeline that combines category configuration, lightweight text normalization, keyword matching, optional semantic similarity, and heuristic priority scoring.
+The AI service is a configurable ticket-classification pipeline with a hosted AI-state layer that combines category configuration, lightweight text normalization, keyword matching, optional semantic similarity, heuristic priority scoring, persisted ticket snapshots, assignment recommendation scoring, and manual override state.
 
 ## Why It Is Structured This Way
 
@@ -28,8 +28,18 @@ flowchart TD
   Categorizer --> Processor
   Priority --> Processor
   Cache[embedding_cache.py] --> Categorizer
+  AIStateService[ai_state_service.py] --> AIRepo[ai_state_repository.py]
+  AIStateService --> Oversight[AIOversightService]
+  AIRepo --> AIStateTable[(ticket_ai_state)]
+  Assign[AIAssignmentService] --> AIRepo
+  Assign --> ProfileRepo[profile_repository.py]
+  Oversight --> Assign
+  Oversight --> AIRepo
+  Main[main.py lifespan worker] --> AIStateService
 
   Processor --> API[backend/app/main.py]
+  API --> AIRouter[ai_state.py router]
+  API --> ProfileRouter[profiles.py router]
   CategoryFile[ticket_categories.json] --> Config
 ```
 
@@ -125,6 +135,70 @@ What it coordinates:
 - priority calculation
 - response shaping
 
+### `ai_state_service.py`
+
+Purpose:
+
+- refresh and read persisted AI ticket state for the hosted backend
+
+What it coordinates:
+
+- pulling tickets from the current provider
+- classifying them through the existing AI path
+- storing the resulting AI metadata in the database
+- mapping ticket resources onto local profiles when display names match
+- returning refresh/list/get responses for AI endpoints
+
+### `ai_assignment_service.py`
+
+Purpose:
+
+- recommend candidate assignees from persisted AI ticket state and stored profile specialisms
+
+What it coordinates:
+
+- loading one persisted AI ticket state row
+- loading active profiles with assigned specialisms
+- matching ticket category keys to specialism keys
+- adding company continuity scoring
+- adding workload balancing
+- respecting any persisted manual override when computing the effective assignee
+- returning an explainable candidate list and top recommendation
+
+### `ai_oversight_service.py`
+
+Purpose:
+
+- apply continuous queue-level assignment safety rules on top of recommendations
+
+What it coordinates:
+
+- reading queue ticket AI-state rows
+- respecting manual override as a hard stop for automatic changes
+- enforcing that tickets without a primary assignee are auto-assigned
+- preventing auto-moves for tickets that have already started
+- allowing pre-start auto-move only when recommendation materially outranks incumbent
+- storing AI-managed assignment reason and timestamp metadata
+
+### `ai_state_repository.py`
+
+Purpose:
+
+- persist tenant-scoped AI ticket state
+
+What it stores:
+
+- ticket snapshot fields needed by the AI/routing layer
+- original ticket `created` timestamp used by frontend dashboard and active-ticket views
+- category and confidence
+- priority label and score
+- classification method
+- primary and secondary profile mappings
+- manual override profile, reason, setter, and timestamp
+- AI-managed profile, reason, and timestamp
+- refresh timestamps
+- closed/open state
+
 ## Runtime Architecture
 
 ### Request-time classification path
@@ -142,15 +216,32 @@ flowchart LR
   Score --> Final[AI response]
 ```
 
-### Data flow through the orchestrator
+### Persisted AI-state path
 
 ```mermaid
 flowchart TD
-  Input[Ticket input] --> Processor[process_ticket]
-  Processor --> Text[extract_ticket_text]
-  Processor --> Categorizer[predict_category_hybrid]
-  Processor --> Priority[calculate_priority_score]
-  Priority --> Output[category + confidence + priority]
+  Provider[Ticket provider] --> Refresh[POST /api/v1/ai/ticket-states/refresh]
+  Refresh --> AIService[AIStateService]
+  AIService --> Processor[process_ticket]
+  AIService --> ProfileLookup[Resolve resource names to profiles]
+  Processor --> Persist[(ticket_ai_state)]
+  ProfileLookup --> Persist
+  Persist --> Read[GET /api/v1/ai/ticket-states]
+  Persist --> MyAssigned[GET /api/v1/ai/ticket-states/my-assigned]
+  Persist --> MyPrimary[GET /api/v1/ai/ticket-states/my-primary]
+  Persist --> MySecondary[GET /api/v1/ai/ticket-states/my-secondary]
+  Persist --> Team[GET /api/v1/ai/ticket-states/team]
+  Persist --> One[GET /api/v1/ai/ticket-states/{id}]
+  Persist --> Recommend[GET /assignment-recommendation]
+  Persist --> Override[PUT/DELETE assignment-override]
+  Persist --> OversightOnce[POST /api/v1/ai/oversight/run]
+  MainLoop[main.py background worker] --> Refresh
+  MyAssigned --> Frontend[Active Tickets UI]
+  MyPrimary --> Frontend
+  MySecondary --> Frontend
+  Team --> Frontend
+  Recommend --> TicketDetail[Ticket Detail UI]
+  Override --> TicketDetail
 ```
 
 ## Important Design Choices
@@ -176,6 +267,14 @@ Why:
 - spaCy added dependency and startup cost without being central to the desired product direction
 - the current classifier only needs simple normalization for this phase
 
+### Category keys reused as specialism keys
+
+Why:
+
+- it gives the team one stable vocabulary for the first assignment slice
+- the Settings page can be wired to real backend data without inventing a second taxonomy first
+- it keeps the recommendation logic explainable and low-risk
+
 ## Architecture Strengths
 
 Verified from the current code:
@@ -185,12 +284,22 @@ Verified from the current code:
 - deleted prototype-only modules are no longer in the live path
 - single-ticket and batch modes both still work
 - model availability failures are handled more safely
+- AI ticket state can now be persisted centrally in the hosted backend
+- AI-specific endpoints now exist for category reading and ticket-state refresh/list/get
+- AI ticket state can now support profile-based primary/secondary ticket views
+- the frontend now consumes AI-state endpoints for `My Assigned`, `My Primary`, `My Secondary`, and `Team Queue`
+- the Settings page now persists authenticated-user specialisms into the profile service database
+- the ticket detail page can now show a specialism-aware assignee recommendation
+- company continuity and workload balancing now influence recommendation scoring
+- manual override is now persisted in hosted AI state and exposed to the UI
+- active/team list views now show the effective assignee rather than only raw resource names
 
 ## Architecture Weaknesses
 
 Also visible in the current code:
 
-- there is still no persisted AI state for active tickets
-- there is still no assignment or routing layer
+- the current routing logic is still recommendation-oriented rather than a full automatic workflow manager
 - category management still requires editing a JSON file rather than using a dedicated API
 - cache and metrics are still process-local rather than durable
+- the service still does not write ownership changes back to an external ticket source
+- AI-state refresh is still a manual sync step during development and testing

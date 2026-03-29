@@ -1,6 +1,6 @@
 """Repository layer for profile data access."""
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, and_, or_, update, delete
+from sqlalchemy import select, and_, or_, update, delete, func
 from sqlalchemy.orm import selectinload
 from typing import Optional, List
 from uuid import UUID
@@ -91,6 +91,27 @@ class ProfileRepository:
         query = query.limit(limit).offset(offset)
         result = await self.db.execute(query)
         return list(result.scalars().all())
+
+    async def get_profiles_by_tenant_with_specialisms(
+        self,
+        tenant_id: UUID,
+        status: Optional[str] = None,
+    ) -> List[Profile]:
+        """Get profiles for a tenant with display and specialism relationships loaded."""
+        query = (
+            select(Profile)
+            .options(
+                selectinload(Profile.display),
+                selectinload(Profile.specialisms).selectinload(ProfileSpecialism.specialism),
+            )
+            .where(Profile.tenant_id == tenant_id)
+        )
+
+        if status:
+            query = query.where(Profile.status == status)
+
+        result = await self.db.execute(query)
+        return list(result.scalars().all())
     
     async def update_profile(
         self,
@@ -174,6 +195,52 @@ class ProfileRepository:
                 ProfileDisplay.display_name_normalized.contains(normalized_term)
             ))
             .limit(limit)
+        )
+        result = await self.db.execute(query)
+        return list(result.scalars().all())
+
+    async def get_profiles_by_display_names(
+        self,
+        tenant_id: UUID,
+        display_names: List[str],
+    ) -> List[Profile]:
+        """Resolve profiles by exact normalized display names for a tenant."""
+        normalized_names = [name.strip().lower() for name in display_names if name and name.strip()]
+        if not normalized_names:
+            return []
+
+        query = (
+            select(Profile)
+            .join(ProfileDisplay)
+            .options(selectinload(Profile.display))
+            .where(
+                and_(
+                    Profile.tenant_id == tenant_id,
+                    ProfileDisplay.display_name_normalized.in_(normalized_names),
+                )
+            )
+        )
+        result = await self.db.execute(query)
+        return list(result.scalars().all())
+
+    async def get_profiles_by_ids(
+        self,
+        tenant_id: UUID,
+        profile_ids: List[UUID],
+    ) -> List[Profile]:
+        """Resolve profiles by ids for a tenant."""
+        if not profile_ids:
+            return []
+
+        query = (
+            select(Profile)
+            .options(selectinload(Profile.display))
+            .where(
+                and_(
+                    Profile.tenant_id == tenant_id,
+                    Profile.profile_id.in_(profile_ids),
+                )
+            )
         )
         result = await self.db.execute(query)
         return list(result.scalars().all())
@@ -310,7 +377,8 @@ class SpecialismRepository:
         tenant_id: UUID,
         specialism_key: str,
         specialism_name: str,
-        description: Optional[str] = None
+        description: Optional[str] = None,
+        commit: bool = True,
     ) -> Specialism:
         """Create a new specialism."""
         specialism = Specialism(
@@ -320,8 +388,10 @@ class SpecialismRepository:
             description=description
         )
         self.db.add(specialism)
-        await self.db.commit()
-        await self.db.refresh(specialism)
+        await self.db.flush()
+        if commit:
+            await self.db.commit()
+            await self.db.refresh(specialism)
         return specialism
     
     async def get_specialisms_by_tenant(
@@ -335,6 +405,28 @@ class SpecialismRepository:
         if active_only:
             query = query.where(Specialism.is_active == True)
         
+        result = await self.db.execute(query)
+        return list(result.scalars().all())
+
+    async def get_specialisms_by_keys(
+        self,
+        tenant_id: UUID,
+        specialism_keys: List[str],
+        active_only: bool = True,
+    ) -> List[Specialism]:
+        """Resolve specialisms by tenant-scoped stable keys."""
+        if not specialism_keys:
+            return []
+
+        query = select(Specialism).where(
+            and_(
+                Specialism.tenant_id == tenant_id,
+                Specialism.specialism_key.in_(specialism_keys),
+            )
+        )
+        if active_only:
+            query = query.where(Specialism.is_active.is_(True))
+
         result = await self.db.execute(query)
         return list(result.scalars().all())
     
@@ -375,3 +467,31 @@ class SpecialismRepository:
         )
         result = await self.db.execute(query)
         return list(result.scalars().all())
+
+    async def replace_profile_specialisms(
+        self,
+        tenant_id: UUID,
+        profile_id: UUID,
+        specialism_ids: List[UUID],
+        assigned_by_profile_id: Optional[UUID] = None,
+    ) -> None:
+        """Replace all specialisms assigned to a profile with the provided set."""
+        delete_stmt = delete(ProfileSpecialism).where(
+            and_(
+                ProfileSpecialism.tenant_id == tenant_id,
+                ProfileSpecialism.profile_id == profile_id,
+            )
+        )
+        await self.db.execute(delete_stmt)
+
+        for specialism_id in specialism_ids:
+            self.db.add(
+                ProfileSpecialism(
+                    tenant_id=tenant_id,
+                    profile_id=profile_id,
+                    specialism_id=specialism_id,
+                    assigned_by_profile_id=assigned_by_profile_id,
+                )
+            )
+
+        await self.db.commit()

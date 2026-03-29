@@ -38,6 +38,142 @@ sequenceDiagram
   AI-->>API: category + confidence + priority
 ```
 
+## Flow 1B: Refresh Hosted AI Ticket State
+
+Primary integration points:
+
+- `POST /api/v1/ai/ticket-states/refresh`
+- `GET /api/v1/ai/ticket-states`
+- `GET /api/v1/ai/ticket-states/my-primary`
+- `GET /api/v1/ai/ticket-states/my-secondary`
+- `GET /api/v1/ai/ticket-states/my-assigned`
+- `GET /api/v1/ai/ticket-states/team`
+- `GET /api/v1/ai/ticket-states/{autotask_ticket_id}`
+- `GET /api/v1/ai/ticket-states/{autotask_ticket_id}/assignment-recommendation`
+- `PUT /api/v1/ai/ticket-states/{autotask_ticket_id}/assignment-override`
+- `DELETE /api/v1/ai/ticket-states/{autotask_ticket_id}/assignment-override`
+- `POST /api/v1/ai/oversight/run`
+
+The key idea is:
+
+- the provider still owns ticket truth
+- the hosted backend stores a refreshed AI snapshot for operational use
+- refresh can immediately trigger oversight rules in the same call
+- profile-linked user views depend on this refresh step having already populated the hosted AI state
+- the frontend `Active Tickets` page reads those persisted views instead of loading the old raw ticket list
+
+### High-level sequence
+
+```mermaid
+sequenceDiagram
+  autonumber
+  participant API as AI router
+  participant Service as AIStateService
+  participant Provider as Ticket provider
+  participant AI as Classifier
+  participant Profiles as Local profiles
+  participant Oversight as AIOversightService
+  participant DB as ticket_ai_state table
+
+  API->>Service: refresh_ticket_states(...)
+  Service->>Provider: get_tickets()
+  Service->>AI: categorise_ticket(ticket)
+  Service->>Profiles: resolve primary/secondary resource names
+  Service->>DB: upsert AI ticket state
+  Service->>Oversight: run_for_tenant(...) when apply_oversight=true
+  Oversight->>DB: set/clear ai_managed_* fields
+  DB-->>API: persisted refresh result
+```
+
+### Why `POST /api/v1/ai/ticket-states/refresh` matters
+
+This endpoint is the AI-state sync step.
+
+It does not create new Autotask tickets.
+
+It does not replace Autotask as the source of truth.
+
+What it does is:
+
+1. read the current provider ticket set
+2. rerun classification for that set
+3. map ticket resources to local profiles when possible
+4. update the hosted AI ticket snapshot table
+5. optionally apply oversight rules in the same request (`apply_oversight=true`)
+
+That makes it especially useful during development and troubleshooting:
+
+- if you add new profiles that should map to ticket resources, refresh again
+- if categories change, refresh again
+- if the AI-state endpoints look stale, refresh again
+
+## Flow 1C: Run One Oversight Cycle Directly
+
+Primary integration point:
+
+- `POST /api/v1/ai/oversight/run`
+
+What happens:
+
+1. load queue-scoped open AI-state rows
+2. compute recommendation for each ticket
+3. apply hard safety rules:
+   - manual override present: no automatic changes
+   - no primary assignee: auto-assign
+   - started ticket: protect from auto-move
+   - unstarted ticket: auto-move only when recommendation materially outranks incumbent
+4. persist AI-managed assignment reason/timestamp when changes are made
+
+## Flow 1D: Fixture-Script-Assisted Oversight Testing
+
+When validating AI-state behavior at scale, the backend fixture scripts provide a deterministic setup path.
+
+Relevant scripts:
+
+- `backend/scripts/reset_tickets.py`
+- `backend/scripts/expand_tickets.py`
+
+Typical sequence:
+
+```mermaid
+sequenceDiagram
+  autonumber
+  participant Dev as Developer
+  participant Scripts as Fixture scripts
+  participant API as Backend API
+  participant UI as Browser fetch calls
+
+  Dev->>Scripts: reset_tickets.py
+  Dev->>Scripts: expand_tickets.py (--multiplier ...)
+  Dev->>API: Start backend
+  Dev->>UI: POST /api/v1/ai/ticket-states/refresh (apply_oversight=true)
+  Dev->>UI: POST /api/v1/ai/oversight/run
+  Dev->>UI: GET /api/v1/ai/ticket-states/team?limit=1000
+```
+
+Why this matters:
+
+- repeatable ticket volume and assignment shape
+- predictable unassigned-ticket coverage for auto-assignment checks
+- cleaner troubleshooting when comparing refresh vs oversight results
+
+### Practical local-testing note
+
+Swagger at `http://localhost:8000/docs` may not share the same authenticated session as the frontend at `http://localhost:5173`.
+
+If `POST /api/v1/ai/ticket-states/refresh` returns `401 Unauthorized` in Swagger while the UI is signed in, trigger it from the authenticated browser session instead:
+
+```js
+fetch("http://localhost:8000/api/v1/ai/ticket-states/refresh", {
+  method: "POST",
+  credentials: "include",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ include_closed: false, limit: 100 })
+}).then(async (r) => {
+  console.log(r.status, await r.text());
+});
+```
+
 ## Flow 2: Load Configured Categories
 
 Primary code:
@@ -217,6 +353,172 @@ sequenceDiagram
   Proc->>Pri: calculate_priority_score(...)
   Proc-->>Input: category + confidence + priority
 ```
+
+## Flow 9: Persist And Read AI Ticket State
+
+Primary code:
+
+- `AIStateService.refresh_ticket_states(...)`
+- `TicketAIStateRepository.upsert_ticket_state(...)`
+- `TicketAIStateRepository.list_for_tenant(...)`
+
+What it does:
+
+1. fetch current tickets from the provider
+2. optionally filter out closed tickets
+3. classify each ticket through the AI pipeline
+4. resolve primary and secondary resources against local profiles
+5. upsert a tenant-scoped AI ticket snapshot into the database
+6. remove stale rows that are no longer retained in the refresh set
+7. serve list/get responses from persisted state
+
+### AI-state persistence flow
+
+```mermaid
+flowchart TD
+  Refresh[Refresh request] --> Load[Load provider tickets]
+  Load --> Filter[Filter closed tickets if needed]
+  Filter --> Classify[Run categorise_ticket]
+  Classify --> Resolve[Resolve primary/secondary profiles]
+  Resolve --> Upsert[Upsert ticket_ai_state rows]
+  Upsert --> Cleanup[Delete stale retained rows]
+  Cleanup --> Readback[State available via AI endpoints]
+```
+
+## Flow 10: Drive The Active Tickets UI
+
+Primary frontend code:
+
+- `frontend/src/shared/api/aiTickets.ts`
+- `frontend/src/components/TicketListContainer.ts`
+- `frontend/src/pages/ActiveTickets.ts`
+
+What it does:
+
+1. `Active Tickets` loads `My Assigned` by default
+2. the top tabs switch between `My Assigned`, `My Primary`, `My Secondary`, and `Team Queue`
+3. the frontend calls the matching AI-state endpoint
+4. the URL hash updates to match the selected view
+5. the returned AI-state rows render in the categorized ticket layout
+
+```mermaid
+flowchart LR
+  Active[Active Tickets page] --> Tabs[Top view tabs]
+  Tabs --> Assigned[/my-assigned/]
+  Tabs --> Primary[/my-primary/]
+  Tabs --> Secondary[/my-secondary/]
+  Tabs --> Team[/team/]
+  Assigned --> Render[Categorized ticket cards]
+  Primary --> Render
+  Secondary --> Render
+  Team --> Render
+```
+
+## Flow 11: Save User Specialisms From Settings
+
+Primary integration points:
+
+- `GET /api/v1/auth/profile/specialisms`
+- `PUT /api/v1/auth/profile/specialisms`
+
+The key idea is:
+
+- the frontend no longer keeps specialisms as placeholder-only local state
+- the authenticated user now stores category-aligned specialisms in the real profile service database
+
+### High-level sequence
+
+```mermaid
+sequenceDiagram
+  autonumber
+  participant Settings as Settings page
+  participant ProfileAPI as Profiles router
+  participant Service as SpecialismService
+  participant ProfileDB as profile/specialism tables
+
+  Settings->>ProfileAPI: GET /auth/profile/specialisms
+  ProfileAPI->>Service: get_profile_specialisms(...)
+  Service->>ProfileDB: load assigned specialisms
+  ProfileDB-->>Settings: current assignments
+
+  Settings->>ProfileAPI: PUT /auth/profile/specialisms
+  ProfileAPI->>Service: replace_profile_specialisms_from_category_keys(...)
+  Service->>ProfileDB: create missing specialisms if needed
+  Service->>ProfileDB: replace profile_specialism rows
+  ProfileDB-->>Settings: updated assignments
+```
+
+## Flow 12: Recommend An Assignee From Ticket Detail
+
+Primary integration points:
+
+- `GET /api/v1/ai/ticket-states/{autotask_ticket_id}/assignment-recommendation`
+
+The key idea is:
+
+- the service uses the persisted AI category for a ticket
+- then finds active profiles with matching stored specialisms
+- then adds company continuity and workload scoring
+- then applies any manual override to determine the effective assignee
+- then returns an explainable recommendation rather than auto-assigning ownership
+
+### Recommendation flow
+
+```mermaid
+flowchart TD
+  TicketDetail[Ticket Detail page] --> API[/assignment-recommendation/]
+  API --> LoadState[Load persisted AI ticket state]
+  LoadState --> LoadProfiles[Load active profiles + specialisms]
+  LoadProfiles --> Match[Match ticket category key to specialism keys]
+  Match --> Continuity[Add same-company continuity score]
+  Continuity --> Load[Add workload adjustment]
+  Load --> Score[Build scored candidate list]
+  Score --> Override[Apply manual override if present]
+  Override --> Response[Return recommendation + effective assignee]
+```
+
+## Flow 13: Apply Or Clear Manual Override
+
+Primary integration points:
+
+- `PUT /api/v1/ai/ticket-states/{autotask_ticket_id}/assignment-override`
+- `DELETE /api/v1/ai/ticket-states/{autotask_ticket_id}/assignment-override`
+
+The key idea is:
+
+- SecOps can deliberately overrule the recommended assignee
+- the override is stored in hosted AI state with a reason and timestamp
+- the recommendation endpoint still returns the AI recommendation, but also returns the effective assignee after override
+
+```mermaid
+sequenceDiagram
+  autonumber
+  participant UI as Ticket Detail UI
+  participant API as AI router
+  participant State as AIStateService
+  participant DB as ticket_ai_state
+  participant Assign as AIAssignmentService
+
+  UI->>API: PUT/DELETE assignment-override
+  API->>State: set_manual_override(...) or clear_manual_override(...)
+  State->>DB: update override columns
+  API->>Assign: recommend_for_ticket(...)
+  Assign-->>UI: recommendation + effective assignee + override metadata
+```
+
+## Flow 14: Show Effective Assignee In List Views
+
+Primary frontend code:
+
+- `frontend/src/shared/api/aiTickets.ts`
+- `frontend/src/components/TicketListContainer.ts`
+
+What it does:
+
+1. list endpoints return manual-override metadata and effective assignee name
+2. the frontend maps those fields into shared ticket objects
+3. active/team ticket cards display the effective assignee
+4. ticket cards show a manual-override badge when one exists
 
 ## What New Developers Should Remember
 

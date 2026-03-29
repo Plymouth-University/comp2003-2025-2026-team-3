@@ -11,9 +11,11 @@ from ..schemas.profile import (
     ProfileCreate, ProfileUpdate, ProfileResponse,
     TenantCreate, TenantResponse,
     SpecialismCreate, SpecialismResponse,
-    ProfileIdentityCreate
+    ProfileIdentityCreate,
+    ProfileSpecialismAssignmentItem,
 )
 from ..models.profile import Profile, Tenant, Specialism
+from .ai import list_available_categories
 
 
 class ProfileService:
@@ -283,17 +285,62 @@ class SpecialismService:
         self,
         tenant_id: UUID,
         profile_id: UUID
-    ) -> List[dict]:
+    ) -> List[ProfileSpecialismAssignmentItem]:
         """Get all specialisms assigned to a profile."""
         profile_specialisms = await self.specialism_repo.get_profile_specialisms(
             tenant_id=tenant_id,
             profile_id=profile_id
         )
         return [
-            {
-                "specialism": SpecialismResponse.model_validate(ps.specialism),
-                "proficiency_level": ps.proficiency_level,
-                "assigned_at": ps.assigned_at
-            }
+            ProfileSpecialismAssignmentItem(
+                specialism=SpecialismResponse.model_validate(ps.specialism),
+                proficiency_level=ps.proficiency_level,
+                assigned_at=ps.assigned_at,
+            )
             for ps in profile_specialisms
         ]
+
+    async def replace_profile_specialisms_from_category_keys(
+        self,
+        tenant_id: UUID,
+        profile_id: UUID,
+        category_keys: List[str],
+        assigned_by_profile_id: Optional[UUID] = None,
+    ) -> List[ProfileSpecialismAssignmentItem]:
+        """Replace a profile's specialisms using the configured AI category keys."""
+        category_map = {item["key"]: item for item in list_available_categories()}
+        unknown_keys = [key for key in category_keys if key not in category_map]
+        if unknown_keys:
+            raise ValueError(f"Unsupported specialism keys: {', '.join(sorted(unknown_keys))}")
+
+        existing_specialisms = await self.specialism_repo.get_specialisms_by_keys(
+            tenant_id=tenant_id,
+            specialism_keys=category_keys,
+            active_only=False,
+        )
+        existing_by_key = {specialism.specialism_key: specialism for specialism in existing_specialisms}
+
+        selected_ids: List[UUID] = []
+        for key in category_keys:
+            specialism = existing_by_key.get(key)
+            if specialism is None:
+                item = category_map[key]
+                specialism = await self.specialism_repo.create_specialism(
+                    tenant_id=tenant_id,
+                    specialism_key=item["key"],
+                    specialism_name=item["label"],
+                    description=f"AI category-aligned specialism for {item['label']}",
+                    commit=False,
+                )
+                existing_by_key[key] = specialism
+            elif not specialism.is_active:
+                specialism.is_active = True
+            selected_ids.append(specialism.specialism_id)
+
+        await self.specialism_repo.replace_profile_specialisms(
+            tenant_id=tenant_id,
+            profile_id=profile_id,
+            specialism_ids=selected_ids,
+            assigned_by_profile_id=assigned_by_profile_id,
+        )
+        return await self.get_profile_specialisms(tenant_id, profile_id)

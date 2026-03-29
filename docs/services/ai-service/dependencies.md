@@ -65,6 +65,42 @@ Why it matters:
 
 - this is the live orchestrator used by the request-time API path
 
+### `ai_state_service.py`
+
+Depends on:
+
+- the current ticket provider
+- `categorise_ticket(...)`
+- `ai_state_repository.py`
+- AI-state schemas
+
+Why it matters:
+
+- this is the bridge between provider tickets and persisted hosted AI ticket state
+
+### `ai_oversight_service.py`
+
+Depends on:
+
+- `ai_state_repository.py`
+- `ai_assignment_service.py`
+- `profile_repository.py`
+
+Why it matters:
+
+- this module applies queue-wide internal AI-managed assignment rules and writes `ai_managed_*` state
+
+### `ai_state_repository.py`
+
+Depends on:
+
+- `TicketAIState` model
+- async SQLAlchemy session
+
+Why it matters:
+
+- it stores and retrieves the hosted AI snapshots used by new AI endpoints
+
 ### `embedding_cache.py`
 
 Depends on:
@@ -149,6 +185,49 @@ Why it matters:
 
 - batch performance depends partly on cache hit rate
 
+### Hosted database
+
+Relevant pieces:
+
+- `ticket_ai_state` table
+- Alembic migration for AI state
+
+Why it matters:
+
+- AI ticket snapshots now persist in the hosted backend instead of existing only in request memory
+- AI-managed assignment decisions are also persisted (`ai_managed_profile_id`, reason, timestamp)
+
+### Local profile data
+
+Relevant pieces:
+
+- `profile`
+- `profile_display`
+
+Why it matters:
+
+- resource-to-profile mapping depends on local profiles existing with matching display names
+- endpoints like `/api/v1/ai/ticket-states/my-primary` only become useful once refresh has mapped those resources
+- oversight assignment only works for active local profiles that can be resolved in the tenant
+
+### Background worker settings
+
+Relevant settings in:
+
+- `backend/app/config.py`
+
+Important keys:
+
+- `AI_OVERSIGHT_ENABLED`
+- `AI_OVERSIGHT_INTERVAL_SECONDS`
+- `AI_OVERSIGHT_QUEUE`
+- `AI_OVERSIGHT_REFRESH_LIMIT`
+- `AI_OVERSIGHT_INCLUDE_CLOSED`
+
+Why it matters:
+
+- these settings control the continuous refresh/oversight loop at backend startup
+
 ## Dependency Risks
 
 Visible from the current code:
@@ -157,3 +236,4 @@ Visible from the current code:
 - if the embedding model is unavailable, semantic classification is disabled until the model is provisioned
 - import-time model loading still affects startup time
 - cache and metrics are process-local, so they do not survive restarts or scale across instances
+- AI-state refresh depends on the hosted database being migrated and available

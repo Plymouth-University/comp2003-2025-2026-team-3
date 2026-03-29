@@ -191,6 +191,8 @@ Defined in `backend/app/routers/profiles.py`:
 - `GET /api/v1/tenants/{tenant_id}/specialisms`
 - `POST /api/v1/profiles/{profile_id}/specialisms/{specialism_id}`
 - `GET /api/v1/profiles/{profile_id}/specialisms`
+- `GET /api/v1/auth/profile/specialisms`
+- `PUT /api/v1/auth/profile/specialisms`
 
 ### Auth integration point
 
@@ -204,7 +206,7 @@ Verified by the current code:
 
 - it does not have route-layer authorization guards on the profile management endpoints
 - it does not implement avatar upload storage
-- it does not implement specialism removal
+- it does not expose a dedicated delete endpoint for specialism assignments (the authenticated replace endpoint can remove assignments by omission)
 - it does not provide a dedicated profile reactivation flow
 - it does not provide audit logging for profile changes
 - it does not expose especially detailed error messages for identity linking or specialism assignment failures

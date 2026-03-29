@@ -1,4 +1,4 @@
-import { API_BASE_URL } from "../shared/auth.js";
+import { fetchAITickets } from "../shared/api/aiTickets.js";
 import { el } from "../shared/lib/dom.js";
 import { EllipsisMenu } from "../components/EllipsisMenu.js";
 import type { BackendTicket } from "../shared/types.js";
@@ -11,24 +11,13 @@ function getTimeStamp(): string {
 async function fetchTickets(): Promise<BackendTicket[]> {
   const requestStart = performance.now();
   const startTime = getTimeStamp();
-  console.log(`[${startTime}] DASHBOARD: Fetching tickets...`);
+  console.log(`[${startTime}] DASHBOARD: Fetching my assigned AI tickets...`);
   
   try {
-    const res = await fetch(`${API_BASE_URL}/api/tickets`, { credentials: "include" });
-    const fetchTime = performance.now() - requestStart;
-    console.log(`[${getTimeStamp()}] DASHBOARD: Fetch completed in ${fetchTime.toFixed(1)}ms, status: ${res.status}`);
-    
-    if (!res.ok) {
-      console.error(`[${getTimeStamp()}] DASHBOARD: API error - Status: ${res.status}`);
-      return [];
-    }
-    
-    const json = await res.json();
-    const itemCount = json.items ? json.items.length : 0;
+    const tickets = await fetchAITickets("my-assigned");
     const totalTime = performance.now() - requestStart;
-    console.log(`[${getTimeStamp()}] DASHBOARD: Parsed ${itemCount} tickets in ${totalTime.toFixed(1)}ms total`);
-    
-    return json.items || [];
+    console.log(`[${getTimeStamp()}] DASHBOARD: Parsed ${tickets.length} tickets in ${totalTime.toFixed(1)}ms total`);
+    return tickets;
   } catch (error) {
     console.error(`[${getTimeStamp()}] DASHBOARD: Fetch error:`, error);
     return [];
@@ -182,7 +171,7 @@ export function Dashboard(onOpenTicket?: (ticket: BackendTicket) => void): HTMLE
           el("div", { className: "text-xs text-slate-500", text: `ID: ${ticket.autotask_ticket_id}` }),
           el("div", { className: "text-xs text-slate-500 mt-2 flex gap-2" }, [
             el("span", { text: `Priority: ${ticket.priority}` }),
-            el("span", { text: `Confidence: ${(ticket.ai.confidence * 100).toFixed(0)}%` })
+            el("span", { text: `Confidence: ${ticket.ai.confidence.toFixed(0)}%` })
           ]),
           el("div", { className: "text-xs text-slate-500 mt-2", text: `Due: ${ticket.due_date}` })
         ])

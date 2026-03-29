@@ -17,9 +17,10 @@
     "location": "London Office",
     "additional_contacts": [],
     "work_type": "Maintenance",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100002,
@@ -41,9 +42,10 @@
       "it.manager@example.com"
     ],
     "work_type": "Training",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100003,
@@ -65,9 +67,10 @@
       "it.manager@example.com"
     ],
     "work_type": "Remote Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100004,
@@ -89,7 +92,8 @@
     "work_type": "Remote Support",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup suspended"
   },
   {
     "autotask_ticket_id": 100005,
@@ -111,9 +115,10 @@
       "soc.oncall@example.com"
     ],
     "work_type": "Projects/Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100006,
@@ -133,9 +138,10 @@
     "location": "London Office",
     "additional_contacts": [],
     "work_type": "Remote Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100007,
@@ -159,7 +165,8 @@
     "work_type": "Admin/Sales",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100008,
@@ -181,9 +188,10 @@
       "secops.team@example.com"
     ],
     "work_type": "Maintenance",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100009,
@@ -205,9 +213,10 @@
       "secops.team@example.com"
     ],
     "work_type": "Support Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100010,
@@ -229,7 +238,8 @@
     "work_type": "Training",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100011,
@@ -249,9 +259,10 @@
     "location": "Leeds Office",
     "additional_contacts": [],
     "work_type": "Remote Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup suspended"
   },
   {
     "autotask_ticket_id": 100012,
@@ -271,9 +282,10 @@
     "location": "Leeds Office",
     "additional_contacts": [],
     "work_type": "Training",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup suspended"
   },
   {
     "autotask_ticket_id": 100013,
@@ -293,9 +305,10 @@
     "location": "London Office",
     "additional_contacts": [],
     "work_type": "Travel to/from site",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100014,
@@ -315,9 +328,10 @@
     "location": "Leeds Office",
     "additional_contacts": [],
     "work_type": "Projects/Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100015,
@@ -337,9 +351,10 @@
     "location": "Bristol Office",
     "additional_contacts": [],
     "work_type": "Support Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100016,
@@ -363,7 +378,8 @@
     "work_type": "Meetings",
     "primary_resource": "Alex Johnson",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100017,
@@ -385,9 +401,10 @@
       "it.manager@example.com"
     ],
     "work_type": "Training",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100018,
@@ -407,9 +424,10 @@
     "location": "Manchester Office",
     "additional_contacts": [],
     "work_type": "Support Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100019,
@@ -431,7 +449,8 @@
     "work_type": "Onsite Support",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100020,
@@ -453,9 +472,10 @@
       "soc.oncall@example.com"
     ],
     "work_type": "Onsite Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100021,
@@ -475,9 +495,10 @@
     "location": "Leeds Office",
     "additional_contacts": [],
     "work_type": "Remote Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100022,
@@ -499,7 +520,8 @@
     "work_type": "Remote Support",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100023,
@@ -519,9 +541,10 @@
     "location": "Leeds Office",
     "additional_contacts": [],
     "work_type": "Training",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100024,
@@ -541,9 +564,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Meetings",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100025,
@@ -565,9 +589,10 @@
       "secops.team@example.com"
     ],
     "work_type": "Projects/Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100026,
@@ -587,9 +612,10 @@
     "location": "Manchester Office",
     "additional_contacts": [],
     "work_type": "Training",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100027,
@@ -609,9 +635,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Onsite Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100028,
@@ -633,7 +660,8 @@
     "work_type": "Onsite Support",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100029,
@@ -653,9 +681,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Travel to/from site",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100030,
@@ -677,9 +706,10 @@
       "soc.oncall@example.com"
     ],
     "work_type": "Support Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100031,
@@ -703,7 +733,8 @@
     "work_type": "Projects/Admin",
     "primary_resource": "Alex Johnson",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100032,
@@ -723,9 +754,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Meetings",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup suspended"
   },
   {
     "autotask_ticket_id": 100033,
@@ -745,9 +777,10 @@
     "location": "London Office",
     "additional_contacts": [],
     "work_type": "Projects/Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100034,
@@ -769,7 +802,8 @@
     "work_type": "Training",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100035,
@@ -789,9 +823,10 @@
     "location": "Leeds Office",
     "additional_contacts": [],
     "work_type": "Onsite Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup suspended"
   },
   {
     "autotask_ticket_id": 100036,
@@ -811,9 +846,10 @@
     "location": "Leeds Office",
     "additional_contacts": [],
     "work_type": "Meetings",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100037,
@@ -833,9 +869,10 @@
     "location": "London Office",
     "additional_contacts": [],
     "work_type": "Training",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup suspended"
   },
   {
     "autotask_ticket_id": 100038,
@@ -855,9 +892,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Travel to/from site",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100039,
@@ -877,9 +915,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Support Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100040,
@@ -903,7 +942,8 @@
     "work_type": "Projects/Admin",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100041,
@@ -923,9 +963,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Emergency/After Hours Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100042,
@@ -945,9 +986,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Travel to/from site",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100043,
@@ -969,7 +1011,8 @@
     "work_type": "Support Admin",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100044,
@@ -989,9 +1032,10 @@
     "location": "Leeds Office",
     "additional_contacts": [],
     "work_type": "Meetings",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100045,
@@ -1013,9 +1057,10 @@
       "soc.oncall@example.com"
     ],
     "work_type": "Emergency/After Hours Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100046,
@@ -1037,7 +1082,8 @@
     "work_type": "Onsite Support",
     "primary_resource": "Alex Johnson",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup suspended"
   },
   {
     "autotask_ticket_id": 100047,
@@ -1059,9 +1105,10 @@
       "soc.oncall@example.com"
     ],
     "work_type": "Meetings",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100048,
@@ -1081,9 +1128,10 @@
     "location": "London Office",
     "additional_contacts": [],
     "work_type": "Training",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup suspended"
   },
   {
     "autotask_ticket_id": 100049,
@@ -1103,9 +1151,10 @@
     "location": "Leeds Office",
     "additional_contacts": [],
     "work_type": "Onsite Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100050,
@@ -1125,9 +1174,10 @@
     "location": "Bristol Office",
     "additional_contacts": [],
     "work_type": "Support Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100051,
@@ -1147,9 +1197,10 @@
     "location": "Leeds Office",
     "additional_contacts": [],
     "work_type": "Emergency/After Hours Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100052,
@@ -1171,7 +1222,8 @@
     "work_type": "Onsite Support",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100053,
@@ -1193,9 +1245,10 @@
       "secops.team@example.com"
     ],
     "work_type": "Maintenance",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100054,
@@ -1215,9 +1268,10 @@
     "location": "Leeds Office",
     "additional_contacts": [],
     "work_type": "Remote Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100055,
@@ -1239,7 +1293,8 @@
     "work_type": "Meetings",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100056,
@@ -1259,9 +1314,10 @@
     "location": "Leeds Office",
     "additional_contacts": [],
     "work_type": "Emergency/After Hours Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100057,
@@ -1281,9 +1337,10 @@
     "location": "Manchester Office",
     "additional_contacts": [],
     "work_type": "Maintenance",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100058,
@@ -1307,7 +1364,8 @@
     "work_type": "Remote Support",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100059,
@@ -1327,9 +1385,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Support Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100060,
@@ -1351,9 +1410,10 @@
       "secops.team@example.com"
     ],
     "work_type": "Travel to/from site",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100061,
@@ -1375,9 +1435,10 @@
       "soc.oncall@example.com"
     ],
     "work_type": "Maintenance",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup suspended"
   },
   {
     "autotask_ticket_id": 100062,
@@ -1397,9 +1458,10 @@
     "location": "Leeds Office",
     "additional_contacts": [],
     "work_type": "Emergency/After Hours Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100063,
@@ -1421,9 +1483,10 @@
       "secops.team@example.com"
     ],
     "work_type": "Support Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100064,
@@ -1447,7 +1510,8 @@
     "work_type": "Support Admin",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100065,
@@ -1467,9 +1531,10 @@
     "location": "London Office",
     "additional_contacts": [],
     "work_type": "Emergency/After Hours Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100066,
@@ -1489,9 +1554,10 @@
     "location": "Leeds Office",
     "additional_contacts": [],
     "work_type": "Maintenance",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100067,
@@ -1515,7 +1581,8 @@
     "work_type": "Meetings",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100068,
@@ -1535,9 +1602,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Meetings",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100069,
@@ -1559,9 +1627,10 @@
       "secops.team@example.com"
     ],
     "work_type": "Training",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100070,
@@ -1583,7 +1652,8 @@
     "work_type": "Maintenance",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100071,
@@ -1603,9 +1673,10 @@
     "location": "London Office",
     "additional_contacts": [],
     "work_type": "Projects/Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100072,
@@ -1627,9 +1698,10 @@
       "soc.oncall@example.com"
     ],
     "work_type": "Emergency/After Hours Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100073,
@@ -1649,9 +1721,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Onsite Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100074,
@@ -1673,9 +1746,10 @@
       "secops.team@example.com"
     ],
     "work_type": "Remote Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100075,
@@ -1695,9 +1769,10 @@
     "location": "Bristol Office",
     "additional_contacts": [],
     "work_type": "Travel to/from site",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100076,
@@ -1719,7 +1794,8 @@
     "work_type": "Projects/Admin",
     "primary_resource": "Alex Johnson",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100077,
@@ -1739,9 +1815,10 @@
     "location": "Leeds Office",
     "additional_contacts": [],
     "work_type": "Meetings",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100078,
@@ -1761,9 +1838,10 @@
     "location": "Bristol Office",
     "additional_contacts": [],
     "work_type": "Remote Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100079,
@@ -1785,7 +1863,8 @@
     "work_type": "Projects/Admin",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100080,
@@ -1807,9 +1886,10 @@
       "it.manager@example.com"
     ],
     "work_type": "Meetings",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup suspended"
   },
   {
     "autotask_ticket_id": 100081,
@@ -1829,9 +1909,10 @@
     "location": "Manchester Office",
     "additional_contacts": [],
     "work_type": "Emergency/After Hours Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup suspended"
   },
   {
     "autotask_ticket_id": 100082,
@@ -1853,7 +1934,8 @@
     "work_type": "Emergency/After Hours Support",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100083,
@@ -1873,9 +1955,10 @@
     "location": "London Office",
     "additional_contacts": [],
     "work_type": "Maintenance",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100084,
@@ -1895,9 +1978,10 @@
     "location": "London Office",
     "additional_contacts": [],
     "work_type": "Travel to/from site",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100085,
@@ -1917,9 +2001,10 @@
     "location": "Bristol Office",
     "additional_contacts": [],
     "work_type": "Maintenance",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100086,
@@ -1939,9 +2024,10 @@
     "location": "Manchester Office",
     "additional_contacts": [],
     "work_type": "Emergency/After Hours Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100087,
@@ -1961,9 +2047,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Onsite Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100088,
@@ -1985,7 +2072,8 @@
     "work_type": "Projects/Admin",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100089,
@@ -2005,9 +2093,10 @@
     "location": "Manchester Office",
     "additional_contacts": [],
     "work_type": "Emergency/After Hours Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100090,
@@ -2027,9 +2116,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Support Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100091,
@@ -2051,7 +2141,8 @@
     "work_type": "Meetings",
     "primary_resource": "Alex Johnson",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100092,
@@ -2073,9 +2164,10 @@
       "secops.team@example.com"
     ],
     "work_type": "Travel to/from site",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100093,
@@ -2095,9 +2187,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Training",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100094,
@@ -2121,7 +2214,8 @@
     "work_type": "Emergency/After Hours Support",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100095,
@@ -2141,9 +2235,10 @@
     "location": "Bristol Office",
     "additional_contacts": [],
     "work_type": "Support Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100096,
@@ -2165,9 +2260,10 @@
       "it.manager@example.com"
     ],
     "work_type": "Emergency/After Hours Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100097,
@@ -2189,9 +2285,10 @@
       "soc.oncall@example.com"
     ],
     "work_type": "Training",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100098,
@@ -2211,9 +2308,10 @@
     "location": "London Office",
     "additional_contacts": [],
     "work_type": "Remote Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup suspended"
   },
   {
     "autotask_ticket_id": 100099,
@@ -2235,9 +2333,10 @@
       "soc.oncall@example.com"
     ],
     "work_type": "Meetings",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100100,
@@ -2259,7 +2358,8 @@
     "work_type": "Support Admin",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100101,
@@ -2279,9 +2379,10 @@
     "location": "London Office",
     "additional_contacts": [],
     "work_type": "Maintenance",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100102,
@@ -2303,9 +2404,10 @@
       "it.manager@example.com"
     ],
     "work_type": "Training",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100103,
@@ -2329,7 +2431,8 @@
     "work_type": "Remote Support",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100104,
@@ -2349,9 +2452,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Remote Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup suspended"
   },
   {
     "autotask_ticket_id": 100105,
@@ -2373,9 +2477,10 @@
       "soc.oncall@example.com"
     ],
     "work_type": "Projects/Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100106,
@@ -2397,7 +2502,8 @@
     "work_type": "Remote Support",
     "primary_resource": "Alex Johnson",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100107,
@@ -2419,9 +2525,10 @@
       "it.manager@example.com"
     ],
     "work_type": "Admin/Sales",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100108,
@@ -2443,9 +2550,10 @@
       "secops.team@example.com"
     ],
     "work_type": "Maintenance",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100109,
@@ -2467,9 +2575,10 @@
       "secops.team@example.com"
     ],
     "work_type": "Support Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100110,
@@ -2489,9 +2598,10 @@
     "location": "Manchester Office",
     "additional_contacts": [],
     "work_type": "Training",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100111,
@@ -2511,9 +2621,10 @@
     "location": "Leeds Office",
     "additional_contacts": [],
     "work_type": "Remote Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup suspended"
   },
   {
     "autotask_ticket_id": 100112,
@@ -2535,7 +2646,8 @@
     "work_type": "Training",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup suspended"
   },
   {
     "autotask_ticket_id": 100113,
@@ -2555,9 +2667,10 @@
     "location": "London Office",
     "additional_contacts": [],
     "work_type": "Travel to/from site",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100114,
@@ -2577,9 +2690,10 @@
     "location": "Leeds Office",
     "additional_contacts": [],
     "work_type": "Projects/Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100115,
@@ -2601,7 +2715,8 @@
     "work_type": "Support Admin",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100116,
@@ -2623,9 +2738,10 @@
       "secops.team@example.com"
     ],
     "work_type": "Meetings",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100117,
@@ -2647,9 +2763,10 @@
       "it.manager@example.com"
     ],
     "work_type": "Training",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100118,
@@ -2671,7 +2788,8 @@
     "work_type": "Support Admin",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100119,
@@ -2691,9 +2809,10 @@
     "location": "Bristol Office",
     "additional_contacts": [],
     "work_type": "Onsite Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100120,
@@ -2715,9 +2834,10 @@
       "soc.oncall@example.com"
     ],
     "work_type": "Onsite Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100121,
@@ -2737,9 +2857,10 @@
     "location": "Leeds Office",
     "additional_contacts": [],
     "work_type": "Remote Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100122,
@@ -2759,9 +2880,10 @@
     "location": "London Office",
     "additional_contacts": [],
     "work_type": "Remote Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100123,
@@ -2781,9 +2903,10 @@
     "location": "Leeds Office",
     "additional_contacts": [],
     "work_type": "Training",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100124,
@@ -2805,7 +2928,8 @@
     "work_type": "Meetings",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100125,
@@ -2827,9 +2951,10 @@
       "secops.team@example.com"
     ],
     "work_type": "Projects/Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100126,
@@ -2849,9 +2974,10 @@
     "location": "Manchester Office",
     "additional_contacts": [],
     "work_type": "Training",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100127,
@@ -2873,7 +2999,8 @@
     "work_type": "Onsite Support",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100128,
@@ -2893,9 +3020,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Onsite Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100129,
@@ -2915,9 +3043,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Travel to/from site",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100130,
@@ -2941,7 +3070,8 @@
     "work_type": "Support Admin",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100131,
@@ -2963,9 +3093,10 @@
       "soc.oncall@example.com"
     ],
     "work_type": "Projects/Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100132,
@@ -2985,9 +3116,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Meetings",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup suspended"
   },
   {
     "autotask_ticket_id": 100133,
@@ -3007,9 +3139,10 @@
     "location": "London Office",
     "additional_contacts": [],
     "work_type": "Projects/Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100134,
@@ -3029,9 +3162,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Training",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100135,
@@ -3051,9 +3185,10 @@
     "location": "Leeds Office",
     "additional_contacts": [],
     "work_type": "Onsite Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup suspended"
   },
   {
     "autotask_ticket_id": 100136,
@@ -3075,7 +3210,8 @@
     "work_type": "Meetings",
     "primary_resource": "Alex Johnson",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100137,
@@ -3095,9 +3231,10 @@
     "location": "London Office",
     "additional_contacts": [],
     "work_type": "Training",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup suspended"
   },
   {
     "autotask_ticket_id": 100138,
@@ -3117,9 +3254,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Travel to/from site",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100139,
@@ -3141,7 +3279,8 @@
     "work_type": "Support Admin",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100140,
@@ -3163,9 +3302,10 @@
       "it.manager@example.com"
     ],
     "work_type": "Projects/Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100141,
@@ -3185,9 +3325,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Emergency/After Hours Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100142,
@@ -3209,7 +3350,8 @@
     "work_type": "Travel to/from site",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100143,
@@ -3229,9 +3371,10 @@
     "location": "Manchester Office",
     "additional_contacts": [],
     "work_type": "Support Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100144,
@@ -3251,9 +3394,10 @@
     "location": "Leeds Office",
     "additional_contacts": [],
     "work_type": "Meetings",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100145,
@@ -3275,9 +3419,10 @@
       "soc.oncall@example.com"
     ],
     "work_type": "Emergency/After Hours Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100146,
@@ -3297,9 +3442,10 @@
     "location": "London Office",
     "additional_contacts": [],
     "work_type": "Onsite Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup suspended"
   },
   {
     "autotask_ticket_id": 100147,
@@ -3321,9 +3467,10 @@
       "soc.oncall@example.com"
     ],
     "work_type": "Meetings",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100148,
@@ -3345,7 +3492,8 @@
     "work_type": "Training",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup suspended"
   },
   {
     "autotask_ticket_id": 100149,
@@ -3365,9 +3513,10 @@
     "location": "Leeds Office",
     "additional_contacts": [],
     "work_type": "Onsite Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100150,
@@ -3387,9 +3536,10 @@
     "location": "Bristol Office",
     "additional_contacts": [],
     "work_type": "Support Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100151,
@@ -3411,7 +3561,8 @@
     "work_type": "Emergency/After Hours Support",
     "primary_resource": "Alex Johnson",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100152,
@@ -3431,9 +3582,10 @@
     "location": "Bristol Office",
     "additional_contacts": [],
     "work_type": "Onsite Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100153,
@@ -3455,9 +3607,10 @@
       "secops.team@example.com"
     ],
     "work_type": "Maintenance",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100154,
@@ -3479,7 +3632,8 @@
     "work_type": "Remote Support",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100155,
@@ -3499,9 +3653,10 @@
     "location": "Manchester Office",
     "additional_contacts": [],
     "work_type": "Meetings",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100156,
@@ -3521,9 +3676,10 @@
     "location": "Leeds Office",
     "additional_contacts": [],
     "work_type": "Emergency/After Hours Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100157,
@@ -3543,9 +3699,10 @@
     "location": "Manchester Office",
     "additional_contacts": [],
     "work_type": "Maintenance",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100158,
@@ -3567,9 +3724,10 @@
       "it.manager@example.com"
     ],
     "work_type": "Remote Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100159,
@@ -3589,9 +3747,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Support Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100160,
@@ -3615,7 +3774,8 @@
     "work_type": "Travel to/from site",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100161,
@@ -3637,9 +3797,10 @@
       "soc.oncall@example.com"
     ],
     "work_type": "Maintenance",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup suspended"
   },
   {
     "autotask_ticket_id": 100162,
@@ -3659,9 +3820,10 @@
     "location": "Leeds Office",
     "additional_contacts": [],
     "work_type": "Emergency/After Hours Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100163,
@@ -3685,7 +3847,8 @@
     "work_type": "Support Admin",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100164,
@@ -3707,9 +3870,10 @@
       "soc.oncall@example.com"
     ],
     "work_type": "Support Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100165,
@@ -3729,9 +3893,10 @@
     "location": "London Office",
     "additional_contacts": [],
     "work_type": "Emergency/After Hours Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100166,
@@ -3753,7 +3918,8 @@
     "work_type": "Maintenance",
     "primary_resource": "Alex Johnson",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100167,
@@ -3775,9 +3941,10 @@
       "soc.oncall@example.com"
     ],
     "work_type": "Meetings",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100168,
@@ -3797,9 +3964,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Meetings",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100169,
@@ -3821,9 +3989,10 @@
       "secops.team@example.com"
     ],
     "work_type": "Training",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100170,
@@ -3843,9 +4012,10 @@
     "location": "London Office",
     "additional_contacts": [],
     "work_type": "Maintenance",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100171,
@@ -3865,9 +4035,10 @@
     "location": "London Office",
     "additional_contacts": [],
     "work_type": "Projects/Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100172,
@@ -3891,7 +4062,8 @@
     "work_type": "Emergency/After Hours Support",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100173,
@@ -3911,9 +4083,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Onsite Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100174,
@@ -3935,9 +4108,10 @@
       "secops.team@example.com"
     ],
     "work_type": "Remote Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100175,
@@ -3959,7 +4133,8 @@
     "work_type": "Travel to/from site",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100176,
@@ -3979,9 +4154,10 @@
     "location": "Manchester Office",
     "additional_contacts": [],
     "work_type": "Projects/Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100177,
@@ -4001,9 +4177,10 @@
     "location": "Leeds Office",
     "additional_contacts": [],
     "work_type": "Meetings",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100178,
@@ -4025,7 +4202,8 @@
     "work_type": "Remote Support",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100179,
@@ -4045,9 +4223,10 @@
     "location": "Leeds Office",
     "additional_contacts": [],
     "work_type": "Projects/Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100180,
@@ -4069,9 +4248,10 @@
       "it.manager@example.com"
     ],
     "work_type": "Meetings",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup suspended"
   },
   {
     "autotask_ticket_id": 100181,
@@ -4091,9 +4271,10 @@
     "location": "Manchester Office",
     "additional_contacts": [],
     "work_type": "Emergency/After Hours Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup suspended"
   },
   {
     "autotask_ticket_id": 100182,
@@ -4113,9 +4294,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Emergency/After Hours Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100183,
@@ -4135,9 +4317,10 @@
     "location": "London Office",
     "additional_contacts": [],
     "work_type": "Maintenance",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100184,
@@ -4159,7 +4342,8 @@
     "work_type": "Travel to/from site",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100185,
@@ -4179,9 +4363,10 @@
     "location": "Bristol Office",
     "additional_contacts": [],
     "work_type": "Maintenance",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100186,
@@ -4201,9 +4386,10 @@
     "location": "Manchester Office",
     "additional_contacts": [],
     "work_type": "Emergency/After Hours Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100187,
@@ -4225,7 +4411,8 @@
     "work_type": "Onsite Support",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100188,
@@ -4245,9 +4432,10 @@
     "location": "Manchester Office",
     "additional_contacts": [],
     "work_type": "Projects/Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100189,
@@ -4267,9 +4455,10 @@
     "location": "Manchester Office",
     "additional_contacts": [],
     "work_type": "Emergency/After Hours Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100190,
@@ -4291,7 +4480,8 @@
     "work_type": "Support Admin",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100191,
@@ -4311,9 +4501,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Meetings",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100192,
@@ -4335,9 +4526,10 @@
       "secops.team@example.com"
     ],
     "work_type": "Travel to/from site",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100193,
@@ -4357,9 +4549,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Training",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100194,
@@ -4381,9 +4574,10 @@
       "it.manager@example.com"
     ],
     "work_type": "Emergency/After Hours Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100195,
@@ -4403,9 +4597,10 @@
     "location": "Bristol Office",
     "additional_contacts": [],
     "work_type": "Support Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100196,
@@ -4429,7 +4624,8 @@
     "work_type": "Emergency/After Hours Support",
     "primary_resource": "Alex Johnson",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100197,
@@ -4451,9 +4647,10 @@
       "soc.oncall@example.com"
     ],
     "work_type": "Training",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100198,
@@ -4473,9 +4670,10 @@
     "location": "London Office",
     "additional_contacts": [],
     "work_type": "Remote Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup suspended"
   },
   {
     "autotask_ticket_id": 100199,
@@ -4499,7 +4697,8 @@
     "work_type": "Meetings",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100200,
@@ -4519,9 +4718,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Support Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100201,
@@ -4541,9 +4741,10 @@
     "location": "London Office",
     "additional_contacts": [],
     "work_type": "Maintenance",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100202,
@@ -4567,7 +4768,8 @@
     "work_type": "Training",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100203,
@@ -4589,9 +4791,10 @@
       "it.manager@example.com"
     ],
     "work_type": "Remote Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100204,
@@ -4611,9 +4814,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Remote Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup suspended"
   },
   {
     "autotask_ticket_id": 100205,
@@ -4635,9 +4839,10 @@
       "soc.oncall@example.com"
     ],
     "work_type": "Projects/Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100206,
@@ -4657,9 +4862,10 @@
     "location": "London Office",
     "additional_contacts": [],
     "work_type": "Remote Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100207,
@@ -4681,9 +4887,10 @@
       "it.manager@example.com"
     ],
     "work_type": "Admin/Sales",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100208,
@@ -4707,7 +4914,8 @@
     "work_type": "Maintenance",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100209,
@@ -4729,9 +4937,10 @@
       "secops.team@example.com"
     ],
     "work_type": "Support Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100210,
@@ -4751,9 +4960,10 @@
     "location": "Manchester Office",
     "additional_contacts": [],
     "work_type": "Training",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100211,
@@ -4775,7 +4985,8 @@
     "work_type": "Remote Support",
     "primary_resource": "Alex Johnson",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup suspended"
   },
   {
     "autotask_ticket_id": 100212,
@@ -4795,9 +5006,10 @@
     "location": "Leeds Office",
     "additional_contacts": [],
     "work_type": "Training",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup suspended"
   },
   {
     "autotask_ticket_id": 100213,
@@ -4817,9 +5029,10 @@
     "location": "London Office",
     "additional_contacts": [],
     "work_type": "Travel to/from site",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100214,
@@ -4841,7 +5054,8 @@
     "work_type": "Projects/Admin",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100215,
@@ -4861,9 +5075,10 @@
     "location": "Bristol Office",
     "additional_contacts": [],
     "work_type": "Support Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100216,
@@ -4885,9 +5100,10 @@
       "secops.team@example.com"
     ],
     "work_type": "Meetings",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100217,
@@ -4909,9 +5125,10 @@
       "it.manager@example.com"
     ],
     "work_type": "Training",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100218,
@@ -4931,9 +5148,10 @@
     "location": "Manchester Office",
     "additional_contacts": [],
     "work_type": "Support Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100219,
@@ -4953,9 +5171,10 @@
     "location": "Bristol Office",
     "additional_contacts": [],
     "work_type": "Onsite Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100220,
@@ -4979,7 +5198,8 @@
     "work_type": "Onsite Support",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100221,
@@ -4999,9 +5219,10 @@
     "location": "Leeds Office",
     "additional_contacts": [],
     "work_type": "Remote Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100222,
@@ -5021,9 +5242,10 @@
     "location": "London Office",
     "additional_contacts": [],
     "work_type": "Remote Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100223,
@@ -5045,7 +5267,8 @@
     "work_type": "Training",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100224,
@@ -5065,9 +5288,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Meetings",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100225,
@@ -5089,9 +5313,10 @@
       "secops.team@example.com"
     ],
     "work_type": "Projects/Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100226,
@@ -5113,7 +5338,8 @@
     "work_type": "Training",
     "primary_resource": "Alex Johnson",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100227,
@@ -5133,9 +5359,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Onsite Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100228,
@@ -5155,9 +5382,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Onsite Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100229,
@@ -5177,9 +5405,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Travel to/from site",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100230,
@@ -5201,9 +5430,10 @@
       "soc.oncall@example.com"
     ],
     "work_type": "Support Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100231,
@@ -5225,9 +5455,10 @@
       "soc.oncall@example.com"
     ],
     "work_type": "Projects/Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100232,
@@ -5249,7 +5480,8 @@
     "work_type": "Meetings",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup suspended"
   },
   {
     "autotask_ticket_id": 100233,
@@ -5269,9 +5501,10 @@
     "location": "London Office",
     "additional_contacts": [],
     "work_type": "Projects/Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100234,
@@ -5291,9 +5524,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Training",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100235,
@@ -5315,7 +5549,8 @@
     "work_type": "Onsite Support",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup suspended"
   },
   {
     "autotask_ticket_id": 100236,
@@ -5335,9 +5570,10 @@
     "location": "Leeds Office",
     "additional_contacts": [],
     "work_type": "Meetings",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100237,
@@ -5357,9 +5593,10 @@
     "location": "London Office",
     "additional_contacts": [],
     "work_type": "Training",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup suspended"
   },
   {
     "autotask_ticket_id": 100238,
@@ -5381,7 +5618,8 @@
     "work_type": "Travel to/from site",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100239,
@@ -5401,9 +5639,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Support Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100240,
@@ -5425,9 +5664,10 @@
       "it.manager@example.com"
     ],
     "work_type": "Projects/Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100241,
@@ -5447,9 +5687,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Emergency/After Hours Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100242,
@@ -5469,9 +5710,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Travel to/from site",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100243,
@@ -5491,9 +5733,10 @@
     "location": "Manchester Office",
     "additional_contacts": [],
     "work_type": "Support Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100244,
@@ -5515,7 +5758,8 @@
     "work_type": "Meetings",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100245,
@@ -5537,9 +5781,10 @@
       "soc.oncall@example.com"
     ],
     "work_type": "Emergency/After Hours Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100246,
@@ -5559,9 +5804,10 @@
     "location": "London Office",
     "additional_contacts": [],
     "work_type": "Onsite Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup suspended"
   },
   {
     "autotask_ticket_id": 100247,
@@ -5585,7 +5831,8 @@
     "work_type": "Meetings",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100248,
@@ -5605,9 +5852,10 @@
     "location": "London Office",
     "additional_contacts": [],
     "work_type": "Training",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup suspended"
   },
   {
     "autotask_ticket_id": 100249,
@@ -5627,9 +5875,10 @@
     "location": "Leeds Office",
     "additional_contacts": [],
     "work_type": "Onsite Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100250,
@@ -5651,7 +5900,8 @@
     "work_type": "Support Admin",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100251,
@@ -5671,9 +5921,10 @@
     "location": "Leeds Office",
     "additional_contacts": [],
     "work_type": "Emergency/After Hours Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100252,
@@ -5693,9 +5944,10 @@
     "location": "Bristol Office",
     "additional_contacts": [],
     "work_type": "Onsite Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100253,
@@ -5717,9 +5969,10 @@
       "secops.team@example.com"
     ],
     "work_type": "Maintenance",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100254,
@@ -5739,9 +5992,10 @@
     "location": "Leeds Office",
     "additional_contacts": [],
     "work_type": "Remote Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100255,
@@ -5761,9 +6015,10 @@
     "location": "Manchester Office",
     "additional_contacts": [],
     "work_type": "Meetings",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100256,
@@ -5785,7 +6040,8 @@
     "work_type": "Emergency/After Hours Support",
     "primary_resource": "Alex Johnson",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100257,
@@ -5805,9 +6061,10 @@
     "location": "Manchester Office",
     "additional_contacts": [],
     "work_type": "Maintenance",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100258,
@@ -5829,9 +6086,10 @@
       "it.manager@example.com"
     ],
     "work_type": "Remote Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100259,
@@ -5853,7 +6111,8 @@
     "work_type": "Support Admin",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100260,
@@ -5875,9 +6134,10 @@
       "secops.team@example.com"
     ],
     "work_type": "Travel to/from site",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100261,
@@ -5899,9 +6159,10 @@
       "soc.oncall@example.com"
     ],
     "work_type": "Maintenance",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup suspended"
   },
   {
     "autotask_ticket_id": 100262,
@@ -5923,7 +6184,8 @@
     "work_type": "Emergency/After Hours Support",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100263,
@@ -5945,9 +6207,10 @@
       "secops.team@example.com"
     ],
     "work_type": "Support Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100264,
@@ -5969,9 +6232,10 @@
       "soc.oncall@example.com"
     ],
     "work_type": "Support Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100265,
@@ -5991,9 +6255,10 @@
     "location": "London Office",
     "additional_contacts": [],
     "work_type": "Emergency/After Hours Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100266,
@@ -6013,9 +6278,10 @@
     "location": "Leeds Office",
     "additional_contacts": [],
     "work_type": "Maintenance",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100267,
@@ -6037,9 +6303,10 @@
       "soc.oncall@example.com"
     ],
     "work_type": "Meetings",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100268,
@@ -6061,7 +6328,8 @@
     "work_type": "Meetings",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100269,
@@ -6083,9 +6351,10 @@
       "secops.team@example.com"
     ],
     "work_type": "Training",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100270,
@@ -6105,9 +6374,10 @@
     "location": "London Office",
     "additional_contacts": [],
     "work_type": "Maintenance",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100271,
@@ -6129,7 +6399,8 @@
     "work_type": "Projects/Admin",
     "primary_resource": "Alex Johnson",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100272,
@@ -6151,9 +6422,10 @@
       "soc.oncall@example.com"
     ],
     "work_type": "Emergency/After Hours Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100273,
@@ -6173,9 +6445,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Onsite Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100274,
@@ -6199,7 +6472,8 @@
     "work_type": "Remote Support",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100275,
@@ -6219,9 +6493,10 @@
     "location": "Bristol Office",
     "additional_contacts": [],
     "work_type": "Travel to/from site",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100276,
@@ -6241,9 +6516,10 @@
     "location": "Manchester Office",
     "additional_contacts": [],
     "work_type": "Projects/Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100277,
@@ -6263,9 +6539,10 @@
     "location": "Leeds Office",
     "additional_contacts": [],
     "work_type": "Meetings",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100278,
@@ -6285,9 +6562,10 @@
     "location": "Bristol Office",
     "additional_contacts": [],
     "work_type": "Remote Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100279,
@@ -6307,9 +6585,10 @@
     "location": "Leeds Office",
     "additional_contacts": [],
     "work_type": "Projects/Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100280,
@@ -6333,7 +6612,8 @@
     "work_type": "Meetings",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup suspended"
   },
   {
     "autotask_ticket_id": 100281,
@@ -6353,9 +6633,10 @@
     "location": "Manchester Office",
     "additional_contacts": [],
     "work_type": "Emergency/After Hours Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup suspended"
   },
   {
     "autotask_ticket_id": 100282,
@@ -6375,9 +6656,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Emergency/After Hours Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100283,
@@ -6399,7 +6681,8 @@
     "work_type": "Maintenance",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100284,
@@ -6419,9 +6702,10 @@
     "location": "London Office",
     "additional_contacts": [],
     "work_type": "Travel to/from site",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100285,
@@ -6441,9 +6725,10 @@
     "location": "Bristol Office",
     "additional_contacts": [],
     "work_type": "Maintenance",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100286,
@@ -6465,7 +6750,8 @@
     "work_type": "Emergency/After Hours Support",
     "primary_resource": "Alex Johnson",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100287,
@@ -6485,9 +6771,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Onsite Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100288,
@@ -6507,9 +6794,10 @@
     "location": "Manchester Office",
     "additional_contacts": [],
     "work_type": "Projects/Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100289,
@@ -6529,9 +6817,10 @@
     "location": "Manchester Office",
     "additional_contacts": [],
     "work_type": "Emergency/After Hours Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100290,
@@ -6551,9 +6840,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Support Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100291,
@@ -6573,9 +6863,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Meetings",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100292,
@@ -6599,7 +6890,8 @@
     "work_type": "Travel to/from site",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100293,
@@ -6619,9 +6911,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Training",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100294,
@@ -6643,9 +6936,10 @@
       "it.manager@example.com"
     ],
     "work_type": "Emergency/After Hours Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100295,
@@ -6667,7 +6961,8 @@
     "work_type": "Support Admin",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100296,
@@ -6689,9 +6984,10 @@
       "it.manager@example.com"
     ],
     "work_type": "Emergency/After Hours Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100297,
@@ -6713,9 +7009,10 @@
       "soc.oncall@example.com"
     ],
     "work_type": "Training",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100298,
@@ -6737,7 +7034,8 @@
     "work_type": "Remote Support",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup suspended"
   },
   {
     "autotask_ticket_id": 100299,
@@ -6759,9 +7057,10 @@
       "soc.oncall@example.com"
     ],
     "work_type": "Meetings",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100300,
@@ -6781,9 +7080,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Support Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100301,
@@ -6803,9 +7103,10 @@
     "location": "London Office",
     "additional_contacts": [],
     "work_type": "Maintenance",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100302,
@@ -6827,9 +7128,10 @@
       "it.manager@example.com"
     ],
     "work_type": "Training",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100303,
@@ -6851,9 +7153,10 @@
       "it.manager@example.com"
     ],
     "work_type": "Remote Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100304,
@@ -6875,7 +7178,8 @@
     "work_type": "Remote Support",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup suspended"
   },
   {
     "autotask_ticket_id": 100305,
@@ -6897,9 +7201,10 @@
       "soc.oncall@example.com"
     ],
     "work_type": "Projects/Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100306,
@@ -6919,9 +7224,10 @@
     "location": "London Office",
     "additional_contacts": [],
     "work_type": "Remote Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100307,
@@ -6945,7 +7251,8 @@
     "work_type": "Admin/Sales",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100308,
@@ -6967,9 +7274,10 @@
       "secops.team@example.com"
     ],
     "work_type": "Maintenance",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100309,
@@ -6991,9 +7299,10 @@
       "secops.team@example.com"
     ],
     "work_type": "Support Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100310,
@@ -7015,7 +7324,8 @@
     "work_type": "Training",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100311,
@@ -7035,9 +7345,10 @@
     "location": "Leeds Office",
     "additional_contacts": [],
     "work_type": "Remote Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup suspended"
   },
   {
     "autotask_ticket_id": 100312,
@@ -7057,9 +7368,10 @@
     "location": "Leeds Office",
     "additional_contacts": [],
     "work_type": "Training",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup suspended"
   },
   {
     "autotask_ticket_id": 100313,
@@ -7079,9 +7391,10 @@
     "location": "London Office",
     "additional_contacts": [],
     "work_type": "Travel to/from site",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100314,
@@ -7101,9 +7414,10 @@
     "location": "Leeds Office",
     "additional_contacts": [],
     "work_type": "Projects/Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100315,
@@ -7123,9 +7437,10 @@
     "location": "Bristol Office",
     "additional_contacts": [],
     "work_type": "Support Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100316,
@@ -7149,7 +7464,8 @@
     "work_type": "Meetings",
     "primary_resource": "Alex Johnson",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100317,
@@ -7171,9 +7487,10 @@
       "it.manager@example.com"
     ],
     "work_type": "Training",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100318,
@@ -7193,9 +7510,10 @@
     "location": "Manchester Office",
     "additional_contacts": [],
     "work_type": "Support Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100319,
@@ -7217,7 +7535,8 @@
     "work_type": "Onsite Support",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100320,
@@ -7239,9 +7558,10 @@
       "soc.oncall@example.com"
     ],
     "work_type": "Onsite Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100321,
@@ -7261,9 +7581,10 @@
     "location": "Leeds Office",
     "additional_contacts": [],
     "work_type": "Remote Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100322,
@@ -7285,7 +7606,8 @@
     "work_type": "Remote Support",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100323,
@@ -7305,9 +7627,10 @@
     "location": "Leeds Office",
     "additional_contacts": [],
     "work_type": "Training",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100324,
@@ -7327,9 +7650,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Meetings",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100325,
@@ -7351,9 +7675,10 @@
       "secops.team@example.com"
     ],
     "work_type": "Projects/Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100326,
@@ -7373,9 +7698,10 @@
     "location": "Manchester Office",
     "additional_contacts": [],
     "work_type": "Training",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100327,
@@ -7395,9 +7721,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Onsite Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100328,
@@ -7419,7 +7746,8 @@
     "work_type": "Onsite Support",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100329,
@@ -7439,9 +7767,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Travel to/from site",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100330,
@@ -7463,9 +7792,10 @@
       "soc.oncall@example.com"
     ],
     "work_type": "Support Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100331,
@@ -7489,7 +7819,8 @@
     "work_type": "Projects/Admin",
     "primary_resource": "Alex Johnson",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100332,
@@ -7509,9 +7840,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Meetings",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup suspended"
   },
   {
     "autotask_ticket_id": 100333,
@@ -7531,9 +7863,10 @@
     "location": "London Office",
     "additional_contacts": [],
     "work_type": "Projects/Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100334,
@@ -7555,7 +7888,8 @@
     "work_type": "Training",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100335,
@@ -7575,9 +7909,10 @@
     "location": "Leeds Office",
     "additional_contacts": [],
     "work_type": "Onsite Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup suspended"
   },
   {
     "autotask_ticket_id": 100336,
@@ -7597,9 +7932,10 @@
     "location": "Leeds Office",
     "additional_contacts": [],
     "work_type": "Meetings",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100337,
@@ -7619,9 +7955,10 @@
     "location": "London Office",
     "additional_contacts": [],
     "work_type": "Training",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup suspended"
   },
   {
     "autotask_ticket_id": 100338,
@@ -7641,9 +7978,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Travel to/from site",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100339,
@@ -7663,9 +8001,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Support Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100340,
@@ -7689,7 +8028,8 @@
     "work_type": "Projects/Admin",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100341,
@@ -7709,9 +8049,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Emergency/After Hours Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100342,
@@ -7731,9 +8072,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Travel to/from site",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100343,
@@ -7755,7 +8097,8 @@
     "work_type": "Support Admin",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100344,
@@ -7775,9 +8118,10 @@
     "location": "Leeds Office",
     "additional_contacts": [],
     "work_type": "Meetings",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100345,
@@ -7799,9 +8143,10 @@
       "soc.oncall@example.com"
     ],
     "work_type": "Emergency/After Hours Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100346,
@@ -7823,7 +8168,8 @@
     "work_type": "Onsite Support",
     "primary_resource": "Alex Johnson",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup suspended"
   },
   {
     "autotask_ticket_id": 100347,
@@ -7845,9 +8191,10 @@
       "soc.oncall@example.com"
     ],
     "work_type": "Meetings",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100348,
@@ -7867,9 +8214,10 @@
     "location": "London Office",
     "additional_contacts": [],
     "work_type": "Training",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup suspended"
   },
   {
     "autotask_ticket_id": 100349,
@@ -7889,9 +8237,10 @@
     "location": "Leeds Office",
     "additional_contacts": [],
     "work_type": "Onsite Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100350,
@@ -7911,9 +8260,10 @@
     "location": "Bristol Office",
     "additional_contacts": [],
     "work_type": "Support Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100351,
@@ -7933,9 +8283,10 @@
     "location": "Leeds Office",
     "additional_contacts": [],
     "work_type": "Emergency/After Hours Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100352,
@@ -7957,7 +8308,8 @@
     "work_type": "Onsite Support",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100353,
@@ -7979,9 +8331,10 @@
       "secops.team@example.com"
     ],
     "work_type": "Maintenance",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100354,
@@ -8001,9 +8354,10 @@
     "location": "Leeds Office",
     "additional_contacts": [],
     "work_type": "Remote Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100355,
@@ -8025,7 +8379,8 @@
     "work_type": "Meetings",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100356,
@@ -8045,9 +8400,10 @@
     "location": "Leeds Office",
     "additional_contacts": [],
     "work_type": "Emergency/After Hours Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100357,
@@ -8067,9 +8423,10 @@
     "location": "Manchester Office",
     "additional_contacts": [],
     "work_type": "Maintenance",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100358,
@@ -8093,7 +8450,8 @@
     "work_type": "Remote Support",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100359,
@@ -8113,9 +8471,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Support Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100360,
@@ -8137,9 +8496,10 @@
       "secops.team@example.com"
     ],
     "work_type": "Travel to/from site",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100361,
@@ -8161,9 +8521,10 @@
       "soc.oncall@example.com"
     ],
     "work_type": "Maintenance",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup suspended"
   },
   {
     "autotask_ticket_id": 100362,
@@ -8183,9 +8544,10 @@
     "location": "Leeds Office",
     "additional_contacts": [],
     "work_type": "Emergency/After Hours Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100363,
@@ -8207,9 +8569,10 @@
       "secops.team@example.com"
     ],
     "work_type": "Support Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100364,
@@ -8233,7 +8596,8 @@
     "work_type": "Support Admin",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100365,
@@ -8253,9 +8617,10 @@
     "location": "London Office",
     "additional_contacts": [],
     "work_type": "Emergency/After Hours Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100366,
@@ -8275,9 +8640,10 @@
     "location": "Leeds Office",
     "additional_contacts": [],
     "work_type": "Maintenance",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100367,
@@ -8301,7 +8667,8 @@
     "work_type": "Meetings",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100368,
@@ -8321,9 +8688,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Meetings",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100369,
@@ -8345,9 +8713,10 @@
       "secops.team@example.com"
     ],
     "work_type": "Training",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100370,
@@ -8369,7 +8738,8 @@
     "work_type": "Maintenance",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100371,
@@ -8389,9 +8759,10 @@
     "location": "London Office",
     "additional_contacts": [],
     "work_type": "Projects/Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100372,
@@ -8413,9 +8784,10 @@
       "soc.oncall@example.com"
     ],
     "work_type": "Emergency/After Hours Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100373,
@@ -8435,9 +8807,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Onsite Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100374,
@@ -8459,9 +8832,10 @@
       "secops.team@example.com"
     ],
     "work_type": "Remote Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100375,
@@ -8481,9 +8855,10 @@
     "location": "Bristol Office",
     "additional_contacts": [],
     "work_type": "Travel to/from site",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100376,
@@ -8505,7 +8880,8 @@
     "work_type": "Projects/Admin",
     "primary_resource": "Alex Johnson",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100377,
@@ -8525,9 +8901,10 @@
     "location": "Leeds Office",
     "additional_contacts": [],
     "work_type": "Meetings",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100378,
@@ -8547,9 +8924,10 @@
     "location": "Bristol Office",
     "additional_contacts": [],
     "work_type": "Remote Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100379,
@@ -8571,7 +8949,8 @@
     "work_type": "Projects/Admin",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100380,
@@ -8593,9 +8972,10 @@
       "it.manager@example.com"
     ],
     "work_type": "Meetings",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup suspended"
   },
   {
     "autotask_ticket_id": 100381,
@@ -8615,9 +8995,10 @@
     "location": "Manchester Office",
     "additional_contacts": [],
     "work_type": "Emergency/After Hours Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup suspended"
   },
   {
     "autotask_ticket_id": 100382,
@@ -8639,7 +9020,8 @@
     "work_type": "Emergency/After Hours Support",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100383,
@@ -8659,9 +9041,10 @@
     "location": "London Office",
     "additional_contacts": [],
     "work_type": "Maintenance",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100384,
@@ -8681,9 +9064,10 @@
     "location": "London Office",
     "additional_contacts": [],
     "work_type": "Travel to/from site",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100385,
@@ -8703,9 +9087,10 @@
     "location": "Bristol Office",
     "additional_contacts": [],
     "work_type": "Maintenance",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100386,
@@ -8725,9 +9110,10 @@
     "location": "Manchester Office",
     "additional_contacts": [],
     "work_type": "Emergency/After Hours Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100387,
@@ -8747,9 +9133,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Onsite Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100388,
@@ -8771,7 +9158,8 @@
     "work_type": "Projects/Admin",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100389,
@@ -8791,9 +9179,10 @@
     "location": "Manchester Office",
     "additional_contacts": [],
     "work_type": "Emergency/After Hours Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100390,
@@ -8813,9 +9202,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Support Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100391,
@@ -8837,7 +9227,8 @@
     "work_type": "Meetings",
     "primary_resource": "Alex Johnson",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100392,
@@ -8859,9 +9250,10 @@
       "secops.team@example.com"
     ],
     "work_type": "Travel to/from site",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100393,
@@ -8881,9 +9273,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Training",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100394,
@@ -8907,7 +9300,8 @@
     "work_type": "Emergency/After Hours Support",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100395,
@@ -8927,9 +9321,10 @@
     "location": "Bristol Office",
     "additional_contacts": [],
     "work_type": "Support Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100396,
@@ -8951,9 +9346,10 @@
       "it.manager@example.com"
     ],
     "work_type": "Emergency/After Hours Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100397,
@@ -8975,9 +9371,10 @@
       "soc.oncall@example.com"
     ],
     "work_type": "Training",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100398,
@@ -8997,9 +9394,10 @@
     "location": "London Office",
     "additional_contacts": [],
     "work_type": "Remote Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup suspended"
   },
   {
     "autotask_ticket_id": 100399,
@@ -9021,9 +9419,10 @@
       "soc.oncall@example.com"
     ],
     "work_type": "Meetings",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100400,
@@ -9045,7 +9444,8 @@
     "work_type": "Support Admin",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100401,
@@ -9065,9 +9465,10 @@
     "location": "London Office",
     "additional_contacts": [],
     "work_type": "Maintenance",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100402,
@@ -9089,9 +9490,10 @@
       "it.manager@example.com"
     ],
     "work_type": "Training",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100403,
@@ -9115,7 +9517,8 @@
     "work_type": "Remote Support",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100404,
@@ -9135,9 +9538,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Remote Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup suspended"
   },
   {
     "autotask_ticket_id": 100405,
@@ -9159,9 +9563,10 @@
       "soc.oncall@example.com"
     ],
     "work_type": "Projects/Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100406,
@@ -9183,7 +9588,8 @@
     "work_type": "Remote Support",
     "primary_resource": "Alex Johnson",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100407,
@@ -9205,9 +9611,10 @@
       "it.manager@example.com"
     ],
     "work_type": "Admin/Sales",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100408,
@@ -9229,9 +9636,10 @@
       "secops.team@example.com"
     ],
     "work_type": "Maintenance",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100409,
@@ -9253,9 +9661,10 @@
       "secops.team@example.com"
     ],
     "work_type": "Support Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100410,
@@ -9275,9 +9684,10 @@
     "location": "Manchester Office",
     "additional_contacts": [],
     "work_type": "Training",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100411,
@@ -9297,9 +9707,10 @@
     "location": "Leeds Office",
     "additional_contacts": [],
     "work_type": "Remote Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup suspended"
   },
   {
     "autotask_ticket_id": 100412,
@@ -9321,7 +9732,8 @@
     "work_type": "Training",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup suspended"
   },
   {
     "autotask_ticket_id": 100413,
@@ -9341,9 +9753,10 @@
     "location": "London Office",
     "additional_contacts": [],
     "work_type": "Travel to/from site",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100414,
@@ -9363,9 +9776,10 @@
     "location": "Leeds Office",
     "additional_contacts": [],
     "work_type": "Projects/Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100415,
@@ -9387,7 +9801,8 @@
     "work_type": "Support Admin",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100416,
@@ -9409,9 +9824,10 @@
       "secops.team@example.com"
     ],
     "work_type": "Meetings",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100417,
@@ -9433,9 +9849,10 @@
       "it.manager@example.com"
     ],
     "work_type": "Training",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100418,
@@ -9457,7 +9874,8 @@
     "work_type": "Support Admin",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100419,
@@ -9477,9 +9895,10 @@
     "location": "Bristol Office",
     "additional_contacts": [],
     "work_type": "Onsite Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100420,
@@ -9501,9 +9920,10 @@
       "soc.oncall@example.com"
     ],
     "work_type": "Onsite Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100421,
@@ -9523,9 +9943,10 @@
     "location": "Leeds Office",
     "additional_contacts": [],
     "work_type": "Remote Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100422,
@@ -9545,9 +9966,10 @@
     "location": "London Office",
     "additional_contacts": [],
     "work_type": "Remote Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100423,
@@ -9567,9 +9989,10 @@
     "location": "Leeds Office",
     "additional_contacts": [],
     "work_type": "Training",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100424,
@@ -9591,7 +10014,8 @@
     "work_type": "Meetings",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100425,
@@ -9613,9 +10037,10 @@
       "secops.team@example.com"
     ],
     "work_type": "Projects/Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100426,
@@ -9635,9 +10060,10 @@
     "location": "Manchester Office",
     "additional_contacts": [],
     "work_type": "Training",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100427,
@@ -9659,7 +10085,8 @@
     "work_type": "Onsite Support",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100428,
@@ -9679,9 +10106,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Onsite Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100429,
@@ -9701,9 +10129,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Travel to/from site",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100430,
@@ -9727,7 +10156,8 @@
     "work_type": "Support Admin",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100431,
@@ -9749,9 +10179,10 @@
       "soc.oncall@example.com"
     ],
     "work_type": "Projects/Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100432,
@@ -9771,9 +10202,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Meetings",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup suspended"
   },
   {
     "autotask_ticket_id": 100433,
@@ -9793,9 +10225,10 @@
     "location": "London Office",
     "additional_contacts": [],
     "work_type": "Projects/Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100434,
@@ -9815,9 +10248,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Training",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100435,
@@ -9837,9 +10271,10 @@
     "location": "Leeds Office",
     "additional_contacts": [],
     "work_type": "Onsite Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup suspended"
   },
   {
     "autotask_ticket_id": 100436,
@@ -9861,7 +10296,8 @@
     "work_type": "Meetings",
     "primary_resource": "Alex Johnson",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100437,
@@ -9881,9 +10317,10 @@
     "location": "London Office",
     "additional_contacts": [],
     "work_type": "Training",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup suspended"
   },
   {
     "autotask_ticket_id": 100438,
@@ -9903,9 +10340,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Travel to/from site",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100439,
@@ -9927,7 +10365,8 @@
     "work_type": "Support Admin",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100440,
@@ -9949,9 +10388,10 @@
       "it.manager@example.com"
     ],
     "work_type": "Projects/Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100441,
@@ -9971,9 +10411,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Emergency/After Hours Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100442,
@@ -9995,7 +10436,8 @@
     "work_type": "Travel to/from site",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100443,
@@ -10015,9 +10457,10 @@
     "location": "Manchester Office",
     "additional_contacts": [],
     "work_type": "Support Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100444,
@@ -10037,9 +10480,10 @@
     "location": "Leeds Office",
     "additional_contacts": [],
     "work_type": "Meetings",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100445,
@@ -10061,9 +10505,10 @@
       "soc.oncall@example.com"
     ],
     "work_type": "Emergency/After Hours Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100446,
@@ -10083,9 +10528,10 @@
     "location": "London Office",
     "additional_contacts": [],
     "work_type": "Onsite Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup suspended"
   },
   {
     "autotask_ticket_id": 100447,
@@ -10107,9 +10553,10 @@
       "soc.oncall@example.com"
     ],
     "work_type": "Meetings",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100448,
@@ -10131,7 +10578,8 @@
     "work_type": "Training",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup suspended"
   },
   {
     "autotask_ticket_id": 100449,
@@ -10151,9 +10599,10 @@
     "location": "Leeds Office",
     "additional_contacts": [],
     "work_type": "Onsite Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100450,
@@ -10173,9 +10622,10 @@
     "location": "Bristol Office",
     "additional_contacts": [],
     "work_type": "Support Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100451,
@@ -10197,7 +10647,8 @@
     "work_type": "Emergency/After Hours Support",
     "primary_resource": "Alex Johnson",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100452,
@@ -10217,9 +10668,10 @@
     "location": "Bristol Office",
     "additional_contacts": [],
     "work_type": "Onsite Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100453,
@@ -10241,9 +10693,10 @@
       "secops.team@example.com"
     ],
     "work_type": "Maintenance",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100454,
@@ -10265,7 +10718,8 @@
     "work_type": "Remote Support",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100455,
@@ -10285,9 +10739,10 @@
     "location": "Manchester Office",
     "additional_contacts": [],
     "work_type": "Meetings",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100456,
@@ -10307,9 +10762,10 @@
     "location": "Leeds Office",
     "additional_contacts": [],
     "work_type": "Emergency/After Hours Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100457,
@@ -10329,9 +10785,10 @@
     "location": "Manchester Office",
     "additional_contacts": [],
     "work_type": "Maintenance",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100458,
@@ -10353,9 +10810,10 @@
       "it.manager@example.com"
     ],
     "work_type": "Remote Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100459,
@@ -10375,9 +10833,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Support Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100460,
@@ -10401,7 +10860,8 @@
     "work_type": "Travel to/from site",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100461,
@@ -10423,9 +10883,10 @@
       "soc.oncall@example.com"
     ],
     "work_type": "Maintenance",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup suspended"
   },
   {
     "autotask_ticket_id": 100462,
@@ -10445,9 +10906,10 @@
     "location": "Leeds Office",
     "additional_contacts": [],
     "work_type": "Emergency/After Hours Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100463,
@@ -10471,7 +10933,8 @@
     "work_type": "Support Admin",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100464,
@@ -10493,9 +10956,10 @@
       "soc.oncall@example.com"
     ],
     "work_type": "Support Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100465,
@@ -10515,9 +10979,10 @@
     "location": "London Office",
     "additional_contacts": [],
     "work_type": "Emergency/After Hours Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100466,
@@ -10539,7 +11004,8 @@
     "work_type": "Maintenance",
     "primary_resource": "Alex Johnson",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100467,
@@ -10561,9 +11027,10 @@
       "soc.oncall@example.com"
     ],
     "work_type": "Meetings",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100468,
@@ -10583,9 +11050,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Meetings",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100469,
@@ -10607,9 +11075,10 @@
       "secops.team@example.com"
     ],
     "work_type": "Training",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100470,
@@ -10629,9 +11098,10 @@
     "location": "London Office",
     "additional_contacts": [],
     "work_type": "Maintenance",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100471,
@@ -10651,9 +11121,10 @@
     "location": "London Office",
     "additional_contacts": [],
     "work_type": "Projects/Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100472,
@@ -10677,7 +11148,8 @@
     "work_type": "Emergency/After Hours Support",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100473,
@@ -10697,9 +11169,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Onsite Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100474,
@@ -10721,9 +11194,10 @@
       "secops.team@example.com"
     ],
     "work_type": "Remote Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100475,
@@ -10745,7 +11219,8 @@
     "work_type": "Travel to/from site",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100476,
@@ -10765,9 +11240,10 @@
     "location": "Manchester Office",
     "additional_contacts": [],
     "work_type": "Projects/Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100477,
@@ -10787,9 +11263,10 @@
     "location": "Leeds Office",
     "additional_contacts": [],
     "work_type": "Meetings",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100478,
@@ -10811,7 +11288,8 @@
     "work_type": "Remote Support",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100479,
@@ -10831,9 +11309,10 @@
     "location": "Leeds Office",
     "additional_contacts": [],
     "work_type": "Projects/Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100480,
@@ -10855,9 +11334,10 @@
       "it.manager@example.com"
     ],
     "work_type": "Meetings",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup suspended"
   },
   {
     "autotask_ticket_id": 100481,
@@ -10877,9 +11357,10 @@
     "location": "Manchester Office",
     "additional_contacts": [],
     "work_type": "Emergency/After Hours Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup suspended"
   },
   {
     "autotask_ticket_id": 100482,
@@ -10899,9 +11380,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Emergency/After Hours Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100483,
@@ -10921,9 +11403,10 @@
     "location": "London Office",
     "additional_contacts": [],
     "work_type": "Maintenance",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100484,
@@ -10945,7 +11428,8 @@
     "work_type": "Travel to/from site",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100485,
@@ -10965,9 +11449,10 @@
     "location": "Bristol Office",
     "additional_contacts": [],
     "work_type": "Maintenance",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100486,
@@ -10987,9 +11472,10 @@
     "location": "Manchester Office",
     "additional_contacts": [],
     "work_type": "Emergency/After Hours Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100487,
@@ -11011,7 +11497,8 @@
     "work_type": "Onsite Support",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Hardware offline"
   },
   {
     "autotask_ticket_id": 100488,
@@ -11031,9 +11518,10 @@
     "location": "Manchester Office",
     "additional_contacts": [],
     "work_type": "Projects/Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100489,
@@ -11053,9 +11541,10 @@
     "location": "Manchester Office",
     "additional_contacts": [],
     "work_type": "Emergency/After Hours Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100490,
@@ -11077,7 +11566,8 @@
     "work_type": "Support Admin",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100491,
@@ -11097,9 +11587,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Meetings",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100492,
@@ -11121,9 +11612,10 @@
       "secops.team@example.com"
     ],
     "work_type": "Travel to/from site",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patching vulnerabilities"
   },
   {
     "autotask_ticket_id": 100493,
@@ -11143,9 +11635,10 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Training",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100494,
@@ -11167,9 +11660,10 @@
       "it.manager@example.com"
     ],
     "work_type": "Emergency/After Hours Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Patch failed"
   },
   {
     "autotask_ticket_id": 100495,
@@ -11189,9 +11683,10 @@
     "location": "Bristol Office",
     "additional_contacts": [],
     "work_type": "Support Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100496,
@@ -11215,7 +11710,8 @@
     "work_type": "Emergency/After Hours Support",
     "primary_resource": "Alex Johnson",
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100497,
@@ -11237,9 +11733,10 @@
       "soc.oncall@example.com"
     ],
     "work_type": "Training",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": null,
     "secondary_resource": null,
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup failed"
   },
   {
     "autotask_ticket_id": 100498,
@@ -11259,9 +11756,10 @@
     "location": "London Office",
     "additional_contacts": [],
     "work_type": "Remote Support",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "Priya Patel",
     "secondary_resource": "John Smith",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Backup suspended"
   },
   {
     "autotask_ticket_id": 100499,
@@ -11285,7 +11783,8 @@
     "work_type": "Meetings",
     "primary_resource": "Alex Johnson",
     "secondary_resource": "Priya Patel",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   },
   {
     "autotask_ticket_id": 100500,
@@ -11305,8 +11804,9 @@
     "location": "Birmingham Office",
     "additional_contacts": [],
     "work_type": "Support Admin",
-    "primary_resource": "Alex Johnson",
+    "primary_resource": "John Smith",
     "secondary_resource": "Alex Johnson",
-    "queue": "MS - SecOps"
+    "queue": "MS - SecOps",
+    "category_bucket_hint": "Email blocked/held"
   }
 ]
