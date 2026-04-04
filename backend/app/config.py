@@ -9,6 +9,7 @@ class Settings(BaseSettings):
     
     # Database
     DATABASE_URL: str = "postgresql+asyncpg://postgres:password@localhost:5432/mydb"
+    LOG_DATABASE_URL: str = "postgresql+asyncpg://postgres:password@localhost:5433/logsdb"
     
     # Application
     ENVIRONMENT: str = "development"

@@ -11,6 +11,7 @@ __pycache__/
 venv/
 .venv/
 env/
+myenv/
 .env
 
 # =========================
@@ -25,13 +26,26 @@ env/
 # =========================
 *.log
 logs/
-
+alembic_logs/**/__pycache__/
+alembic_logs/**/*.pyc
 # =========================
 # Test & coverage output
 # =========================
 .pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.pyre/
+.tox/
 .coverage
 htmlcov/
+
+# =========================
+# Build / packaging output
+# =========================
+build/
+dist/
+*.egg-info/
+pip-wheel-metadata/
 
 # =========================
 # IDE / OS files
@@ -47,3 +61,4 @@ Thumbs.db
 .env.*
 *.key
 secrets/
+
