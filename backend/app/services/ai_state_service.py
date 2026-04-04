@@ -24,13 +24,15 @@ class AIStateService:
 
     def __init__(
         self,
-        db: AsyncSession,
+        ai_db: AsyncSession,
+        profile_db: AsyncSession,
         provider: Optional[FakeAutotaskProvider] = None,
     ):
-        self.db = db
+        self.ai_db = ai_db
+        self.profile_db = profile_db
         self.provider = provider or FakeAutotaskProvider()
-        self.repository = TicketAIStateRepository(db)
-        self.profile_repository = ProfileRepository(db)
+        self.repository = TicketAIStateRepository(ai_db)
+        self.profile_repository = ProfileRepository(profile_db)
 
     async def apply_primary_assignment(
         self,
@@ -118,7 +120,7 @@ class AIStateService:
         removed_count = await self.repository.delete_missing_active_tickets(tenant_id, retained_ids)
 
         if apply_oversight:
-            oversight_service = AIOversightService(self.db)
+            oversight_service = AIOversightService(self.ai_db, self.profile_db)
             await oversight_service.run_for_tenant(
                 tenant_id=tenant_id,
                 queue=oversight_queue,

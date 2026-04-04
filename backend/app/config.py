@@ -8,7 +8,9 @@ class Settings(BaseSettings):
     """Application settings loaded from environment variables."""
     
     # Database
-    DATABASE_URL: str = "postgresql+asyncpg://postgres:password@localhost:5432/mydb"
+    DATABASE_URL: str = "postgresql+asyncpg://postgres:password@localhost:5432/mydb" # this is legacy, will be removed in future
+    PROFILE_DATABASE_URL: str = "postgresql+asyncpg://postgres:password@localhost:5433/profile_db"
+    AI_DATABASE_URL: str = "postgresql+asyncpg://postgres:password@localhost:5434/ai_db"
     LOG_DATABASE_URL: str = "postgresql+asyncpg://postgres:password@localhost:5433/logsdb"
     
     # Application

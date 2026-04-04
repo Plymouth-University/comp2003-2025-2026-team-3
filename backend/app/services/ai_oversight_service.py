@@ -31,12 +31,13 @@ class _Decision:
 class AIOversightService:
     """Runs queue-wide recommendation enforcement with explicit safety rules."""
 
-    def __init__(self, db: AsyncSession):
-        self.db = db
+    def __init__(self, ai_db: AsyncSession, profile_db: AsyncSession):
+        self.ai_db = ai_db
+        self.profile_db = profile_db
         self.provider = FakeAutotaskProvider()
-        self.ai_state_repository = TicketAIStateRepository(db)
-        self.profile_repository = ProfileRepository(db)
-        self.assignment_service = AIAssignmentService(db)
+        self.ai_state_repository = TicketAIStateRepository(ai_db)
+        self.profile_repository = ProfileRepository(profile_db)
+        self.assignment_service = AIAssignmentService(ai_db, profile_db)
 
     async def run_for_tenant(
         self,
