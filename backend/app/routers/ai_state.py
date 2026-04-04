@@ -6,7 +6,7 @@ from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from ..auth import AuthenticatedSession, get_current_session
-from ..database import get_db
+from ..database import get_ai_db, get_profile_db
 from ..schemas.ai_state import (
     AIOversightRunResponse,
     TicketAssignmentOverrideRequest,
@@ -38,10 +38,11 @@ async def get_ai_categories(
 async def refresh_ai_ticket_states(
     refresh_request: TicketAIRefreshRequest,
     session: AuthenticatedSession = Depends(get_current_session),
-    db: AsyncSession = Depends(get_db),
+    ai_db: AsyncSession = Depends(get_ai_db),
+    profile_db: AsyncSession = Depends(get_profile_db),
 ):
     """Refresh persisted AI state from the ticket provider for the current tenant."""
-    service = AIStateService(db)
+    service = AIStateService(ai_db, profile_db)
     return await service.refresh_ticket_states(
         tenant_id=UUID(session.tenant_id),
         include_closed=refresh_request.include_closed,
@@ -55,10 +56,11 @@ async def refresh_ai_ticket_states(
 async def run_ai_oversight(
     queue: str = Query("MS - SecOps"),
     session: AuthenticatedSession = Depends(get_current_session),
-    db: AsyncSession = Depends(get_db),
+    ai_db: AsyncSession = Depends(get_ai_db),
+    profile_db: AsyncSession = Depends(get_profile_db),
 ):
     """Run AI oversight once for the current tenant queue."""
-    service = AIOversightService(db)
+    service = AIOversightService(ai_db, profile_db)
     return await service.run_for_tenant(
         tenant_id=UUID(session.tenant_id),
         queue=queue,
@@ -71,10 +73,11 @@ async def list_ai_ticket_states(
     limit: int = Query(500, ge=1, le=1000),
     offset: int = Query(0, ge=0),
     session: AuthenticatedSession = Depends(get_current_session),
-    db: AsyncSession = Depends(get_db),
+    ai_db: AsyncSession = Depends(get_ai_db),
+    profile_db: AsyncSession = Depends(get_profile_db),
 ):
     """List persisted AI ticket states for the current tenant."""
-    service = AIStateService(db)
+    service = AIStateService(ai_db, profile_db)
     return await service.list_ticket_states(
         tenant_id=UUID(session.tenant_id),
         include_closed=include_closed,
@@ -89,10 +92,11 @@ async def list_my_primary_ticket_states(
     limit: int = Query(500, ge=1, le=1000),
     offset: int = Query(0, ge=0),
     session: AuthenticatedSession = Depends(get_current_session),
-    db: AsyncSession = Depends(get_db),
+    ai_db: AsyncSession = Depends(get_ai_db),
+    profile_db: AsyncSession = Depends(get_profile_db),
 ):
     """List persisted AI ticket states where the current user is the primary resource."""
-    service = AIStateService(db)
+    service = AIStateService(ai_db, profile_db)
     return await service.list_profile_ticket_states(
         tenant_id=UUID(session.tenant_id),
         profile_id=UUID(session.profile_id),
@@ -109,10 +113,11 @@ async def list_my_secondary_ticket_states(
     limit: int = Query(500, ge=1, le=1000),
     offset: int = Query(0, ge=0),
     session: AuthenticatedSession = Depends(get_current_session),
-    db: AsyncSession = Depends(get_db),
+    ai_db: AsyncSession = Depends(get_ai_db),
+    profile_db: AsyncSession = Depends(get_profile_db),
 ):
     """List persisted AI ticket states where the current user is the secondary resource."""
-    service = AIStateService(db)
+    service = AIStateService(ai_db, profile_db)
     return await service.list_profile_ticket_states(
         tenant_id=UUID(session.tenant_id),
         profile_id=UUID(session.profile_id),
@@ -129,10 +134,11 @@ async def list_my_assigned_ticket_states(
     limit: int = Query(500, ge=1, le=1000),
     offset: int = Query(0, ge=0),
     session: AuthenticatedSession = Depends(get_current_session),
-    db: AsyncSession = Depends(get_db),
+    ai_db: AsyncSession = Depends(get_ai_db),
+    profile_db: AsyncSession = Depends(get_profile_db),
 ):
     """List persisted AI ticket states where the current user is primary or secondary."""
-    service = AIStateService(db)
+    service = AIStateService(ai_db, profile_db)
     return await service.list_profile_ticket_states(
         tenant_id=UUID(session.tenant_id),
         profile_id=UUID(session.profile_id),
@@ -150,10 +156,11 @@ async def list_team_ticket_states(
     limit: int = Query(500, ge=1, le=1000),
     offset: int = Query(0, ge=0),
     session: AuthenticatedSession = Depends(get_current_session),
-    db: AsyncSession = Depends(get_db),
+    ai_db: AsyncSession = Depends(get_ai_db),
+    profile_db: AsyncSession = Depends(get_profile_db),
 ):
     """List persisted AI ticket states for the SecOps queue."""
-    service = AIStateService(db)
+    service = AIStateService(ai_db, profile_db)
     return await service.list_queue_ticket_states(
         tenant_id=UUID(session.tenant_id),
         queue=queue,
@@ -167,10 +174,11 @@ async def list_team_ticket_states(
 async def get_ai_ticket_state(
     autotask_ticket_id: int,
     session: AuthenticatedSession = Depends(get_current_session),
-    db: AsyncSession = Depends(get_db),
+    ai_db: AsyncSession = Depends(get_ai_db),
+    profile_db: AsyncSession = Depends(get_profile_db),
 ):
     """Get one persisted AI ticket state for the current tenant."""
-    service = AIStateService(db)
+    service = AIStateService(ai_db, profile_db)
     state = await service.get_ticket_state(UUID(session.tenant_id), autotask_ticket_id)
     if not state:
         raise HTTPException(
@@ -187,10 +195,11 @@ async def get_ai_ticket_state(
 async def get_ticket_assignment_recommendation(
     autotask_ticket_id: int,
     session: AuthenticatedSession = Depends(get_current_session),
-    db: AsyncSession = Depends(get_db),
+    ai_db: AsyncSession = Depends(get_ai_db),
+    profile_db: AsyncSession = Depends(get_profile_db),
 ):
     """Recommend an assignee based on stored profile specialisms for this ticket category."""
-    service = AIAssignmentService(db)
+    service = AIAssignmentService(ai_db, profile_db)
     recommendation = await service.recommend_for_ticket(UUID(session.tenant_id), autotask_ticket_id)
     if recommendation is None:
         raise HTTPException(
@@ -208,10 +217,11 @@ async def set_ticket_assignment_override(
     autotask_ticket_id: int,
     override_request: TicketAssignmentOverrideRequest,
     session: AuthenticatedSession = Depends(get_current_session),
-    db: AsyncSession = Depends(get_db),
+    ai_db: AsyncSession = Depends(get_ai_db),
+    profile_db: AsyncSession = Depends(get_profile_db),
 ):
     """Persist a manual assignment override for a ticket."""
-    state_service = AIStateService(db)
+    state_service = AIStateService(ai_db, profile_db)
     try:
         updated = await state_service.set_manual_override(
             tenant_id=UUID(session.tenant_id),
@@ -231,7 +241,7 @@ async def set_ticket_assignment_override(
             detail=f"AI ticket state not found for autotask_ticket_id={autotask_ticket_id}",
         )
 
-    service = AIAssignmentService(db)
+    service = AIAssignmentService(ai_db, profile_db)
     recommendation = await service.recommend_for_ticket(UUID(session.tenant_id), autotask_ticket_id)
     if recommendation is None:
         raise HTTPException(
@@ -248,10 +258,11 @@ async def set_ticket_assignment_override(
 async def clear_ticket_assignment_override(
     autotask_ticket_id: int,
     session: AuthenticatedSession = Depends(get_current_session),
-    db: AsyncSession = Depends(get_db),
+    ai_db: AsyncSession = Depends(get_ai_db),
+    profile_db: AsyncSession = Depends(get_profile_db),
 ):
     """Clear any persisted manual assignment override for a ticket."""
-    state_service = AIStateService(db)
+    state_service = AIStateService(ai_db, profile_db)
     updated = await state_service.clear_manual_override(
         tenant_id=UUID(session.tenant_id),
         autotask_ticket_id=autotask_ticket_id,
@@ -262,7 +273,7 @@ async def clear_ticket_assignment_override(
             detail=f"AI ticket state not found for autotask_ticket_id={autotask_ticket_id}",
         )
 
-    service = AIAssignmentService(db)
+    service = AIAssignmentService(ai_db, profile_db)
     recommendation = await service.recommend_for_ticket(UUID(session.tenant_id), autotask_ticket_id)
     if recommendation is None:
         raise HTTPException(

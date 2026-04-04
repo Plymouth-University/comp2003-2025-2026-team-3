@@ -19,7 +19,7 @@ from .auth import AuthenticatedSession, get_current_session
 from .routers.auth import router as auth_router
 from .routers.ai_state import router as ai_state_router
 from .routers.profiles import router as profiles_router
-from .database import AsyncSessionLocal, close_db
+from .database import AIAsyncSessionLocal, ProfileAsyncSessionLocal, close_db
 from .config import settings
 from .repositories.profile_repository import TenantRepository
 from .services.ai_state_service import AIStateService
@@ -47,19 +47,21 @@ async def lifespan(app: FastAPI):
         queue_name = settings.AI_OVERSIGHT_QUEUE
         while True:
             try:
-                async with AsyncSessionLocal() as db:
-                    tenant_repo = TenantRepository(db)
+                async with ProfileAsyncSessionLocal() as profile_db:
+                    tenant_repo = TenantRepository(profile_db)
                     tenants = await tenant_repo.get_all_tenants()
-                    for tenant in tenants:
-                        service = AIStateService(db)
-                        await service.refresh_ticket_states(
-                            tenant_id=tenant.tenant_id,
-                            include_closed=settings.AI_OVERSIGHT_INCLUDE_CLOSED,
-                            limit=settings.AI_OVERSIGHT_REFRESH_LIMIT,
-                            apply_oversight=True,
-                            oversight_queue=queue_name,
-                        )
-                    await db.commit()
+                    async with AIAsyncSessionLocal() as ai_db:
+                        for tenant in tenants:
+                            service = AIStateService(ai_db, profile_db)
+                            await service.refresh_ticket_states(
+                                tenant_id=tenant.tenant_id,
+                                include_closed=settings.AI_OVERSIGHT_INCLUDE_CLOSED,
+                                limit=settings.AI_OVERSIGHT_REFRESH_LIMIT,
+                                apply_oversight=True,
+                                oversight_queue=queue_name,
+                            )
+                        await ai_db.commit()
+                    await profile_db.commit()
                 await asyncio.sleep(interval)
             except asyncio.CancelledError:
                 logger.info("AI oversight worker cancelled.")

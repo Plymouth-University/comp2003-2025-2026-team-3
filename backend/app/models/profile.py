@@ -4,10 +4,10 @@ from sqlalchemy.dialects.postgresql import UUID, TIMESTAMP
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 import uuid
-from ..database import Base
+from ..database import ProfileBase
 
 
-class Tenant(Base):
+class Tenant(ProfileBase):
     """Tenant/Organization model."""
     __tablename__ = "tenant"
     
@@ -24,7 +24,7 @@ class Tenant(Base):
         return f"<Tenant(id={self.tenant_id}, name='{self.tenant_name}')>"
 
 
-class Profile(Base):
+class Profile(ProfileBase):
     """User profile model."""
     __tablename__ = "profile"
     
@@ -52,7 +52,7 @@ class Profile(Base):
         return f"<Profile(id={self.profile_id}, status='{self.status}')>"
 
 
-class IdentityProvider(Base):
+class IdentityProvider(ProfileBase):
     """Identity provider configuration (OAuth, SAML, etc.)."""
     __tablename__ = "identity_provider"
     
@@ -66,7 +66,7 @@ class IdentityProvider(Base):
         return f"<IdentityProvider(id={self.idp_id}, name='{self.idp_name}')>"
 
 
-class ProfileIdentity(Base):
+class ProfileIdentity(ProfileBase):
     """Maps profiles to external identity providers."""
     __tablename__ = "profile_identity"
     
@@ -92,7 +92,7 @@ class ProfileIdentity(Base):
         return f"<ProfileIdentity(id={self.profile_identity_id}, provider={self.idp_id})>"
 
 
-class ProfileDisplay(Base):
+class ProfileDisplay(ProfileBase):
     """Profile display name and presentation information."""
     __tablename__ = "profile_display"
     
@@ -115,7 +115,7 @@ class ProfileDisplay(Base):
         return f"<ProfileDisplay(profile_id={self.profile_id}, name='{self.display_name}')>"
 
 
-class AvatarPreset(Base):
+class AvatarPreset(ProfileBase):
     """Pre-configured avatar options for users to choose from."""
     __tablename__ = "avatar_preset"
     
@@ -138,7 +138,7 @@ class AvatarPreset(Base):
         return f"<AvatarPreset(id={self.avatar_preset_id}, label='{self.label}')>"
 
 
-class ProfileAvatar(Base):
+class ProfileAvatar(ProfileBase):
     """User's avatar configuration."""
     __tablename__ = "profile_avatar"
     
@@ -157,7 +157,7 @@ class ProfileAvatar(Base):
         return f"<ProfileAvatar(profile_id={self.profile_id}, source='{self.avatar_source}')>"
 
 
-class Specialism(Base):
+class Specialism(ProfileBase):
     """Skill/expertise categories defined by tenant."""
     __tablename__ = "specialism"
     
@@ -183,7 +183,7 @@ class Specialism(Base):
         return f"<Specialism(id={self.specialism_id}, name='{self.specialism_name}')>"
 
 
-class ProfileSpecialism(Base):
+class ProfileSpecialism(ProfileBase):
     """Links profiles to their specialisms/skills."""
     __tablename__ = "profile_specialism"
     

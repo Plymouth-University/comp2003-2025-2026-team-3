@@ -1,6 +1,7 @@
 services:
-  postgres:
+  postgres_legacy:
     image: postgres:latest
+    container_name: secops-postgres-legacy
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
@@ -8,7 +9,33 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql
+      - postgres_legacy_data:/var/lib/postgresql
+
+  postgres_profile:
+    image: postgres:latest
+    container_name: secops-postgres-profile
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: profile_db
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_profile_data:/var/lib/postgresql
+
+  postgres_ai:
+    image: postgres:latest
+    container_name: secops-postgres-ai
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: ai_db
+    ports:
+      - "5434:5432"
+    volumes:
+      - postgres_ai_data:/var/lib/postgresql
 
 volumes:
-  postgres_data:
+  postgres_legacy_data:
+  postgres_profile_data:
+  postgres_ai_data:

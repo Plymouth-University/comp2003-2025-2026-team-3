@@ -2,14 +2,14 @@
 
 import uuid
 
-from sqlalchemy import Column, Integer, Text, Index, Boolean, ForeignKey
+from sqlalchemy import Column, Integer, Text, Index, Boolean
 from sqlalchemy.dialects.postgresql import UUID, TIMESTAMP
 from sqlalchemy.sql import func
 
-from ..database import Base
+from ..database import AIBase
 
 
-class TicketAIState(Base):
+class TicketAIState(AIBase):
     """Persisted AI state for active or recently refreshed tickets."""
 
     __tablename__ = "ticket_ai_state"
@@ -31,33 +31,13 @@ class TicketAIState(Base):
     due_date = Column(Text, nullable=False)
     primary_resource = Column(Text, nullable=True)
     secondary_resource = Column(Text, nullable=True)
-    primary_profile_id = Column(
-        UUID(as_uuid=True),
-        ForeignKey("profile.profile_id", ondelete="SET NULL"),
-        nullable=True,
-    )
-    secondary_profile_id = Column(
-        UUID(as_uuid=True),
-        ForeignKey("profile.profile_id", ondelete="SET NULL"),
-        nullable=True,
-    )
-    manual_override_profile_id = Column(
-        UUID(as_uuid=True),
-        ForeignKey("profile.profile_id", ondelete="SET NULL"),
-        nullable=True,
-    )
-    manual_override_set_by_profile_id = Column(
-        UUID(as_uuid=True),
-        ForeignKey("profile.profile_id", ondelete="SET NULL"),
-        nullable=True,
-    )
+    primary_profile_id = Column(UUID(as_uuid=True), nullable=True)
+    secondary_profile_id = Column(UUID(as_uuid=True), nullable=True)
+    manual_override_profile_id = Column(UUID(as_uuid=True), nullable=True)
+    manual_override_set_by_profile_id = Column(UUID(as_uuid=True), nullable=True)
     manual_override_reason = Column(Text, nullable=True)
     manual_override_set_at = Column(TIMESTAMP(timezone=True), nullable=True)
-    ai_managed_profile_id = Column(
-        UUID(as_uuid=True),
-        ForeignKey("profile.profile_id", ondelete="SET NULL"),
-        nullable=True,
-    )
+    ai_managed_profile_id = Column(UUID(as_uuid=True), nullable=True)
     ai_managed_reason = Column(Text, nullable=True)
     ai_managed_set_at = Column(TIMESTAMP(timezone=True), nullable=True)
     category = Column(Text, nullable=False)
