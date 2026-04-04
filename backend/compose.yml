@@ -37,6 +37,7 @@ services:
 
   postgres_logs:
     image: postgres:latest
+    container_name: secops-postgres-logs
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
