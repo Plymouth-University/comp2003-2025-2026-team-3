@@ -35,7 +35,20 @@ services:
     volumes:
       - postgres_ai_data:/var/lib/postgresql
 
+  postgres_logs:
+    image: postgres:latest
+    container_name: secops-postgres-logs
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: logsdb
+    ports:
+      - "5435:5432"
+    volumes:
+      - postgres_logs_data:/var/lib/postgresql
+
 volumes:
   postgres_legacy_data:
   postgres_profile_data:
   postgres_ai_data:
+  postgres_logs_data:
