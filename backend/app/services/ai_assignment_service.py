@@ -20,10 +20,11 @@ from .ai import list_available_categories
 class AIAssignmentService:
     """Provide explainable assignment recommendations from persisted AI ticket state."""
 
-    def __init__(self, db: AsyncSession):
-        self.db = db
-        self.ai_state_repository = TicketAIStateRepository(db)
-        self.profile_repository = ProfileRepository(db)
+    def __init__(self, ai_db: AsyncSession, profile_db: AsyncSession):
+        self.ai_db = ai_db
+        self.profile_db = profile_db
+        self.ai_state_repository = TicketAIStateRepository(ai_db)
+        self.profile_repository = ProfileRepository(profile_db)
 
     async def recommend_for_ticket(
         self,
