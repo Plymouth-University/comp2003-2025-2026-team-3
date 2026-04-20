@@ -258,7 +258,7 @@ python scripts/expand_tickets.py --multiplier 5 --start-id 100001
 
 Detailed script guidance:
 
-- [backend-test-scripts.md](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/docs/runbooks/backend-test-scripts.md)
+- [backend-test-scripts.md](docs/runbooks/backend-test-scripts.md)
 
 ## Symptom: Ticket endpoints return empty/error responses after login
 
@@ -318,7 +318,7 @@ What to check:
 
 See also:
 
-- [logging-system overview](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/docs/services/logging-system/overview.md)
+- [logging-system overview](docs/services/logging-system/overview.md)
 
 ## Symptom: The app seems to run, but behavior does not match older docs
 

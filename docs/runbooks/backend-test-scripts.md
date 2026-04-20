@@ -255,6 +255,6 @@ sequenceDiagram
 
 ## Related Docs
 
-- [AI Service Flows](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/docs/services/ai-service/flows.md)
-- [AI Service Troubleshooting](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/docs/services/ai-service/troubleshooting.md)
-- [Troubleshooting Runbook](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/docs/runbooks/troubleshooting.md)
+- [AI Service Flows](docs/services/ai-service/flows.md)
+- [AI Service Troubleshooting](docs/services/ai-service/troubleshooting.md)
+- [Troubleshooting Runbook](docs/runbooks/troubleshooting.md)

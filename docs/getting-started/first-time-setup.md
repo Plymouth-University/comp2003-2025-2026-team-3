@@ -14,11 +14,11 @@ It focuses on one-off setup work:
 
 If you have already done that once and only want to start the app today, use:
 
-- [daily-run.md](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/docs/getting-started/daily-run.md)
+- [daily-run.md](docs/getting-started/daily-run.md)
 
 If you need to understand environment variables, use:
 
-- [environment.md](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/docs/getting-started/environment.md)
+- [environment.md](docs/getting-started/environment.md)
 
 ## Source Of Truth
 
@@ -135,7 +135,7 @@ At minimum, review:
 
 See:
 
-- [environment.md](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/docs/getting-started/environment.md)
+- [environment.md](docs/getting-started/environment.md)
 
 ## Step 6: Apply Database Migrations
 
@@ -181,7 +181,7 @@ This installs the frontend dev tooling, including:
 
 After setup is done, the simplest next step is to follow:
 
-- [daily-run.md](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/docs/getting-started/daily-run.md)
+- [daily-run.md](docs/getting-started/daily-run.md)
 
 Your first successful smoke test should confirm:
 

@@ -119,7 +119,7 @@ Based on the current implementation, file logging is helpful for local developme
 - it does not model logs as first-class application data
 - it does not naturally support richer analysis or cross-request views
 
-See [future-direction.md](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/docs/services/logging-system/future-direction.md) for the improvement direction.
+See [future-direction.md](docs/services/logging-system/future-direction.md) for the improvement direction.
 
 ## Known Structural Gaps
 

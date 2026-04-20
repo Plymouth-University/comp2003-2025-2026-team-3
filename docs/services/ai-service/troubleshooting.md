@@ -30,7 +30,7 @@ Likely causes:
 
 What to check:
 
-- [ticket_categories.json](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/backend/data/ticket_categories.json)
+- [ticket_categories.json](backend/data/ticket_categories.json)
 - `/api/categories`
 - backend logs from `config.py` and `categorizer.py`
 

@@ -12,7 +12,7 @@ Use this if:
 
 If you are setting up a machine for the first time, use:
 
-- [first-time-setup.md](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/docs/getting-started/first-time-setup.md)
+- [first-time-setup.md](docs/getting-started/first-time-setup.md)
 
 ## Daily Startup Order
 
@@ -178,5 +178,5 @@ docker compose -f compose.yml down
 
 ## Related Docs
 
-- [environment.md](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/docs/getting-started/environment.md)
-- [runbooks troubleshooting](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/docs/runbooks/troubleshooting.md)
+- [environment.md](docs/getting-started/environment.md)
+- [runbooks troubleshooting](docs/runbooks/troubleshooting.md)
