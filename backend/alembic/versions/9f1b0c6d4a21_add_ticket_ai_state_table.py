@@ -5,6 +5,7 @@ Revises: 4d24c48b3f70
 Create Date: 2026-03-26 00:00:00.000000
 
 """
+
 from typing import Sequence, Union
 
 from alembic import op
@@ -44,10 +45,27 @@ def upgrade() -> None:
         sa.Column("priority_label", sa.Text(), nullable=False),
         sa.Column("priority_score", sa.Integer(), nullable=False),
         sa.Column("classification_method", sa.Text(), nullable=False),
-        sa.Column("is_closed", sa.Boolean(), server_default=sa.text("false"), nullable=False),
-        sa.Column("refreshed_at", postgresql.TIMESTAMP(timezone=True), server_default=sa.text("now()"), nullable=False),
-        sa.Column("created_at", postgresql.TIMESTAMP(timezone=True), server_default=sa.text("now()"), nullable=False),
-        sa.Column("updated_at", postgresql.TIMESTAMP(timezone=True), server_default=sa.text("now()"), nullable=False),
+        sa.Column(
+            "is_closed", sa.Boolean(), server_default=sa.text("false"), nullable=False
+        ),
+        sa.Column(
+            "refreshed_at",
+            postgresql.TIMESTAMP(timezone=True),
+            server_default=sa.text("now()"),
+            nullable=False,
+        ),
+        sa.Column(
+            "created_at",
+            postgresql.TIMESTAMP(timezone=True),
+            server_default=sa.text("now()"),
+            nullable=False,
+        ),
+        sa.Column(
+            "updated_at",
+            postgresql.TIMESTAMP(timezone=True),
+            server_default=sa.text("now()"),
+            nullable=False,
+        ),
         sa.PrimaryKeyConstraint("ticket_ai_state_id"),
     )
     op.create_index(

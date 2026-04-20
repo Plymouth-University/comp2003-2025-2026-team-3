@@ -5,6 +5,7 @@ Revises: 9f1b0c6d4a21
 Create Date: 2026-03-26 00:30:00.000000
 
 """
+
 from typing import Sequence, Union
 
 from alembic import op
@@ -60,9 +61,17 @@ def upgrade() -> None:
 
 def downgrade() -> None:
     """Downgrade schema."""
-    op.drop_index("ix_ticket_ai_state_tenant_secondary_profile", table_name="ticket_ai_state")
-    op.drop_index("ix_ticket_ai_state_tenant_primary_profile", table_name="ticket_ai_state")
-    op.drop_constraint("fk_ticket_ai_state_secondary_profile", "ticket_ai_state", type_="foreignkey")
-    op.drop_constraint("fk_ticket_ai_state_primary_profile", "ticket_ai_state", type_="foreignkey")
+    op.drop_index(
+        "ix_ticket_ai_state_tenant_secondary_profile", table_name="ticket_ai_state"
+    )
+    op.drop_index(
+        "ix_ticket_ai_state_tenant_primary_profile", table_name="ticket_ai_state"
+    )
+    op.drop_constraint(
+        "fk_ticket_ai_state_secondary_profile", "ticket_ai_state", type_="foreignkey"
+    )
+    op.drop_constraint(
+        "fk_ticket_ai_state_primary_profile", "ticket_ai_state", type_="foreignkey"
+    )
     op.drop_column("ticket_ai_state", "secondary_profile_id")
     op.drop_column("ticket_ai_state", "primary_profile_id")

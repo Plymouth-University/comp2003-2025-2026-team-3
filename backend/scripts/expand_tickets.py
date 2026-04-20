@@ -85,7 +85,9 @@ def main() -> None:
 
     args.output.write_text(json.dumps(expanded, indent=2) + "\n", encoding="utf-8")
 
-    unassigned_count = sum(1 for ticket in expanded if ticket.get("primary_resource") is None)
+    unassigned_count = sum(
+        1 for ticket in expanded if ticket.get("primary_resource") is None
+    )
     print(f"Expanded {len(source)} -> {len(expanded)} tickets")
     print(f"Primary unassigned tickets: {unassigned_count}")
     print(f"Output: {args.output}")

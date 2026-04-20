@@ -14,7 +14,9 @@ class TicketAIState(AIBase):
 
     __tablename__ = "ticket_ai_state"
 
-    ticket_ai_state_id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    ticket_ai_state_id = Column(
+        UUID(as_uuid=True), primary_key=True, default=uuid.uuid4
+    )
     tenant_id = Column(UUID(as_uuid=True), nullable=False)
     autotask_ticket_id = Column(Integer, nullable=False)
     ticket_number = Column(Text, nullable=False)
@@ -46,8 +48,12 @@ class TicketAIState(AIBase):
     priority_score = Column(Integer, nullable=False)
     classification_method = Column(Text, nullable=False)
     is_closed = Column(Boolean, nullable=False, default=False, server_default="false")
-    refreshed_at = Column(TIMESTAMP(timezone=True), server_default=func.now(), nullable=False)
-    created_at = Column(TIMESTAMP(timezone=True), server_default=func.now(), nullable=False)
+    refreshed_at = Column(
+        TIMESTAMP(timezone=True), server_default=func.now(), nullable=False
+    )
+    created_at = Column(
+        TIMESTAMP(timezone=True), server_default=func.now(), nullable=False
+    )
     updated_at = Column(
         TIMESTAMP(timezone=True),
         server_default=func.now(),
@@ -56,14 +62,31 @@ class TicketAIState(AIBase):
     )
 
     __table_args__ = (
-        Index("ix_ticket_ai_state_tenant_ticket", "tenant_id", "autotask_ticket_id", unique=True),
+        Index(
+            "ix_ticket_ai_state_tenant_ticket",
+            "tenant_id",
+            "autotask_ticket_id",
+            unique=True,
+        ),
         Index("ix_ticket_ai_state_tenant_status", "tenant_id", "status"),
         Index("ix_ticket_ai_state_tenant_company", "tenant_id", "company"),
         Index("ix_ticket_ai_state_tenant_category", "tenant_id", "category"),
         Index("ix_ticket_ai_state_tenant_closed", "tenant_id", "is_closed"),
-        Index("ix_ticket_ai_state_tenant_primary_profile", "tenant_id", "primary_profile_id"),
-        Index("ix_ticket_ai_state_tenant_secondary_profile", "tenant_id", "secondary_profile_id"),
-        Index("ix_ticket_ai_state_tenant_manual_override_profile", "tenant_id", "manual_override_profile_id"),
+        Index(
+            "ix_ticket_ai_state_tenant_primary_profile",
+            "tenant_id",
+            "primary_profile_id",
+        ),
+        Index(
+            "ix_ticket_ai_state_tenant_secondary_profile",
+            "tenant_id",
+            "secondary_profile_id",
+        ),
+        Index(
+            "ix_ticket_ai_state_tenant_manual_override_profile",
+            "tenant_id",
+            "manual_override_profile_id",
+        ),
     )
 
     def __repr__(self) -> str:

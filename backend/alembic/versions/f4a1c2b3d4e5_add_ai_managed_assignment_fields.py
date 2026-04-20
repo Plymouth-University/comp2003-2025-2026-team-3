@@ -22,7 +22,9 @@ depends_on: Union[str, Sequence[str], None] = None
 def upgrade() -> None:
     op.add_column(
         "ticket_ai_state",
-        sa.Column("ai_managed_profile_id", postgresql.UUID(as_uuid=True), nullable=True),
+        sa.Column(
+            "ai_managed_profile_id", postgresql.UUID(as_uuid=True), nullable=True
+        ),
     )
     op.add_column(
         "ticket_ai_state",
@@ -43,7 +45,9 @@ def upgrade() -> None:
 
 
 def downgrade() -> None:
-    op.drop_constraint("fk_ticket_ai_state_ai_managed_profile", "ticket_ai_state", type_="foreignkey")
+    op.drop_constraint(
+        "fk_ticket_ai_state_ai_managed_profile", "ticket_ai_state", type_="foreignkey"
+    )
     op.drop_column("ticket_ai_state", "ai_managed_set_at")
     op.drop_column("ticket_ai_state", "ai_managed_reason")
     op.drop_column("ticket_ai_state", "ai_managed_profile_id")

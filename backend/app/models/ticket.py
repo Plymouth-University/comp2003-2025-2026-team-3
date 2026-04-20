@@ -1,6 +1,7 @@
 from pydantic import BaseModel, Field
 from typing import List
 
+
 class Ticket(BaseModel):
     autotask_ticket_id: int
     ticket_number: str

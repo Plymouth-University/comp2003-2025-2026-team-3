@@ -56,7 +56,9 @@ def load_category_definitions() -> tuple[CategoryDefinition, ...]:
         description = str(raw_category["description"]).strip()
         raw_keywords = raw_category.get("keywords", [])
         if not isinstance(raw_keywords, list) or not raw_keywords:
-            raise ValueError(f"Category #{index} ({key}) must define at least one keyword")
+            raise ValueError(
+                f"Category #{index} ({key}) must define at least one keyword"
+            )
 
         keywords = tuple(
             str(keyword).strip().lower()
@@ -111,7 +113,9 @@ model = load_embedding_model()
 
 CATEGORY_DEFINITIONS = load_category_definitions()
 CATEGORY_LABELS = {category.key: category.label for category in CATEGORY_DEFINITIONS}
-CATEGORY_KEYWORDS = {category.key: category.keywords for category in CATEGORY_DEFINITIONS}
+CATEGORY_KEYWORDS = {
+    category.key: category.keywords for category in CATEGORY_DEFINITIONS
+}
 CATEGORY_PRIORITY_WEIGHTS = {
     category.key: category.priority_weight for category in CATEGORY_DEFINITIONS
 }

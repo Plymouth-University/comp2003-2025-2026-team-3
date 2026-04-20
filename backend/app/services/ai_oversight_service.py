@@ -58,7 +58,9 @@ class AIOversightService:
         unchanged_count = 0
 
         for state in states:
-            decision = await self._decide_for_ticket(tenant_id, state.autotask_ticket_id)
+            decision = await self._decide_for_ticket(
+                tenant_id, state.autotask_ticket_id
+            )
             if decision.action == "auto_assign":
                 auto_assigned_count += 1
             elif decision.action == "auto_move":
@@ -84,26 +86,47 @@ class AIOversightService:
         tenant_id: UUID,
         autotask_ticket_id: int,
     ) -> _Decision:
-        state = await self.ai_state_repository.get_by_ticket_id(tenant_id, autotask_ticket_id)
+        state = await self.ai_state_repository.get_by_ticket_id(
+            tenant_id, autotask_ticket_id
+        )
         if state is None or state.is_closed:
             return _Decision(action="unchanged", reason="Ticket unavailable or closed.")
 
         if state.manual_override_profile_id is not None:
-            await self.ai_state_repository.clear_ai_managed_assignment(tenant_id, autotask_ticket_id)
+            await self.ai_state_repository.clear_ai_managed_assignment(
+                tenant_id, autotask_ticket_id
+            )
             return _Decision(action="unchanged", reason="Manual override present.")
 
-        recommendation = await self.assignment_service.recommend_for_ticket(tenant_id, autotask_ticket_id)
-        recommended_profile_id = recommendation.recommended_profile_id if recommendation is not None else None
-        recommended_display_name = recommendation.recommended_display_name if recommendation is not None else None
+        recommendation = await self.assignment_service.recommend_for_ticket(
+            tenant_id, autotask_ticket_id
+        )
+        recommended_profile_id = (
+            recommendation.recommended_profile_id
+            if recommendation is not None
+            else None
+        )
+        recommended_display_name = (
+            recommendation.recommended_display_name
+            if recommendation is not None
+            else None
+        )
 
         if recommended_profile_id is None:
-            fallback_profile_id, fallback_display_name = await self._fallback_profile_for_unassigned(tenant_id)
+            (
+                fallback_profile_id,
+                fallback_display_name,
+            ) = await self._fallback_profile_for_unassigned(tenant_id)
             recommended_profile_id = fallback_profile_id
             recommended_display_name = fallback_display_name
 
         if recommended_profile_id is None:
-            await self.ai_state_repository.clear_ai_managed_assignment(tenant_id, autotask_ticket_id)
-            return _Decision(action="unchanged", reason="No active profile candidates available.")
+            await self.ai_state_repository.clear_ai_managed_assignment(
+                tenant_id, autotask_ticket_id
+            )
+            return _Decision(
+                action="unchanged", reason="No active profile candidates available."
+            )
 
         status_normalized = (state.status or "").strip().lower()
         is_started = status_normalized not in UNSTARTED_STATUSES
@@ -125,31 +148,56 @@ class AIOversightService:
                     f"Selected {recommended_display_name or 'best candidate'} by specialism/workload scoring."
                 ),
             )
-            return _Decision(action="auto_assign", reason="No primary resource present.")
+            return _Decision(
+                action="auto_assign", reason="No primary resource present."
+            )
 
         if is_started:
-            await self.ai_state_repository.clear_ai_managed_assignment(tenant_id, autotask_ticket_id)
-            return _Decision(action="protected", reason="Ticket already started; auto-move blocked.")
+            await self.ai_state_repository.clear_ai_managed_assignment(
+                tenant_id, autotask_ticket_id
+            )
+            return _Decision(
+                action="protected", reason="Ticket already started; auto-move blocked."
+            )
 
         incumbent_profile_id = state.primary_profile_id
         if incumbent_profile_id == recommended_profile_id:
-            await self.ai_state_repository.clear_ai_managed_assignment(tenant_id, autotask_ticket_id)
-            return _Decision(action="unchanged", reason="Current assignment matches recommendation.")
+            await self.ai_state_repository.clear_ai_managed_assignment(
+                tenant_id, autotask_ticket_id
+            )
+            return _Decision(
+                action="unchanged", reason="Current assignment matches recommendation."
+            )
 
         if recommendation is None:
-            await self.ai_state_repository.clear_ai_managed_assignment(tenant_id, autotask_ticket_id)
-            return _Decision(action="unchanged", reason="No recommendation payload to compare.")
+            await self.ai_state_repository.clear_ai_managed_assignment(
+                tenant_id, autotask_ticket_id
+            )
+            return _Decision(
+                action="unchanged", reason="No recommendation payload to compare."
+            )
 
-        top_score = recommendation.candidates[0].score if recommendation.candidates else 0
+        top_score = (
+            recommendation.candidates[0].score if recommendation.candidates else 0
+        )
         incumbent_score = next(
-            (candidate.score for candidate in recommendation.candidates if candidate.profile_id == incumbent_profile_id),
+            (
+                candidate.score
+                for candidate in recommendation.candidates
+                if candidate.profile_id == incumbent_profile_id
+            ),
             -1,
         )
 
         # Move only when recommendation materially outranks incumbent.
         if top_score <= incumbent_score:
-            await self.ai_state_repository.clear_ai_managed_assignment(tenant_id, autotask_ticket_id)
-            return _Decision(action="unchanged", reason="Incumbent score is not lower than recommended.")
+            await self.ai_state_repository.clear_ai_managed_assignment(
+                tenant_id, autotask_ticket_id
+            )
+            return _Decision(
+                action="unchanged",
+                reason="Incumbent score is not lower than recommended.",
+            )
 
         await self.ai_state_repository.set_ai_managed_assignment(
             tenant_id=tenant_id,
@@ -166,22 +214,30 @@ class AIOversightService:
             profile_id=recommended_profile_id,
             display_name_hint=recommended_display_name,
         )
-        return _Decision(action="auto_move", reason="Moved to better-scored candidate before start.")
+        return _Decision(
+            action="auto_move", reason="Moved to better-scored candidate before start."
+        )
 
     async def _fallback_profile_for_unassigned(
         self,
         tenant_id: UUID,
     ) -> tuple[UUID | None, str | None]:
-        profiles = await self.profile_repository.get_profiles_by_tenant_with_specialisms(
-            tenant_id=tenant_id,
-            status="active",
+        profiles = (
+            await self.profile_repository.get_profiles_by_tenant_with_specialisms(
+                tenant_id=tenant_id,
+                status="active",
+            )
         )
         profiles = [profile for profile in profiles if profile.display is not None]
         if not profiles:
             return None, None
 
-        active_tickets = await self.ai_state_repository.list_active_tickets_for_tenant(tenant_id)
-        load_by_profile: dict[UUID, float] = {profile.profile_id: 0.0 for profile in profiles}
+        active_tickets = await self.ai_state_repository.list_active_tickets_for_tenant(
+            tenant_id
+        )
+        load_by_profile: dict[UUID, float] = {
+            profile.profile_id: 0.0 for profile in profiles
+        }
 
         for ticket in active_tickets:
             if ticket.primary_profile_id in load_by_profile:
@@ -195,7 +251,10 @@ class AIOversightService:
 
         least_loaded = min(
             profiles,
-            key=lambda profile: (load_by_profile.get(profile.profile_id, 0.0), profile.display.display_name.lower()),
+            key=lambda profile: (
+                load_by_profile.get(profile.profile_id, 0.0),
+                profile.display.display_name.lower(),
+            ),
         )
         return least_loaded.profile_id, least_loaded.display.display_name
 
@@ -208,9 +267,13 @@ class AIOversightService:
     ) -> None:
         display_name = display_name_hint
         if not display_name:
-            profile_rows = await self.profile_repository.get_profiles_by_ids(tenant_id, [profile_id])
+            profile_rows = await self.profile_repository.get_profiles_by_ids(
+                tenant_id, [profile_id]
+            )
             if not profile_rows or profile_rows[0].display is None:
-                raise ValueError(f"Cannot resolve display name for profile {profile_id}")
+                raise ValueError(
+                    f"Cannot resolve display name for profile {profile_id}"
+                )
             display_name = profile_rows[0].display.display_name
 
         self.provider.set_primary_resource(autotask_ticket_id, display_name)

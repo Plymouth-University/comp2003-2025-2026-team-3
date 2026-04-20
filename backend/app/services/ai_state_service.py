@@ -41,7 +41,9 @@ class AIStateService:
         profile_id: UUID,
     ) -> TicketAIStateResponse | None:
         """Persist a primary assignment to provider source and mirrored AI-state row."""
-        profile_rows = await self.profile_repository.get_profiles_by_ids(tenant_id, [profile_id])
+        profile_rows = await self.profile_repository.get_profiles_by_ids(
+            tenant_id, [profile_id]
+        )
         if not profile_rows:
             raise ValueError(f"Profile not found for tenant: {profile_id}")
 
@@ -74,7 +76,9 @@ class AIStateService:
     ) -> TicketAIRefreshResponse:
         tickets = self.provider.get_tickets()[:limit]
         if not include_closed:
-            tickets = [ticket for ticket in tickets if str(ticket.status).lower() != "closed"]
+            tickets = [
+                ticket for ticket in tickets if str(ticket.status).lower() != "closed"
+            ]
 
         resource_names = {
             resource_name
@@ -102,10 +106,14 @@ class AIStateService:
             secondary_profile_id = None
 
             if ticket.primary_resource:
-                primary_profile_id = profile_map.get(ticket.primary_resource.strip().lower())
+                primary_profile_id = profile_map.get(
+                    ticket.primary_resource.strip().lower()
+                )
                 mapped_primary_count += int(primary_profile_id is not None)
             if ticket.secondary_resource:
-                secondary_profile_id = profile_map.get(ticket.secondary_resource.strip().lower())
+                secondary_profile_id = profile_map.get(
+                    ticket.secondary_resource.strip().lower()
+                )
                 mapped_secondary_count += int(secondary_profile_id is not None)
 
             await self.repository.upsert_ticket_state(
@@ -117,7 +125,9 @@ class AIStateService:
             )
             retained_ids.append(ticket.autotask_ticket_id)
 
-        removed_count = await self.repository.delete_missing_active_tickets(tenant_id, retained_ids)
+        removed_count = await self.repository.delete_missing_active_tickets(
+            tenant_id, retained_ids
+        )
 
         if apply_oversight:
             oversight_service = AIOversightService(self.ai_db, self.profile_db)
@@ -163,8 +173,12 @@ class AIStateService:
         responses: list[TicketAIStateResponse] = []
         for state in states:
             payload = TicketAIStateResponse.model_validate(state).model_dump()
-            manual_override_display_name = display_name_by_profile_id.get(state.manual_override_profile_id)
-            ai_managed_display_name = display_name_by_profile_id.get(state.ai_managed_profile_id)
+            manual_override_display_name = display_name_by_profile_id.get(
+                state.manual_override_profile_id
+            )
+            ai_managed_display_name = display_name_by_profile_id.get(
+                state.ai_managed_profile_id
+            )
             payload["manual_override_display_name"] = manual_override_display_name
             payload["ai_managed_display_name"] = ai_managed_display_name
             payload["effective_assignee_display_name"] = (

@@ -22,11 +22,17 @@ depends_on: Union[str, Sequence[str], None] = None
 def upgrade() -> None:
     op.add_column(
         "ticket_ai_state",
-        sa.Column("manual_override_profile_id", postgresql.UUID(as_uuid=True), nullable=True),
+        sa.Column(
+            "manual_override_profile_id", postgresql.UUID(as_uuid=True), nullable=True
+        ),
     )
     op.add_column(
         "ticket_ai_state",
-        sa.Column("manual_override_set_by_profile_id", postgresql.UUID(as_uuid=True), nullable=True),
+        sa.Column(
+            "manual_override_set_by_profile_id",
+            postgresql.UUID(as_uuid=True),
+            nullable=True,
+        ),
     )
     op.add_column(
         "ticket_ai_state",
@@ -61,9 +67,20 @@ def upgrade() -> None:
 
 
 def downgrade() -> None:
-    op.drop_index("ix_ticket_ai_state_tenant_manual_override_profile", table_name="ticket_ai_state")
-    op.drop_constraint("fk_ticket_ai_state_manual_override_set_by_profile", "ticket_ai_state", type_="foreignkey")
-    op.drop_constraint("fk_ticket_ai_state_manual_override_profile", "ticket_ai_state", type_="foreignkey")
+    op.drop_index(
+        "ix_ticket_ai_state_tenant_manual_override_profile",
+        table_name="ticket_ai_state",
+    )
+    op.drop_constraint(
+        "fk_ticket_ai_state_manual_override_set_by_profile",
+        "ticket_ai_state",
+        type_="foreignkey",
+    )
+    op.drop_constraint(
+        "fk_ticket_ai_state_manual_override_profile",
+        "ticket_ai_state",
+        type_="foreignkey",
+    )
     op.drop_column("ticket_ai_state", "manual_override_set_at")
     op.drop_column("ticket_ai_state", "manual_override_reason")
     op.drop_column("ticket_ai_state", "manual_override_set_by_profile_id")

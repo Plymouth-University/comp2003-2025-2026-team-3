@@ -13,7 +13,9 @@ DEFAULT_TARGET = BACKEND_DIR / "data" / "tickets.json"
 
 
 def build_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Reset ticket fixture file from a baseline copy.")
+    parser = argparse.ArgumentParser(
+        description="Reset ticket fixture file from a baseline copy."
+    )
     parser.add_argument(
         "--source",
         type=Path,
