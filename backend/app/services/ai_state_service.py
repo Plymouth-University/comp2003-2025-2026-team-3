@@ -14,6 +14,7 @@ from ..repositories.profile_repository import ProfileRepository
 from ..schemas.ai_state import (
     TicketAIRefreshResponse,
     TicketAIStateResponse,
+    TicketAIStateUpdateRequest,
 )
 from .ai import categorise_ticket
 from .ai_oversight_service import AIOversightService
@@ -250,6 +251,37 @@ class AIStateService:
         if not state:
             return None
         responses = await self._build_ticket_state_responses(tenant_id, [state])
+        return responses[0] if responses else None
+
+    async def update_ticket_state(
+        self,
+        tenant_id: UUID,
+        autotask_ticket_id: int,
+        update_request: TicketAIStateUpdateRequest,
+        set_by_profile_id: UUID,
+    ) -> Optional[TicketAIStateResponse]:
+        updates = update_request.model_dump(exclude_unset=True)
+        if not updates:
+            return await self.get_ticket_state(tenant_id, autotask_ticket_id)
+
+        nullable_fields = {"primary_resource", "secondary_resource"}
+        null_fields = [
+            field for field, value in updates.items()
+            if value is None and field not in nullable_fields
+        ]
+        if null_fields:
+            raise ValueError(f"Fields cannot be null: {', '.join(null_fields)}")
+
+        updated = await self.repository.update_ticket_state(
+            tenant_id=tenant_id,
+            autotask_ticket_id=autotask_ticket_id,
+            updates=updates,
+            set_by_profile_id=set_by_profile_id,
+        )
+        if updated is None:
+            return None
+
+        responses = await self._build_ticket_state_responses(tenant_id, [updated])
         return responses[0] if responses else None
 
     async def set_manual_override(

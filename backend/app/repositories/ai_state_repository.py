@@ -207,7 +207,10 @@ class TicketAIStateRepository:
         }
 
         if existing:
+            manual_edit_fields = set(existing.manual_edit_fields or [])
             for key, value in mapped_fields.items():
+                if key in manual_edit_fields:
+                    continue
                 setattr(existing, key, value)
             await self.db.flush()
             return existing
@@ -251,6 +254,44 @@ class TicketAIStateRepository:
         state.manual_override_reason = None
         state.manual_override_set_at = None
         await self.db.flush()
+        return state
+
+    async def update_ticket_state(
+        self,
+        tenant_id: UUID,
+        autotask_ticket_id: int,
+        updates: dict,
+        set_by_profile_id: UUID,
+    ) -> Optional[TicketAIState]:
+        """Update editable fields on the persisted AI-state ticket row only."""
+        state = await self.get_by_ticket_id(tenant_id, autotask_ticket_id)
+        if state is None:
+            return None
+
+        if (
+            "primary_resource" in updates
+            and updates["primary_resource"] != state.primary_resource
+        ):
+            state.primary_profile_id = None
+        if (
+            "secondary_resource" in updates
+            and updates["secondary_resource"] != state.secondary_resource
+        ):
+            state.secondary_profile_id = None
+
+        for key, value in updates.items():
+            setattr(state, key, value)
+
+        if "status" in updates:
+            state.is_closed = str(updates["status"]).lower() == "closed"
+
+        state.manual_edit_fields = sorted(
+            {*list(state.manual_edit_fields or []), *updates.keys()}
+        )
+        state.manual_edit_set_by_profile_id = set_by_profile_id
+        state.manual_edit_set_at = datetime.now(timezone.utc)
+        await self.db.flush()
+        await self.db.refresh(state)
         return state
 
     async def set_ai_managed_assignment(

@@ -14,6 +14,7 @@ from ..schemas.ai_state import (
     TicketAIRefreshRequest,
     TicketAIRefreshResponse,
     TicketAIStateResponse,
+    TicketAIStateUpdateRequest,
 )
 from ..services.ai import list_available_categories
 from ..services.ai_assignment_service import AIAssignmentService
@@ -180,6 +181,36 @@ async def get_ai_ticket_state(
     """Get one persisted AI ticket state for the current tenant."""
     service = AIStateService(ai_db, profile_db)
     state = await service.get_ticket_state(UUID(session.tenant_id), autotask_ticket_id)
+    if not state:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"AI ticket state not found for autotask_ticket_id={autotask_ticket_id}",
+        )
+    return state
+
+
+@router.patch("/ticket-states/{autotask_ticket_id}", response_model=TicketAIStateResponse)
+async def update_ai_ticket_state(
+    autotask_ticket_id: int,
+    update_request: TicketAIStateUpdateRequest,
+    session: AuthenticatedSession = Depends(get_current_session),
+    ai_db: AsyncSession = Depends(get_ai_db),
+    profile_db: AsyncSession = Depends(get_profile_db),
+):
+    """Update editable fields on the persisted AI ticket state for the current tenant."""
+    service = AIStateService(ai_db, profile_db)
+    try:
+        state = await service.update_ticket_state(
+            UUID(session.tenant_id),
+            autotask_ticket_id,
+            update_request,
+            UUID(session.profile_id),
+        )
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(exc),
+        ) from exc
     if not state:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,

@@ -1,7 +1,7 @@
 import { API_BASE_URL } from "../auth.js";
 import type { BackendTicket } from "../types.js";
 
-type TicketAIState = {
+export type TicketAIState = {
   autotask_ticket_id: number;
   ticket_number: string;
   status: string;
@@ -28,6 +28,28 @@ type TicketAIState = {
   classification_method: string;
 };
 
+export type TicketAIStateUpdate = Partial<{
+  ticket_number: string;
+  status: string;
+  created: string;
+  company: string;
+  contact: string;
+  title: string;
+  description: string;
+  issue_type: string;
+  sub_issue_type: string;
+  queue: string;
+  source: string;
+  due_date: string;
+  primary_resource: string | null;
+  secondary_resource: string | null;
+  category: string;
+  confidence: number;
+  priority_label: string;
+  priority_score: number;
+  classification_method: string;
+}>;
+
 export type TicketViewKey = "my-assigned" | "my-primary" | "my-secondary" | "team";
 
 const VIEW_ENDPOINTS: Record<TicketViewKey, string> = {
@@ -36,6 +58,58 @@ const VIEW_ENDPOINTS: Record<TicketViewKey, string> = {
   "my-secondary": "/api/v1/ai/ticket-states/my-secondary",
   team: "/api/v1/ai/ticket-states/team",
 };
+
+export class TicketApiError extends Error {
+  status: number;
+  statusText: string;
+  detail: string;
+
+  constructor(status: number, statusText: string, detail: string) {
+    super(`${status} ${statusText}: ${friendlyStatusMessage(status)}`);
+    this.name = "TicketApiError";
+    this.status = status;
+    this.statusText = statusText;
+    this.detail = detail;
+  }
+}
+
+function friendlyStatusMessage(status: number): string {
+  if (status === 400) return "The server rejected the change because the request was invalid.";
+  if (status === 401) return "Your session has expired. Please sign in again.";
+  if (status === 403) return "You do not have permission to save this ticket.";
+  if (status === 404) return "The ticket could not be found.";
+  if (status === 405) return "This server does not support that save action yet.";
+  if (status === 422) return "One or more fields are not in the expected format.";
+  if (status >= 500) return "The server hit an internal error while saving.";
+  return "The ticket could not be saved.";
+}
+
+async function readErrorDetail(response: Response): Promise<string> {
+  const contentType = response.headers.get("content-type") ?? "";
+
+  try {
+    if (contentType.includes("application/json")) {
+      const payload = await response.json();
+      if (typeof payload?.detail === "string") {
+        return payload.detail;
+      }
+      if (Array.isArray(payload?.detail)) {
+        return payload.detail
+          .map((item: { loc?: unknown; msg?: string }) => {
+            const location = Array.isArray(item.loc) ? item.loc.join(".") : "";
+            return `${location ? `${location}: ` : ""}${item.msg ?? JSON.stringify(item)}`;
+          })
+          .join("; ");
+      }
+      return JSON.stringify(payload);
+    }
+
+    const text = await response.text();
+    return text || response.statusText;
+  } catch {
+    return response.statusText;
+  }
+}
 
 function toBackendTicket(ticket: TicketAIState): BackendTicket {
   return {
@@ -82,4 +156,22 @@ export async function fetchAITickets(view: TicketViewKey): Promise<BackendTicket
 
   const payload = (await response.json()) as TicketAIState[];
   return payload.map(toBackendTicket);
+}
+
+export async function updateAITicketState(
+  autotaskTicketId: number,
+  changes: TicketAIStateUpdate,
+): Promise<BackendTicket> {
+  const response = await fetch(`${API_BASE_URL}/api/v1/ai/ticket-states/${autotaskTicketId}`, {
+    method: "PATCH",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(changes),
+  });
+  if (!response.ok) {
+    const detail = await readErrorDetail(response);
+    throw new TicketApiError(response.status, response.statusText, detail);
+  }
+
+  return toBackendTicket((await response.json()) as TicketAIState);
 }

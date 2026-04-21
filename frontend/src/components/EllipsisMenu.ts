@@ -7,7 +7,7 @@ export function EllipsisMenu(): HTMLElement {
     className:
       "p-2 rounded hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-slate-400",
     attrs: { type: "button", "aria-label": "More actions" },
-    text: "⋯",
+    text: "...",
   });
 
   const menu = el("div", {
@@ -31,7 +31,7 @@ export function EllipsisMenu(): HTMLElement {
 
   menu.append(
     mkItem("View", () => wrapper.dispatchEvent(new CustomEvent("view", { bubbles: true }))),
-    mkItem("Edit", () => alert("Edit")),
+    mkItem("Edit", () => wrapper.dispatchEvent(new CustomEvent("edit", { bubbles: true }))),
     mkItem("Reassign Category", () => alert("Reassign Category")),
     mkItem("Delete", () => alert("Delete"))
   );
