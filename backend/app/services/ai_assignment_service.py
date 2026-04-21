@@ -31,22 +31,32 @@ class AIAssignmentService:
         tenant_id: UUID,
         autotask_ticket_id: int,
     ) -> TicketAssignmentRecommendationResponse | None:
-        ticket_state = await self.ai_state_repository.get_by_ticket_id(tenant_id, autotask_ticket_id)
+        ticket_state = await self.ai_state_repository.get_by_ticket_id(
+            tenant_id, autotask_ticket_id
+        )
         if ticket_state is None:
             return None
 
-        categories = {item["key"]: item["label"] for item in list_available_categories()}
+        categories = {
+            item["key"]: item["label"] for item in list_available_categories()
+        }
         category_label = categories.get(ticket_state.category, ticket_state.category)
-        same_company_tickets = await self.ai_state_repository.list_active_company_tickets(
-            tenant_id=tenant_id,
-            company=ticket_state.company,
-            exclude_autotask_ticket_id=ticket_state.autotask_ticket_id,
+        same_company_tickets = (
+            await self.ai_state_repository.list_active_company_tickets(
+                tenant_id=tenant_id,
+                company=ticket_state.company,
+                exclude_autotask_ticket_id=ticket_state.autotask_ticket_id,
+            )
         )
-        active_tickets = await self.ai_state_repository.list_active_tickets_for_tenant(tenant_id)
+        active_tickets = await self.ai_state_repository.list_active_tickets_for_tenant(
+            tenant_id
+        )
 
-        profiles = await self.profile_repository.get_profiles_by_tenant_with_specialisms(
-            tenant_id=tenant_id,
-            status="active",
+        profiles = (
+            await self.profile_repository.get_profiles_by_tenant_with_specialisms(
+                tenant_id=tenant_id,
+                status="active",
+            )
         )
         active_profile_ids = {profile.profile_id for profile in profiles}
 
@@ -73,7 +83,8 @@ class AIAssignmentService:
                     weighted_loads[secondary_profile_id] += 0.25
 
         average_weighted_load = (
-            sum(weighted_loads.get(profile.profile_id, 0.0) for profile in profiles) / len(profiles)
+            sum(weighted_loads.get(profile.profile_id, 0.0) for profile in profiles)
+            / len(profiles)
             if profiles
             else 0.0
         )
@@ -89,7 +100,9 @@ class AIAssignmentService:
             same_company_primary_count = 0
             same_company_secondary_count = 0
             open_primary_ticket_count = open_primary_counts.get(profile.profile_id, 0)
-            open_secondary_ticket_count = open_secondary_counts.get(profile.profile_id, 0)
+            open_secondary_ticket_count = open_secondary_counts.get(
+                profile.profile_id, 0
+            )
             high_priority_ticket_count = high_priority_counts.get(profile.profile_id, 0)
             weighted_open_load = weighted_loads.get(profile.profile_id, 0.0)
 
@@ -160,8 +173,10 @@ class AIAssignmentService:
                     matched_specialism_keys=sorted(set(matched_specialism_keys)),
                     score=score,
                     reasons=reasons,
-                    is_current_primary=profile.profile_id == ticket_state.primary_profile_id,
-                    is_current_secondary=profile.profile_id == ticket_state.secondary_profile_id,
+                    is_current_primary=profile.profile_id
+                    == ticket_state.primary_profile_id,
+                    is_current_secondary=profile.profile_id
+                    == ticket_state.secondary_profile_id,
                     open_primary_ticket_count=open_primary_ticket_count,
                     open_secondary_ticket_count=open_secondary_ticket_count,
                     high_priority_ticket_count=high_priority_ticket_count,
@@ -183,11 +198,21 @@ class AIAssignmentService:
 
         if manual_override_profile_id is not None:
             manual_override_profile = next(
-                (profile for profile in profiles if profile.profile_id == manual_override_profile_id and profile.display is not None),
+                (
+                    profile
+                    for profile in profiles
+                    if profile.profile_id == manual_override_profile_id
+                    and profile.display is not None
+                ),
                 None,
             )
-            if manual_override_profile is not None and manual_override_profile.display is not None:
-                manual_override_display_name = manual_override_profile.display.display_name
+            if (
+                manual_override_profile is not None
+                and manual_override_profile.display is not None
+            ):
+                manual_override_display_name = (
+                    manual_override_profile.display.display_name
+                )
 
         if not candidates:
             return TicketAssignmentRecommendationResponse(
@@ -212,21 +237,36 @@ class AIAssignmentService:
         if top_candidate.matched_specialism_keys:
             summary_reasons.append("their stored specialisms match the ticket category")
         if any("other open ticket" in reason for reason in top_candidate.reasons):
-            summary_reasons.append(f"they are already handling {ticket_state.company} tickets")
+            summary_reasons.append(
+                f"they are already handling {ticket_state.company} tickets"
+            )
         if top_candidate.is_current_primary:
             summary_reasons.append("they are already the current primary resource")
         elif top_candidate.is_current_secondary:
             summary_reasons.append("they are already the current secondary resource")
         if any("Workload bonus" in reason for reason in top_candidate.reasons):
-            summary_reasons.append("their active workload is lighter than the current team average")
+            summary_reasons.append(
+                "their active workload is lighter than the current team average"
+            )
         elif any("Workload penalty" in reason for reason in top_candidate.reasons):
-            summary_reasons.append("they still outranked others despite a heavier active workload")
+            summary_reasons.append(
+                "they still outranked others despite a heavier active workload"
+            )
 
-        summary_text = ", and ".join(summary_reasons) if summary_reasons else "they received the highest recommendation score"
+        summary_text = (
+            ", and ".join(summary_reasons)
+            if summary_reasons
+            else "they received the highest recommendation score"
+        )
         effective_profile_id = manual_override_profile_id or top_candidate.profile_id
-        effective_display_name = manual_override_display_name or top_candidate.display_name
+        effective_display_name = (
+            manual_override_display_name or top_candidate.display_name
+        )
         summary = f"Recommended {top_candidate.display_name} because {summary_text}."
-        if manual_override_profile_id is not None and manual_override_display_name is not None:
+        if (
+            manual_override_profile_id is not None
+            and manual_override_display_name is not None
+        ):
             summary = (
                 f"Manual override active for {manual_override_display_name}. "
                 f"AI would otherwise recommend {top_candidate.display_name} because {summary_text}."

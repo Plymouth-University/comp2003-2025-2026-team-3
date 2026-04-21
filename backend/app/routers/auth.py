@@ -1,4 +1,5 @@
 """Authentication routes for Microsoft Entra ID sign-in."""
+
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, Query, Request, Response, status
@@ -27,7 +28,9 @@ STATE_COOKIE_NAME = "entra_auth_state"
 async def login() -> RedirectResponse:
     """Start the Entra ID authorization-code flow."""
     state = create_state_token()
-    response = RedirectResponse(build_authorization_url(state), status_code=status.HTTP_302_FOUND)
+    response = RedirectResponse(
+        build_authorization_url(state), status_code=status.HTTP_302_FOUND
+    )
     response.set_cookie(STATE_COOKIE_NAME, state, **build_cookie_settings())
     return response
 
@@ -67,7 +70,9 @@ async def auth_callback(
         identity=identity,
     )
 
-    redirect = RedirectResponse(settings.FRONTEND_URL, status_code=status.HTTP_302_FOUND)
+    redirect = RedirectResponse(
+        settings.FRONTEND_URL, status_code=status.HTTP_302_FOUND
+    )
     redirect.set_cookie(
         settings.SESSION_COOKIE_NAME,
         session_token,

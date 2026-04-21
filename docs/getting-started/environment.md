@@ -37,21 +37,34 @@ The backend settings class currently defines these values.
 
 ### Database
 
-#### `DATABASE_URL`
+#### `CORE_DATABASE_URL`
 
 Default:
 
 ```text
-postgresql+asyncpg://postgres:password@localhost:5432/mydb
+postgresql+asyncpg://postgres:password@localhost:5433/secops_core_db
 ```
 
 Purpose:
 
-- tells SQLAlchemy how to connect to PostgreSQL
+- tells SQLAlchemy how to connect to the core PostgreSQL database
+- owns profile, auth, tenant, specialism, and AI ticket-state data
 
 When you must change it:
 
 - if your local DB host, port, user, password, or DB name differ from the default compose setup
+
+#### `LOG_DATABASE_URL`
+
+Default:
+
+```text
+postgresql+asyncpg://postgres:password@localhost:5435/logsdb
+```
+
+Purpose:
+
+- tells the logging subsystem where to write application, performance, error, and UI interaction logs
 
 ### Application
 
@@ -272,7 +285,8 @@ If you use the repository defaults, the environment is roughly:
 ```mermaid
 flowchart LR
   Frontend[http://localhost:5173] --> Backend[http://localhost:8000]
-  Backend --> Postgres[localhost:5432]
+  Backend --> Core[(secops_core_db on localhost:5433)]
+  Backend --> Logs[(logsdb on localhost:5435)]
   Backend --> Entra[Configured Microsoft Entra tenant]
 ```
 
@@ -289,7 +303,8 @@ For a realistic authenticated local run, you should set:
 
 You may also need to change:
 
-- `DATABASE_URL`
+- `CORE_DATABASE_URL`
+- `LOG_DATABASE_URL`
 - `CORS_ORIGINS`
 
 ## Most Common Environment Problems
@@ -311,7 +326,7 @@ Likely cause:
 
 Likely cause:
 
-- `DATABASE_URL` does not match the running database
+- `CORE_DATABASE_URL` or `LOG_DATABASE_URL` does not match the running database
 
 ## Recommended `.env` Ownership Rule
 

@@ -5,11 +5,14 @@ Revises: e3a4d9f2a1b7
 Create Date: 2026-03-26 01:00:00.000000
 
 """
+
 from typing import Sequence, Union
 
 from alembic import op
 import sqlalchemy as sa
 
+
+AI_SCHEMA = "AITicketOps"
 
 # revision identifiers, used by Alembic.
 revision: str = "6a0dd9cb6ed1"
@@ -23,11 +26,17 @@ def upgrade() -> None:
     op.add_column(
         "ticket_ai_state",
         sa.Column("created", sa.Text(), nullable=True),
+        schema=AI_SCHEMA,
     )
-    op.execute("UPDATE ticket_ai_state SET created = refreshed_at::text WHERE created IS NULL")
-    op.alter_column("ticket_ai_state", "created", nullable=False)
+    op.execute(
+        'UPDATE "AITicketOps".ticket_ai_state '
+        "SET created = refreshed_at::text WHERE created IS NULL"
+    )
+    op.alter_column(
+        "ticket_ai_state", "created", nullable=False, schema=AI_SCHEMA
+    )
 
 
 def downgrade() -> None:
     """Downgrade schema."""
-    op.drop_column("ticket_ai_state", "created")
+    op.drop_column("ticket_ai_state", "created", schema=AI_SCHEMA)

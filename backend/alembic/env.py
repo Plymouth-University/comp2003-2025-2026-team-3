@@ -1,3 +1,4 @@
+import os
 from logging.config import fileConfig
 import sys
 from pathlib import Path
@@ -13,20 +14,23 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 # Import database configuration and models
 from app.config import settings
 from app.database import Base
-from app.models.profile import (
-    Tenant, Profile, IdentityProvider, ProfileIdentity,
-    ProfileDisplay, AvatarPreset, ProfileAvatar,
-    Specialism, ProfileSpecialism
-)
-from app.models.ai_state import TicketAIState
+from app import models  # noqa: F401
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
 
-# Override sqlalchemy.url from environment
+# Override sqlalchemy.url from environment.
+# Default to CORE_DATABASE_URL because this Alembic tree manages the core schema.
+# An explicit ALEMBIC_DATABASE_URL can be set for one-off targeting.
+raw_database_url = os.getenv("ALEMBIC_DATABASE_URL") or settings.CORE_DATABASE_URL
+if not raw_database_url:
+    raise RuntimeError(
+        "No database URL configured for Alembic. Set ALEMBIC_DATABASE_URL or CORE_DATABASE_URL."
+    )
+
 # Convert async URL to sync URL for Alembic (uses psycopg2 instead of asyncpg)
-database_url = settings.DATABASE_URL.replace("postgresql+asyncpg://", "postgresql://")
+database_url = raw_database_url.replace("postgresql+asyncpg://", "postgresql://")
 config.set_main_option("sqlalchemy.url", database_url)
 
 # Interpret the config file for Python logging.
@@ -82,9 +86,7 @@ def run_migrations_online() -> None:
     )
 
     with connectable.connect() as connection:
-        context.configure(
-            connection=connection, target_metadata=target_metadata
-        )
+        context.configure(connection=connection, target_metadata=target_metadata)
 
         with context.begin_transaction():
             context.run_migrations()

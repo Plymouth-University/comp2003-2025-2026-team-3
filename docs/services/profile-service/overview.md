@@ -215,8 +215,8 @@ Verified by the current code:
 
 For a new team member, the best order is:
 
-1. [overview.md](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/docs/services/profile-service/overview.md)
-2. [architecture.md](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/docs/services/profile-service/architecture.md)
-3. [flows.md](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/docs/services/profile-service/flows.md)
-4. [dependencies.md](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/docs/services/profile-service/dependencies.md)
-5. [troubleshooting.md](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/docs/services/profile-service/troubleshooting.md)
+1. [overview.md](docs/services/profile-service/overview.md)
+2. [architecture.md](docs/services/profile-service/architecture.md)
+3. [flows.md](docs/services/profile-service/flows.md)
+4. [dependencies.md](docs/services/profile-service/dependencies.md)
+5. [troubleshooting.md](docs/services/profile-service/troubleshooting.md)

@@ -69,7 +69,7 @@ FastAPI Backend
 │  │  ├─ components/            # Reusable UI components
 │  │  └─ shared/                # Auth helpers, types, DOM utilities
 │  ├─ package.json
-│  └─ run_local.sh
+│  └─ run_local.py
 │
 ├─ docs/
 │  ├─ getting-started/
@@ -151,13 +151,13 @@ The detailed onboarding docs now live under `docs/getting-started/` so we do not
 
 Use these in order:
 
-1. [First-Time Setup](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/docs/getting-started/first-time-setup.md)
-2. [Environment](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/docs/getting-started/environment.md)
-3. [Daily Run](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/docs/getting-started/daily-run.md)
+1. [First-Time Setup](docs/getting-started/first-time-setup.md)
+2. [Environment](docs/getting-started/environment.md)
+3. [Daily Run](docs/getting-started/daily-run.md)
 
 If startup fails, use:
 
-- [Troubleshooting](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/docs/runbooks/troubleshooting.md)
+- [Troubleshooting](docs/runbooks/troubleshooting.md)
 
 ### Quick Summary
 
@@ -177,16 +177,16 @@ At a high level, local development currently looks like:
 
 For architecture and service-level understanding, start with:
 
-- [System Overview](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/docs/architecture/system-overview.md)
-- [Backend Overview](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/docs/architecture/backend-overview.md)
-- [Frontend Overview](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/docs/architecture/frontend-overview.md)
-- [Service Boundaries](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/docs/architecture/services-boundaries.md)
+- [System Overview](docs/architecture/system-overview.md)
+- [Backend Overview](docs/architecture/backend-overview.md)
+- [Frontend Overview](docs/architecture/frontend-overview.md)
+- [Service Boundaries](docs/architecture/services-boundaries.md)
 
 For service-specific detail:
 
-- [Profile Service](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/docs/services/profile-service/overview.md)
-- [Logging System](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/docs/services/logging-system/overview.md)
-- [AI Service](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/docs/services/ai-service/overview.md)
+- [Profile Service](docs/services/profile-service/overview.md)
+- [Logging System](docs/services/logging-system/overview.md)
+- [AI Service](docs/services/ai-service/overview.md)
 
 ---
 

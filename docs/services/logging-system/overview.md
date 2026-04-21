@@ -118,9 +118,9 @@ That does not mean the current logging is bad for local development. It means th
 
 For teammates, the best reading order is:
 
-1. [overview.md](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/docs/services/logging-system/overview.md)
-2. [architecture.md](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/docs/services/logging-system/architecture.md)
-3. [flows.md](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/docs/services/logging-system/flows.md)
-4. [dependencies.md](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/docs/services/logging-system/dependencies.md)
-5. [troubleshooting.md](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/docs/services/logging-system/troubleshooting.md)
-6. [future-direction.md](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/docs/services/logging-system/future-direction.md)
+1. [overview.md](docs/services/logging-system/overview.md)
+2. [architecture.md](docs/services/logging-system/architecture.md)
+3. [flows.md](docs/services/logging-system/flows.md)
+4. [dependencies.md](docs/services/logging-system/dependencies.md)
+5. [troubleshooting.md](docs/services/logging-system/troubleshooting.md)
+6. [future-direction.md](docs/services/logging-system/future-direction.md)

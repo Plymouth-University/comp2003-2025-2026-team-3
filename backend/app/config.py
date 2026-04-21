@@ -1,4 +1,5 @@
 """Application configuration management."""
+
 from pydantic_settings import BaseSettings
 from pydantic import field_validator
 from typing import List
@@ -6,17 +7,19 @@ from typing import List
 
 class Settings(BaseSettings):
     """Application settings loaded from environment variables."""
-    
+
     # Database
-    DATABASE_URL: str = "postgresql+asyncpg://postgres:password@localhost:5432/mydb" # this is legacy, will be removed in future
-    PROFILE_DATABASE_URL: str = "postgresql+asyncpg://postgres:password@localhost:5433/profile_db"
-    AI_DATABASE_URL: str = "postgresql+asyncpg://postgres:password@localhost:5434/ai_db"
-    LOG_DATABASE_URL: str = "postgresql+asyncpg://postgres:password@localhost:5435/logsdb"
-    
+    CORE_DATABASE_URL: str = (
+        "postgresql+asyncpg://postgres:password@localhost:5433/secops_core_db"
+    )
+    LOG_DATABASE_URL: str = (
+        "postgresql+asyncpg://postgres:password@localhost:5435/logsdb"
+    )
+
     # Application
     ENVIRONMENT: str = "development"
     DEBUG: bool = True
-    
+
     # Security
     SECRET_KEY: str = "dev-secret-key-change-in-production"
     ALGORITHM: str = "HS256"
@@ -52,13 +55,22 @@ class Settings(BaseSettings):
             normalized = value.strip().lower()
             if normalized in {"1", "true", "yes", "on", "debug", "development", "dev"}:
                 return True
-            if normalized in {"0", "false", "no", "off", "release", "prod", "production"}:
+            if normalized in {
+                "0",
+                "false",
+                "no",
+                "off",
+                "release",
+                "prod",
+                "production",
+            }:
                 return False
         return value
-    
+
     class Config:
         env_file = ".env"
         case_sensitive = True
+        extra = "ignore"
 
 
 settings = Settings()

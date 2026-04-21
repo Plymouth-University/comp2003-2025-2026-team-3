@@ -12,7 +12,7 @@ Use this if:
 
 If you are setting up a machine for the first time, use:
 
-- [first-time-setup.md](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/docs/getting-started/first-time-setup.md)
+- [first-time-setup.md](docs/getting-started/first-time-setup.md)
 
 ## Daily Startup Order
 
@@ -53,13 +53,15 @@ docker compose -f compose.yml ps
 From the backend directory:
 
 ```bash
-./run_local.sh
+python run_local.py
 ```
 
 What this script does:
 
-- ensures `.venv` exists
-- activates the virtual environment
+- ensures `backend/.venv` exists
+- uses the virtual environment
+- starts the PostgreSQL containers
+- applies core and logs Alembic migrations
 - starts Uvicorn on port `8000`
 
 Quick health check in another terminal:
@@ -79,11 +81,13 @@ Expected result:
 From the frontend directory:
 
 ```bash
-./run_local.sh
+python run_local.py
 ```
 
 What this does:
 
+- ensures `frontend/.venv` exists
+- checks that `node_modules` exists
 - starts the TypeScript watcher
 - starts the Tailwind watcher
 - starts the live dev server on `http://localhost:5173`
@@ -119,8 +123,8 @@ Use this checklist each time you start work:
 Example:
 
 - terminal 1: `cd backend && docker compose -f compose.yml up -d`
-- terminal 2: `cd backend && ./run_local.sh`
-- terminal 3: `cd frontend && ./run_local.sh`
+- terminal 2: `cd backend && python run_local.py`
+- terminal 3: `cd frontend && python run_local.py`
 
 ## Quick Notes For Everyday Work
 
@@ -178,5 +182,5 @@ docker compose -f compose.yml down
 
 ## Related Docs
 
-- [environment.md](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/docs/getting-started/environment.md)
-- [runbooks troubleshooting](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/docs/runbooks/troubleshooting.md)
+- [environment.md](docs/getting-started/environment.md)
+- [runbooks troubleshooting](docs/runbooks/troubleshooting.md)

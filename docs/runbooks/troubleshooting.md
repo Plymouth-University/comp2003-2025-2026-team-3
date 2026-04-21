@@ -76,7 +76,7 @@ What to check:
 
 1. activate the backend virtual environment
 2. confirm dependencies were installed from `requirements.txt`
-3. inspect the terminal output from `./run_local.sh`
+3. inspect the terminal output from `python run_local.py`
 
 Useful recovery steps:
 
@@ -198,7 +198,7 @@ Likely causes:
 
 - migrations were not applied
 - schema is outdated relative to the current models
-- `DATABASE_URL` does not match the running database
+- `CORE_DATABASE_URL` does not match the running core database
 
 What to check:
 
@@ -221,7 +221,7 @@ When it is not needed:
 Why this matters:
 
 - copying `.env` values to another machine does not copy the PostgreSQL tables
-- a fresh `mydb` can still be missing tables even if all environment variables are correct
+- a fresh `secops_core_db` can still be missing tables even if all environment variables are correct
 
 One common symptom:
 
@@ -258,7 +258,7 @@ python scripts/expand_tickets.py --multiplier 5 --start-id 100001
 
 Detailed script guidance:
 
-- [backend-test-scripts.md](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/docs/runbooks/backend-test-scripts.md)
+- [backend-test-scripts.md](docs/runbooks/backend-test-scripts.md)
 
 ## Symptom: Ticket endpoints return empty/error responses after login
 
@@ -318,7 +318,7 @@ What to check:
 
 See also:
 
-- [logging-system overview](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/docs/services/logging-system/overview.md)
+- [logging-system overview](docs/services/logging-system/overview.md)
 
 ## Symptom: The app seems to run, but behavior does not match older docs
 

@@ -1,6 +1,5 @@
 """Ticket classification orchestrator for the live AI request path."""
 
-import logging
 import time
 
 from .categorizer import predict_category_hybrid

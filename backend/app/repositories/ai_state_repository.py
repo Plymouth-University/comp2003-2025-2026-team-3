@@ -42,7 +42,9 @@ class TicketAIStateRepository:
         query = (
             select(TicketAIState)
             .where(TicketAIState.tenant_id == tenant_id)
-            .order_by(TicketAIState.priority_score.desc(), TicketAIState.refreshed_at.desc())
+            .order_by(
+                TicketAIState.priority_score.desc(), TicketAIState.refreshed_at.desc()
+            )
             .limit(limit)
             .offset(offset)
         )
@@ -68,7 +70,9 @@ class TicketAIStateRepository:
                     TicketAIState.queue == queue,
                 )
             )
-            .order_by(TicketAIState.priority_score.desc(), TicketAIState.refreshed_at.desc())
+            .order_by(
+                TicketAIState.priority_score.desc(), TicketAIState.refreshed_at.desc()
+            )
             .limit(limit)
             .offset(offset)
         )
@@ -93,9 +97,13 @@ class TicketAIStateRepository:
             )
         )
         if exclude_autotask_ticket_id is not None:
-            query = query.where(TicketAIState.autotask_ticket_id != exclude_autotask_ticket_id)
+            query = query.where(
+                TicketAIState.autotask_ticket_id != exclude_autotask_ticket_id
+            )
 
-        query = query.order_by(TicketAIState.priority_score.desc(), TicketAIState.refreshed_at.desc())
+        query = query.order_by(
+            TicketAIState.priority_score.desc(), TicketAIState.refreshed_at.desc()
+        )
         result = await self.db.execute(query)
         return list(result.scalars().all())
 
@@ -128,7 +136,9 @@ class TicketAIStateRepository:
             query = query.where(TicketAIState.is_closed.is_(False))
 
         query = (
-            query.order_by(TicketAIState.priority_score.desc(), TicketAIState.refreshed_at.desc())
+            query.order_by(
+                TicketAIState.priority_score.desc(), TicketAIState.refreshed_at.desc()
+            )
             .limit(limit)
             .offset(offset)
         )
@@ -148,7 +158,9 @@ class TicketAIStateRepository:
                     TicketAIState.is_closed.is_(False),
                 )
             )
-            .order_by(TicketAIState.priority_score.desc(), TicketAIState.refreshed_at.desc())
+            .order_by(
+                TicketAIState.priority_score.desc(), TicketAIState.refreshed_at.desc()
+            )
         )
         result = await self.db.execute(query)
         return list(result.scalars().all())
@@ -161,7 +173,9 @@ class TicketAIStateRepository:
         primary_profile_id: UUID | None = None,
         secondary_profile_id: UUID | None = None,
     ) -> TicketAIState:
-        existing = await self.get_by_ticket_id(tenant_id, ticket_payload["autotask_ticket_id"])
+        existing = await self.get_by_ticket_id(
+            tenant_id, ticket_payload["autotask_ticket_id"]
+        )
         now = datetime.now(timezone.utc)
 
         mapped_fields = {

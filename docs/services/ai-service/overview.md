@@ -90,7 +90,7 @@ Each category has:
 - a keyword list
 - a priority weight
 
-Those definitions live in [ticket_categories.json](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/backend/data/ticket_categories.json).
+Those definitions live in [ticket_categories.json](backend/data/ticket_categories.json).
 
 This is the most important current change because categories are no longer hard-coded inside Python source.
 
@@ -202,9 +202,9 @@ Verified from the current implementation:
 
 ## Recommended Reading Order
 
-1. [overview.md](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/docs/services/ai-service/overview.md)
-2. [architecture.md](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/docs/services/ai-service/architecture.md)
-3. [flows.md](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/docs/services/ai-service/flows.md)
-4. [dependencies.md](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/docs/services/ai-service/dependencies.md)
-5. [troubleshooting.md](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/docs/services/ai-service/troubleshooting.md)
-6. [future-direction.md](/home/liam/Documents/GitHub/comp2003-2025-2026-team-3/docs/services/ai-service/future-direction.md)
+1. [overview.md](docs/services/ai-service/overview.md)
+2. [architecture.md](docs/services/ai-service/architecture.md)
+3. [flows.md](docs/services/ai-service/flows.md)
+4. [dependencies.md](docs/services/ai-service/dependencies.md)
+5. [troubleshooting.md](docs/services/ai-service/troubleshooting.md)
+6. [future-direction.md](docs/services/ai-service/future-direction.md)

@@ -200,7 +200,9 @@ async def get_ticket_assignment_recommendation(
 ):
     """Recommend an assignee based on stored profile specialisms for this ticket category."""
     service = AIAssignmentService(ai_db, profile_db)
-    recommendation = await service.recommend_for_ticket(UUID(session.tenant_id), autotask_ticket_id)
+    recommendation = await service.recommend_for_ticket(
+        UUID(session.tenant_id), autotask_ticket_id
+    )
     if recommendation is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -242,7 +244,9 @@ async def set_ticket_assignment_override(
         )
 
     service = AIAssignmentService(ai_db, profile_db)
-    recommendation = await service.recommend_for_ticket(UUID(session.tenant_id), autotask_ticket_id)
+    recommendation = await service.recommend_for_ticket(
+        UUID(session.tenant_id), autotask_ticket_id
+    )
     if recommendation is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -274,7 +278,9 @@ async def clear_ticket_assignment_override(
         )
 
     service = AIAssignmentService(ai_db, profile_db)
-    recommendation = await service.recommend_for_ticket(UUID(session.tenant_id), autotask_ticket_id)
+    recommendation = await service.recommend_for_ticket(
+        UUID(session.tenant_id), autotask_ticket_id
+    )
     if recommendation is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,

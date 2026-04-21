@@ -1,7 +1,9 @@
 """Database connection and session management."""
+
 import logging
 from typing import AsyncGenerator
 
+from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 from sqlalchemy.orm import declarative_base
 
@@ -9,9 +11,9 @@ from .config import settings
 
 logger = logging.getLogger(__name__)
 
-# Real engines (service-owned)
-profile_engine = create_async_engine(
-    settings.PROFILE_DATABASE_URL,
+# Core engine owns profile/auth/tenant data and AI ticket-state data.
+core_engine = create_async_engine(
+    settings.CORE_DATABASE_URL,
     echo=settings.DEBUG,
     future=True,
     pool_pre_ping=True,
@@ -19,44 +21,31 @@ profile_engine = create_async_engine(
     max_overflow=20,
 )
 
-ai_engine = create_async_engine(
-    settings.AI_DATABASE_URL,
-    echo=settings.DEBUG,
-    future=True,
-    pool_pre_ping=True,
-    pool_size=10,
-    max_overflow=20,
-)
-
-# Real session factories (service-owned)
-ProfileAsyncSessionLocal = async_sessionmaker(
-    profile_engine,
+# Session factories keep service-facing names for compatibility while sharing
+# one physical database so profile foreign keys can protect AI ticket state.
+CoreAsyncSessionLocal = async_sessionmaker(
+    core_engine,
     class_=AsyncSession,
     expire_on_commit=False,
     autocommit=False,
     autoflush=False,
 )
+ProfileAsyncSessionLocal = CoreAsyncSessionLocal
+AIAsyncSessionLocal = CoreAsyncSessionLocal
 
-AIAsyncSessionLocal = async_sessionmaker(
-    ai_engine,
-    class_=AsyncSession,
-    expire_on_commit=False,
-    autocommit=False,
-    autoflush=False,
-)
-
-# Real declarative bases (service-owned)
-ProfileBase = declarative_base()
-AIBase = declarative_base()
+# Core declarative base. Compatibility aliases preserve existing imports.
+CoreBase = declarative_base()
+ProfileBase = CoreBase
+AIBase = CoreBase
 
 # Compatibility aliases (temporary)
-engine = profile_engine
+engine = core_engine
 AsyncSessionLocal = ProfileAsyncSessionLocal
-Base = ProfileBase
+Base = CoreBase
 
 
 async def get_profile_db() -> AsyncGenerator[AsyncSession, None]:
-    """Dependency for profile database sessions."""
+    """Dependency for profile/core database sessions."""
     async with ProfileAsyncSessionLocal() as session:
         try:
             yield session
@@ -69,7 +58,7 @@ async def get_profile_db() -> AsyncGenerator[AsyncSession, None]:
 
 
 async def get_ai_db() -> AsyncGenerator[AsyncSession, None]:
-    """Dependency for AI database sessions."""
+    """Dependency for AI ticket-state sessions in the core database."""
     async with AIAsyncSessionLocal() as session:
         try:
             yield session
@@ -87,13 +76,10 @@ get_db = get_profile_db
 
 async def init_db() -> None:
     """Initialize database tables (development only)."""
-    logger.info("Creating profile database tables...")
-    async with profile_engine.begin() as conn:
-        await conn.run_sync(ProfileBase.metadata.create_all)
-
-    logger.info("Creating AI database tables...")
-    async with ai_engine.begin() as conn:
-        await conn.run_sync(AIBase.metadata.create_all)
+    logger.info("Creating core database tables...")
+    async with core_engine.begin() as conn:
+        await conn.execute(text('CREATE SCHEMA IF NOT EXISTS "AITicketOps"'))
+        await conn.run_sync(CoreBase.metadata.create_all)
 
     logger.info("Database tables created successfully")
 
@@ -101,6 +87,5 @@ async def init_db() -> None:
 async def close_db() -> None:
     """Close database connections."""
     logger.info("Closing database connections...")
-    await profile_engine.dispose()
-    await ai_engine.dispose()
+    await core_engine.dispose()
     logger.info("Database connections closed")

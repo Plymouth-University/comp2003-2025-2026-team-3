@@ -1,4 +1,5 @@
 from logging.config import fileConfig
+import os
 import sys
 from pathlib import Path
 
@@ -10,11 +11,18 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from app.config import settings
 from app.log_database import LogBase
-from app.models.logs import ApplicationLog, ErrorLog, PerformanceLog, RequestTrace, UIClickAnalyticsLog
 
 config = context.config
 
-database_url = settings.LOG_DATABASE_URL.replace("postgresql+asyncpg://", "postgresql://")
+raw_database_url = os.getenv("ALEMBIC_DATABASE_URL") or settings.LOG_DATABASE_URL
+if not raw_database_url:
+    raise RuntimeError(
+        "No database URL configured for Alembic logs. Set ALEMBIC_DATABASE_URL or LOG_DATABASE_URL."
+    )
+
+database_url = raw_database_url.replace(
+    "postgresql+asyncpg://", "postgresql://"
+)
 config.set_main_option("sqlalchemy.url", database_url)
 
 if config.config_file_name is not None:
