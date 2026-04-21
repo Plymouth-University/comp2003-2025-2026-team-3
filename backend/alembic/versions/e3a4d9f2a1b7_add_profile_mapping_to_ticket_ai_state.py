@@ -12,6 +12,8 @@ from alembic import op
 import sqlalchemy as sa
 
 
+AI_SCHEMA = "AITicketOps"
+
 # revision identifiers, used by Alembic.
 revision: str = "e3a4d9f2a1b7"
 down_revision: Union[str, Sequence[str], None] = "9f1b0c6d4a21"
@@ -24,10 +26,12 @@ def upgrade() -> None:
     op.add_column(
         "ticket_ai_state",
         sa.Column("primary_profile_id", sa.UUID(), nullable=True),
+        schema=AI_SCHEMA,
     )
     op.add_column(
         "ticket_ai_state",
         sa.Column("secondary_profile_id", sa.UUID(), nullable=True),
+        schema=AI_SCHEMA,
     )
     op.create_foreign_key(
         "fk_ticket_ai_state_primary_profile",
@@ -36,6 +40,7 @@ def upgrade() -> None:
         ["primary_profile_id"],
         ["profile_id"],
         ondelete="SET NULL",
+        source_schema=AI_SCHEMA,
     )
     op.create_foreign_key(
         "fk_ticket_ai_state_secondary_profile",
@@ -44,34 +49,47 @@ def upgrade() -> None:
         ["secondary_profile_id"],
         ["profile_id"],
         ondelete="SET NULL",
+        source_schema=AI_SCHEMA,
     )
     op.create_index(
         "ix_ticket_ai_state_tenant_primary_profile",
         "ticket_ai_state",
         ["tenant_id", "primary_profile_id"],
         unique=False,
+        schema=AI_SCHEMA,
     )
     op.create_index(
         "ix_ticket_ai_state_tenant_secondary_profile",
         "ticket_ai_state",
         ["tenant_id", "secondary_profile_id"],
         unique=False,
+        schema=AI_SCHEMA,
     )
 
 
 def downgrade() -> None:
     """Downgrade schema."""
     op.drop_index(
-        "ix_ticket_ai_state_tenant_secondary_profile", table_name="ticket_ai_state"
+        "ix_ticket_ai_state_tenant_secondary_profile",
+        table_name="ticket_ai_state",
+        schema=AI_SCHEMA,
     )
     op.drop_index(
-        "ix_ticket_ai_state_tenant_primary_profile", table_name="ticket_ai_state"
+        "ix_ticket_ai_state_tenant_primary_profile",
+        table_name="ticket_ai_state",
+        schema=AI_SCHEMA,
     )
     op.drop_constraint(
-        "fk_ticket_ai_state_secondary_profile", "ticket_ai_state", type_="foreignkey"
+        "fk_ticket_ai_state_secondary_profile",
+        "ticket_ai_state",
+        type_="foreignkey",
+        schema=AI_SCHEMA,
     )
     op.drop_constraint(
-        "fk_ticket_ai_state_primary_profile", "ticket_ai_state", type_="foreignkey"
+        "fk_ticket_ai_state_primary_profile",
+        "ticket_ai_state",
+        type_="foreignkey",
+        schema=AI_SCHEMA,
     )
-    op.drop_column("ticket_ai_state", "secondary_profile_id")
-    op.drop_column("ticket_ai_state", "primary_profile_id")
+    op.drop_column("ticket_ai_state", "secondary_profile_id", schema=AI_SCHEMA)
+    op.drop_column("ticket_ai_state", "primary_profile_id", schema=AI_SCHEMA)

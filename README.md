@@ -69,7 +69,7 @@ FastAPI Backend
 │  │  ├─ components/            # Reusable UI components
 │  │  └─ shared/                # Auth helpers, types, DOM utilities
 │  ├─ package.json
-│  └─ run_local.sh
+│  └─ run_local.py
 │
 ├─ docs/
 │  ├─ getting-started/

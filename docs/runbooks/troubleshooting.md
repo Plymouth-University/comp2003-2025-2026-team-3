@@ -76,7 +76,7 @@ What to check:
 
 1. activate the backend virtual environment
 2. confirm dependencies were installed from `requirements.txt`
-3. inspect the terminal output from `./run_local.sh`
+3. inspect the terminal output from `python run_local.py`
 
 Useful recovery steps:
 
@@ -198,7 +198,7 @@ Likely causes:
 
 - migrations were not applied
 - schema is outdated relative to the current models
-- `DATABASE_URL` does not match the running database
+- `CORE_DATABASE_URL` does not match the running core database
 
 What to check:
 
@@ -221,7 +221,7 @@ When it is not needed:
 Why this matters:
 
 - copying `.env` values to another machine does not copy the PostgreSQL tables
-- a fresh `mydb` can still be missing tables even if all environment variables are correct
+- a fresh `secops_core_db` can still be missing tables even if all environment variables are correct
 
 One common symptom:
 

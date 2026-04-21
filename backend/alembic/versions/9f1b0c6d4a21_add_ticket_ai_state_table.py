@@ -13,6 +13,8 @@ import sqlalchemy as sa
 from sqlalchemy.dialects import postgresql
 
 
+AI_SCHEMA = "AITicketOps"
+
 # revision identifiers, used by Alembic.
 revision: str = "9f1b0c6d4a21"
 down_revision: Union[str, Sequence[str], None] = "4d24c48b3f70"
@@ -22,6 +24,7 @@ depends_on: Union[str, Sequence[str], None] = None
 
 def upgrade() -> None:
     """Upgrade schema."""
+    op.execute(f'CREATE SCHEMA IF NOT EXISTS "{AI_SCHEMA}"')
     op.create_table(
         "ticket_ai_state",
         sa.Column("ticket_ai_state_id", sa.UUID(), nullable=False),
@@ -67,44 +70,71 @@ def upgrade() -> None:
             nullable=False,
         ),
         sa.PrimaryKeyConstraint("ticket_ai_state_id"),
+        schema=AI_SCHEMA,
     )
     op.create_index(
         "ix_ticket_ai_state_tenant_ticket",
         "ticket_ai_state",
         ["tenant_id", "autotask_ticket_id"],
         unique=True,
+        schema=AI_SCHEMA,
     )
     op.create_index(
         "ix_ticket_ai_state_tenant_status",
         "ticket_ai_state",
         ["tenant_id", "status"],
         unique=False,
+        schema=AI_SCHEMA,
     )
     op.create_index(
         "ix_ticket_ai_state_tenant_company",
         "ticket_ai_state",
         ["tenant_id", "company"],
         unique=False,
+        schema=AI_SCHEMA,
     )
     op.create_index(
         "ix_ticket_ai_state_tenant_category",
         "ticket_ai_state",
         ["tenant_id", "category"],
         unique=False,
+        schema=AI_SCHEMA,
     )
     op.create_index(
         "ix_ticket_ai_state_tenant_closed",
         "ticket_ai_state",
         ["tenant_id", "is_closed"],
         unique=False,
+        schema=AI_SCHEMA,
     )
 
 
 def downgrade() -> None:
     """Downgrade schema."""
-    op.drop_index("ix_ticket_ai_state_tenant_closed", table_name="ticket_ai_state")
-    op.drop_index("ix_ticket_ai_state_tenant_category", table_name="ticket_ai_state")
-    op.drop_index("ix_ticket_ai_state_tenant_company", table_name="ticket_ai_state")
-    op.drop_index("ix_ticket_ai_state_tenant_status", table_name="ticket_ai_state")
-    op.drop_index("ix_ticket_ai_state_tenant_ticket", table_name="ticket_ai_state")
-    op.drop_table("ticket_ai_state")
+    op.drop_index(
+        "ix_ticket_ai_state_tenant_closed",
+        table_name="ticket_ai_state",
+        schema=AI_SCHEMA,
+    )
+    op.drop_index(
+        "ix_ticket_ai_state_tenant_category",
+        table_name="ticket_ai_state",
+        schema=AI_SCHEMA,
+    )
+    op.drop_index(
+        "ix_ticket_ai_state_tenant_company",
+        table_name="ticket_ai_state",
+        schema=AI_SCHEMA,
+    )
+    op.drop_index(
+        "ix_ticket_ai_state_tenant_status",
+        table_name="ticket_ai_state",
+        schema=AI_SCHEMA,
+    )
+    op.drop_index(
+        "ix_ticket_ai_state_tenant_ticket",
+        table_name="ticket_ai_state",
+        schema=AI_SCHEMA,
+    )
+    op.drop_table("ticket_ai_state", schema=AI_SCHEMA)
+    op.execute(f'DROP SCHEMA IF EXISTS "{AI_SCHEMA}"')

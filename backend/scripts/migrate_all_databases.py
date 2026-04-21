@@ -12,11 +12,9 @@ import sys
 from pathlib import Path
 
 
-DEFAULT_DATABASE_URL = "postgresql+asyncpg://postgres:password@localhost:5432/mydb"
-DEFAULT_PROFILE_DATABASE_URL = (
-    "postgresql+asyncpg://postgres:password@localhost:5433/profile_db"
+DEFAULT_CORE_DATABASE_URL = (
+    "postgresql+asyncpg://postgres:password@localhost:5433/secops_core_db"
 )
-DEFAULT_AI_DATABASE_URL = "postgresql+asyncpg://postgres:password@localhost:5434/ai_db"
 DEFAULT_LOG_DATABASE_URL = "postgresql+asyncpg://postgres:password@localhost:5435/logsdb"
 
 BACKEND_DIR = Path(__file__).resolve().parents[1]
@@ -59,16 +57,8 @@ def run_logs_tree(db_url: str) -> None:
 
 def main() -> None:
     run_core_tree(
-        "legacy DB",
-        get_database_url("DATABASE_URL", DEFAULT_DATABASE_URL),
-    )
-    run_core_tree(
-        "profile DB",
-        get_database_url("PROFILE_DATABASE_URL", DEFAULT_PROFILE_DATABASE_URL),
-    )
-    run_core_tree(
-        "ai DB",
-        get_database_url("AI_DATABASE_URL", DEFAULT_AI_DATABASE_URL),
+        "core DB",
+        get_database_url("CORE_DATABASE_URL", DEFAULT_CORE_DATABASE_URL),
     )
     run_logs_tree(get_database_url("LOG_DATABASE_URL", DEFAULT_LOG_DATABASE_URL))
 

@@ -53,13 +53,15 @@ docker compose -f compose.yml ps
 From the backend directory:
 
 ```bash
-./run_local.sh
+python run_local.py
 ```
 
 What this script does:
 
-- ensures `.venv` exists
-- activates the virtual environment
+- ensures `backend/.venv` exists
+- uses the virtual environment
+- starts the PostgreSQL containers
+- applies core and logs Alembic migrations
 - starts Uvicorn on port `8000`
 
 Quick health check in another terminal:
@@ -79,11 +81,13 @@ Expected result:
 From the frontend directory:
 
 ```bash
-./run_local.sh
+python run_local.py
 ```
 
 What this does:
 
+- ensures `frontend/.venv` exists
+- checks that `node_modules` exists
 - starts the TypeScript watcher
 - starts the Tailwind watcher
 - starts the live dev server on `http://localhost:5173`
@@ -119,8 +123,8 @@ Use this checklist each time you start work:
 Example:
 
 - terminal 1: `cd backend && docker compose -f compose.yml up -d`
-- terminal 2: `cd backend && ./run_local.sh`
-- terminal 3: `cd frontend && ./run_local.sh`
+- terminal 2: `cd backend && python run_local.py`
+- terminal 3: `cd frontend && python run_local.py`
 
 ## Quick Notes For Everyday Work
 

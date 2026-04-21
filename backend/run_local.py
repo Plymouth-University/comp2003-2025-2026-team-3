@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Cross-platform Python equivalent of run_local.sh."""
+"""Cross-platform local backend runner."""
 
 from __future__ import annotations
 
@@ -77,7 +77,7 @@ def ensure_docker_containers(env: dict[str, str]) -> None:
 
 
 def run_migrations(python_executable: Path, env: dict[str, str]) -> None:
-    print("[run_local] Applying Alembic migrations for all DB instances...", flush=True)
+    print("[run_local] Applying Alembic migrations for core and logs databases...", flush=True)
     run([str(python_executable), "scripts/migrate_all_databases.py"], env=env)
 
 

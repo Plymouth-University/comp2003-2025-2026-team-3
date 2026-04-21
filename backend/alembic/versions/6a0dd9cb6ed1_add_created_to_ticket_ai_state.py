@@ -12,6 +12,8 @@ from alembic import op
 import sqlalchemy as sa
 
 
+AI_SCHEMA = "AITicketOps"
+
 # revision identifiers, used by Alembic.
 revision: str = "6a0dd9cb6ed1"
 down_revision: Union[str, Sequence[str], None] = "e3a4d9f2a1b7"
@@ -24,13 +26,17 @@ def upgrade() -> None:
     op.add_column(
         "ticket_ai_state",
         sa.Column("created", sa.Text(), nullable=True),
+        schema=AI_SCHEMA,
     )
     op.execute(
-        "UPDATE ticket_ai_state SET created = refreshed_at::text WHERE created IS NULL"
+        'UPDATE "AITicketOps".ticket_ai_state '
+        "SET created = refreshed_at::text WHERE created IS NULL"
     )
-    op.alter_column("ticket_ai_state", "created", nullable=False)
+    op.alter_column(
+        "ticket_ai_state", "created", nullable=False, schema=AI_SCHEMA
+    )
 
 
 def downgrade() -> None:
     """Downgrade schema."""
-    op.drop_column("ticket_ai_state", "created")
+    op.drop_column("ticket_ai_state", "created", schema=AI_SCHEMA)

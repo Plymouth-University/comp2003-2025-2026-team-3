@@ -8,11 +8,11 @@ The detailed startup and onboarding content now lives in `docs/getting-started/`
 
 Use:
 
-1. [first-time-setup.md](docs/getting-started/first-time-setup.md) for one-time machine and project setup
-2. [environment.md](docs/getting-started/environment.md) for backend/frontend configuration values
-3. [daily-run.md](docs/getting-started/daily-run.md) for the repeatable day-to-day startup workflow
-4. [backend-test-scripts.md](docs/runbooks/backend-test-scripts.md) for fixture expansion, reset, mock provider, and AI-state test workflows
-5. [troubleshooting.md](docs/runbooks/troubleshooting.md) if the stack does not boot or behave correctly
+1. [first-time-setup.md](/docs/getting-started/first-time-setup.md) for one-time machine and project setup
+2. [environment.md](/docs/getting-started/environment.md) for backend/frontend configuration values
+3. [daily-run.md](/docs/getting-started/daily-run.md) for the repeatable day-to-day startup workflow
+4. [backend-test-scripts.md](/docs/runbooks/backend-test-scripts.md) for fixture expansion, reset, mock provider, and AI-state test workflows
+5. [troubleshooting.md](/docs/runbooks/troubleshooting.md) if the stack does not boot or behave correctly
 
 ## Why This Changed
 

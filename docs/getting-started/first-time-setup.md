@@ -24,8 +24,8 @@ If you need to understand environment variables, use:
 
 This setup guide is based on:
 
-- `backend/run_local.sh`
-- `frontend/run_local.sh`
+- `backend/run_local.py`
+- `frontend/run_local.py`
 - `backend/compose.yml`
 - `backend/requirements.txt`
 - `backend/app/config.py`
@@ -64,10 +64,12 @@ docker compose -f compose.yml up -d
 
 What this gives you:
 
-- PostgreSQL on port `5432`
+- core PostgreSQL on port `5433`
+- logs PostgreSQL on port `5435`
 - user `postgres`
 - password `password`
-- database `mydb`
+- core database `secops_core_db`
+- logs database `logsdb`
 
 These defaults come from:
 
@@ -124,7 +126,8 @@ There does not appear to be a checked-in `.env.example`, so you currently need t
 
 At minimum, review:
 
-- `DATABASE_URL`
+- `CORE_DATABASE_URL`
+- `LOG_DATABASE_URL`
 - `SECRET_KEY`
 - `ENTRA_TENANT_ID`
 - `ENTRA_CLIENT_ID`
@@ -142,12 +145,12 @@ See:
 From the backend directory with the virtual environment active:
 
 ```bash
-alembic upgrade head
+python scripts/migrate_all_databases.py
 ```
 
 Why this matters:
 
-- the profile, auth, and tenant/specialism features depend on the DB schema existing
+- the profile, auth, tenant/specialism, AI ticket-state, and logs features depend on the DB schema existing
 - Microsoft sign-in can fail with a backend `500 Internal Server Error` on a fresh machine if the tables have not been created yet
 
 Important usage note:
@@ -160,6 +163,7 @@ Important usage note:
 Migration files currently live in:
 
 - `backend/alembic/versions/`
+- `backend/alembic_logs/versions/`
 
 ## Step 7: Install Frontend Dependencies
 
@@ -181,7 +185,7 @@ This installs the frontend dev tooling, including:
 
 After setup is done, the simplest next step is to follow:
 
-- [daily-run.md](docs/getting-started/daily-run.md)
+- [daily-run.md](/docs/getting-started/daily-run.md)
 
 Your first successful smoke test should confirm:
 
