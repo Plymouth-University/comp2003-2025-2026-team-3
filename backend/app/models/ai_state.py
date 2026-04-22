@@ -2,8 +2,8 @@
 
 import uuid
 
-from sqlalchemy import Column, Integer, Text, Index, Boolean, ForeignKey
-from sqlalchemy.dialects.postgresql import UUID, TIMESTAMP
+from sqlalchemy import Column, Integer, Text, Index, Boolean, ForeignKey, text
+from sqlalchemy.dialects.postgresql import UUID, TIMESTAMP, JSONB
 from sqlalchemy.sql import func
 
 from ..database import AIBase
@@ -63,6 +63,15 @@ class TicketAIState(AIBase):
     )
     ai_managed_reason = Column(Text, nullable=True)
     ai_managed_set_at = Column(TIMESTAMP(timezone=True), nullable=True)
+    manual_edit_fields = Column(
+        JSONB, nullable=False, default=list, server_default=text("'[]'::jsonb")
+    )
+    manual_edit_set_by_profile_id = Column(
+        UUID(as_uuid=True),
+        ForeignKey("profile.profile_id", ondelete="SET NULL"),
+        nullable=True,
+    )
+    manual_edit_set_at = Column(TIMESTAMP(timezone=True), nullable=True)
     category = Column(Text, nullable=False)
     confidence = Column(Integer, nullable=False)
     priority_label = Column(Text, nullable=False)

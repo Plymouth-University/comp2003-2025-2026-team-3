@@ -1,6 +1,7 @@
 import { fetchAITickets } from "../shared/api/aiTickets.js";
 import { el } from "../shared/lib/dom.js";
 import { EllipsisMenu } from "../components/EllipsisMenu.js";
+import { openTicketEditModal } from "../components/TicketEditModal.js";
 import type { BackendTicket } from "../shared/types.js";
 
 function getTimeStamp(): string {
@@ -160,9 +161,24 @@ export function Dashboard(onOpenTicket?: (ticket: BackendTicket) => void): HTMLE
         menu.addEventListener("view", () => onOpenTicket(ticket)); // on view, open ticket
       }
 
+      const titleElem = el("div", { className: "font-semibold text-slate-900 truncate flex-1", text: ticket.title });
+      const priorityElem = el("span", { text: `Priority: ${ticket.priority}` });
+      const confidenceElem = el("span", { text: `Confidence: ${ticket.ai.confidence.toFixed(0)}%` });
+      const dueDateElem = el("div", { className: "text-xs text-slate-500 mt-2", text: `Due: ${ticket.due_date}` });
+
+      menu.addEventListener("edit", () => {
+        openTicketEditModal(ticket, (updatedTicket) => {
+          Object.assign(ticket, updatedTicket);
+          titleElem.textContent = updatedTicket.title;
+          priorityElem.textContent = `Priority: ${updatedTicket.priority}`;
+          confidenceElem.textContent = `Confidence: ${updatedTicket.ai.confidence.toFixed(0)}%`;
+          dueDateElem.textContent = `Due: ${updatedTicket.due_date}`;
+        });
+      });
+
       //ticket title row
       const topRow = el("div", { className: "flex justify-between items-start gap-3 mb-3" }, [
-        el("div", { className: "font-semibold text-slate-900 truncate flex-1", text: ticket.title }),
+        titleElem,
         menu
       ]);
 
@@ -170,10 +186,10 @@ export function Dashboard(onOpenTicket?: (ticket: BackendTicket) => void): HTMLE
         el("div", { className: "min-w-0 flex-1" }, [
           el("div", { className: "text-xs text-slate-500", text: `ID: ${ticket.autotask_ticket_id}` }),
           el("div", { className: "text-xs text-slate-500 mt-2 flex gap-2" }, [
-            el("span", { text: `Priority: ${ticket.priority}` }),
-            el("span", { text: `Confidence: ${ticket.ai.confidence.toFixed(0)}%` })
+            priorityElem,
+            confidenceElem
           ]),
-          el("div", { className: "text-xs text-slate-500 mt-2", text: `Due: ${ticket.due_date}` })
+          dueDateElem
         ])
       ]);
 

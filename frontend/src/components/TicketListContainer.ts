@@ -3,6 +3,7 @@ import { API_BASE_URL } from "../shared/auth.js";
 import { fetchAITickets, type TicketViewKey } from "../shared/api/aiTickets.js";
 import type { BackendTicket } from "../shared/types.js";
 import { EllipsisMenu } from "./EllipsisMenu.js";
+import { openTicketEditModal } from "./TicketEditModal.js";
 
 function getTimeStamp(): string {
   const now = new Date();
@@ -346,6 +347,17 @@ export function TicketListContainer(
         });
         const menu = EllipsisMenu();
         menu.addEventListener("view", () => onOpenTicket(ticket));
+        menu.addEventListener("edit", () => {
+          openTicketEditModal(ticket, (updatedTicket) => {
+            ticketsState = ticketsState.map((currentTicket) =>
+              currentTicket.autotask_ticket_id === updatedTicket.autotask_ticket_id
+                ? updatedTicket
+                : currentTicket,
+            );
+            populateFilterOptions();
+            render();
+          });
+        });
 
         const topRow = el("div", { className: "flex justify-between items-start gap-3 mb-3" }, [
           el("div", {

@@ -1,0 +1,33 @@
+{
+  "Appt. Booked - Remote": "timer.png",
+  "Appt. Booked - On Site": "timer.png",
+  "AutoCompleted by RMM": "circledot.png",
+  "Callback Required": "callback.png",
+  "Change Approved": "greentick.png",
+  "Change Pending": "timer.png",
+  "Change Rejected": "redcircledot.png",
+  "Complete": "circledot.png",
+  "Customer Escalation": "redexclamation.png",
+  "Customer Note Added": "bluepencil.png",
+  "Escalation Approved": "grayexclamation.png",
+  "Escalation Review RQD": "grayquestion.png",
+  "In Progress": "greeninprogress.png",
+  "Immediate Review RQD": "orangeexclamation.png",
+  "New": "redexclamation.png",
+  "Note added by RMM": "bluepencil.png",
+  "On Hold": "yellowOnhold.png",
+  "On Hold - Monitoring": "yellowOnhold.png",
+  "Site Visit Complete": "orangeflag.png",
+  "Technician Response RQD": "orangeexclamation.png",
+  "Waiting 3rd Party": "timer.png",
+  "Waiting Customer": "timer.png",
+  "Waiting Department": "timer.png",
+  "Waiting Equipment": "timer.png",
+  "Waiting Equipment Build": "timer.png",
+  "Waiting Quote Approval": "timer.png",
+  "Waiting Sales": "timer.png",
+  "Waiting Site Visit": "timer.png",
+  "Waiting Tech Assessment": "purpleclock.png"
+}
+
+
