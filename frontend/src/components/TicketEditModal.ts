@@ -35,6 +35,22 @@ function openConfirm(message: string): boolean {
 }
 
 function parseStatusIconList(rawText: string): StatusOption[] {
+  try {
+    const parsed = JSON.parse(rawText) as Record<string, unknown>;
+    return Object.entries(parsed)
+      .map(([status, iconName]) => {
+        if (typeof iconName !== "string" || !status || !iconName) return null;
+
+        return {
+          status,
+          iconPath: `${STATUS_ICON_DIR}/${iconName}`,
+        };
+      })
+      .filter((option): option is StatusOption => option !== null);
+  } catch {
+    // Fall back to the old status:icon line format for local/custom lists.
+  }
+
   return rawText
     .split(/\r?\n/)
     .map((line) => line.trim())
@@ -44,11 +60,14 @@ function parseStatusIconList(rawText: string): StatusOption[] {
       if (separatorIndex === -1) return null;
 
       const status = line.slice(0, separatorIndex).trim();
-      const iconName = line.slice(separatorIndex + 1).trim();
+      const iconName = line
+        .slice(separatorIndex + 1)
+        .trim()
+        .replace(/^["']|["'],?$/g, "");
       if (!status || !iconName) return null;
 
       return {
-        status,
+        status: status.replace(/^["']|["']$/g, ""),
         iconPath: `${STATUS_ICON_DIR}/${iconName}`,
       };
     })
