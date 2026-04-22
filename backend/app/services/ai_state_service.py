@@ -13,6 +13,7 @@ from ..repositories.ai_state_repository import TicketAIStateRepository
 from ..repositories.profile_repository import ProfileRepository
 from ..schemas.ai_state import (
     TicketAIRefreshResponse,
+    TicketAIStateCloseRequest,
     TicketAIStateResponse,
     TicketAIStateUpdateRequest,
 )
@@ -229,6 +230,7 @@ class AIStateService:
         profile_id: UUID,
         assignment_role: str,
         include_closed: bool = False,
+        closed_only: bool = False,
         limit: int = 100,
         offset: int = 0,
     ) -> list[TicketAIStateResponse]:
@@ -237,6 +239,7 @@ class AIStateService:
             profile_id=profile_id,
             assignment_role=assignment_role,
             include_closed=include_closed,
+            closed_only=closed_only,
             limit=limit,
             offset=offset,
         )
@@ -284,6 +287,29 @@ class AIStateService:
         responses = await self._build_ticket_state_responses(tenant_id, [updated])
         return responses[0] if responses else None
 
+    async def close_ticket_state(
+        self,
+        tenant_id: UUID,
+        autotask_ticket_id: int,
+        close_request: TicketAIStateCloseRequest,
+        set_by_profile_id: UUID,
+    ) -> Optional[TicketAIStateResponse]:
+        reason_closed = close_request.reason_closed.strip()
+        if not reason_closed:
+            raise ValueError("Closure reason is required.")
+
+        updated = await self.repository.close_ticket_state(
+            tenant_id=tenant_id,
+            autotask_ticket_id=autotask_ticket_id,
+            reason_closed=reason_closed,
+            set_by_profile_id=set_by_profile_id,
+        )
+        if updated is None:
+            return None
+
+        responses = await self._build_ticket_state_responses(tenant_id, [updated])
+        return responses[0] if responses else None
+
     async def set_manual_override(
         self,
         tenant_id: UUID,
@@ -292,6 +318,12 @@ class AIStateService:
         set_by_profile_id: UUID,
         reason: str | None = None,
     ):
+        state = await self.repository.get_by_ticket_id(tenant_id, autotask_ticket_id)
+        if state is None:
+            return None
+        if state.is_closed:
+            raise ValueError("Closed tickets are read-only.")
+
         updated = await self.repository.set_manual_override(
             tenant_id=tenant_id,
             autotask_ticket_id=autotask_ticket_id,
@@ -314,6 +346,12 @@ class AIStateService:
         tenant_id: UUID,
         autotask_ticket_id: int,
     ):
+        state = await self.repository.get_by_ticket_id(tenant_id, autotask_ticket_id)
+        if state is None:
+            return None
+        if state.is_closed:
+            raise ValueError("Closed tickets are read-only.")
+
         return await self.repository.clear_manual_override(
             tenant_id=tenant_id,
             autotask_ticket_id=autotask_ticket_id,

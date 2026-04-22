@@ -46,6 +46,7 @@ class TicketAIStateResponse(BaseModel):
     priority_score: int
     classification_method: str
     is_closed: bool
+    reason_closed: Optional[str] = None
     refreshed_at: datetime
     created_at: datetime
     updated_at: datetime
@@ -99,6 +100,10 @@ class TicketAIStateUpdateRequest(BaseModel):
     priority_label: Optional[str] = Field(default=None, max_length=100)
     priority_score: Optional[int] = Field(default=None, ge=0)
     classification_method: Optional[str] = Field(default=None, max_length=500)
+
+
+class TicketAIStateCloseRequest(BaseModel):
+    reason_closed: str = Field(min_length=1, max_length=1000)
 
 
 class AIOversightRunResponse(BaseModel):

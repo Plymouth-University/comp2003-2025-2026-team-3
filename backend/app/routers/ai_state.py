@@ -13,6 +13,7 @@ from ..schemas.ai_state import (
     TicketAssignmentRecommendationResponse,
     TicketAIRefreshRequest,
     TicketAIRefreshResponse,
+    TicketAIStateCloseRequest,
     TicketAIStateResponse,
     TicketAIStateUpdateRequest,
 )
@@ -129,6 +130,60 @@ async def list_my_secondary_ticket_states(
     )
 
 
+@router.get(
+    "/ticket-states/my-primary/closed",
+    response_model=list[TicketAIStateResponse],
+)
+@router.get(
+    "/ticket-states/primary/closed",
+    response_model=list[TicketAIStateResponse],
+)
+async def list_my_closed_primary_ticket_states(
+    limit: int = Query(500, ge=1, le=1000),
+    offset: int = Query(0, ge=0),
+    session: AuthenticatedSession = Depends(get_current_session),
+    ai_db: AsyncSession = Depends(get_ai_db),
+    profile_db: AsyncSession = Depends(get_profile_db),
+):
+    """List closed AI ticket states where the current user is the primary resource."""
+    service = AIStateService(ai_db, profile_db)
+    return await service.list_profile_ticket_states(
+        tenant_id=UUID(session.tenant_id),
+        profile_id=UUID(session.profile_id),
+        assignment_role="primary",
+        closed_only=True,
+        limit=limit,
+        offset=offset,
+    )
+
+
+@router.get(
+    "/ticket-states/my-secondary/closed",
+    response_model=list[TicketAIStateResponse],
+)
+@router.get(
+    "/ticket-states/secondary/closed",
+    response_model=list[TicketAIStateResponse],
+)
+async def list_my_closed_secondary_ticket_states(
+    limit: int = Query(500, ge=1, le=1000),
+    offset: int = Query(0, ge=0),
+    session: AuthenticatedSession = Depends(get_current_session),
+    ai_db: AsyncSession = Depends(get_ai_db),
+    profile_db: AsyncSession = Depends(get_profile_db),
+):
+    """List closed AI ticket states where the current user is the secondary resource."""
+    service = AIStateService(ai_db, profile_db)
+    return await service.list_profile_ticket_states(
+        tenant_id=UUID(session.tenant_id),
+        profile_id=UUID(session.profile_id),
+        assignment_role="secondary",
+        closed_only=True,
+        limit=limit,
+        offset=offset,
+    )
+
+
 @router.get("/ticket-states/my-assigned", response_model=list[TicketAIStateResponse])
 async def list_my_assigned_ticket_states(
     include_closed: bool = Query(False),
@@ -181,6 +236,39 @@ async def get_ai_ticket_state(
     """Get one persisted AI ticket state for the current tenant."""
     service = AIStateService(ai_db, profile_db)
     state = await service.get_ticket_state(UUID(session.tenant_id), autotask_ticket_id)
+    if not state:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"AI ticket state not found for autotask_ticket_id={autotask_ticket_id}",
+        )
+    return state
+
+
+@router.patch(
+    "/ticket-states/{autotask_ticket_id}/close",
+    response_model=TicketAIStateResponse,
+)
+async def close_ai_ticket_state(
+    autotask_ticket_id: int,
+    close_request: TicketAIStateCloseRequest,
+    session: AuthenticatedSession = Depends(get_current_session),
+    ai_db: AsyncSession = Depends(get_ai_db),
+    profile_db: AsyncSession = Depends(get_profile_db),
+):
+    """Mark one persisted AI ticket state as closed with a user-provided reason."""
+    service = AIStateService(ai_db, profile_db)
+    try:
+        state = await service.close_ticket_state(
+            UUID(session.tenant_id),
+            autotask_ticket_id,
+            close_request,
+            UUID(session.profile_id),
+        )
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(exc),
+        ) from exc
     if not state:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -298,10 +386,16 @@ async def clear_ticket_assignment_override(
 ):
     """Clear any persisted manual assignment override for a ticket."""
     state_service = AIStateService(ai_db, profile_db)
-    updated = await state_service.clear_manual_override(
-        tenant_id=UUID(session.tenant_id),
-        autotask_ticket_id=autotask_ticket_id,
-    )
+    try:
+        updated = await state_service.clear_manual_override(
+            tenant_id=UUID(session.tenant_id),
+            autotask_ticket_id=autotask_ticket_id,
+        )
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(exc),
+        ) from exc
     if updated is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,

@@ -113,6 +113,7 @@ class TicketAIStateRepository:
         profile_id: UUID,
         assignment_role: str,
         include_closed: bool = False,
+        closed_only: bool = False,
         limit: int = 100,
         offset: int = 0,
     ) -> list[TicketAIState]:
@@ -132,7 +133,9 @@ class TicketAIStateRepository:
         else:
             raise ValueError(f"Unsupported assignment role: {assignment_role}")
 
-        if not include_closed:
+        if closed_only:
+            query = query.where(TicketAIState.is_closed.is_(True))
+        elif not include_closed:
             query = query.where(TicketAIState.is_closed.is_(False))
 
         query = (
@@ -294,6 +297,29 @@ class TicketAIStateRepository:
         await self.db.refresh(state)
         return state
 
+    async def close_ticket_state(
+        self,
+        tenant_id: UUID,
+        autotask_ticket_id: int,
+        reason_closed: str,
+        set_by_profile_id: UUID,
+    ) -> Optional[TicketAIState]:
+        """Mark a ticket as closed in local AI state without deleting the row."""
+        state = await self.get_by_ticket_id(tenant_id, autotask_ticket_id)
+        if state is None:
+            return None
+
+        state.is_closed = True
+        state.reason_closed = reason_closed
+        state.manual_edit_fields = sorted(
+            {*list(state.manual_edit_fields or []), "is_closed", "reason_closed"}
+        )
+        state.manual_edit_set_by_profile_id = set_by_profile_id
+        state.manual_edit_set_at = datetime.now(timezone.utc)
+        await self.db.flush()
+        await self.db.refresh(state)
+        return state
+
     async def set_ai_managed_assignment(
         self,
         tenant_id: UUID,
@@ -350,7 +376,12 @@ class TicketAIStateRepository:
         retained_autotask_ticket_ids: Iterable[int],
     ) -> int:
         retained_ids = list(retained_autotask_ticket_ids)
-        query = delete(TicketAIState).where(TicketAIState.tenant_id == tenant_id)
+        query = delete(TicketAIState).where(
+            and_(
+                TicketAIState.tenant_id == tenant_id,
+                TicketAIState.is_closed.is_(False),
+            )
+        )
         if retained_ids:
             query = query.where(TicketAIState.autotask_ticket_id.not_in(retained_ids))
         result = await self.db.execute(query)

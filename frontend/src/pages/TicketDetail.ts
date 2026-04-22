@@ -7,7 +7,16 @@ import {
 } from "../shared/api/aiAssignments.js";
 import type { BackendTicket } from "../shared/types.js";
 
-export function TicketDetail(ticket: BackendTicket, onBack: () => void): HTMLElement {
+type TicketDetailOptions = {
+  readOnly?: boolean;
+};
+
+export function TicketDetail(
+  ticket: BackendTicket,
+  onBack: () => void,
+  options?: TicketDetailOptions,
+): HTMLElement {
+  const isReadOnly = options?.readOnly ?? ticket.is_closed;
   const wrap = el("div", { className: "bg-white rounded-xl shadow p-6 border border-slate-200" });
 
   //header with back button
@@ -39,9 +48,12 @@ export function TicketDetail(ticket: BackendTicket, onBack: () => void): HTMLEle
   const generalAttrs = [
     { label: "Company", value: ticket.company },
     { label: "Contact", value: ticket.contact },
-    { label: "Status", value: ticket.status },
+    { label: "Status", value: ticket.is_closed ? "Closed" : ticket.status },
     { label: "Priority", value: ticket.priority },
     { label: "Location", value: ticket.location },
+    ...(ticket.is_closed && ticket.reason_closed
+      ? [{ label: "Closure Reason", value: ticket.reason_closed }]
+      : []),
   ];
   for (const attr of generalAttrs) {
     generalSection.append(
@@ -121,39 +133,6 @@ export function TicketDetail(ticket: BackendTicket, onBack: () => void): HTMLEle
   contentWrap.append(leftColumn, rightColumn);
   wrap.append(contentWrap);
 
-  //divider line for progress updates section
-  wrap.append(el("div", { className: "border-t border-slate-200 my-6" }));
-
-  //progress Updates section
-  const progressSection = el("div", { className: "space-y-4" }); //div element
-  
-  const progressHeader = el("div", { className: "flex items-center justify-between" }, [
-    el("h3", { className: "text-lg font-bold text-slate-900", text: "Progress Updates" }),
-    el("button", {
-      className: "text-xl font-bold text-slate-900 hover:text-slate-600 transition",
-      attrs: { type: "button" },
-      text: "+", //add button for adding new updates
-    }),
-  ]);
-  progressSection.append(progressHeader);
-
-  //progress update box with staff member -- currently hardcoded dummy example, will be replaced in sem 2
-  const updateBox = el("div", { className: "border border-slate-200 rounded-lg p-4 space-y-3 bg-orange-50" }, [
-    el("div", { className: "flex items-start gap-3" }, [
-      el("div", { className: "w-10 h-10 rounded-full bg-slate-300 flex items-center justify-center flex-shrink-0", text: "👤" }),
-      el("div", { className: "flex-1 min-w-0" }, [
-        el("div", { className: "font-semibold text-slate-900", text: "John Smith" }), //staff member name
-        el("div", { className: "text-xs text-slate-500 mt-1", text: "Support Technician" }), //staff member role
-      ]),
-    ]),
-    //text content of the update
-    el("div", { className: "text-sm text-slate-700", text: "Investigated the issue and identified the root cause. Applied a temporary workaround while we develop a permanent fix. Customer confirmed the workaround is functioning correctly." }), 
-    el("div", { className: "text-xs text-slate-500", text: "Updated 2 hours ago" }), //timestamp
-  ]);
-  progressSection.append(updateBox);
-
-  wrap.append(progressSection);
-
   //add click event to back button
   const backButton = wrap.querySelector("button") as HTMLButtonElement;
   if (backButton) {
@@ -225,7 +204,9 @@ export function TicketDetail(ticket: BackendTicket, onBack: () => void): HTMLEle
           clearButton.disabled = false;
         }
       });
-      overrideCard.append(clearButton);
+      if (!isReadOnly) {
+        overrideCard.append(clearButton);
+      }
       recommendationWrap.append(overrideCard);
     }
 
@@ -248,32 +229,34 @@ export function TicketDetail(ticket: BackendTicket, onBack: () => void): HTMLEle
           }),
         );
 
-        const overrideButton = el("button", {
-          className: "rounded bg-slate-900 px-3 py-1 text-sm font-semibold text-white hover:bg-slate-800 transition",
-          attrs: { type: "button" },
-          text: recommendation.manual_override_profile_id === candidate.profile_id ? "Override Active" : "Set Override",
-        }) as HTMLButtonElement;
-        overrideButton.disabled = recommendation.manual_override_profile_id === candidate.profile_id;
-        overrideButton.addEventListener("click", async () => {
-          const reason = window.prompt(
-            `Why are you overriding this ticket to ${candidate.display_name}?`,
-            recommendation.manual_override_reason ?? "",
-          );
-          if (reason === null) return;
-          overrideButton.disabled = true;
-          try {
-            const updated = await setAssignmentOverride(
-              ticket.autotask_ticket_id,
-              candidate.profile_id,
-              reason.trim() || null,
+        if (!isReadOnly) {
+          const overrideButton = el("button", {
+            className: "rounded bg-slate-900 px-3 py-1 text-sm font-semibold text-white hover:bg-slate-800 transition",
+            attrs: { type: "button" },
+            text: recommendation.manual_override_profile_id === candidate.profile_id ? "Override Active" : "Set Override",
+          }) as HTMLButtonElement;
+          overrideButton.disabled = recommendation.manual_override_profile_id === candidate.profile_id;
+          overrideButton.addEventListener("click", async () => {
+            const reason = window.prompt(
+              `Why are you overriding this ticket to ${candidate.display_name}?`,
+              recommendation.manual_override_reason ?? "",
             );
-            renderRecommendation(updated);
-          } catch (error) {
-            console.error("Failed to save override", error);
-            overrideButton.disabled = false;
-          }
-        });
-        card.append(overrideButton);
+            if (reason === null) return;
+            overrideButton.disabled = true;
+            try {
+              const updated = await setAssignmentOverride(
+                ticket.autotask_ticket_id,
+                candidate.profile_id,
+                reason.trim() || null,
+              );
+              renderRecommendation(updated);
+            } catch (error) {
+              console.error("Failed to save override", error);
+              overrideButton.disabled = false;
+            }
+          });
+          card.append(overrideButton);
+        }
         candidateList.append(card);
       });
       recommendationWrap.append(candidateList);

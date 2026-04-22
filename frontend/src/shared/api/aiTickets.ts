@@ -26,6 +26,8 @@ export type TicketAIState = {
   priority_label: string;
   priority_score: number;
   classification_method: string;
+  is_closed: boolean;
+  reason_closed: string | null;
 };
 
 export type TicketAIStateUpdate = Partial<{
@@ -51,12 +53,18 @@ export type TicketAIStateUpdate = Partial<{
 }>;
 
 export type TicketViewKey = "my-assigned" | "my-primary" | "my-secondary" | "team";
+export type ClosedTicketViewKey = "my-primary" | "my-secondary";
 
 const VIEW_ENDPOINTS: Record<TicketViewKey, string> = {
   "my-assigned": "/api/v1/ai/ticket-states/my-assigned",
   "my-primary": "/api/v1/ai/ticket-states/my-primary",
   "my-secondary": "/api/v1/ai/ticket-states/my-secondary",
   team: "/api/v1/ai/ticket-states/team",
+};
+
+const CLOSED_VIEW_ENDPOINTS: Record<ClosedTicketViewKey, string> = {
+  "my-primary": "/api/v1/ai/ticket-states/my-primary/closed",
+  "my-secondary": "/api/v1/ai/ticket-states/my-secondary/closed",
 };
 
 export class TicketApiError extends Error {
@@ -136,6 +144,8 @@ function toBackendTicket(ticket: TicketAIState): BackendTicket {
     manual_override_display_name: ticket.manual_override_display_name,
     manual_override_reason: ticket.manual_override_reason,
     manual_override_set_at: ticket.manual_override_set_at,
+    is_closed: ticket.is_closed,
+    reason_closed: ticket.reason_closed,
     queue: ticket.queue,
     ai: {
       category: ticket.category,
@@ -155,7 +165,22 @@ export async function fetchAITickets(view: TicketViewKey): Promise<BackendTicket
   }
 
   const payload = (await response.json()) as TicketAIState[];
-  return payload.map(toBackendTicket);
+  return payload.filter((ticket) => !ticket.is_closed).map(toBackendTicket);
+}
+
+async function fetchClosedTicketStates(view: ClosedTicketViewKey): Promise<TicketAIState[]> {
+  const endpoint = CLOSED_VIEW_ENDPOINTS[view];
+  const response = await fetch(`${API_BASE_URL}${endpoint}`, { credentials: "include" });
+  if (!response.ok) {
+    throw new Error(`Failed to load closed AI tickets from ${endpoint} (${response.status})`);
+  }
+
+  return (await response.json()) as TicketAIState[];
+}
+
+export async function fetchClosedAITickets(view: ClosedTicketViewKey): Promise<BackendTicket[]> {
+  const payload = await fetchClosedTicketStates(view);
+  return payload.filter((ticket) => ticket.is_closed).map(toBackendTicket);
 }
 
 export async function updateAITicketState(
@@ -167,6 +192,24 @@ export async function updateAITicketState(
     credentials: "include",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(changes),
+  });
+  if (!response.ok) {
+    const detail = await readErrorDetail(response);
+    throw new TicketApiError(response.status, response.statusText, detail);
+  }
+
+  return toBackendTicket((await response.json()) as TicketAIState);
+}
+
+export async function closeAITicketState(
+  autotaskTicketId: number,
+  reasonClosed: string,
+): Promise<BackendTicket> {
+  const response = await fetch(`${API_BASE_URL}/api/v1/ai/ticket-states/${autotaskTicketId}/close`, {
+    method: "PATCH",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ reason_closed: reasonClosed }),
   });
   if (!response.ok) {
     const detail = await readErrorDetail(response);

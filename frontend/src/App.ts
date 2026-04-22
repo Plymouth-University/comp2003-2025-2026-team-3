@@ -19,7 +19,7 @@ type Route =
   | { name: "closed-tickets"}
   | { name: "settings" }
   | { name: "account" }
-  | { name: "ticket"; ticket: BackendTicket };
+  | { name: "ticket"; ticket: BackendTicket; readOnly?: boolean };
 
 function isTicketViewKey(value: string | undefined): value is TicketViewKey {
   return value === "my-assigned" || value === "my-primary" || value === "my-secondary" || value === "team";
@@ -244,13 +244,13 @@ export function App(root: HTMLElement, currentUser: CurrentUserResponse | null, 
         },
       ));
     } else if (r.name === "ticket") {
-      content.append(TicketDetail(r.ticket, () => setRoute(previousRoute)));
+      content.append(TicketDetail(r.ticket, () => setRoute(previousRoute), { readOnly: r.readOnly }));
     } else if (r.name === "account") {
       content.append(AccountPage(currentUser));
     } else if (r.name === "settings") {
       content.append(Settings(currentUser));
     } else if (r.name === "closed-tickets"){
-      content.append(ClosedTicketsPage());
+      content.append(ClosedTicketsPage((ticket) => setRoute({ name: "ticket", ticket, readOnly: true })));
     }
       else {
       //default for other routes like closed-tickets

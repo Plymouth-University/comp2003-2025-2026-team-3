@@ -1,6 +1,7 @@
 import { fetchAITickets } from "../shared/api/aiTickets.js";
 import { el } from "../shared/lib/dom.js";
 import { EllipsisMenu } from "../components/EllipsisMenu.js";
+import { openTicketCloseModal } from "../components/TicketCloseModal.js";
 import { openTicketEditModal } from "../components/TicketEditModal.js";
 import type { BackendTicket } from "../shared/types.js";
 
@@ -91,7 +92,9 @@ export function Dashboard(onOpenTicket?: (ticket: BackendTicket) => void): HTMLE
   criticalSection.append(criticalTicketsWrap);
 
   //fetch the tickets then filter based on pririty being critical
-  fetchTickets().then(allTickets => {
+  fetchTickets().then(initialTickets => {
+    let allTickets = initialTickets;
+    let latestCalcTime = 0;
     const ticketsReceivedTime = getTimeStamp();
     const fetchTime = performance.now() - dashboardStart;
     console.log(`[${ticketsReceivedTime}] DASHBOARD: Tickets received in ${fetchTime.toFixed(1)}ms, processing ${allTickets.length} tickets...`);
@@ -101,38 +104,41 @@ export function Dashboard(onOpenTicket?: (ticket: BackendTicket) => void): HTMLE
     //remove loading message once tickets are loaded
     loadingMsg.remove();
     
-    //calculate number of critical priority tickets
-    const criticalCount = allTickets.filter(t => t.priority === "Critical").length;
-    
-    //calculate new tickets (created in last 24 hours)
-    const now = new Date();
-    const yesterday = new Date(now.getTime() - 24 * 60 * 60 * 1000);
-    const newTicketsCount = allTickets.filter(t => {
-      const createdDate = new Date(t.created);
-      return createdDate >= yesterday && createdDate <= now;
-    }).length;
-    
-    //calculate most common category
-    const categoryCount: { [key: string]: number } = {};
-    for (const ticket of allTickets) {
-      const category = ticket.ai.category;
-      categoryCount[category] = (categoryCount[category] || 0) + 1;
-    }
-    const mostCommonCategory = Object.keys(categoryCount).length > 0
-      ? Object.entries(categoryCount).reduce((a, b) => b[1] > a[1] ? b : a)[0]
-      : "N/A";
-    
-    //active tickets count (all tickets)
-    const activeCount = allTickets.length;
-    
-    // Update stat card elements
-    const calcTime = performance.now() - processStart;
-    console.log(`[${getTimeStamp()}] DASHBOARD: Calculations complete in ${calcTime.toFixed(1)}ms - Critical=${criticalCount}, New=${newTicketsCount}, Category=${mostCommonCategory}, Active=${activeCount}`);
-    
-    criticalCountElem.textContent = criticalCount.toString();
-    newTicketsCountElem.textContent = newTicketsCount.toString();
-    mostCommonCategoryElem.textContent = mostCommonCategory;
-    activeCountElem.textContent = activeCount.toString();
+    const updateStats = (): void => {
+      //calculate number of critical priority tickets
+      const criticalCount = allTickets.filter(t => t.priority === "Critical").length;
+
+      //calculate new tickets (created in last 24 hours)
+      const now = new Date();
+      const yesterday = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+      const newTicketsCount = allTickets.filter(t => {
+        const createdDate = new Date(t.created);
+        return createdDate >= yesterday && createdDate <= now;
+      }).length;
+
+      //calculate most common category
+      const categoryCount: { [key: string]: number } = {};
+      for (const ticket of allTickets) {
+        const category = ticket.ai.category;
+        categoryCount[category] = (categoryCount[category] || 0) + 1;
+      }
+      const mostCommonCategory = Object.keys(categoryCount).length > 0
+        ? Object.entries(categoryCount).reduce((a, b) => b[1] > a[1] ? b : a)[0]
+        : "N/A";
+
+      //active tickets count (all tickets)
+      const activeCount = allTickets.length;
+
+      latestCalcTime = performance.now() - processStart;
+      console.log(`[${getTimeStamp()}] DASHBOARD: Calculations complete in ${latestCalcTime.toFixed(1)}ms - Critical=${criticalCount}, New=${newTicketsCount}, Category=${mostCommonCategory}, Active=${activeCount}`);
+
+      criticalCountElem.textContent = criticalCount.toString();
+      newTicketsCountElem.textContent = newTicketsCount.toString();
+      mostCommonCategoryElem.textContent = mostCommonCategory;
+      activeCountElem.textContent = activeCount.toString();
+    };
+
+    updateStats();
     
     const criticalTickets = allTickets.filter(t => t.priority === "Critical");
     
@@ -175,6 +181,19 @@ export function Dashboard(onOpenTicket?: (ticket: BackendTicket) => void): HTMLE
           dueDateElem.textContent = `Due: ${updatedTicket.due_date}`;
         });
       });
+      menu.addEventListener("close", () => {
+        openTicketCloseModal(ticket, (closedTicket) => {
+          allTickets = allTickets.filter(
+            (currentTicket) =>
+              currentTicket.autotask_ticket_id !== closedTicket.autotask_ticket_id,
+          );
+          ticketCard.remove();
+          updateStats();
+          if (allTickets.filter(t => t.priority === "Critical").length === 0) {
+            criticalTicketsWrap.innerHTML = '<div class="text-center py-8 text-slate-500">No critical priority tickets</div>';
+          }
+        });
+      });
 
       //ticket title row
       const topRow = el("div", { className: "flex justify-between items-start gap-3 mb-3" }, [
@@ -201,7 +220,7 @@ export function Dashboard(onOpenTicket?: (ticket: BackendTicket) => void): HTMLE
     const totalTime = performance.now() - dashboardStart;
     console.log(`[${getTimeStamp()}] DASHBOARD: Rendered ${criticalTickets.length} critical tickets in ${renderTime.toFixed(1)}ms`);
     console.log(`[${getTimeStamp()}] ========== DASHBOARD LOAD COMPLETE ==========`);
-    console.log(`[${getTimeStamp()}] Total dashboard load time: ${totalTime.toFixed(1)}ms (Fetch=${fetchTime.toFixed(1)}ms | Process=${calcTime.toFixed(1)}ms | Render=${renderTime.toFixed(1)}ms)`);
+    console.log(`[${getTimeStamp()}] Total dashboard load time: ${totalTime.toFixed(1)}ms (Fetch=${fetchTime.toFixed(1)}ms | Process=${latestCalcTime.toFixed(1)}ms | Render=${renderTime.toFixed(1)}ms)`);
   });
 
   container.append(criticalSection);
