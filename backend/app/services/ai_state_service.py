@@ -13,6 +13,7 @@ from ..repositories.ai_state_repository import TicketAIStateRepository
 from ..repositories.profile_repository import ProfileRepository
 from ..schemas.ai_state import (
     TicketAIRefreshResponse,
+    TicketAIStateCloseRequest,
     TicketAIStateResponse,
     TicketAIStateUpdateRequest,
 )
@@ -276,6 +277,29 @@ class AIStateService:
             tenant_id=tenant_id,
             autotask_ticket_id=autotask_ticket_id,
             updates=updates,
+            set_by_profile_id=set_by_profile_id,
+        )
+        if updated is None:
+            return None
+
+        responses = await self._build_ticket_state_responses(tenant_id, [updated])
+        return responses[0] if responses else None
+
+    async def close_ticket_state(
+        self,
+        tenant_id: UUID,
+        autotask_ticket_id: int,
+        close_request: TicketAIStateCloseRequest,
+        set_by_profile_id: UUID,
+    ) -> Optional[TicketAIStateResponse]:
+        reason_closed = close_request.reason_closed.strip()
+        if not reason_closed:
+            raise ValueError("Closure reason is required.")
+
+        updated = await self.repository.close_ticket_state(
+            tenant_id=tenant_id,
+            autotask_ticket_id=autotask_ticket_id,
+            reason_closed=reason_closed,
             set_by_profile_id=set_by_profile_id,
         )
         if updated is None:

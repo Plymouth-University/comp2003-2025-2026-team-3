@@ -294,6 +294,29 @@ class TicketAIStateRepository:
         await self.db.refresh(state)
         return state
 
+    async def close_ticket_state(
+        self,
+        tenant_id: UUID,
+        autotask_ticket_id: int,
+        reason_closed: str,
+        set_by_profile_id: UUID,
+    ) -> Optional[TicketAIState]:
+        """Mark a ticket as closed in local AI state without deleting the row."""
+        state = await self.get_by_ticket_id(tenant_id, autotask_ticket_id)
+        if state is None:
+            return None
+
+        state.is_closed = True
+        state.reason_closed = reason_closed
+        state.manual_edit_fields = sorted(
+            {*list(state.manual_edit_fields or []), "is_closed", "reason_closed"}
+        )
+        state.manual_edit_set_by_profile_id = set_by_profile_id
+        state.manual_edit_set_at = datetime.now(timezone.utc)
+        await self.db.flush()
+        await self.db.refresh(state)
+        return state
+
     async def set_ai_managed_assignment(
         self,
         tenant_id: UUID,

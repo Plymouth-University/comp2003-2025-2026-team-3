@@ -78,6 +78,7 @@ class TicketAIState(AIBase):
     priority_score = Column(Integer, nullable=False)
     classification_method = Column(Text, nullable=False)
     is_closed = Column(Boolean, nullable=False, default=False, server_default="false")
+    reason_closed = Column(Text, nullable=True)
     refreshed_at = Column(
         TIMESTAMP(timezone=True), server_default=func.now(), nullable=False
     )

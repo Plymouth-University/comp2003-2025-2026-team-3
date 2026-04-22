@@ -3,6 +3,7 @@ import { API_BASE_URL } from "../shared/auth.js";
 import { fetchAITickets, type TicketViewKey } from "../shared/api/aiTickets.js";
 import type { BackendTicket } from "../shared/types.js";
 import { EllipsisMenu } from "./EllipsisMenu.js";
+import { openTicketCloseModal } from "./TicketCloseModal.js";
 import { openTicketEditModal } from "./TicketEditModal.js";
 
 function getTimeStamp(): string {
@@ -353,6 +354,16 @@ export function TicketListContainer(
               currentTicket.autotask_ticket_id === updatedTicket.autotask_ticket_id
                 ? updatedTicket
                 : currentTicket,
+            );
+            populateFilterOptions();
+            render();
+          });
+        });
+        menu.addEventListener("close", () => {
+          openTicketCloseModal(ticket, (closedTicket) => {
+            ticketsState = ticketsState.filter(
+              (currentTicket) =>
+                currentTicket.autotask_ticket_id !== closedTicket.autotask_ticket_id,
             );
             populateFilterOptions();
             render();
