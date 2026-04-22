@@ -22,12 +22,19 @@ export type TicketAIState = {
   manual_override_reason: string | null;
   manual_override_set_at: string | null;
   category: string;
+  category_override_reason: string | null;
+  category_override_set_at: string | null;
   confidence: number;
   priority_label: string;
   priority_score: number;
   classification_method: string;
   is_closed: boolean;
   reason_closed: string | null;
+};
+
+export type AITicketCategory = {
+  key: string;
+  label: string;
 };
 
 export type TicketAIStateUpdate = Partial<{
@@ -144,6 +151,8 @@ function toBackendTicket(ticket: TicketAIState): BackendTicket {
     manual_override_display_name: ticket.manual_override_display_name,
     manual_override_reason: ticket.manual_override_reason,
     manual_override_set_at: ticket.manual_override_set_at,
+    category_override_reason: ticket.category_override_reason,
+    category_override_set_at: ticket.category_override_set_at,
     is_closed: ticket.is_closed,
     reason_closed: ticket.reason_closed,
     queue: ticket.queue,
@@ -166,6 +175,18 @@ export async function fetchAITickets(view: TicketViewKey): Promise<BackendTicket
 
   const payload = (await response.json()) as TicketAIState[];
   return payload.filter((ticket) => !ticket.is_closed).map(toBackendTicket);
+}
+
+export async function fetchAITicketCategories(): Promise<AITicketCategory[]> {
+  const response = await fetch(`${API_BASE_URL}/api/v1/ai/categories`, {
+    credentials: "include",
+  });
+  if (!response.ok) {
+    throw new Error(`Failed to load AI categories (${response.status})`);
+  }
+
+  const payload = (await response.json()) as { items: AITicketCategory[] };
+  return payload.items;
 }
 
 async function fetchClosedTicketStates(view: ClosedTicketViewKey): Promise<TicketAIState[]> {
@@ -211,6 +232,28 @@ export async function closeAITicketState(
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ reason_closed: reasonClosed }),
   });
+  if (!response.ok) {
+    const detail = await readErrorDetail(response);
+    throw new TicketApiError(response.status, response.statusText, detail);
+  }
+
+  return toBackendTicket((await response.json()) as TicketAIState);
+}
+
+export async function reassignAITicketCategory(
+  autotaskTicketId: number,
+  category: string,
+  reason: string,
+): Promise<BackendTicket> {
+  const response = await fetch(
+    `${API_BASE_URL}/api/v1/ai/ticket-states/${autotaskTicketId}/category-override`,
+    {
+      method: "PATCH",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ category, category_override_reason: reason }),
+    },
+  );
   if (!response.ok) {
     const detail = await readErrorDetail(response);
     throw new TicketApiError(response.status, response.statusText, detail);

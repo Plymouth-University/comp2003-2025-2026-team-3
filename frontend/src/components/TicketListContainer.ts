@@ -4,6 +4,7 @@ import { fetchAITickets, type TicketViewKey } from "../shared/api/aiTickets.js";
 import type { BackendTicket } from "../shared/types.js";
 import { EllipsisMenu } from "./EllipsisMenu.js";
 import { openTicketCloseModal } from "./TicketCloseModal.js";
+import { openTicketCategoryReassignModal } from "./TicketCategoryReassignModal.js";
 import { openTicketEditModal } from "./TicketEditModal.js";
 
 function getTimeStamp(): string {
@@ -350,6 +351,17 @@ export function TicketListContainer(
         menu.addEventListener("view", () => onOpenTicket(ticket));
         menu.addEventListener("edit", () => {
           openTicketEditModal(ticket, (updatedTicket) => {
+            ticketsState = ticketsState.map((currentTicket) =>
+              currentTicket.autotask_ticket_id === updatedTicket.autotask_ticket_id
+                ? updatedTicket
+                : currentTicket,
+            );
+            populateFilterOptions();
+            render();
+          });
+        });
+        menu.addEventListener("reassign-category", () => {
+          openTicketCategoryReassignModal(ticket, (updatedTicket) => {
             ticketsState = ticketsState.map((currentTicket) =>
               currentTicket.autotask_ticket_id === updatedTicket.autotask_ticket_id
                 ? updatedTicket

@@ -11,6 +11,7 @@ from ..schemas.ai_state import (
     AIOversightRunResponse,
     TicketAssignmentOverrideRequest,
     TicketAssignmentRecommendationResponse,
+    TicketCategoryOverrideRequest,
     TicketAIRefreshRequest,
     TicketAIRefreshResponse,
     TicketAIStateCloseRequest,
@@ -262,6 +263,39 @@ async def close_ai_ticket_state(
             UUID(session.tenant_id),
             autotask_ticket_id,
             close_request,
+            UUID(session.profile_id),
+        )
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(exc),
+        ) from exc
+    if not state:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"AI ticket state not found for autotask_ticket_id={autotask_ticket_id}",
+        )
+    return state
+
+
+@router.patch(
+    "/ticket-states/{autotask_ticket_id}/category-override",
+    response_model=TicketAIStateResponse,
+)
+async def override_ai_ticket_category(
+    autotask_ticket_id: int,
+    override_request: TicketCategoryOverrideRequest,
+    session: AuthenticatedSession = Depends(get_current_session),
+    ai_db: AsyncSession = Depends(get_ai_db),
+    profile_db: AsyncSession = Depends(get_profile_db),
+):
+    """Manually reassign a ticket category with a user-provided reason."""
+    service = AIStateService(ai_db, profile_db)
+    try:
+        state = await service.override_ticket_category(
+            UUID(session.tenant_id),
+            autotask_ticket_id,
+            override_request,
             UUID(session.profile_id),
         )
     except ValueError as exc:
