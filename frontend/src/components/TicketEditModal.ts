@@ -17,6 +17,14 @@ type ReadonlyFieldConfig = {
   value: string | number | null | undefined;
 };
 
+type StatusOption = {
+  status: string;
+  iconPath: string;
+};
+
+const STATUS_ICON_DIR = "./public/ticketstatus-icons";
+const STATUS_ICON_LIST_URL = `${STATUS_ICON_DIR}/icon-status-list.json`;
+
 function displayValue(value: string | number | null | undefined): string {
   if (value === null || value === undefined || value === "") return "N/A";
   return String(value);
@@ -26,12 +34,61 @@ function openConfirm(message: string): boolean {
   return window.confirm(message);
 }
 
+function parseStatusIconList(rawText: string): StatusOption[] {
+  return rawText
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter((line) => line.length > 0 && !line.startsWith("#"))
+    .map((line) => {
+      const separatorIndex = line.indexOf(":");
+      if (separatorIndex === -1) return null;
+
+      const status = line.slice(0, separatorIndex).trim();
+      const iconName = line.slice(separatorIndex + 1).trim();
+      if (!status || !iconName) return null;
+
+      return {
+        status,
+        iconPath: `${STATUS_ICON_DIR}/${iconName}`,
+      };
+    })
+    .filter((option): option is StatusOption => option !== null);
+}
+
+function statusIcon(option: StatusOption): HTMLElement[] {
+  if (!option.iconPath) return [];
+
+  const img = el("img", {
+    className: "h-4 w-4 object-contain",
+    attrs: { src: option.iconPath, alt: "" },
+  }) as HTMLImageElement;
+  img.addEventListener("error", () => {
+    img.remove();
+  });
+  return [img];
+}
+
+async function loadStatusOptions(currentStatus: string): Promise<StatusOption[]> {
+  try {
+    const response = await fetch(STATUS_ICON_LIST_URL);
+    if (!response.ok) throw new Error(`Status icon list returned ${response.status}`);
+
+    const options = parseStatusIconList(await response.text());
+    if (options.length > 0) return options;
+  } catch (error) {
+    console.error("Failed to load status icon list", error);
+  }
+
+  return [{ status: currentStatus, iconPath: "" }];
+}
+
 export function openTicketEditModal(
   ticket: BackendTicket,
   onSaved: (updatedTicket: BackendTicket) => void,
 ): void {
   const fields = new Map<EditableKey, EditableControl>();
   const initialValues = new Map<EditableKey, string>();
+  const cleanupCallbacks: Array<() => void> = [];
 
   const overlay = el("div", {
     className: "fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 p-4",
@@ -52,6 +109,7 @@ export function openTicketEditModal(
   });
 
   const closeModal = (): void => {
+    cleanupCallbacks.forEach((cleanup) => cleanup());
     overlay.remove();
   };
 
@@ -94,6 +152,107 @@ export function openTicketEditModal(
         text: displayValue(config.value),
       }),
     ]);
+
+  const statusDropdownField = (
+    label: string,
+    key: EditableKey,
+    value: string | number | null,
+  ): HTMLElement => {
+    const currentValue = value === null || value === undefined ? "" : String(value);
+    const hiddenInput = el("input", {
+      attrs: { type: "hidden" },
+    }) as HTMLInputElement;
+    hiddenInput.value = currentValue;
+    fields.set(key, hiddenInput);
+    initialValues.set(key, currentValue.trim());
+
+    let options: StatusOption[] = [{ status: currentValue, iconPath: "" }];
+    let isOpen = false;
+
+    const selectedLabel = el("span", { className: "truncate", text: displayValue(currentValue) });
+    const selectedIconSlot = el("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center" });
+    const list = el("div", {
+      className:
+        "hidden absolute z-30 mt-1 max-h-56 w-full overflow-y-auto rounded border border-slate-200 bg-white py-1 shadow-lg",
+      attrs: { role: "listbox" },
+    });
+    const trigger = el("button", {
+      className:
+        "flex w-full items-center justify-between gap-3 rounded border border-slate-300 bg-white px-3 py-2 text-left text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-cyan-500",
+      attrs: { type: "button", "aria-haspopup": "listbox", "aria-expanded": "false" },
+    }, [
+      el("span", { className: "flex min-w-0 items-center gap-2" }, [selectedIconSlot, selectedLabel]),
+      el("span", { className: "text-xs text-slate-500", text: "v" }),
+    ]) as HTMLButtonElement;
+
+    const setSelected = (option: StatusOption): void => {
+      hiddenInput.value = option.status;
+      selectedLabel.textContent = option.status;
+      selectedIconSlot.innerHTML = "";
+      selectedIconSlot.append(...statusIcon(option));
+    };
+
+    const closeList = (): void => {
+      isOpen = false;
+      list.classList.add("hidden");
+      trigger.setAttribute("aria-expanded", "false");
+    };
+
+    const renderOptions = (): void => {
+      list.innerHTML = "";
+      for (const option of options) {
+        const item = el("button", {
+          className:
+            "flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-slate-800 hover:bg-slate-50",
+          attrs: { type: "button", role: "option", "aria-selected": String(option.status === hiddenInput.value) },
+        });
+        item.append(
+          el("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center" }, [
+            ...statusIcon(option),
+          ]),
+          el("span", { className: "truncate", text: option.status }),
+        );
+        item.addEventListener("click", (event) => {
+          event.stopPropagation();
+          setSelected(option);
+          renderOptions();
+          closeList();
+        });
+        list.append(item);
+      }
+    };
+
+    trigger.addEventListener("click", (event) => {
+      event.stopPropagation();
+      isOpen = !isOpen;
+      list.classList.toggle("hidden", !isOpen);
+      trigger.setAttribute("aria-expanded", String(isOpen));
+    });
+
+    document.addEventListener("click", closeList);
+    cleanupCallbacks.push(() => document.removeEventListener("click", closeList));
+
+    void loadStatusOptions(currentValue).then((loadedOptions) => {
+      options = loadedOptions.some((option) => option.status === currentValue)
+        ? loadedOptions
+        : [{ status: currentValue, iconPath: "" }, ...loadedOptions];
+      const selected = options.find((option) => option.status === hiddenInput.value) ?? options[0];
+      setSelected(selected);
+      renderOptions();
+    });
+
+    setSelected(options[0]);
+    renderOptions();
+
+    return el("div", { className: "relative space-y-1" }, [
+      el("div", {
+        className: "text-xs font-semibold uppercase text-slate-600",
+        text: label,
+      }),
+      trigger,
+      list,
+    ]);
+  };
 
   const section = (title: string, children: HTMLElement[]): HTMLElement =>
     el("section", { className: "space-y-3 border-slate-200 md:border-r md:pr-5 last:border-r-0" }, [
@@ -202,7 +361,7 @@ export function openTicketEditModal(
         readonlyField({ label: "Ticket Number", value: ticket.ticket_number }),
         editableField({ label: "Company", key: "company", value: ticket.company }),
         editableField({ label: "Contact", key: "contact", value: ticket.contact }),
-        editableField({ label: "Status", key: "status", value: ticket.status }),
+        statusDropdownField("Status", "status", ticket.status),
         editableField({ label: "Created", key: "created", value: ticket.created }),
       ]),
       section("Ticket Info", [
