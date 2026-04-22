@@ -113,6 +113,7 @@ class TicketAIStateRepository:
         profile_id: UUID,
         assignment_role: str,
         include_closed: bool = False,
+        closed_only: bool = False,
         limit: int = 100,
         offset: int = 0,
     ) -> list[TicketAIState]:
@@ -132,7 +133,9 @@ class TicketAIStateRepository:
         else:
             raise ValueError(f"Unsupported assignment role: {assignment_role}")
 
-        if not include_closed:
+        if closed_only:
+            query = query.where(TicketAIState.is_closed.is_(True))
+        elif not include_closed:
             query = query.where(TicketAIState.is_closed.is_(False))
 
         query = (
@@ -373,7 +376,12 @@ class TicketAIStateRepository:
         retained_autotask_ticket_ids: Iterable[int],
     ) -> int:
         retained_ids = list(retained_autotask_ticket_ids)
-        query = delete(TicketAIState).where(TicketAIState.tenant_id == tenant_id)
+        query = delete(TicketAIState).where(
+            and_(
+                TicketAIState.tenant_id == tenant_id,
+                TicketAIState.is_closed.is_(False),
+            )
+        )
         if retained_ids:
             query = query.where(TicketAIState.autotask_ticket_id.not_in(retained_ids))
         result = await self.db.execute(query)

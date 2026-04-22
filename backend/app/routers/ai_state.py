@@ -130,6 +130,60 @@ async def list_my_secondary_ticket_states(
     )
 
 
+@router.get(
+    "/ticket-states/my-primary/closed",
+    response_model=list[TicketAIStateResponse],
+)
+@router.get(
+    "/ticket-states/primary/closed",
+    response_model=list[TicketAIStateResponse],
+)
+async def list_my_closed_primary_ticket_states(
+    limit: int = Query(500, ge=1, le=1000),
+    offset: int = Query(0, ge=0),
+    session: AuthenticatedSession = Depends(get_current_session),
+    ai_db: AsyncSession = Depends(get_ai_db),
+    profile_db: AsyncSession = Depends(get_profile_db),
+):
+    """List closed AI ticket states where the current user is the primary resource."""
+    service = AIStateService(ai_db, profile_db)
+    return await service.list_profile_ticket_states(
+        tenant_id=UUID(session.tenant_id),
+        profile_id=UUID(session.profile_id),
+        assignment_role="primary",
+        closed_only=True,
+        limit=limit,
+        offset=offset,
+    )
+
+
+@router.get(
+    "/ticket-states/my-secondary/closed",
+    response_model=list[TicketAIStateResponse],
+)
+@router.get(
+    "/ticket-states/secondary/closed",
+    response_model=list[TicketAIStateResponse],
+)
+async def list_my_closed_secondary_ticket_states(
+    limit: int = Query(500, ge=1, le=1000),
+    offset: int = Query(0, ge=0),
+    session: AuthenticatedSession = Depends(get_current_session),
+    ai_db: AsyncSession = Depends(get_ai_db),
+    profile_db: AsyncSession = Depends(get_profile_db),
+):
+    """List closed AI ticket states where the current user is the secondary resource."""
+    service = AIStateService(ai_db, profile_db)
+    return await service.list_profile_ticket_states(
+        tenant_id=UUID(session.tenant_id),
+        profile_id=UUID(session.profile_id),
+        assignment_role="secondary",
+        closed_only=True,
+        limit=limit,
+        offset=offset,
+    )
+
+
 @router.get("/ticket-states/my-assigned", response_model=list[TicketAIStateResponse])
 async def list_my_assigned_ticket_states(
     include_closed: bool = Query(False),
@@ -332,10 +386,16 @@ async def clear_ticket_assignment_override(
 ):
     """Clear any persisted manual assignment override for a ticket."""
     state_service = AIStateService(ai_db, profile_db)
-    updated = await state_service.clear_manual_override(
-        tenant_id=UUID(session.tenant_id),
-        autotask_ticket_id=autotask_ticket_id,
-    )
+    try:
+        updated = await state_service.clear_manual_override(
+            tenant_id=UUID(session.tenant_id),
+            autotask_ticket_id=autotask_ticket_id,
+        )
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(exc),
+        ) from exc
     if updated is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
