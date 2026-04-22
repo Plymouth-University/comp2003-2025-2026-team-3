@@ -11,7 +11,7 @@ export function openTicketCloseModal(
   });
 
   const dialog = el("div", {
-    className: "w-full max-w-md rounded-lg border border-slate-200 bg-white p-6 shadow-2xl",
+    className: "w-full max-w-md rounded-lg border border-slate-200 bg-emerald-200 p-6 shadow-2xl",
     attrs: {
       role: "dialog",
       "aria-modal": "true",

@@ -73,6 +73,8 @@ class TicketAIState(AIBase):
     )
     manual_edit_set_at = Column(TIMESTAMP(timezone=True), nullable=True)
     category = Column(Text, nullable=False)
+    category_override_reason = Column(Text, nullable=True)
+    category_override_set_at = Column(TIMESTAMP(timezone=True), nullable=True)
     confidence = Column(Integer, nullable=False)
     priority_label = Column(Text, nullable=False)
     priority_score = Column(Integer, nullable=False)

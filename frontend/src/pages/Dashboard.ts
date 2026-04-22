@@ -2,6 +2,7 @@ import { fetchAITickets } from "../shared/api/aiTickets.js";
 import { el } from "../shared/lib/dom.js";
 import { EllipsisMenu } from "../components/EllipsisMenu.js";
 import { openTicketCloseModal } from "../components/TicketCloseModal.js";
+import { openTicketCategoryReassignModal } from "../components/TicketCategoryReassignModal.js";
 import { openTicketEditModal } from "../components/TicketEditModal.js";
 import type { BackendTicket } from "../shared/types.js";
 
@@ -171,6 +172,7 @@ export function Dashboard(onOpenTicket?: (ticket: BackendTicket) => void): HTMLE
       const priorityElem = el("span", { text: `Priority: ${ticket.priority}` });
       const confidenceElem = el("span", { text: `Confidence: ${ticket.ai.confidence.toFixed(0)}%` });
       const dueDateElem = el("div", { className: "text-xs text-slate-500 mt-2", text: `Due: ${ticket.due_date}` });
+      const categoryElem = el("div", { className: "text-xs text-slate-500 mt-2", text: `Category: ${ticket.ai.category}` });
 
       menu.addEventListener("edit", () => {
         openTicketEditModal(ticket, (updatedTicket) => {
@@ -179,6 +181,13 @@ export function Dashboard(onOpenTicket?: (ticket: BackendTicket) => void): HTMLE
           priorityElem.textContent = `Priority: ${updatedTicket.priority}`;
           confidenceElem.textContent = `Confidence: ${updatedTicket.ai.confidence.toFixed(0)}%`;
           dueDateElem.textContent = `Due: ${updatedTicket.due_date}`;
+        });
+      });
+      menu.addEventListener("reassign-category", () => {
+        openTicketCategoryReassignModal(ticket, (updatedTicket) => {
+          Object.assign(ticket, updatedTicket);
+          categoryElem.textContent = `Category: ${updatedTicket.ai.category}`;
+          updateStats();
         });
       });
       menu.addEventListener("close", () => {
@@ -208,6 +217,7 @@ export function Dashboard(onOpenTicket?: (ticket: BackendTicket) => void): HTMLE
             priorityElem,
             confidenceElem
           ]),
+          categoryElem,
           dueDateElem
         ])
       ]);

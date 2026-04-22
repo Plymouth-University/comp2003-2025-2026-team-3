@@ -96,7 +96,7 @@ export function openTicketEditModal(
 
   const dialog = el("div", {
     className:
-      "w-full max-w-6xl max-h-[90vh] overflow-y-auto rounded-lg bg-white shadow-2xl border border-slate-200",
+      "w-full max-w-6xl max-h-[90vh] overflow-y-auto rounded-lg bg-pink-100 shadow-2xl border border-slate-200",
     attrs: {
       role: "dialog",
       "aria-modal": "true",
@@ -341,7 +341,7 @@ export function openTicketEditModal(
   });
 
   dialog.append(
-    el("div", { className: "sticky top-0 z-10 border-b border-slate-200 bg-white px-6 py-4" }, [
+    el("div", { className: "sticky top-0 z-10 border-b border-slate-200 bg-pink-100 px-6 py-4" }, [
       el("div", {}, [
         el("div", {
           className: "text-xs text-slate-500",
@@ -382,6 +382,8 @@ export function openTicketEditModal(
       ]),
       section("AI State", [
         readonlyField({ label: "Category", value: ticket.ai.category }),
+        readonlyField({ label: "Category Override Reason", value: ticket.category_override_reason }),
+        readonlyField({ label: "Category Override Set At", value: ticket.category_override_set_at }),
         readonlyField({ label: "Confidence", value: `${ticket.ai.confidence.toFixed(0)}%` }),
         readonlyField({ label: "Priority", value: ticket.priority }),
         readonlyField({ label: "Priority Score", value: ticket.ai.priority_score }),
@@ -399,7 +401,7 @@ export function openTicketEditModal(
         type: "textarea",
       }),
     ]),
-    el("div", { className: "sticky bottom-0 flex items-center justify-between gap-4 border-t border-slate-200 bg-white px-6 py-4" }, [
+    el("div", { className: "sticky bottom-0 flex items-center justify-between gap-4 border-t border-slate-200 bg-pink-100 px-6 py-4" }, [
       discardButton,
       saveButton,
     ]),

@@ -32,8 +32,8 @@ export function EllipsisMenu(): HTMLElement {
   menu.append(
     mkItem("View", () => wrapper.dispatchEvent(new CustomEvent("view", { bubbles: true }))),
     mkItem("Edit", () => wrapper.dispatchEvent(new CustomEvent("edit", { bubbles: true }))),
-    mkItem("Reassign Category", () => alert("Reassign Category")),
-    mkItem("Close Ticket", () => wrapper.dispatchEvent(new CustomEvent("close", { bubbles: true })))
+    mkItem("Re-assign category", () => wrapper.dispatchEvent(new CustomEvent("reassign-category", { bubbles: true }))),
+    mkItem("Close ticket", () => wrapper.dispatchEvent(new CustomEvent("close", { bubbles: true })))
   );
 
   const closeOnOutsideClick = (e: MouseEvent) => {

@@ -41,6 +41,8 @@ class TicketAIStateResponse(BaseModel):
     manual_edit_set_by_profile_id: Optional[UUID] = None
     manual_edit_set_at: Optional[datetime] = None
     category: str
+    category_override_reason: Optional[str] = None
+    category_override_set_at: Optional[datetime] = None
     confidence: int
     priority_label: str
     priority_score: int
@@ -104,6 +106,11 @@ class TicketAIStateUpdateRequest(BaseModel):
 
 class TicketAIStateCloseRequest(BaseModel):
     reason_closed: str = Field(min_length=1, max_length=1000)
+
+
+class TicketCategoryOverrideRequest(BaseModel):
+    category: str = Field(min_length=1, max_length=500)
+    category_override_reason: str = Field(min_length=1, max_length=1000)
 
 
 class AIOversightRunResponse(BaseModel):

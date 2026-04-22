@@ -81,6 +81,12 @@ export function TicketDetail(
     { label: "Strike Level", value: ticket.strike_level },
     { label: "Queue", value: ticket.queue },
     { label: "Category", value: ticket.ai.category },
+    ...(ticket.category_override_reason
+      ? [{ label: "Category Override Reason", value: ticket.category_override_reason }]
+      : []),
+    ...(ticket.category_override_set_at
+      ? [{ label: "Category Override Set At", value: ticket.category_override_set_at }]
+      : []),
     { label: "Confidence", value: `${ticket.ai.confidence.toFixed(0)}%` },
     { label: "Priority Score", value: String(ticket.ai.priority_score) },
   ];

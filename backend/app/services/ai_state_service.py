@@ -12,12 +12,13 @@ from ..providers.fake_autotask import FakeAutotaskProvider
 from ..repositories.ai_state_repository import TicketAIStateRepository
 from ..repositories.profile_repository import ProfileRepository
 from ..schemas.ai_state import (
+    TicketCategoryOverrideRequest,
     TicketAIRefreshResponse,
     TicketAIStateCloseRequest,
     TicketAIStateResponse,
     TicketAIStateUpdateRequest,
 )
-from .ai import categorise_ticket
+from .ai import categorise_ticket, list_available_categories
 from .ai_oversight_service import AIOversightService
 
 
@@ -302,6 +303,40 @@ class AIStateService:
             tenant_id=tenant_id,
             autotask_ticket_id=autotask_ticket_id,
             reason_closed=reason_closed,
+            set_by_profile_id=set_by_profile_id,
+        )
+        if updated is None:
+            return None
+
+        responses = await self._build_ticket_state_responses(tenant_id, [updated])
+        return responses[0] if responses else None
+
+    async def override_ticket_category(
+        self,
+        tenant_id: UUID,
+        autotask_ticket_id: int,
+        override_request: TicketCategoryOverrideRequest,
+        set_by_profile_id: UUID,
+    ) -> Optional[TicketAIStateResponse]:
+        state = await self.repository.get_by_ticket_id(tenant_id, autotask_ticket_id)
+        if state is None:
+            return None
+        if state.is_closed:
+            raise ValueError("Closed tickets are read-only.")
+
+        category = override_request.category.strip()
+        reason = override_request.category_override_reason.strip()
+        category_keys = {item["key"] for item in list_available_categories()}
+        if category not in category_keys:
+            raise ValueError(f"Unknown AI category: {category}")
+        if not reason:
+            raise ValueError("Category override reason is required.")
+
+        updated = await self.repository.override_ticket_category(
+            tenant_id=tenant_id,
+            autotask_ticket_id=autotask_ticket_id,
+            category=category,
+            reason=reason,
             set_by_profile_id=set_by_profile_id,
         )
         if updated is None:

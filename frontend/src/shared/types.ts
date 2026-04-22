@@ -22,6 +22,8 @@ export type BackendTicket = {
   manual_override_display_name: string | null;
   manual_override_reason: string | null;
   manual_override_set_at: string | null;
+  category_override_reason: string | null;
+  category_override_set_at: string | null;
   is_closed: boolean;
   reason_closed: string | null;
   queue: string;
