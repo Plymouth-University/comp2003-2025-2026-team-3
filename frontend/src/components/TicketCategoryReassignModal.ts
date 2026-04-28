@@ -4,6 +4,7 @@ import {
   TicketApiError,
   type AITicketCategory,
 } from "../shared/api/aiTickets.js";
+import { logUIClick } from "../shared/api/uiLogs.js";
 import { el } from "../shared/lib/dom.js";
 import type { BackendTicket } from "../shared/types.js";
 
@@ -154,6 +155,16 @@ export function openTicketCategoryReassignModal(
         selectedCategory,
         reason,
       );
+      logUIClick({
+        actionType: "category_reassigned",
+        component: "ticket-category-reassign-modal",
+        elementId: String(ticket.autotask_ticket_id),
+        details: {
+          autotask_ticket_id: ticket.autotask_ticket_id,
+          category: selectedCategory,
+          reason_provided: true,
+        },
+      });
       onSaved(updatedTicket);
       closeModal();
     } catch (error) {

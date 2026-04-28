@@ -1,4 +1,5 @@
 import { TicketApiError, updateAITicketState, type TicketAIStateUpdate } from "../shared/api/aiTickets.js";
+import { logUIClick } from "../shared/api/uiLogs.js";
 import { el } from "../shared/lib/dom.js";
 import type { BackendTicket } from "../shared/types.js";
 
@@ -338,7 +339,17 @@ export function openTicketEditModal(
     saveButton.disabled = true;
 
     try {
-      const updatedTicket = await updateAITicketState(ticket.autotask_ticket_id, collectChanges());
+      const changes = collectChanges();
+      const updatedTicket = await updateAITicketState(ticket.autotask_ticket_id, changes);
+      logUIClick({
+        actionType: "edited",
+        component: "ticket-edit-modal",
+        elementId: String(ticket.autotask_ticket_id),
+        details: {
+          autotask_ticket_id: ticket.autotask_ticket_id,
+          updated_fields: Object.keys(changes),
+        },
+      });
       onSaved(updatedTicket);
       closeModal();
     } catch (error) {

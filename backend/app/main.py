@@ -1,8 +1,10 @@
-from fastapi import Depends, FastAPI, Query
+from fastapi import Depends, FastAPI, Query, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from contextlib import asynccontextmanager
 import asyncio
+import re
+from uuid import uuid4
 from .providers.fake_autotask import FakeAutotaskProvider
 from .services.ai import (
     categorise_ticket,
@@ -15,15 +17,18 @@ from .services.ai.priority_calculator import (
 )
 from .services.ai.text_processor import extract_ticket_text
 from .services.ai.embedding_cache import get_cache
-from .auth import AuthenticatedSession, get_current_session
+from .auth import AuthenticatedSession, decode_session_token, get_current_session
 from .routers.auth import router as auth_router
 from .routers.ai_state import router as ai_state_router
+from .routers.logs import router as logs_router
 from .routers.profiles import router as profiles_router
 from .database import AIAsyncSessionLocal, ProfileAsyncSessionLocal, close_db
+from .log_database import close_log_db
 from .config import settings
 from .repositories.profile_repository import TenantRepository
 from .services.ai_oversight_service import AIOversightService
 from .services.ai_state_service import AIStateService
+from .services.log_writer import LogContext, LogWriter
 import logging
 import time
 import json
@@ -34,6 +39,26 @@ logging.basicConfig(
     level=logging.DEBUG, format="%(asctime)s - %(levelname)s - %(message)s"
 )
 logger = logging.getLogger(__name__)
+log_writer = LogWriter()
+CLIENT_REQUEST_ID_PATTERN = re.compile(r"^[A-Za-z0-9._:-]{1,100}$")
+
+
+def _get_safe_client_request_id(request: Request) -> str | None:
+    """Keep client correlation IDs as metadata, never as trusted request identity."""
+    client_request_id = request.headers.get("X-Request-ID")
+    if client_request_id and CLIENT_REQUEST_ID_PATTERN.fullmatch(client_request_id):
+        return client_request_id
+    return None
+
+
+def _get_session_for_logging(request: Request) -> AuthenticatedSession | None:
+    token = request.cookies.get(settings.SESSION_COOKIE_NAME)
+    if not token:
+        return None
+    try:
+        return decode_session_token(token)
+    except Exception:
+        return None
 
 
 @asynccontextmanager
@@ -100,9 +125,54 @@ async def lifespan(app: FastAPI):
         except asyncio.CancelledError:
             pass
     await close_db()
+    await close_log_db()
 
 
 app = FastAPI(title="SecOps Autotask Prototype API", version="0.2.0", lifespan=lifespan)
+
+
+@app.middleware("http")
+async def durable_request_logging_middleware(request: Request, call_next):
+    server_request_id = str(uuid4())
+    client_request_id = _get_safe_client_request_id(request)
+    session = _get_session_for_logging(request)
+
+    request.state.request_id = server_request_id
+    request.state.client_request_id = client_request_id
+
+    context = LogContext.from_request(
+        request,
+        session=session,
+        logger_name=__name__,
+    )
+    details = {"client_request_id": client_request_id} if client_request_id else None
+    start_time = time.perf_counter()
+
+    await log_writer.log_request_started(context=context, details=details)
+    try:
+        response = await call_next(request)
+    except Exception as exc:
+        duration_ms = (time.perf_counter() - start_time) * 1000
+        await log_writer.write_error_log(
+            context=context,
+            service_name="http",
+            severity="high",
+            message=f"Unhandled exception during {request.method} {request.url.path}",
+            error=exc,
+            action="request_unhandled_exception",
+            details={"duration_ms": duration_ms, **(details or {})},
+        )
+        raise
+
+    duration_ms = (time.perf_counter() - start_time) * 1000
+    response.headers["X-Request-ID"] = server_request_id
+    await log_writer.log_request_completed(
+        context=context,
+        status_code=response.status_code,
+        duration_ms=duration_ms,
+        details=details,
+    )
+    return response
 
 app.add_middleware(
     CORSMiddleware,
@@ -115,6 +185,7 @@ app.add_middleware(
 # Include profile management router
 app.include_router(auth_router)
 app.include_router(ai_state_router)
+app.include_router(logs_router)
 app.include_router(profiles_router)
 
 provider = FakeAutotaskProvider()
@@ -133,10 +204,19 @@ def cache_stats():
 
 
 @app.post("/api/cache/clear")
-def clear_cache():
+async def clear_cache(request: Request):
     """Clear the embedding cache (useful for debugging)."""
     cache = get_cache()
     cache.clear()
+    await log_writer.write_application_log(
+        context=LogContext.from_request(request, logger_name=__name__),
+        log_type="ai_cache",
+        subsystem="ai",
+        action="cache_cleared",
+        level="warning",
+        message="Embedding cache cleared",
+        outcome="success",
+    )
     return {"status": "cache cleared"}
 
 
