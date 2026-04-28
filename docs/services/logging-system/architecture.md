@@ -1,224 +1,302 @@
 # Logging System Architecture
 
+## Purpose
+
+This document explains how the current durable logging architecture is structured, what each component is responsible for, and where its boundaries are.
+
+The key architectural improvement is that durable log writes now go through one service:
+
+- `backend/app/services/log_writer.py`
+
+That service writes to a dedicated PostgreSQL logging database configured by:
+
+- `backend/app/log_database.py`
+- `settings.LOG_DATABASE_URL`
+- `backend/compose.yml`
+- `backend/alembic_logs/`
+
 ## Architecture In One Sentence
 
-The repository currently has a split logging architecture: a general backend logger, a richer AI-specific logging module, and frontend browser-console instrumentation.
+The app now has a database-backed structured logging layer centered on `LogWriter`, while retaining console and AI file logging as supporting development outputs.
 
-## Why It Looks This Way
+## Main Components
 
-The logging approach appears to have evolved incrementally rather than being designed as a single observability platform from the start.
+### `LogWriter`
 
-That is visible in the code:
+File:
 
-- `backend/app/main.py` configures base Python logging with `logging.basicConfig(...)`
-- the AI service has its own logging bootstrap in `backend/app/services/ai/logging_config.py`
-- the frontend relies on `console.log`, `console.warn`, and `console.error`
+- `backend/app/services/log_writer.py`
 
-So the current system is best understood as three related logging layers, not one unified subsystem.
+Responsibilities:
 
-## High-Level Diagram
+- provide the only normal application API for durable log writes
+- create or update `request_trace` rows before request-linked events
+- write rows to `application_logs`
+- write rows to `performance_logs`
+- write rows to `error_logs`
+- write rows to `ui_click_analytics_logs`
+- convert UUID-like values into real UUID objects for PostgreSQL
+- JSON-encode structured `details`
+- swallow logging failures so logging does not break the user-facing request path
 
-```mermaid
-flowchart TD
-  subgraph Backend
-    Main[main.py basicConfig logger]
-    DB[database.py logger]
-    Provider[fake_autotask.py logger]
-  end
+Important behavior:
 
-  subgraph AI
-    AIConfig[logging_config.py]
-    AIModules[processor / categorizer / text_processor / description_generator / storage / config]
-    Metrics[PerformanceMetrics in memory]
-    LogDir[backend/logs/ai_services]
-  end
+- each write opens its own async logging DB session
+- failed log writes are rolled back and emitted through fallback Python logging
+- `request_trace` uses a PostgreSQL upsert so repeated writes for the same request ID update `last_seen_at`
 
-  subgraph Frontend
-    Dash[Dashboard.ts]
-    Tickets[TicketListContainer.ts]
-    Browser[Browser console]
-  end
+### `LogContext`
 
-  Main --> MainConsole[console output]
-  DB --> MainConsole
-  Provider --> MainConsole
+File:
 
-  AIModules --> AIConfig
-  AIConfig --> MainConsole
-  AIConfig --> LogDir
-  AIModules --> Metrics
+- `backend/app/services/log_writer.py`
 
-  Dash --> Browser
-  Tickets --> Browser
-```
+`LogContext` is a small shared object that carries common metadata:
 
-## Current Components
+- request ID
+- source, such as `backend` or `frontend`
+- endpoint and HTTP method
+- tenant ID
+- profile ID
+- Autotask ticket ID
+- frontend page/component context
+- logger name
 
-### 1. General backend logging
+The purpose is to avoid passing long repeated parameter lists through routers and services.
 
-Primary source:
+### Logging database models
+
+File:
+
+- `backend/app/models/logs.py`
+
+Tables:
+
+- `request_trace`
+- `application_logs`
+- `performance_logs`
+- `error_logs`
+- `ui_click_analytics_logs`
+
+These models define the durable schema and the relationships between request traces and individual log families.
+
+### Request logging middleware
+
+File:
 
 - `backend/app/main.py`
 
-Implementation:
+Responsibilities:
 
-- `logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')`
-- module loggers created with `logging.getLogger(__name__)`
+- generate a new server-owned request ID for every HTTP request
+- validate any inbound `X-Request-ID` only as untrusted metadata
+- store the server request ID in `request.state.request_id`
+- write request-start application logs
+- write request-completion application logs
+- write request-level performance logs
+- write error logs for unhandled exceptions
+- return the server request ID in the response `X-Request-ID` header
 
-What it covers:
+Security boundary:
 
-- FastAPI lifespan events
-- `/api/tickets` request timing and progression
-- errors during ticket processing
-- stream endpoint progress and failures
+- inbound `X-Request-ID` is not trusted as identity or authorization data
+- the backend always creates the authoritative request ID
 
-Other backend modules also use standard Python logging:
+### Frontend UI log ingestion
 
-- `backend/app/database.py`
-- `backend/app/providers/fake_autotask.py`
+Backend files:
 
-### 2. AI-specific logging configuration
+- `backend/app/routers/logs.py`
+- `backend/app/schemas/logs.py`
 
-Primary source:
+Frontend file:
 
+- `frontend/src/shared/api/uiLogs.ts`
+
+Responsibilities:
+
+- accept authenticated UI interaction events through `POST /api/v1/logs/ui-clicks`
+- validate event shape with `UIClickLogCreate`
+- build a frontend `LogContext`
+- write to `ui_click_analytics_logs` through `LogWriter`
+- avoid blocking frontend actions if the log request fails
+
+### Existing console and AI file logging
+
+Files:
+
+- `backend/app/main.py`
 - `backend/app/services/ai/logging_config.py`
+- `backend/app/services/ai/*.py`
 
-This is the most intentional part of the logging system.
+These paths still exist. They are useful for local development and AI debugging, but they are not the canonical durable structured logging path.
 
-It creates:
-
-- a named logger root: `ai_services`
-- a console handler
-- a rotating main log file
-- a rotating performance log file
-- a rotating error log file
-- an in-memory performance metrics collector
-
-Configured files:
-
-- `backend/logs/ai_services/ai_services.log`
-- `backend/logs/ai_services/ai_services_performance.log`
-- `backend/logs/ai_services/ai_services_errors.log`
-
-### 3. AI metrics collector
-
-Primary source:
-
-- `PerformanceMetrics` in `backend/app/services/ai/logging_config.py`
-
-What it does:
-
-- stores operation durations in memory
-- calculates count, total, average, min, and max
-- can emit a summary to a logger
-
-What it does not do:
-
-- persist metrics to a database
-- expose them through a monitoring API
-- retain metrics across process restarts
-
-### 4. Frontend console instrumentation
-
-Primary sources:
-
-- `frontend/src/pages/Dashboard.ts`
-- `frontend/src/components/TicketListContainer.ts`
-
-What it covers:
-
-- fetch timing
-- parse timing
-- render timing
-- filtering timing
-- category grouping timing
-- error conditions when requests fail
-
-What it means in practice:
-
-- useful for live debugging in the browser
-- not centrally stored
-- disappears with page refresh or closed devtools
-
-## AI Logging Internals
-
-The AI logger configuration is worth understanding because it is more complex than the rest of the codebase.
-
-### Handler layout
+## Database Shape
 
 ```mermaid
-flowchart TD
-  Setup[setup_logging()] --> Root[logger ai_services]
-  Root --> Console[StreamHandler INFO+]
-  Root --> MainFile[RotatingFileHandler DEBUG+]
-  Root --> ErrorFile[RotatingFileHandler WARNING+]
-  Setup --> PerfLogger[logger ai_services.performance]
-  PerfLogger --> PerfFile[RotatingFileHandler DEBUG+]
+erDiagram
+  REQUEST_TRACE ||--o{ APPLICATION_LOGS : correlates
+  REQUEST_TRACE ||--o{ PERFORMANCE_LOGS : correlates
+  REQUEST_TRACE ||--o{ ERROR_LOGS : correlates
+  REQUEST_TRACE ||--o{ UI_CLICK_ANALYTICS_LOGS : correlates
+
+  REQUEST_TRACE {
+    string request_id PK
+    timestamptz first_seen_at
+    timestamptz last_seen_at
+    string source
+    string environment
+  }
+
+  APPLICATION_LOGS {
+    uuid log_id PK
+    string request_id FK
+    uuid tenant_id
+    uuid profile_id
+    int autotask_ticket_id
+    string log_type
+    string subsystem
+    string action
+    string level
+    string outcome
+    numeric duration_ms
+    text message
+    jsonb details
+  }
+
+  PERFORMANCE_LOGS {
+    uuid perf_id PK
+    string request_id FK
+    string operation_name
+    string service_name
+    numeric total_duration_ms
+    numeric db_latency_ms
+    numeric external_api_latency_ms
+    numeric app_logic_ms
+    float memory_used_mb
+    numeric payload_size_kb
+    smallint is_slow
+    jsonb details
+  }
+
+  ERROR_LOGS {
+    uuid error_id PK
+    string request_id FK
+    string error_type
+    string service_name
+    string severity
+    text message
+    text stack_trace
+    text error_resolution
+    jsonb details
+  }
+
+  UI_CLICK_ANALYTICS_LOGS {
+    uuid ui_click_log_id PK
+    string request_id FK
+    uuid tenant_id
+    uuid profile_id
+    string page_path
+    string component
+    string action_type
+    string element_id
+    numeric duration_ms
+    jsonb details
+  }
 ```
 
-### What this design is trying to do
+## Request Path Architecture
 
-- keep the terminal readable by limiting console noise
-- still retain detailed debug data in files
-- separate timing/performance output from general operational output
-- separate warnings/errors from all-purpose logs
+```mermaid
+sequenceDiagram
+  autonumber
+  participant Client
+  participant MW as FastAPI Middleware
+  participant Route as Router/Endpoint
+  participant LW as LogWriter
+  participant DB as logsdb
 
-### Important caveat
+  Client->>MW: HTTP request
+  MW->>MW: Generate server request_id
+  MW->>LW: log_request_started()
+  LW->>DB: Upsert request_trace and insert application_logs
+  MW->>Route: Continue request
+  Route-->>MW: Response
+  MW->>LW: log_request_completed()
+  LW->>DB: Insert application_logs and performance_logs
+  MW-->>Client: Response with X-Request-ID
+```
 
-This richer AI logging setup only applies to modules that use `backend/app/services/ai/logging_config.py`.
+## Boundaries And Ownership
 
-It does not automatically unify the rest of the backend or the frontend.
+### What should use `LogWriter`
 
-## Runtime Boundaries
+Use `LogWriter` for events that should be queryable later:
 
-### Backend main logger vs AI logger
+- request lifecycle events
+- auth events
+- profile and specialism changes
+- AI ticket state changes
+- manual overrides
+- errors and exception context
+- request-level performance rows
+- frontend UI interactions
 
-These are related but not identical logging paths.
+### What should stay in normal Python logging
 
-- main backend behavior uses the root/basicConfig setup
-- AI services use the `ai_services` logger tree
+Use normal `logger.debug(...)`, `logger.info(...)`, or AI file logging for:
 
-This can create differences in:
+- very noisy local debugging
+- model initialization chatter
+- temporary development-only traces
+- messages that are not worth retaining as database records
 
-- formatting
-- handlers
-- where messages end up
-- how much detail is retained
+### What should not happen
 
-### Frontend vs backend logs
+Do not:
 
-There is no correlation system between frontend console logs and backend logs today.
+- insert into log tables directly from routers or services
+- use request IDs for authorization or identity checks
+- make business success depend on a logging write succeeding
+- place secrets, session tokens, Entra authorization codes, or raw credentials in log details
 
-That means:
+## Current Performance Model
 
-- you cannot easily trace one browser action across both ends with a shared request ID
-- debugging often means manually comparing timestamps
+The middleware writes one request-level `performance_logs` row per completed request.
+
+Currently populated:
+
+- `total_duration_ms`
+- `app_logic_ms`, as a route-level fallback equal to total request duration
+- `memory_used_mb`, process RSS memory where measurable
+- `payload_size_kb`, from known `Content-Length` header values
+- `is_slow`, based on `duration_ms >= 1000`
+
+Currently not populated by middleware:
+
+- `db_latency_ms`
+- `external_api_latency_ms`
+
+Those require explicit timing around database calls and external/provider calls. See [future-direction.md](future-direction.md).
 
 ## Architecture Strengths
 
-Verified from the current implementation:
+Verified strengths:
 
-- the backend has broad instrumentation around the ticket API flow
-- the AI modules have a more advanced handler setup than the rest of the system
-- performance logging is not just ad hoc strings; some timings are also collected into a metrics object
-- rotating file handlers prevent unlimited growth of AI log files
+- durable logs are now centralized through `LogWriter`
+- frontend UI events are persisted through a backend ingestion endpoint
+- request IDs exist for backend correlation
+- logging failures are isolated from the user-facing request path
+- log rows carry tenant/profile/ticket context where available
+- the schema separates application events, errors, performance, and UI interactions
 
-## Architecture Weaknesses
+## Architecture Limitations
 
-Also verified from the current implementation:
+Verified limitations:
 
-- logging is not centralized across the whole application
-- the system mixes stdout logging, file logging, and browser console logging without a unified schema
-- frontend logs are ephemeral
-- AI metrics are in-memory only
-- there is no database-backed logging path
-- there is no shared request/trace correlation ID
-- there is no documented log retention strategy beyond file rotation for AI logs
-
-## Recommended Mental Model For The Team
-
-For now, think of the logging system as:
-
-1. development-facing operational output
-2. AI-focused performance instrumentation
-3. a foundation for future observability work, not the final destination
+- no log viewer UI exists yet
+- no retention or cleanup policy exists yet
+- DB and external API latency are not separately measured yet
+- not every existing console/file log has a durable equivalent
+- frontend UI logs create their own backend ingestion request ID rather than sharing a browser action ID across all related API calls
+- AI file logging still exists separately from durable logging
