@@ -3,6 +3,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from contextlib import asynccontextmanager
 import asyncio
+import ctypes
+import os
 import re
 from uuid import uuid4
 from .providers.fake_autotask import FakeAutotaskProvider
@@ -57,6 +59,75 @@ def _get_session_for_logging(request: Request) -> AuthenticatedSession | None:
         return None
     try:
         return decode_session_token(token)
+    except Exception:
+        return None
+
+
+def _header_size_kb(value: str | None) -> float | None:
+    if not value:
+        return None
+    try:
+        byte_count = int(value)
+    except ValueError:
+        return None
+    if byte_count < 0:
+        return None
+    return byte_count / 1024
+
+
+def _known_payload_size_kb(request: Request, response_content_length: str | None) -> float | None:
+    request_kb = _header_size_kb(request.headers.get("content-length"))
+    response_kb = _header_size_kb(response_content_length)
+    known_sizes = [size for size in (request_kb, response_kb) if size is not None]
+    if not known_sizes:
+        return None
+    return sum(known_sizes)
+
+
+def _process_memory_used_mb() -> float | None:
+    try:
+        import psutil
+
+        return psutil.Process(os.getpid()).memory_info().rss / (1024 * 1024)
+    except Exception:
+        pass
+
+    if os.name == "nt":
+        try:
+            class ProcessMemoryCounters(ctypes.Structure):
+                _fields_ = [
+                    ("cb", ctypes.c_ulong),
+                    ("PageFaultCount", ctypes.c_ulong),
+                    ("PeakWorkingSetSize", ctypes.c_size_t),
+                    ("WorkingSetSize", ctypes.c_size_t),
+                    ("QuotaPeakPagedPoolUsage", ctypes.c_size_t),
+                    ("QuotaPagedPoolUsage", ctypes.c_size_t),
+                    ("QuotaPeakNonPagedPoolUsage", ctypes.c_size_t),
+                    ("QuotaNonPagedPoolUsage", ctypes.c_size_t),
+                    ("PagefileUsage", ctypes.c_size_t),
+                    ("PeakPagefileUsage", ctypes.c_size_t),
+                ]
+
+            counters = ProcessMemoryCounters()
+            counters.cb = ctypes.sizeof(ProcessMemoryCounters)
+            handle = ctypes.windll.kernel32.GetCurrentProcess()
+            ok = ctypes.windll.psapi.GetProcessMemoryInfo(
+                handle,
+                ctypes.byref(counters),
+                counters.cb,
+            )
+            if ok:
+                return counters.WorkingSetSize / (1024 * 1024)
+        except Exception:
+            return None
+
+    try:
+        import resource
+
+        usage = resource.getrusage(resource.RUSAGE_SELF)
+        if os.uname().sysname == "Darwin":
+            return usage.ru_maxrss / (1024 * 1024)
+        return usage.ru_maxrss / 1024
     except Exception:
         return None
 
@@ -165,12 +236,25 @@ async def durable_request_logging_middleware(request: Request, call_next):
         raise
 
     duration_ms = (time.perf_counter() - start_time) * 1000
+    response_content_length = response.headers.get("content-length")
+    payload_size_kb = _known_payload_size_kb(request, response_content_length)
+    memory_used_mb = _process_memory_used_mb()
+    performance_details = {
+        **(details or {}),
+        "request_payload_size_kb": _header_size_kb(request.headers.get("content-length")),
+        "response_payload_size_kb": _header_size_kb(response_content_length),
+        "payload_size_basis": "content-length-headers",
+        "memory_metric": "process_rss_mb",
+    }
     response.headers["X-Request-ID"] = server_request_id
     await log_writer.log_request_completed(
         context=context,
         status_code=response.status_code,
         duration_ms=duration_ms,
-        details=details,
+        app_logic_ms=duration_ms,
+        memory_used_mb=memory_used_mb,
+        payload_size_kb=payload_size_kb,
+        details=performance_details,
     )
     return response
 
