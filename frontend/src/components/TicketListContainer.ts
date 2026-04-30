@@ -1,6 +1,7 @@
 import { el } from "../shared/lib/dom.js";
 import { API_BASE_URL } from "../shared/auth.js";
 import { fetchAITickets, type TicketViewKey } from "../shared/api/aiTickets.js";
+import { logUIClick } from "../shared/api/uiLogs.js";
 import type { BackendTicket } from "../shared/types.js";
 import { EllipsisMenu } from "./EllipsisMenu.js";
 import { openTicketCloseModal } from "./TicketCloseModal.js";
@@ -129,6 +130,12 @@ export function TicketListContainer(
       button.addEventListener("click", () => {
         if (activeView === viewKey) return;
         activeView = viewKey;
+        logUIClick({
+          actionType: "view_changed",
+          component: "ticket-list-view-switcher",
+          elementId: viewKey,
+          details: { view: viewKey },
+        });
         updateViewButtons();
         options?.onViewChange?.(viewKey);
         void loadTickets();
@@ -348,8 +355,22 @@ export function TicketListContainer(
           attrs: { role: "button" },
         });
         const menu = EllipsisMenu();
-        menu.addEventListener("view", () => onOpenTicket(ticket));
+        menu.addEventListener("view", () => {
+          logUIClick({
+            actionType: "view",
+            component: "ticket-card-menu",
+            elementId: String(ticket.autotask_ticket_id),
+            details: { autotask_ticket_id: ticket.autotask_ticket_id },
+          });
+          onOpenTicket(ticket);
+        });
         menu.addEventListener("edit", () => {
+          logUIClick({
+            actionType: "edit_opened",
+            component: "ticket-card-menu",
+            elementId: String(ticket.autotask_ticket_id),
+            details: { autotask_ticket_id: ticket.autotask_ticket_id },
+          });
           openTicketEditModal(ticket, (updatedTicket) => {
             ticketsState = ticketsState.map((currentTicket) =>
               currentTicket.autotask_ticket_id === updatedTicket.autotask_ticket_id
@@ -361,6 +382,12 @@ export function TicketListContainer(
           });
         });
         menu.addEventListener("reassign-category", () => {
+          logUIClick({
+            actionType: "category_reassign_opened",
+            component: "ticket-card-menu",
+            elementId: String(ticket.autotask_ticket_id),
+            details: { autotask_ticket_id: ticket.autotask_ticket_id },
+          });
           openTicketCategoryReassignModal(ticket, (updatedTicket) => {
             ticketsState = ticketsState.map((currentTicket) =>
               currentTicket.autotask_ticket_id === updatedTicket.autotask_ticket_id
@@ -372,6 +399,12 @@ export function TicketListContainer(
           });
         });
         menu.addEventListener("close", () => {
+          logUIClick({
+            actionType: "close_opened",
+            component: "ticket-card-menu",
+            elementId: String(ticket.autotask_ticket_id),
+            details: { autotask_ticket_id: ticket.autotask_ticket_id },
+          });
           openTicketCloseModal(ticket, (closedTicket) => {
             ticketsState = ticketsState.filter(
               (currentTicket) =>
@@ -417,6 +450,12 @@ export function TicketListContainer(
         ticketCard.append(topRow, infoRow);
         ticketCard.addEventListener("click", (event) => {
           if ((event.target as HTMLElement).closest(".relative")) return;
+          logUIClick({
+            actionType: "view",
+            component: "ticket-card",
+            elementId: String(ticket.autotask_ticket_id),
+            details: { autotask_ticket_id: ticket.autotask_ticket_id },
+          });
           onOpenTicket(ticket);
         });
         ticketsWrap.append(ticketCard);

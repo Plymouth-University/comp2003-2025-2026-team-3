@@ -1,4 +1,5 @@
 import { closeAITicketState, TicketApiError } from "../shared/api/aiTickets.js";
+import { logUIClick } from "../shared/api/uiLogs.js";
 import { el } from "../shared/lib/dom.js";
 import type { BackendTicket } from "../shared/types.js";
 
@@ -65,6 +66,15 @@ export function openTicketCloseModal(
 
     try {
       const closedTicket = await closeAITicketState(ticket.autotask_ticket_id, reason);
+      logUIClick({
+        actionType: "closed",
+        component: "ticket-close-modal",
+        elementId: String(ticket.autotask_ticket_id),
+        details: {
+          autotask_ticket_id: ticket.autotask_ticket_id,
+          reason_provided: true,
+        },
+      });
       onClosed(closedTicket);
       closeModal();
     } catch (error) {

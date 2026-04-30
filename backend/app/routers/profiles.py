@@ -1,12 +1,14 @@
 """API routes for profile management."""
 
-from fastapi import APIRouter, Depends, HTTPException, status, Query
+from fastapi import APIRouter, Depends, HTTPException, status, Query, Request
 from sqlalchemy.ext.asyncio import AsyncSession
+from types import SimpleNamespace
 from typing import List, Optional
 from uuid import UUID
 
 from ..auth import AuthenticatedSession, get_current_session
 from ..database import get_db
+from ..services.log_writer import LogContext, LogWriter
 from ..services.profile_service import ProfileService, TenantService, SpecialismService
 from ..schemas.profile import (
     ProfileCreate,
@@ -22,6 +24,43 @@ from ..schemas.profile import (
 )
 
 router = APIRouter(prefix="/api/v1", tags=["profiles"])
+log_writer = LogWriter()
+
+
+def _log_context(
+    request: Request,
+    *,
+    tenant_id: UUID | None = None,
+    profile_id: UUID | None = None,
+) -> LogContext:
+    return LogContext.from_request(
+        request,
+        session=SimpleNamespace(tenant_id=tenant_id, profile_id=profile_id),
+        logger_name=__name__,
+    )
+
+
+async def _write_profile_event(
+    *,
+    context: LogContext,
+    action: str,
+    message: str,
+    entity_type: str | None = None,
+    entity_id: str | None = None,
+    details: dict | None = None,
+) -> None:
+    await log_writer.write_application_log(
+        context=context,
+        log_type="profile_management",
+        subsystem="profiles",
+        action=action,
+        level="info",
+        message=message,
+        outcome="success",
+        entity_type=entity_type,
+        entity_id=entity_id,
+        details=details,
+    )
 
 
 # ============ Tenant Endpoints ============
@@ -30,10 +69,22 @@ router = APIRouter(prefix="/api/v1", tags=["profiles"])
 @router.post(
     "/tenants", response_model=TenantResponse, status_code=status.HTTP_201_CREATED
 )
-async def create_tenant(tenant_data: TenantCreate, db: AsyncSession = Depends(get_db)):
+async def create_tenant(
+    request: Request,
+    tenant_data: TenantCreate,
+    db: AsyncSession = Depends(get_db),
+):
     """Create a new tenant/organization."""
     service = TenantService(db)
-    return await service.create_tenant(tenant_data)
+    tenant = await service.create_tenant(tenant_data)
+    await _write_profile_event(
+        context=_log_context(request, tenant_id=tenant.tenant_id),
+        action="tenant_created",
+        message="Tenant created",
+        entity_type="tenant",
+        entity_id=str(tenant.tenant_id),
+    )
+    return tenant
 
 
 @router.get("/tenants/{tenant_id}", response_model=TenantResponse)
@@ -63,14 +114,37 @@ async def list_tenants(db: AsyncSession = Depends(get_db)):
     "/profiles", response_model=ProfileResponse, status_code=status.HTTP_201_CREATED
 )
 async def create_profile(
-    profile_data: ProfileCreate, db: AsyncSession = Depends(get_db)
+    request: Request,
+    profile_data: ProfileCreate,
+    db: AsyncSession = Depends(get_db),
 ):
     """Create a new user profile."""
     service = ProfileService(db)
     try:
-        return await service.create_profile(profile_data)
+        profile = await service.create_profile(profile_data)
     except ValueError as e:
+        await log_writer.write_error_log(
+            context=_log_context(request, tenant_id=profile_data.tenant_id),
+            service_name="profiles",
+            severity="medium",
+            message="Failed to create profile",
+            error=e,
+            action="profile_create",
+            status_code=status.HTTP_400_BAD_REQUEST,
+        )
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
+    await _write_profile_event(
+        context=_log_context(
+            request,
+            tenant_id=profile.tenant_id,
+            profile_id=profile.profile_id,
+        ),
+        action="profile_created",
+        message="Profile created",
+        entity_type="profile",
+        entity_id=str(profile.profile_id),
+    )
+    return profile
 
 
 @router.get("/profiles/{profile_id}", response_model=ProfileResponse)
@@ -109,6 +183,7 @@ async def list_profiles(
 
 @router.patch("/profiles/{profile_id}", response_model=ProfileResponse)
 async def update_profile(
+    request: Request,
     profile_id: UUID,
     profile_data: ProfileUpdate,
     tenant_id: UUID = Query(..., description="Tenant ID for isolation"),
@@ -122,6 +197,14 @@ async def update_profile(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Profile {profile_id} not found",
         )
+    await _write_profile_event(
+        context=_log_context(request, tenant_id=tenant_id, profile_id=profile_id),
+        action="profile_updated",
+        message="Profile updated",
+        entity_type="profile",
+        entity_id=str(profile_id),
+        details={"updated_fields": sorted(profile_data.model_fields_set)},
+    )
     return profile
 
 
@@ -129,6 +212,7 @@ async def update_profile(
     "/profiles/{profile_id}/deactivate", status_code=status.HTTP_204_NO_CONTENT
 )
 async def deactivate_profile(
+    request: Request,
     profile_id: UUID,
     tenant_id: UUID = Query(..., description="Tenant ID for isolation"),
     reason: Optional[str] = Query(None, description="Reason for deactivation"),
@@ -142,6 +226,14 @@ async def deactivate_profile(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Profile {profile_id} not found",
         )
+    await _write_profile_event(
+        context=_log_context(request, tenant_id=tenant_id, profile_id=profile_id),
+        action="profile_deactivated",
+        message="Profile deactivated",
+        entity_type="profile",
+        entity_id=str(profile_id),
+        details={"reason_provided": bool(reason)},
+    )
 
 
 @router.get(
@@ -163,15 +255,43 @@ async def search_profiles(
 
 @router.post("/profiles/identities", status_code=status.HTTP_201_CREATED)
 async def link_identity(
-    identity_data: ProfileIdentityCreate, db: AsyncSession = Depends(get_db)
+    request: Request,
+    identity_data: ProfileIdentityCreate,
+    db: AsyncSession = Depends(get_db),
 ):
     """Link an external identity provider to a profile."""
     service = ProfileService(db)
     success = await service.link_external_identity(identity_data)
     if not success:
+        await log_writer.write_error_log(
+            context=_log_context(
+                request,
+                tenant_id=identity_data.tenant_id,
+                profile_id=identity_data.profile_id,
+            ),
+            service_name="profiles",
+            severity="medium",
+            message="Failed to link external profile identity",
+            error_type="IdentityLinkFailed",
+            action="identity_link",
+            status_code=status.HTTP_400_BAD_REQUEST,
+            details={"idp_id": identity_data.idp_id},
+        )
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail="Failed to link identity"
         )
+    await _write_profile_event(
+        context=_log_context(
+            request,
+            tenant_id=identity_data.tenant_id,
+            profile_id=identity_data.profile_id,
+        ),
+        action="identity_linked",
+        message="External profile identity linked",
+        entity_type="profile",
+        entity_id=str(identity_data.profile_id),
+        details={"idp_id": identity_data.idp_id},
+    )
     return {"status": "success", "message": "Identity linked successfully"}
 
 
@@ -201,11 +321,22 @@ async def get_profile_by_identity(
     status_code=status.HTTP_201_CREATED,
 )
 async def create_specialism(
-    specialism_data: SpecialismCreate, db: AsyncSession = Depends(get_db)
+    request: Request,
+    specialism_data: SpecialismCreate,
+    db: AsyncSession = Depends(get_db),
 ):
     """Create a new specialism/skill category."""
     service = SpecialismService(db)
-    return await service.create_specialism(specialism_data)
+    specialism = await service.create_specialism(specialism_data)
+    await _write_profile_event(
+        context=_log_context(request, tenant_id=specialism.tenant_id),
+        action="specialism_created",
+        message="Specialism created",
+        entity_type="specialism",
+        entity_id=str(specialism.specialism_id),
+        details={"specialism_key": specialism.specialism_key},
+    )
+    return specialism
 
 
 @router.get("/tenants/{tenant_id}/specialisms", response_model=List[SpecialismResponse])
@@ -224,6 +355,7 @@ async def list_specialisms(
     status_code=status.HTTP_201_CREATED,
 )
 async def assign_specialism(
+    request: Request,
     profile_id: UUID,
     specialism_id: UUID,
     tenant_id: UUID = Query(..., description="Tenant ID for isolation"),
@@ -241,10 +373,32 @@ async def assign_specialism(
         assigned_by_profile_id=assigned_by,
     )
     if not success:
+        await log_writer.write_error_log(
+            context=_log_context(request, tenant_id=tenant_id, profile_id=profile_id),
+            service_name="profiles",
+            severity="medium",
+            message="Failed to assign specialism",
+            error_type="SpecialismAssignmentFailed",
+            action="specialism_assign",
+            status_code=status.HTTP_400_BAD_REQUEST,
+            details={"specialism_id": str(specialism_id)},
+        )
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Failed to assign specialism",
         )
+    await _write_profile_event(
+        context=_log_context(request, tenant_id=tenant_id, profile_id=profile_id),
+        action="specialism_assigned",
+        message="Specialism assigned to profile",
+        entity_type="profile",
+        entity_id=str(profile_id),
+        details={
+            "specialism_id": str(specialism_id),
+            "assigned_by": str(assigned_by) if assigned_by else None,
+            "proficiency_level": proficiency_level,
+        },
+    )
     return {"status": "success", "message": "Specialism assigned successfully"}
 
 
@@ -278,6 +432,7 @@ async def get_authenticated_profile_specialisms(
     "/auth/profile/specialisms", response_model=List[ProfileSpecialismAssignmentItem]
 )
 async def replace_authenticated_profile_specialisms(
+    request_http: Request,
     request: AuthenticatedProfileSpecialismsUpdateRequest,
     session: AuthenticatedSession = Depends(get_current_session),
     db: AsyncSession = Depends(get_db),
@@ -285,14 +440,41 @@ async def replace_authenticated_profile_specialisms(
     """Replace the authenticated user's specialisms using AI category keys."""
     service = SpecialismService(db)
     try:
-        return await service.replace_profile_specialisms_from_category_keys(
+        specialisms = await service.replace_profile_specialisms_from_category_keys(
             tenant_id=UUID(session.tenant_id),
             profile_id=UUID(session.profile_id),
             category_keys=request.specialism_keys,
             assigned_by_profile_id=UUID(session.profile_id),
         )
     except ValueError as exc:
+        await log_writer.write_error_log(
+            context=LogContext.from_request(
+                request_http,
+                session=session,
+                logger_name=__name__,
+            ),
+            service_name="profiles",
+            severity="medium",
+            message="Failed to replace authenticated profile specialisms",
+            error=exc,
+            action="authenticated_specialisms_replace",
+            status_code=status.HTTP_400_BAD_REQUEST,
+            details={"specialism_count": len(request.specialism_keys)},
+        )
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=str(exc),
         ) from exc
+    await _write_profile_event(
+        context=LogContext.from_request(
+            request_http,
+            session=session,
+            logger_name=__name__,
+        ),
+        action="authenticated_specialisms_replaced",
+        message="Authenticated profile specialisms replaced",
+        entity_type="profile",
+        entity_id=session.profile_id,
+        details={"specialism_count": len(request.specialism_keys)},
+    )
+    return specialisms

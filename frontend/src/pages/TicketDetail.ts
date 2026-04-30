@@ -5,6 +5,7 @@ import {
   setAssignmentOverride,
   type TicketAssignmentRecommendation,
 } from "../shared/api/aiAssignments.js";
+import { logUIClick } from "../shared/api/uiLogs.js";
 import type { BackendTicket } from "../shared/types.js";
 
 type TicketDetailOptions = {
@@ -204,6 +205,12 @@ export function TicketDetail(
         clearButton.disabled = true;
         try {
           const updated = await clearAssignmentOverride(ticket.autotask_ticket_id);
+          logUIClick({
+            actionType: "assignment_override_cleared",
+            component: "ticket-detail-assignment",
+            elementId: String(ticket.autotask_ticket_id),
+            details: { autotask_ticket_id: ticket.autotask_ticket_id },
+          });
           renderRecommendation(updated);
         } catch (error) {
           console.error("Failed to clear override", error);
@@ -255,6 +262,16 @@ export function TicketDetail(
                 candidate.profile_id,
                 reason.trim() || null,
               );
+              logUIClick({
+                actionType: "assignment_override_set",
+                component: "ticket-detail-assignment",
+                elementId: String(ticket.autotask_ticket_id),
+                details: {
+                  autotask_ticket_id: ticket.autotask_ticket_id,
+                  override_profile_id: candidate.profile_id,
+                  reason_provided: Boolean(reason.trim()),
+                },
+              });
               renderRecommendation(updated);
             } catch (error) {
               console.error("Failed to save override", error);

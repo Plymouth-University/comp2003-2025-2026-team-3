@@ -2,30 +2,249 @@
 
 ## Purpose
 
-This document lists the code and platform dependencies that the current logging system relies on.
+This document lists the code, database, configuration, and runtime dependencies needed for the current logging system.
+
+The durable logging system depends on a dedicated PostgreSQL database and async SQLAlchemy. Console and AI file logging still have their own smaller dependencies.
 
 ## Internal Code Dependencies
 
-### Backend entrypoint logging
+### Durable log models
 
-Files:
+File:
+
+- `backend/app/models/logs.py`
+
+Provides:
+
+- SQLAlchemy models for all logging tables
+- relationships from `request_trace` to each log family
+- indexes for query-friendly fields such as request ID, tenant ID, profile ID, endpoint, action, severity, and occurred time
+
+Depends on:
+
+- `backend/app/log_database.py`
+- SQLAlchemy
+- PostgreSQL JSONB and UUID types
+
+### Logging database connection
+
+File:
+
+- `backend/app/log_database.py`
+
+Provides:
+
+- `log_engine`
+- `LogSessionLocal`
+- `LogBase`
+- `get_log_db()`
+- `init_log_db()`
+- `close_log_db()`
+
+Depends on:
+
+- `settings.LOG_DATABASE_URL`
+- SQLAlchemy async engine
+- `asyncpg`
+
+Current runtime use:
+
+- `LogWriter` uses `LogSessionLocal`
+- app shutdown calls `close_log_db()`
+- migrations are the preferred schema setup path
+
+### Central writer service
+
+File:
+
+- `backend/app/services/log_writer.py`
+
+Provides:
+
+- `LogContext`
+- `LogWriter`
+- durable writes for application, performance, error, request trace, and UI interaction logs
+
+Depends on:
+
+- `LogSessionLocal`
+- `ApplicationLog`
+- `PerformanceLog`
+- `ErrorLog`
+- `RequestTrace`
+- `UIClickAnalyticsLog`
+- FastAPI `Request`
+- `jsonable_encoder`
+- PostgreSQL insert/upsert support
+
+### Backend request middleware
+
+File:
 
 - `backend/app/main.py`
-- `backend/app/database.py`
-- `backend/app/providers/fake_autotask.py`
 
-Dependency:
+Depends on:
 
-- Python standard `logging`
+- `LogWriter`
+- `LogContext`
+- session cookie settings
+- `decode_session_token`
+- standard library timing and memory helpers
 
 Used for:
 
-- startup/shutdown messages
-- request instrumentation
-- provider load/cache messages
-- database lifecycle messages
+- server-generated request IDs
+- request start/completion logs
+- request-level performance logs
+- unhandled exception logs
+- request payload and response payload size metadata
+- process RSS memory measurement
 
-### AI logging configuration
+### Durable UI log ingestion
+
+Files:
+
+- `backend/app/routers/logs.py`
+- `backend/app/schemas/logs.py`
+- `frontend/src/shared/api/uiLogs.ts`
+
+Depends on:
+
+- authenticated backend session cookie
+- `POST /api/v1/logs/ui-clicks`
+- frontend `fetch`
+- `API_BASE_URL`
+
+Used for:
+
+- frontend view/edit/close/reassign/override interaction logs
+
+### Business event call sites
+
+Files:
+
+- `backend/app/routers/auth.py`
+- `backend/app/routers/ai_state.py`
+- `backend/app/routers/profiles.py`
+
+Depend on:
+
+- `LogWriter`
+- `LogContext`
+- existing route session/context data
+
+Used for:
+
+- auth lifecycle logs
+- AI ticket state logs
+- profile/specialism management logs
+- domain-level error logs
+
+## Database Dependencies
+
+### Local compose service
+
+File:
+
+- `backend/compose.yml`
+
+Defines:
+
+- service: `postgres_logs`
+- container: `secops-postgres-logs`
+- database: `logsdb`
+- port: `5435`
+- user: `postgres`
+- password: `password`
+
+### Configuration
+
+File:
+
+- `backend/app/config.py`
+
+Relevant setting:
+
+```text
+LOG_DATABASE_URL=postgresql+asyncpg://postgres:password@localhost:5435/logsdb
+```
+
+This URL is used by:
+
+- `backend/app/log_database.py`
+- `backend/alembic_logs/env.py`
+- `backend/scripts/migrate_all_databases.py`
+
+### Migrations
+
+Files:
+
+- `backend/alembic_logs.ini`
+- `backend/alembic_logs/env.py`
+- `backend/alembic_logs/versions/5bccb4e25b7a_create_logging_tables.py`
+
+Preferred setup command from the backend directory:
+
+```bash
+python scripts/migrate_all_databases.py
+```
+
+This runs both the core database migrations and the logs database migrations.
+
+## Python Package Dependencies
+
+From `backend/requirements.txt`:
+
+- `sqlalchemy[asyncio]>=2.0.0`
+- `asyncpg>=0.29.0`
+- `alembic>=1.13.0`
+- `fastapi`
+- `pydantic-settings`
+
+Optional runtime behavior:
+
+- `psutil` is used for process RSS memory measurement if installed.
+- If `psutil` is not installed, the app falls back to standard-library/platform memory helpers.
+
+Important note:
+
+- missing `asyncpg` prevents the backend from importing because async database engines are created at import time.
+
+## Frontend Dependencies
+
+The frontend logging helper depends only on browser APIs already used by the app:
+
+- `fetch`
+- `JSON.stringify`
+- `Date`
+- `window.location.pathname`
+
+The helper sends credentials with the request:
+
+```ts
+credentials: "include"
+```
+
+That means UI log ingestion requires the same backend session cookie as the rest of the authenticated app.
+
+## Existing Supporting Logging Dependencies
+
+### Python standard logging
+
+Still used by:
+
+- `backend/app/main.py`
+- `backend/app/database.py`
+- `backend/app/log_database.py`
+- `backend/app/providers/fake_autotask.py`
+- AI service modules
+
+Purpose:
+
+- local terminal feedback
+- fallback logging if durable logging fails
+
+### AI rotating file logging
 
 File:
 
@@ -35,139 +254,28 @@ Depends on:
 
 - `logging`
 - `logging.handlers`
-- `pathlib.Path`
-- filesystem write access for the log directory
+- filesystem write access to `backend/logs/ai_services/`
 
-Used for:
-
-- named AI logger setup
-- rotating file handlers
-- performance logger setup
-- in-memory metrics collection
-
-### AI modules that emit logs and metrics
-
-Files:
-
-- `backend/app/services/ai/config.py`
-- `backend/app/services/ai/categorizer.py`
-- `backend/app/services/ai/processor.py`
-- `backend/app/services/ai/text_processor.py`
-- `backend/app/services/ai/description_generator.py`
-- `backend/app/services/ai/storage.py`
-
-Depend on:
-
-- the logger and metrics objects from `logging_config.py`
-
-### Frontend logging call sites
-
-Files:
-
-- `frontend/src/pages/Dashboard.ts`
-- `frontend/src/components/TicketListContainer.ts`
-
-Depend on:
-
-- browser `console`
-- browser `performance.now()`
-- local helper timestamp functions in those modules
-
-## Platform Dependencies
-
-### Filesystem access
-
-Required by:
-
-- `backend/app/services/ai/logging_config.py`
-
-Why:
-
-- it creates `backend/logs/ai_services/`
-- it writes rotating log files into that directory
-
-What happens if this matters:
-
-- if the directory cannot be created or files cannot be opened, the code catches exceptions and prints warnings instead of crashing immediately
-
-### Running process memory
-
-Required by:
-
-- `PerformanceMetrics`
-
-Why:
-
-- metrics are accumulated in memory while the backend process is alive
-
-Limitation:
-
-- memory-held metrics are not durable
-
-### Browser developer tools
-
-Required for:
-
-- seeing frontend logs
-
-Why:
-
-- frontend instrumentation is not persisted anywhere else
-
-## Third-Party And Standard Library Dependencies
-
-### Python standard logging
-
-Used by:
-
-- backend app modules
-- AI logging setup
-
-Purpose:
-
-- logger creation
-- log-level handling
-- formatting
-- stream/file handlers
-
-### `logging.handlers.RotatingFileHandler`
-
-Used by:
-
-- `backend/app/services/ai/logging_config.py`
-
-Purpose:
-
-- rotate AI log files instead of letting them grow forever
-
-### Browser console and timing APIs
-
-Used by:
-
-- frontend dashboard and ticket list components
-
-Purpose:
-
-- local debugging
-- timing measurements for fetch and render paths
+This remains separate from durable database logging.
 
 ## Operational Assumptions
 
-The current logging system assumes:
+The durable logging system assumes:
 
-- the backend process can write to the AI logs directory if file logging is desired
-- the backend process will stay alive long enough for in-memory metrics to be useful
-- developers will inspect browser console logs manually during frontend debugging
-- timestamps are good enough for rough manual correlation across layers
+- `postgres_logs` or another configured logs database is reachable
+- logs migrations have been applied
+- `LOG_DATABASE_URL` points at the intended logs database
+- route handlers do not rely on log writes succeeding
+- logged JSON details do not include secrets
+- frontend UI logging is best-effort and may silently fail from the user's point of view
 
-## Dependency Gaps
+## Current Dependency Gaps
 
-The current system does not depend on:
+Verified gaps:
 
-- a database logging table
-- a centralized log service
-- OpenTelemetry
-- a metrics backend such as Prometheus
-- a structured log pipeline
-
-That absence is important because it explains why the logging story is currently developer-focused rather than fully operationally mature.
+- no log query UI
+- no retention or archival job
+- no OpenTelemetry dependency
+- no SQLAlchemy timing collector for `db_latency_ms`
+- no explicit external/provider timing collector for `external_api_latency_ms`
+- no mandatory `psutil` dependency for memory measurement
