@@ -40,13 +40,31 @@ git push
 
 ---
 
-## 🧹 After PR is merged
+## 🏷️ After PR is merged (IMPORTANT)
+
+Before deleting any feature branch, we **archive it with a tag**.
+
+### Create archive tag
+```bash
+git tag archive/feature-name
+git push origin archive/feature-name
+```
+
+Example:
+```bash
+git tag archive/feature-add-latency-logs
+git push origin archive/feature-add-latency-logs
+```
+
+### Then delete the branch
 ```bash
 git switch development
 git pull origin development
 git branch -d feature/<task>
 git push origin --delete feature/<task>
 ```
+
+Tags remain permanently and preserve history.
 
 ---
 

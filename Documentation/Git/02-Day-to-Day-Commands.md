@@ -98,43 +98,73 @@ You may need to:
 - pull urgent updates
 - fix something else first
 
-But Git will block you if you have unfinished work.
+Git blocks branch switching when changes are uncommitted.
 
 Stash allows you to:
-- pause your current work
-- switch branches safely
-- return later exactly where you left off
+- pause current work
+- safely move elsewhere
+- resume later exactly where you left off
 
 ### What does `WIP` mean?
 
 `WIP` = **Work In Progress**
 
-It is just a label so you remember what the stash contains.
+It is simply a label so you remember what the stash contains.
 
-### Save your unfinished work
+### Save unfinished work
 ```bash
 git stash push -m "WIP"
 ```
 
-After this:
-- your working directory becomes clean
-- you can safely switch branches
-
-### Restore your work later
+### Restore later
 ```bash
 git stash pop
 ```
 
-This puts all your changes back exactly as they were.
+Always run:
+```bash
+git status
+```
+after restoring a stash.
 
-### Important rules
-- Only stash when necessary
-- Do NOT forget you stashed something
-- Always run `git status` after popping a stash
+---
+
+## 🏷️ Archive a feature branch (NEW STANDARD)
+
+Before deleting any feature branch, we **always create an archive tag**.
+
+This preserves a permanent reference point in project history.
+
+### Why this matters
+- preserves long-term development history
+- allows lecturers to inspect earlier work
+- keeps branch list clean
+- prevents accidental loss of context
+
+Tags do **not** move or change — they are permanent bookmarks.
+
+---
+
+### Create an archive tag
+
+While on the feature branch:
+
+```bash
+git tag archive/feature-name
+git push origin archive/feature-name
+```
+
+Example:
+```bash
+git tag archive/feature-add-latency-logs
+git push origin archive/feature-add-latency-logs
+```
 
 ---
 
 ## 🧹 Delete your feature branch after merge
+
+Once the branch is merged and archived:
 
 ```bash
 git switch development
@@ -151,4 +181,4 @@ git push origin --delete feature/<task-name>
 git log --all --decorate --oneline --graph
 ```
 
-This helps you visualise branches.
+This helps visualise branches and archive tags.

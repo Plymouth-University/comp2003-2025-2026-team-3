@@ -1,0 +1,76 @@
+import { el } from "../shared/lib/dom.js";
+import type { CurrentUserResponse } from "../shared/auth.js";
+
+export function AccountPage(currentUser: CurrentUserResponse): HTMLElement {
+  const wrap = el("div", { className: "bg-white rounded-xl shadow p-8 border border-slate-200" });
+
+  //two-column layout -- left panel shows account info, right panel shows profile icon
+  const contentWrap = el("div", { className: "grid grid-cols-3 gap-8" });
+
+  //left column - account information
+  const leftColumn = el("div", { className: "col-span-2 space-y-8" });
+
+  //General section
+  const generalSection = el("div", { className: "space-y-4" });
+  generalSection.append(
+    el("h3", { className: "text-lg font-bold text-slate-900", text: "General" })
+  );
+
+  const generalAttrs = [
+    { label: "Display Name", value: currentUser.profile.display?.display_name || currentUser.session.display_name },
+    { label: "Profile ID", value: currentUser.profile.profile_id },
+    { label: "Status", value: currentUser.profile.status },
+  ];
+
+  for (const attr of generalAttrs) {
+    generalSection.append(
+      el("div", { className: "space-y-1" }, [
+        el("div", { className: "text-xs font-semibold text-slate-600 uppercase", text: attr.label }),
+        el("div", { className: "text-sm text-slate-900", text: attr.value }),
+      ])
+    );
+  }
+  leftColumn.append(generalSection);
+
+  //divider
+  leftColumn.append(el("div", { className: "border-t border-slate-200" }));
+
+  //Contact Information section
+  const contactSection = el("div", { className: "space-y-4" });
+  contactSection.append(
+    el("h3", { className: "text-lg font-bold text-slate-900", text: "Contact Information" })
+  );
+
+  const contactAttrs = [
+    { label: "Entra Tenant ID", value: currentUser.session.entra_tenant_id },
+    { label: "Object ID", value: currentUser.session.object_id },
+    { label: "Internal Tenant ID", value: currentUser.profile.tenant_id },
+    { label: "Created At", value: new Date(currentUser.profile.created_at).toLocaleString() },
+    { label: "Data Policy", value: "No company profile data is copied here beyond identity linkage and display name." },
+  ];
+
+  for (const attr of contactAttrs) {
+    contactSection.append(
+      el("div", { className: "space-y-1" }, [
+        el("div", { className: "text-xs font-semibold text-slate-600 uppercase", text: attr.label }),
+        el("div", { className: "text-sm text-slate-900", text: attr.value }),
+      ])
+    );
+  }
+  leftColumn.append(contactSection);
+
+  //right column - profile icon
+  const rightColumn = el("div", { className: "col-span-1 flex flex-col items-center" });
+  rightColumn.append(
+    el("img", {
+      className: "w-32 h-32 rounded-full border-4 border-slate-300 shadow-lg",
+      attrs: { src: "./public/profile-icon/profile-placeholder.png", alt: "Profile Icon" },
+    }),
+    el("div", { className: "mt-4 text-sm text-slate-600", text: "Profile Picture" })
+  );
+
+  contentWrap.append(leftColumn, rightColumn);
+  wrap.append(contentWrap);
+
+  return wrap;
+}

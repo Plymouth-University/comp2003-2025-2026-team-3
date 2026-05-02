@@ -1,0 +1,64 @@
+# =========================
+# Python bytecode & caches
+# =========================
+__pycache__/
+*.py[cod]
+*$py.class
+
+# =========================
+# Virtual environments
+# =========================
+venv/
+.venv/
+env/
+myenv/
+.env
+
+# =========================
+# AI / ML model caches
+# =========================
+.cache/
+/models/
+
+
+# =========================
+# Logs & runtime files
+# =========================
+*.log
+logs/
+alembic_logs/**/__pycache__/
+alembic_logs/**/*.pyc
+# =========================
+# Test & coverage output
+# =========================
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.pyre/
+.tox/
+.coverage
+htmlcov/
+
+# =========================
+# Build / packaging output
+# =========================
+build/
+dist/
+*.egg-info/
+pip-wheel-metadata/
+
+# =========================
+# IDE / OS files
+# =========================
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# =========================
+# Secrets / credentials
+# =========================
+.env.*
+*.key
+secrets/
+

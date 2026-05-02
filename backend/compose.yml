@@ -1,0 +1,28 @@
+services:
+  postgres_core:
+    image: postgres:latest
+    container_name: secops-postgres-core
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: secops_core_db
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_core_data:/var/lib/postgresql
+
+  postgres_logs:
+    image: postgres:latest
+    container_name: secops-postgres-logs
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: logsdb
+    ports:
+      - "5435:5432"
+    volumes:
+      - postgres_logs_data:/var/lib/postgresql
+
+volumes:
+  postgres_core_data:
+  postgres_logs_data:
