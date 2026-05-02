@@ -1,0 +1,90 @@
+{
+  "categories": [
+    {
+      "key": "email_blocked_held",
+      "label": "Email blocked/held",
+      "description": "Email security alerts where a message is blocked, quarantined, or held for review.",
+      "keywords": [
+        "email blocked",
+        "message held",
+        "message in quarantine",
+        "quarantine",
+        "held",
+        "blocked",
+        "mail",
+        "m365"
+      ],
+      "priority_weight": 45
+    },
+    {
+      "key": "backup_failed",
+      "label": "Backup failed",
+      "description": "Backup jobs that failed and need investigation or rerun.",
+      "keywords": [
+        "backup failed",
+        "backup failure",
+        "backup",
+        "failed",
+        "restore risk",
+        "job failed"
+      ],
+      "priority_weight": 55
+    },
+    {
+      "key": "backup_suspended",
+      "label": "Backup suspended",
+      "description": "Backup protection or backup agents suspended and no longer running as expected.",
+      "keywords": [
+        "backup suspended",
+        "suspended",
+        "backup paused",
+        "backup agent",
+        "protection stopped"
+      ],
+      "priority_weight": 50
+    },
+    {
+      "key": "hardware_offline",
+      "label": "Hardware offline",
+      "description": "Devices or monitored hardware reported offline, unreachable, or unavailable.",
+      "keywords": [
+        "device offline",
+        "hardware offline",
+        "offline",
+        "unreachable",
+        "down",
+        "availability"
+      ],
+      "priority_weight": 60
+    },
+    {
+      "key": "patching_vulnerabilities",
+      "label": "Patching vulnerabilities",
+      "description": "Security vulnerabilities detected that require patching, remediation, or compliance follow-up.",
+      "keywords": [
+        "vulnerability",
+        "vulnerabilities",
+        "critical vulnerability",
+        "compliance",
+        "patching",
+        "security patch",
+        "detected"
+      ],
+      "priority_weight": 70
+    },
+    {
+      "key": "patch_failed",
+      "label": "Patch failed",
+      "description": "Patch or update installation failed and needs investigation.",
+      "keywords": [
+        "patch failed",
+        "patch install failed",
+        "install failed",
+        "update failed",
+        "reboot required",
+        "patch"
+      ],
+      "priority_weight": 55
+    }
+  ]
+}
